@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="cpw.mods.fml.common.Mod"/>
+<fullyQualifiedTypeName name="cpw.mods.fml.common.network.NetworkMod"/>
+<fullyQualifiedTypeName name="cpw.mods.fml.common.SidedProxy"/>
+</qualifiedTypeNameHistroy>
