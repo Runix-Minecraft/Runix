@@ -1,0 +1,77 @@
+/* Javadoc style sheet */
+
+/* Define colors, fonts and other style attributes here to override the defaults */
+
+/* Page background color */
+body { background-color: #a0b7c6; color:#000 }
+
+/* Headings */
+h1 { font-size: 52px; font-family:Arial; color:#b37060; text-shadow: 0 1px 0 #ccc, 
+ 0 2px 0 #8f4e3f,
+ 0 3px 0 #844637,
+ 0 4px 0 #7c3f31,
+ 0 5px 0 #74392b,
+ 0 6px 1px rgba(0,0,0,.1),
+ 0 0 5px rgba(0,0,0,.1),
+ 0 1px 3px rgba(0,0,0,.3),
+ 0 3px 5px rgba(0,0,0,.2),
+ 0 5px 10px rgba(0,0,0,.25),
+ 0 10px 10px rgba(0,0,0,.2),
+ 0 20px 20px rgba(0,0,0,.15);
+ }
+
+/* Links */
+a { color:#f3f3f3; text-decoration:none;}
+a:visited { color: #8b0101; text-decoration:none;}
+a:hover { color:#ad561b; text-decoration:none;}
+a:focus { outline: none; text-decoration:none;}
+a:hover, a:active { outline: 0; }
+
+/* Table */
+table {
+	border:#1a6291;
+}
+
+/* Table colors */
+.TableHeadingColor { 
+	background: #1a6291; /* Old browsers */
+	background: -moz-linear-gradient(top, #1a6291 0%, #083b6a 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1a6291), color-stop(100%,#083b6a)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #1a6291 0%,#083b6a 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #1a6291 0%,#083b6a 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #1a6291 0%,#083b6a 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #1a6291 0%,#083b6a 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a6291', endColorstr='#083b6a',GradientType=0 ); /* IE6-9 */ 
+	color:#aa6333;
+	text-shadow: 0 1px 0 #ccc, 0px 2px 4px #000;
+	} /* Dark mauve */
+
+.TableSubHeadingColor { 
+	background: #1a6291; /* Old browsers */
+	background: -moz-linear-gradient(top, #1a6291 0%, #083b6a 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1a6291), color-stop(100%,#083b6a)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #1a6291 0%,#083b6a 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #1a6291 0%,#083b6a 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #1a6291 0%,#083b6a 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #1a6291 0%,#083b6a 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a6291', endColorstr='#083b6a',GradientType=0 ); /* IE6-9 */ 
+	color:#aa6333;
+	text-shadow: 0 1px 0 #ccc, 0px 2px 4px #000;
+} /* Light mauve */
+
+.TableRowColor    { background: #868686; color:#000000 } /* White */
+
+/* Font used in left-hand frame lists */
+.FrameTitleFont   { font-size: 20px; font-family: Helvetica, Arial, sans-serif; color:#ea641d; text-shadow: 0 1px 0 #ccc, 0px 2px 4px #000}
+.FrameHeadingFont { font-size:  32px; font-family: Helvetica, Arial, sans-serif; font-weight:bold; color:#b37060; text-shadow: 0 1px 0 #ccc, 0px 2px 4px #000}
+.FrameItemFont    { font-size:  100%; font-family: Helvetica, Arial, sans-serif; color:#b37060 }
+
+/* Navigation bar fonts and colors */
+.NavBarCell1    { background-color:#a1756b; color:#000000} /* Light mauve */
+.NavBarCell1Rev { background-color:#63423b; color:#dedede} /* Dark Blue */
+.NavBarFont1    { font-family: Arial, Helvetica, sans-serif; color:#000000; }
+.NavBarFont1Rev { font-family: Arial, Helvetica, sans-serif; color:#dedede; }
+
+.NavBarCell2    { font-family: Arial, Helvetica, sans-serif; background-color:#868686; color:#000000}
+.NavBarCell3    { font-family: Arial, Helvetica, sans-serif; background-color:#868686; color:#000000}
+
