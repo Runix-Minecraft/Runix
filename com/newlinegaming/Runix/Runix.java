@@ -12,5 +12,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 public class Runix {
 	@SidedProxy(clientSide = "RuneCo.mod.Runix.common.ClientProxy", serverSide = "RuneCo.mod.Runix.common.CommonProxy")
+	//Josiah: Should this instead be com.newlinegaming.Runix.ClientProxy ?
 	public static CommonProxy proxy;
 }
