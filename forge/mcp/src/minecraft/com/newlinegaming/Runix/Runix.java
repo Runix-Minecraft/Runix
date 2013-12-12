@@ -27,10 +27,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	@SidedProxy(clientSide = "com.newlinegaming.Runix.ClientProxy", serverSide = "com.newlinegaming.Runix.CommonProxy")
 	public static CommonProxy proxy;
 	
-	//EnumMaterial
-	
-	public static EnumArmorMaterial armorImmersed = EnumHelper.addArmorMaterial("IMMERSED", 66, new int[]{6, 9, 9, 6}, 30);
-			
 	//Creative Tab Names
 	
 	public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
