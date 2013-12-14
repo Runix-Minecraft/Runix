@@ -30,7 +30,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	//Creative Tab Names
 	
 	public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
-
+//	GameRegistry.registerBlock(Compass, "CompassBlock");
+	
 	//Creative Tab Placeholder
 
 	public static Item RunixPlaceHolder = new RunixPlaceHolder(2000).setUnlocalizedName("RunixPlaceHolder");
