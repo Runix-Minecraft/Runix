@@ -1,6 +1,6 @@
 package com.newlinegaming.Runix;
 
-import cpw.mods.fml.common.network.Player;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class CompassRune extends AbstractRune{
 
@@ -11,7 +11,7 @@ public class CompassRune extends AbstractRune{
               {4,0,4}}};
 	}
 
-	public void execute(Player player, int x, int y, int z){
+	public void execute(EntityPlayer player, int x, int y, int z){
 //		par1World.setBlock(alterX + par2, alterY + par3, alterZ + par4, Block.sandStone.blockID);
 	}
 }

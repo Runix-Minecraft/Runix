@@ -5,6 +5,7 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -25,7 +26,7 @@ public class RuneHandler
 	public void playerInteractEvent(PlayerInteractEvent event)
 	{
 		if(event.action == Action.RIGHT_CLICK_BLOCK)
-			possibleRuneActivationEvent(event.entity.worldObj, event.x, event.y, event.z);
+			possibleRuneActivationEvent(event.entityPlayer, event.x, event.y, event.z);
 	}
 	
     public void aetherSay(String msg) {
@@ -36,13 +37,16 @@ public class RuneHandler
     	Minecraft.getMinecraft().thePlayer.addChatMessage(msg);
 	}
 
-    public void possibleRuneActivationEvent(World world, int worldX, int worldY, int worldZ) { //TODO: world should be type World
-        boolean createdRune = checkForAnyRunePattern(world, worldX, worldY, worldZ);
-        if(createdRune)
-        	aetherSay("Rune Created");
+    public void possibleRuneActivationEvent(EntityPlayer player, int worldX, int worldY, int worldZ) 
+    {
+        AbstractRune createdRune = checkForAnyRunePattern(player.worldObj, worldX, worldY, worldZ);
+        if(createdRune != null){
+			aetherSay("Recognized" + createdRune.getClass().getName());
+//			createdRune.execute(player, worldX, worldY, worldZ);
+        }
     }
 
-    private boolean checkForAnyRunePattern(World world, int worldX, int worldY, int worldZ)
+    private AbstractRune checkForAnyRunePattern(World world, int worldX, int worldY, int worldZ)
     {
     	boolean result = false;
     	for( int i = 0; i < runeRegistry.size(); i ++){
@@ -53,14 +57,14 @@ public class RuneHandler
     		}
     		result = checkRunePattern(blockPattern, world, worldX, worldY, worldZ);  
     		if( result ){
-    			aetherSay("Recognized" + runeRegistry.get(i).getClass().getName());
-    			return true;  //Josiah: I know this is redundant, it will eventually return an AbstractRune object
+    			return runeRegistry.get(i);  //Josiah: I know this is redundant, it will eventually return an AbstractRune object
     		}
     	}
-    	return false;
+    	return null;
     }
 
-	private boolean checkRunePattern(int[][][] blockPattern, World world, int worldX, int worldY, int worldZ) {
+	private boolean checkRunePattern(int[][][] blockPattern, World world, int worldX, int worldY, int worldZ) 
+	{
 		for (int y = 0; y < blockPattern.length; y++) {
 			for (int z = 0; z < blockPattern[y].length; z++) {
 				for (int x = 0; x < blockPattern[y][z].length; x++) {

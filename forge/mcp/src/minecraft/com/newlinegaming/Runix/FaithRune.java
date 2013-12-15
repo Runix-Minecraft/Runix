@@ -1,6 +1,6 @@
 package com.newlinegaming.Runix;
 
-import cpw.mods.fml.common.network.Player;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class FaithRune extends AbstractRune{
 
@@ -14,6 +14,6 @@ public class FaithRune extends AbstractRune{
              {4,0,4}}};
 	}
 
-	public void execute(Player player, int x, int y, int z){}
+	public void execute(EntityPlayer player, int x, int y, int z){}
 
 }

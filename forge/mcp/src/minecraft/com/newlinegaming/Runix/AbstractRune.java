@@ -1,6 +1,6 @@
 package com.newlinegaming.Runix;
 
-import cpw.mods.fml.common.network.Player;
+import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class AbstractRune {
 
@@ -8,5 +8,5 @@ public abstract class AbstractRune {
 	
 	public AbstractRune(){}
 	
-	public abstract void execute(Player player, int x, int y, int z);
+	public abstract void execute(EntityPlayer player, int x, int y, int z);
 }
