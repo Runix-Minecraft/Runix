@@ -3,11 +3,11 @@ package com.newlinegaming.Runix;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+/** This class contains the basic functions that Runes will use to execute their functions.  Any reusable code or concepts should go in
+ * AbstractRune and not in the individual Runes.  This will make it easy to create new and custom runes as well as making the child classes
+ * as thin as possible.
+ */
 public abstract class AbstractRune {
-	/** This class contains the basic functions that Runes will use to execute their functions.  Any reusable code or concepts should go in
-	 * AbstractRune and not in the individual Runes.  This will make it easy to create new and custom runes as well as making the child classes
-	 * as thin as possible.
-	 */
 	
 	public int[][][] blockPattern;  //Josiah: this pattern should never actually be used
 	
@@ -15,6 +15,16 @@ public abstract class AbstractRune {
 	
 	public abstract void execute(EntityPlayer player, int x, int y, int z);//I'm passing the player instead of World so that Runes can later affect the Player
 	
+	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
+	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
+	 * calls for 0 (AIR).
+	 * @param template
+	 * @param player used to check for build permissions.  Player also provides worldObj.
+	 * @param worldX
+	 * @param worldY
+	 * @param worldZ
+	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
+	 */
 	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, int worldX, int worldY, int worldZ)
 	{
 		World world = player.worldObj;
