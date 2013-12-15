@@ -34,7 +34,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	
 	//Creative Tab Names
 	public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
-	public static Item RunixPlaceHolder = new RunixPlaceHolder(2000).setUnlocalizedName("RunixPlaceHolder");//Josiah: init says you're overriding 2256 with this
+	public static Item RunixPlaceHolder = new RunixPlaceHolder(10000).setUnlocalizedName("RunixPlaceHolder");
 	public static Object instance;
 
 	//Render Information	
@@ -47,9 +47,12 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	public Runix() 
 	{	
 		//Language Registry
+		
 		LanguageRegistry.addName(RunixPlaceHolder, "Runix");
 			
-		MinecraftForge.EVENT_BUS.register(new RuneHandler());	//Event Registry
+		//Event Registry
+		
+		MinecraftForge.EVENT_BUS.register(new RuneHandler());
 		
 	
 	}

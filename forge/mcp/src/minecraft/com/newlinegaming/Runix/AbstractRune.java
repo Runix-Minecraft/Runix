@@ -18,10 +18,6 @@ public abstract class AbstractRune {
 	
 	public abstract void execute(EntityPlayer player, int worldX, int worldY, int worldZ);//I'm passing the player instead of World so that Runes can later affect the Player
 	
-	public boolean isPersistent(){
-		return false;
-	}
-	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
 	 * calls for 0 (AIR).
@@ -68,5 +64,9 @@ public abstract class AbstractRune {
 		
 		player.setPosition(coords.posX, coords.posY+2, coords.posZ);//Josiah: This is Y+2 because of testing...
 		//TODO: check for Lava, fire, and void
+	}
+
+	public boolean isPersistent() {
+		return false;
 	}
 }
