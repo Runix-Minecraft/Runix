@@ -49,7 +49,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 		//Language Registry
 		LanguageRegistry.addName(RunixPlaceHolder, "Runix");
 			
-		MinecraftForge.EVENT_BUS.register(new Compass());	//Event Registry
+		MinecraftForge.EVENT_BUS.register(new RuneHandler());	//Event Registry
 		
 	
 	}
