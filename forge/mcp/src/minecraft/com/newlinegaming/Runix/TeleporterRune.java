@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
@@ -21,6 +23,8 @@ public class TeleporterRune extends AbstractRune {
 	 */
 	public void execute(EntityPlayer player, int worldX, int worldY, int worldZ) {
 		ChunkCoordinates coords = player.worldObj.getSpawnPoint();
+//	    ArrayList<WaypointRune> WPs = RuneHandler.fetchWaypoints()
+//	    ChunkCoordinates coords = 
 		safelyMovePlayer(player, coords);
 
 	}
