@@ -15,6 +15,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 public class RuneHandler
 {
 	private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();//Josiah: I'm not sure ArrayList is the best, since we'll only have Runes
+	protected ArrayList<AbstractRune> activeRunes = new ArrayList<AbstractRune>();
 	
 	public RuneHandler(){
 		runeRegistry.add(new FaithRune());
@@ -43,6 +44,10 @@ public class RuneHandler
         AbstractRune createdRune = checkForAnyRunePattern(player.worldObj, worldX, worldY, worldZ);
         if(createdRune != null){
 			aetherSay("Recognized" + createdRune.getClass().getName());
+//			if(createdRune.isPersistent()){
+//				createdRune = createdRune.getClass();
+//				activeRunes.add(createdRune);
+//			}
 			createdRune.execute(player, worldX, worldY, worldZ);
         }
     }
