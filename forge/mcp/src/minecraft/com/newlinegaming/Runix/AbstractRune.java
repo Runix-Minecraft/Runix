@@ -1,11 +1,12 @@
 package com.newlinegaming.Runix;
 
-public class AbstractRune {
+import cpw.mods.fml.common.network.Player;
 
-	public static int[][][] blockPattern = new int [][][] 
-            {{{10,10,10},
-              {10,10,10},
-              {10,10,10}}};  //Josiah: this pattern should never actually be used
+public abstract class AbstractRune {
+
+	public int[][][] blockPattern;  //Josiah: this pattern should never actually be used
 	
-	//public abstract execute(player, x, y, z)
+	public AbstractRune(){}
+	
+	public abstract void execute(Player player, int x, int y, int z);
 }

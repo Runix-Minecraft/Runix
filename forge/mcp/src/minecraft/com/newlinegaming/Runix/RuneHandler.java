@@ -46,10 +46,10 @@ public class RuneHandler
     {
     	boolean result = false;
     	for( int i = 0; i < runeRegistry.size(); i ++){
-    		result = checkRunePattern(CompassRune.blockPattern, world, worldX, worldY, worldZ);//TODO: Fetching from the ArrayList is giving me trouble.  
+    		result = checkRunePattern(runeRegistry.get(i).blockPattern, world, worldX, worldY, worldZ);//TODO: Fetching from the ArrayList is giving me trouble.  
     		//((AbstractRune)runeRegistry.get(i))
     		if( result ){
-//    			aetherSay("Recognized" + runeRegistry.get(i).getClass().getName());
+    			aetherSay("Recognized" + runeRegistry.get(i).getClass().getName());
     			return true;  //Josiah: I know this is redundant, it will eventually return an AbstractRune object
     		}
     	}
