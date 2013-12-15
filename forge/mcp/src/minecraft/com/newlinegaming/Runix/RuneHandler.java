@@ -42,7 +42,7 @@ public class RuneHandler
         AbstractRune createdRune = checkForAnyRunePattern(player.worldObj, worldX, worldY, worldZ);
         if(createdRune != null){
 			aetherSay("Recognized" + createdRune.getClass().getName());
-//			createdRune.execute(player, worldX, worldY, worldZ);
+			createdRune.execute(player, worldX, worldY, worldZ);
         }
     }
 
@@ -73,7 +73,7 @@ public class RuneHandler
 					int blockY = worldY - y; //Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
 					int blockZ = worldZ - blockPattern[y].length /2 + z;
 					 if (world.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x]) {
-						 aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
+//						 aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
 						 return false;
 					 }
                 }

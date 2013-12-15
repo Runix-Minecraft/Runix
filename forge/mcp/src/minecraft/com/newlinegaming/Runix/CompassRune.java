@@ -12,6 +12,10 @@ public class CompassRune extends AbstractRune{
 	}
 
 	public void execute(EntityPlayer player, int x, int y, int z){
-//		par1World.setBlock(alterX + par2, alterY + par3, alterZ + par4, Block.sandStone.blockID);
+		int[][][] compassOutcome = new int [][][]
+				{{{0,4,0},
+				  {4,0,4},
+				  {4,0,4}}};
+		stampBlockTemplate(compassOutcome, player, x, y, z);
 	}
 }
