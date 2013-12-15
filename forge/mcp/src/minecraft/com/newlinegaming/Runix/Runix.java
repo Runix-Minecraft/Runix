@@ -33,11 +33,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	public static CommonProxy proxy;
 	
 	//Creative Tab Names
-	
 	public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
-	
-	//Creative Tab Placeholder
-
 	public static Item RunixPlaceHolder = new RunixPlaceHolder(2000).setUnlocalizedName("RunixPlaceHolder");
 	public static Object instance;
 
@@ -48,21 +44,13 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	}
 	
 	//Registry's
-	
-	public Runix() {
-	
-	//Language Registry
-
-	LanguageRegistry.addName(RunixPlaceHolder, "Runix");
-	
-	//Block Registry
-	
-//	GameRegistry.registerBlock(Compass, "CompassBlock");
-	
-	//Event Registry
-	
-	MinecraftForge.EVENT_BUS.register(new Compass());
-	
+	public Runix() 
+	{	
+		//Language Registry
+		LanguageRegistry.addName(RunixPlaceHolder, "Runix");
+			
+		MinecraftForge.EVENT_BUS.register(new Compass());	//Event Registry
+		
 	
 	}
 }
