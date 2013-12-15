@@ -7,29 +7,44 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 
-public class Compass extends Block //extend Rune
+public class Compass// extends Block //extend Rune
 {
-    public Compass(int id, Material material) {
-		super(id, material);
-		this.setCreativeTab(Runix.TabRunix);
-	}
+//    public Compass(int id, Material material) {
+//		super(id, material);
+//		this.setCreativeTab(Runix.TabRunix);
+//	}
 
 	int[][][] blockPattern = new int [][][] 
             {{{4,0,4},
               {0,4,0},
               {4,0,4}}};
 
-    /**
+	@ForgeSubscribe
+	public void playerInteractEvent(PlayerInteractEvent event)
+	{
+//		MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat("Someone touched Something!", true));
+//		Runix.proxy.printMessageToPlayer("Someone touched Something!");
+		aetherSay("Someone touched Something!");
+		possibleRuneActivation(event.entity.worldObj, event.x, event.y, event.z);
+	}
+	
+    public void aetherSay(String msg) {
+    	Minecraft.getMinecraft().thePlayer.addChatMessage(msg);
+	}
+
+	/**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    @Override
-    public void onBlockAdded(World world, int worldX, int worldY, int worldZ) { //TODO: world should be type World
+//    @Override
+    public void possibleRuneActivation(World world, int worldX, int worldY, int worldZ) { //TODO: world should be type World
         boolean createdRune = checkForAnyRunePattern(world, worldX, worldY, worldZ);
-        MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat("Block Added", false));
         if(createdRune)
-        	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat("Rune Created", false));
+        	aetherSay("Rune Created");
     }
 
     private boolean checkForAnyRunePattern(World world, int worldX, int worldY, int worldZ)
@@ -44,6 +59,6 @@ public class Compass extends Block //extend Rune
                 }
             }
         }
-        return true;
+        return false;//TODO: return true once non-empty checking is done
     }
 }

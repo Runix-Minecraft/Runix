@@ -8,7 +8,12 @@ import com.newlinegaming.Runix.placeholder.RunixPlaceHolder;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.SidedProxy;
@@ -37,18 +42,18 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	public static Item RunixPlaceHolder = new RunixPlaceHolder(2000).setUnlocalizedName("RunixPlaceHolder");
 	public static Object instance;
 
-	//Render Information
-	
+	//Render Information	
 	@Init
 	public void load(FMLInitializationEvent event) {
 		proxy.registerRenderInformation();
-}
-
+	}
+	
 	public Runix() {
 	
 	//Language Registry
 
 	LanguageRegistry.addName(RunixPlaceHolder, "Runix");
+	MinecraftForge.EVENT_BUS.register(new Compass());
 	
 	
 	}
