@@ -19,6 +19,7 @@ public class RuneHandler
 	public RuneHandler(){
 		runeRegistry.add(new FaithRune());
 		runeRegistry.add(new CompassRune());
+		runeRegistry.add(new TeleporterRune());
 	}
 	
 	

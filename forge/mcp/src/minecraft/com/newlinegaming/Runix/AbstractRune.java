@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 /** This class contains the basic functions that Runes will use to execute their functions.  Any reusable code or concepts should go in
@@ -10,10 +11,11 @@ import net.minecraft.world.World;
 public abstract class AbstractRune {
 	
 	public int[][][] blockPattern;  //Josiah: this pattern should never actually be used
+	enum Direction {UP, DOWN, NORTH, EAST, SOUTH, WEST};
 	
 	public AbstractRune(){}
 	
-	public abstract void execute(EntityPlayer player, int x, int y, int z);//I'm passing the player instead of World so that Runes can later affect the Player
+	public abstract void execute(EntityPlayer player, int worldX, int worldY, int worldZ);//I'm passing the player instead of World so that Runes can later affect the Player
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
@@ -42,5 +44,26 @@ public abstract class AbstractRune {
             }
 		}
 		return true;//TODO: build permission checking
+	}
+	
+	
+	protected void safelyMovePlayer(EntityPlayer player, ChunkCoordinates coords) {
+		safelyMovePlayer(player, coords, Direction.UP);
+	}
+	
+	/**This method should be used for any teleport or similar move that may land the player in some blocks.
+	 * 
+	 * @param player
+	 * @param coords Target destination
+	 * @param direction to move in if they encounter blocks
+	 */
+	protected void safelyMovePlayer(EntityPlayer player, ChunkCoordinates coords, Direction direction) {
+//		coords.posY = player.worldObj.getFirstUncoveredBlock(coords.posX, coords.posZ);
+		while( (player.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
+				|| player.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
+			coords.posY += 1; 
+		
+		player.setPosition(coords.posX, coords.posY+2, coords.posZ);
+		//TODO: check for Lava, fire, and void
 	}
 }

@@ -34,7 +34,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	
 	//Creative Tab Names
 	public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
-	public static Item RunixPlaceHolder = new RunixPlaceHolder(2000).setUnlocalizedName("RunixPlaceHolder");
+	public static Item RunixPlaceHolder = new RunixPlaceHolder(2000).setUnlocalizedName("RunixPlaceHolder");//Josiah: init says you're overriding 2256 with this
 	public static Object instance;
 
 	//Render Information	
