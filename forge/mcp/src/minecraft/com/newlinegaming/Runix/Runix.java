@@ -35,7 +35,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	//Creative Tab Names
 	
 	public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
-//	GameRegistry.registerBlock(Compass, "CompassBlock");
 	
 	//Creative Tab Placeholder
 
@@ -48,11 +47,20 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 		proxy.registerRenderInformation();
 	}
 	
+	//Registry's
+	
 	public Runix() {
 	
 	//Language Registry
 
 	LanguageRegistry.addName(RunixPlaceHolder, "Runix");
+	
+	//Block Registry
+	
+//	GameRegistry.registerBlock(Compass, "CompassBlock");
+	
+	//Event Registry
+	
 	MinecraftForge.EVENT_BUS.register(new Compass());
 	
 	
