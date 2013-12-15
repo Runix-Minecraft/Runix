@@ -16,7 +16,14 @@ public abstract class AbstractRune {
 
 	public abstract int[][][] blockPattern();
 	
-	public abstract void execute(EntityPlayer player, int worldX, int worldY, int worldZ);//I'm passing the player instead of World so that Runes can later affect the Player
+	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
+	 * information for future use.  
+	 * @param player We pass the player instead of World so that Runes can later affect the Player
+	 * @param worldX
+	 * @param worldY
+	 * @param worldZ
+	 */
+	public abstract void execute(EntityPlayer player, int worldX, int worldY, int worldZ);//
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
