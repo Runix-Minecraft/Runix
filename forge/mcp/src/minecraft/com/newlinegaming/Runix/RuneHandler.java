@@ -16,7 +16,7 @@ public class RuneHandler
 	private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();//Josiah: I'm not sure ArrayList is the best, since we'll only have Runes
 	
 	public RuneHandler(){
-		runeRegistry.add(new HoleRune());//Josiah: This is just a test Rune pattern
+		runeRegistry.add(new FaithRune());
 		runeRegistry.add(new CompassRune());
 	}
 	
@@ -46,8 +46,12 @@ public class RuneHandler
     {
     	boolean result = false;
     	for( int i = 0; i < runeRegistry.size(); i ++){
-    		result = checkRunePattern(runeRegistry.get(i).blockPattern, world, worldX, worldY, worldZ);//TODO: Fetching from the ArrayList is giving me trouble.  
-    		//((AbstractRune)runeRegistry.get(i))
+    		int[][][] blockPattern = runeRegistry.get(i).blockPattern;
+    		if(blockPattern == null){
+    			System.err.println(runeRegistry.get(i).getClass().getName() + " failed to set a blockPattern in their constructor.");
+    			continue;
+    		}
+    		result = checkRunePattern(blockPattern, world, worldX, worldY, worldZ);  
     		if( result ){
     			aetherSay("Recognized" + runeRegistry.get(i).getClass().getName());
     			return true;  //Josiah: I know this is redundant, it will eventually return an AbstractRune object
@@ -62,16 +66,15 @@ public class RuneHandler
 				for (int x = 0; x < blockPattern[y][z].length; x++) {
                     //World coordinates + relative offset + half the size of the rune (for middle)
 					int blockX = worldX - blockPattern[y][z].length /2 + x;
-					int blockY = worldY - blockPattern.length / 2 + y;
+					int blockY = worldY - y; //Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
 					int blockZ = worldZ - blockPattern[y].length /2 + z;
 					 if (world.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x]) {
-						 aetherSay("Found" + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
+						 aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
 						 return false;
 					 }
                 }
             }
         }
-        return true;//TODO: check for non-empty rune 
-		
+        return true;
 	}
 }
