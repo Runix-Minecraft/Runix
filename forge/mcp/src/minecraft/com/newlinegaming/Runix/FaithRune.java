@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class FaithRune extends AbstractRune{
 
-	public FaithRune(){
-		this.blockPattern = new int [][][] 
+	public int[][][] blockPattern(){
+		return new int [][][] 
            {{{0,0,0},
              {0,4,0},
              {0,0,0}},

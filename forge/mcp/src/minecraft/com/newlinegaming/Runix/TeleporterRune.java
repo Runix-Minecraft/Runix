@@ -6,8 +6,8 @@ import net.minecraft.world.World;
 
 public class TeleporterRune extends AbstractRune {
 
-	public TeleporterRune(){
-		blockPattern = new int[][][]
+	public int[][][] blockPattern(){
+		return new int[][][]
 				{{{0,4,0,4,0},
 				  {4,4,4,4,4},
 				  {0,4,3,4,0},

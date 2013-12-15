@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class CompassRune extends AbstractRune{
 
-	public CompassRune(){
-		this.blockPattern = new int [][][] 
+	public int[][][] blockPattern(){
+		return new int [][][] 
             {{{4,0,4},
               {0,4,0},
               {4,0,4}}};
@@ -18,4 +18,5 @@ public class CompassRune extends AbstractRune{
 				  {4,0,4}}};
 		stampBlockTemplate(compassOutcome, player, x, y, z);
 	}
+
 }

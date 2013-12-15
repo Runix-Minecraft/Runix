@@ -51,7 +51,7 @@ public class RuneHandler
     {
     	boolean result = false;
     	for( int i = 0; i < runeRegistry.size(); i ++){
-    		int[][][] blockPattern = runeRegistry.get(i).blockPattern;
+    		int[][][] blockPattern = runeRegistry.get(i).blockPattern();
     		if(blockPattern == null){
     			System.err.println(runeRegistry.get(i).getClass().getName() + " failed to set a blockPattern in their constructor.");
     			continue;
