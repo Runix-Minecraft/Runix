@@ -26,7 +26,8 @@ public class RuneHandler {
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.action == Action.RIGHT_CLICK_BLOCK)
-            possibleRuneActivationEvent(event.entityPlayer, event.x, event.y, event.z);
+            possibleRuneActivationEvent(event.entityPlayer, 
+                    new WorldCoordinates(event.entityPlayer.worldObj, event.x, event.y, event.z));
     }
 
     public void aetherSay(String msg) {
@@ -40,17 +41,17 @@ public class RuneHandler {
     }
 
     /**Detects a rune pattern, executes it, and stores persistent runes.*/
-    public void possibleRuneActivationEvent(EntityPlayer player, int worldX, int worldY, int worldZ) {
-        AbstractRune createdRune = checkForAnyRunePattern(player.worldObj, worldX, worldY, worldZ);
+    public void possibleRuneActivationEvent(EntityPlayer player, WorldCoordinates coords) {
+        AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
-            aetherSay("Recognized" + createdRune.getClass().getName()+ " activated by" + player.username + " at " + worldX +"," + worldZ );
-            createdRune.execute(player, worldX, worldY, worldZ);//if isPersistent, this will add itself to activeRunes or waypoints
+            aetherSay("Recognized" + createdRune.getClass().getName()+ " activated by" + player.username + " at " + coords.posX +"," + coords.posZ );
+            createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }
 
 
 
-    private AbstractRune checkForAnyRunePattern(World world, int worldX, int worldY, int worldZ) {
+    private AbstractRune checkForAnyRunePattern(WorldCoordinates coords) {
         boolean result = false;
         for (int i = 0; i < runeRegistry.size(); i++) {
             int[][][] blockPattern = runeRegistry.get(i).blockPattern();
@@ -58,7 +59,7 @@ public class RuneHandler {
                 System.err.println(runeRegistry.get(i).getClass().getName() + " failed to set a blockPattern in their constructor.");
                 continue;
             }
-            result = checkRunePattern(blockPattern, world, worldX, worldY, worldZ);
+            result = checkRunePattern(blockPattern, coords);
             if (result) {
                 return runeRegistry.get(i);
             }
@@ -66,15 +67,15 @@ public class RuneHandler {
         return null;
     }
 
-    private boolean checkRunePattern(int[][][] blockPattern, World world, int worldX, int worldY, int worldZ) {
+    private boolean checkRunePattern(int[][][] blockPattern, WorldCoordinates coords) {
         for (int y = 0; y < blockPattern.length; y++) {
             for (int z = 0; z < blockPattern[y].length; z++) {
                 for (int x = 0; x < blockPattern[y][z].length; x++) {
                     // World coordinates + relative offset + half the size of the rune (for middle)
-                    int blockX = worldX - blockPattern[y][z].length / 2 + x;
-                    int blockY = worldY - y; // Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
-                    int blockZ = worldZ - blockPattern[y].length / 2 + z;
-                    if (world.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x])
+                    int blockX = coords.posX - blockPattern[y][z].length / 2 + x;
+                    int blockY = coords.posY - y; // Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
+                    int blockZ = coords.posZ - blockPattern[y].length / 2 + z;
+                    if (coords.worldObj.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x])
                         return false;
                         // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
                 }

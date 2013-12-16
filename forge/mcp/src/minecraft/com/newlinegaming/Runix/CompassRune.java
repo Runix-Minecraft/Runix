@@ -11,12 +11,12 @@ public class CompassRune extends AbstractRune{
               {4,0,4}}};
 	}
 
-	public void execute(EntityPlayer player, int x, int y, int z){
+	public void execute(EntityPlayer player, WorldCoordinates coords){
 		int[][][] compassOutcome = new int [][][]
 				{{{0,4,0},
 				  {4,0,4},
 				  {4,0,4}}};
-		stampBlockTemplate(compassOutcome, player, x, y, z);
+		stampBlockTemplate(compassOutcome, player, coords);
 	}
 
 }

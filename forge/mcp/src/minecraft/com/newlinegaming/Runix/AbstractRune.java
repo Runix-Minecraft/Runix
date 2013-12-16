@@ -27,10 +27,9 @@ public abstract class AbstractRune {
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
 	 * a (possibly static) class variable.
 	 * @param player We pass the player instead of World so that Runes can later affect the Player
-	 * @param worldX
-	 * @param worldY
-	 * @param worldZ*/
-	public abstract void execute(EntityPlayer player, int worldX, int worldY, int worldZ);//
+	 * @param coords World and xyz that Rune was activated in.
+	 */
+	public abstract void execute(EntityPlayer player, WorldCoordinates coords);//
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
@@ -40,8 +39,9 @@ public abstract class AbstractRune {
 	 * @param worldX
 	 * @param worldY
 	 * @param worldZ
-	 * @return Returns false if the operation was blocked by build protection.  Currently always true.*/
-	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, int worldX, int worldY, int worldZ)
+	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
+	 */
+	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, WorldCoordinates coords)
 	{
 		World world = player.worldObj;
 		//TODO: Josiah: this loop is lifted from RuneHandler.checkRunePattern.  Abstract this into a shape iterator
@@ -49,9 +49,9 @@ public abstract class AbstractRune {
 			for (int z = 0; z < template[y].length; z++) {
 				for (int x = 0; x < template[y][z].length; x++) {
                     //World coordinates + relative offset + half the size of the rune (for middle)
-					int blockX = worldX - template[y][z].length /2 + x;
-					int blockY = worldY - y; //Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
-					int blockZ = worldZ - template[y].length /2 + z;
+					int blockX = coords.posX - template[y][z].length /2 + x;
+					int blockY = coords.posY - y; //Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
+					int blockZ = coords.posZ - template[y].length /2 + z;
 
 					world.setBlock(blockX, blockY, blockZ, template[y][z][x]);
                 }
@@ -61,7 +61,7 @@ public abstract class AbstractRune {
 	}
 	
 	
-	protected void safelyMovePlayer(EntityPlayer player, ChunkCoordinates coords) {
+	protected void safelyMovePlayer(EntityPlayer player, WorldCoordinates coords) {
 		safelyMovePlayer(player, coords, Direction.UP);
 	}
 	
@@ -70,9 +70,9 @@ public abstract class AbstractRune {
 	 * @param coords Target destination
 	 * @param direction to move in if they encounter blocks
 	 */
-	protected void safelyMovePlayer(EntityPlayer player, ChunkCoordinates coords, Direction direction) {
-		while( (player.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
-				|| player.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
+	protected void safelyMovePlayer(EntityPlayer player, WorldCoordinates coords, Direction direction) {
+		while( (coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
+				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
 		
 		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
