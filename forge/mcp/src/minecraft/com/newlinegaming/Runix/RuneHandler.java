@@ -43,7 +43,7 @@ public class RuneHandler {
     public void possibleRuneActivationEvent(EntityPlayer player, int worldX, int worldY, int worldZ) {
         AbstractRune createdRune = checkForAnyRunePattern(player.worldObj, worldX, worldY, worldZ);
         if (createdRune != null) {
-            aetherSay("Recognized" + createdRune.getClass().getName());
+            aetherSay("Recognized" + createdRune.getClass().getName()+ " activated by" + player.username + " at " + worldX +"," + worldZ );
             createdRune.execute(this, player, worldX, worldY, worldZ);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }
