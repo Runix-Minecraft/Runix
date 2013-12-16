@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RuneHandler {
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-    public ArrayList<WaypointRune> waypoints = new ArrayList<WaypointRune>();
+
     public ArrayList<AbstractRune> activeRunes = new ArrayList<AbstractRune>();
 
     public RuneHandler() {
@@ -48,14 +48,7 @@ public class RuneHandler {
         }
     }
 
-    /** This method exists to ensure that no duplicate waypoints are persisted. */
-    public void addWaypoint(WaypointRune wp) {
-        for(WaypointRune oldWP : waypoints){
-            if( oldWP.x == wp.x && oldWP.y == wp.y && oldWP.z == wp.z )
-                return; //ensure there are no duplicates
-        }
-        waypoints.add(wp);
-    }
+
 
     private AbstractRune checkForAnyRunePattern(World world, int worldX, int worldY, int worldZ) {
         boolean result = false;

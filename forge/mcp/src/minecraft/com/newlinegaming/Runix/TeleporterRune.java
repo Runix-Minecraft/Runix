@@ -23,10 +23,10 @@ public class TeleporterRune extends AbstractRune {
 	 */
 	public void execute(RuneHandler handler, EntityPlayer player, int worldX, int worldY, int worldZ) {
 	    ChunkCoordinates coords;
-		if( handler.waypoints.isEmpty())
+		if( WaypointRune.waypoints.isEmpty())
 		    coords = player.worldObj.getSpawnPoint();
 		else{
-    	    WaypointRune wp = handler.waypoints.get(handler.waypoints.size()-1);// most recent
+    	    WaypointRune wp = WaypointRune.waypoints.get(WaypointRune.waypoints.size()-1);// most recent
     	    coords = new ChunkCoordinates(wp.x, wp.y, wp.z);
 		}
 		safelyMovePlayer(player, coords);
