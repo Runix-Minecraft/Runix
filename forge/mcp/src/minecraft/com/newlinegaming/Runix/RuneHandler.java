@@ -30,9 +30,7 @@ public class RuneHandler {
     }
 
     public void aetherSay(String msg) {
-        // Runix.proxy.printMessageToPlayer("Someone touched Something!");
-        /**
-         * TODO: The double messages can be fixed by using a proper Proxy
+        /** TODO: The double messages can be fixed by using a proper Proxy
          * (client side only, I think) See:
          * https://github.com/denoflionsx/GateCopy
          * /blob/master/src/denoflionsx/GateCopy/Proxy/ProxyClient.java
@@ -46,26 +44,14 @@ public class RuneHandler {
         AbstractRune createdRune = checkForAnyRunePattern(player.worldObj, worldX, worldY, worldZ);
         if (createdRune != null) {
             aetherSay("Recognized" + createdRune.getClass().getName());
-            if (createdRune.isPersistent()) {
-                try {
-                    createdRune = createdRune.getClass().newInstance();
-                    if(createdRune instanceof WaypointRune)
-                        addWaypoint((WaypointRune) createdRune, worldX, worldY, worldZ);
-                    else
-                        activeRunes.add(createdRune);
-                    aetherSay(createdRune.getClass().getName() + " added to persistence list");
-                } catch (Exception e) {
-                    System.err.println("Could not access default constructors for " + createdRune.getClass().getName());
-                }
-            }
-            createdRune.execute(this, player, worldX, worldY, worldZ);//if isPersistent, this will be a different instance from runeRegistry
+            createdRune.execute(this, player, worldX, worldY, worldZ);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }
 
     /** This method exists to ensure that no duplicate waypoints are persisted. */
-    public void addWaypoint(WaypointRune wp, int worldX, int worldY, int worldZ) {
+    public void addWaypoint(WaypointRune wp) {
         for(WaypointRune oldWP : waypoints){
-            if( oldWP.x == worldX && oldWP.y == worldY && oldWP.z == worldZ )
+            if( oldWP.x == wp.x && oldWP.y == wp.y && oldWP.z == wp.z )
                 return; //ensure there are no duplicates
         }
         waypoints.add(wp);
@@ -81,9 +67,7 @@ public class RuneHandler {
             }
             result = checkRunePattern(blockPattern, world, worldX, worldY, worldZ);
             if (result) {
-                return runeRegistry.get(i); // Josiah: I know this is redundant,
-                                            // it will eventually return an
-                                            // AbstractRune object
+                return runeRegistry.get(i);
             }
         }
         return null;
@@ -93,18 +77,13 @@ public class RuneHandler {
         for (int y = 0; y < blockPattern.length; y++) {
             for (int z = 0; z < blockPattern[y].length; z++) {
                 for (int x = 0; x < blockPattern[y][z].length; x++) {
-                    // World coordinates + relative offset + half the size of
-                    // the rune (for middle)
+                    // World coordinates + relative offset + half the size of the rune (for middle)
                     int blockX = worldX - blockPattern[y][z].length / 2 + x;
-                    int blockY = worldY - y; // Josiah: the activation and
-                                             // "center" block for 3D runes is
-                                             // the top layer, at the moment
+                    int blockY = worldY - y; // Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
                     int blockZ = worldZ - blockPattern[y].length / 2 + z;
-                    if (world.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x]) {
-                        // aetherSay("Found " + world.getBlockId(blockX, blockY,
-                        // blockZ) + " expected " + blockPattern[y][z][x]);
+                    if (world.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x])
                         return false;
-                    }
+                        // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
                 }
             }
         }
