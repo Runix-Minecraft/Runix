@@ -11,7 +11,7 @@ public class CompassRune extends AbstractRune{
               {4,0,4}}};
 	}
 
-	public void execute(RuneHandler handler, EntityPlayer player, int x, int y, int z){
+	public void execute(EntityPlayer player, int x, int y, int z){
 		int[][][] compassOutcome = new int [][][]
 				{{{0,4,0},
 				  {4,0,4},

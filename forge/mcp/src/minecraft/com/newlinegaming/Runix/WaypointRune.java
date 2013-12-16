@@ -28,10 +28,10 @@ public class WaypointRune extends AbstractRune {
     }
 
     @Override
-    public void execute(RuneHandler handler, EntityPlayer player, int worldX, int worldY, int worldZ) {
+    public void execute(EntityPlayer player, int worldX, int worldY, int worldZ) {
         WaypointRune persistentCopy = new WaypointRune(worldX, worldY, worldZ);
         addWaypoint((WaypointRune) persistentCopy);
-        handler.aetherSay("Waypoint added to persistence list");
+        //handler.aetherSay("Waypoint added to persistence list");
     }    
     /** This method exists to ensure that no duplicate waypoints are persisted. */
     public void addWaypoint(WaypointRune wp) {

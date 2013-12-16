@@ -14,6 +14,6 @@ public class FaithRune extends AbstractRune{
              {4,0,4}}};
 	}
 
-	public void execute(RuneHandler handler, EntityPlayer player, int x, int y, int z){}
+	public void execute(EntityPlayer player, int x, int y, int z){}
 
 }
