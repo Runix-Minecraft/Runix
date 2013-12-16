@@ -12,6 +12,13 @@ public abstract class AbstractRune {
 	
 	enum Direction {UP, DOWN, NORTH, EAST, SOUTH, WEST};// vectors[(int)Direction.UP] = new int[]{0,1,0};
 	
+	//Josiah: I'd be happy to find a more compact way to right this,
+	//but enum requires .value to be used as an int, which we need.
+	public static final int TIR = -1; //Tier
+    public static final int SIG = -2; //Signature block
+    public static final int NON = -3; //Non-Tier, Tier 0
+    //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
+	
 	public AbstractRune(){}
 
 	public abstract int[][][] blockPattern();
@@ -22,8 +29,7 @@ public abstract class AbstractRune {
 	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 * @param worldX
 	 * @param worldY
-	 * @param worldZ
-	 */
+	 * @param worldZ*/
 	public abstract void execute(RuneHandler handler, EntityPlayer player, int worldX, int worldY, int worldZ);//
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
@@ -34,8 +40,7 @@ public abstract class AbstractRune {
 	 * @param worldX
 	 * @param worldY
 	 * @param worldZ
-	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
-	 */
+	 * @return Returns false if the operation was blocked by build protection.  Currently always true.*/
 	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, int worldX, int worldY, int worldZ)
 	{
 		World world = player.worldObj;
@@ -70,11 +75,7 @@ public abstract class AbstractRune {
 				|| player.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
 		
-		player.setPosition(coords.posX, coords.posY+2, coords.posZ);//Josiah: This is Y+2 because of testing...
+		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		//TODO: check for Lava, fire, and void
-	}
-
-	public boolean isPersistent() {
-		return false;
 	}
 }

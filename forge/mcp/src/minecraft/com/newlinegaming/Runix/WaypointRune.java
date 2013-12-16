@@ -30,13 +30,6 @@ public class WaypointRune extends AbstractRune {
         WaypointRune persistentCopy = new WaypointRune(worldX, worldY, worldZ);
         handler.addWaypoint((WaypointRune) persistentCopy);
         handler.aetherSay("Waypoint added to persistence list");
-    }
-
-    @Override
-    public boolean isPersistent() {
-        return true;
-    }
-    
-    
+    }    
 
 }
