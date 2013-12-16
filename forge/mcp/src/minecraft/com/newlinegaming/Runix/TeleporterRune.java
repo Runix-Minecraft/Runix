@@ -21,12 +21,15 @@ public class TeleporterRune extends AbstractRune {
 	/**This method moves the player to spawn.
 	 * WorldXYZ are not used.
 	 */
-	public void execute(EntityPlayer player, int worldX, int worldY, int worldZ) {
-		ChunkCoordinates coords = player.worldObj.getSpawnPoint();
-//	    ArrayList<WaypointRune> WPs = RuneHandler.fetchWaypoints()
-//	    ChunkCoordinates coords = 
+	public void execute(RuneHandler handler, EntityPlayer player, int worldX, int worldY, int worldZ) {
+	    ChunkCoordinates coords;
+		if( handler.waypoints.isEmpty())
+		    coords = player.worldObj.getSpawnPoint();
+		else{
+    	    WaypointRune wp = handler.waypoints.get(handler.waypoints.size()-1);// most recent
+    	    coords = new ChunkCoordinates(wp.x, wp.y, wp.z);
+		}
 		safelyMovePlayer(player, coords);
-
 	}
 
 

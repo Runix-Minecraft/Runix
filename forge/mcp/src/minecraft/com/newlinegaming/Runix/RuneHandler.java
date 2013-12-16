@@ -13,8 +13,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RuneHandler {
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-    protected ArrayList<WaypointRune> waypoints = new ArrayList<WaypointRune>();
-    protected ArrayList<AbstractRune> activeRunes = new ArrayList<AbstractRune>();
+    public ArrayList<WaypointRune> waypoints = new ArrayList<WaypointRune>();
+    public ArrayList<AbstractRune> activeRunes = new ArrayList<AbstractRune>();
 
     public RuneHandler() {
         runeRegistry.add(new WaypointRune());
@@ -50,7 +50,7 @@ public class RuneHandler {
                 try {
                     createdRune = createdRune.getClass().newInstance();
                     if(createdRune instanceof WaypointRune)
-                        addWaypoint((WaypointRune) createdRune);
+                        addWaypoint((WaypointRune) createdRune, worldX, worldY, worldZ);
                     else
                         activeRunes.add(createdRune);
                     aetherSay(createdRune.getClass().getName() + " added to persistence list");
@@ -58,21 +58,17 @@ public class RuneHandler {
                     System.err.println("Could not access default constructors for " + createdRune.getClass().getName());
                 }
             }
-            createdRune.execute(player, worldX, worldY, worldZ);//if isPersistent, this will be a different instance from runeRegistry
+            createdRune.execute(this, player, worldX, worldY, worldZ);//if isPersistent, this will be a different instance from runeRegistry
         }
     }
 
     /** This method exists to ensure that no duplicate waypoints are persisted. */
-    private void addWaypoint(WaypointRune wp) {
+    public void addWaypoint(WaypointRune wp, int worldX, int worldY, int worldZ) {
         for(WaypointRune oldWP : waypoints){
-            if( oldWP.x == wp.x && oldWP.y == wp.y && oldWP.z==wp.z )
+            if( oldWP.x == worldX && oldWP.y == worldY && oldWP.z == worldZ )
                 return; //ensure there are no duplicates
         }
         waypoints.add(wp);
-    }
-    
-    public ArrayList<WaypointRune> fetchWaypoints(){
-        return new ArrayList<WaypointRune>(waypoints);
     }
 
     private AbstractRune checkForAnyRunePattern(World world, int worldX, int worldY, int worldZ) {

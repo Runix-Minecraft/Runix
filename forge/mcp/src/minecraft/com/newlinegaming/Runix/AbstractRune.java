@@ -18,17 +18,18 @@ public abstract class AbstractRune {
 	
 	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
 	 * information for future use.  
+	 * @param handler This is for accessing all the world persistence information.
 	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 * @param worldX
 	 * @param worldY
 	 * @param worldZ
 	 */
-	public abstract void execute(EntityPlayer player, int worldX, int worldY, int worldZ);//
+	public abstract void execute(RuneHandler handler, EntityPlayer player, int worldX, int worldY, int worldZ);//
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
 	 * calls for 0 (AIR).
-	 * @param template
+	 * @param template The blockPattern to be stamped.
 	 * @param player used to check for build permissions.  Player also provides worldObj.
 	 * @param worldX
 	 * @param worldY
