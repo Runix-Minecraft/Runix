@@ -22,12 +22,11 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
-	//Client and Server
+//Client and Server
+@Mod(modid = "Runix", name = "Runix", version = "0.1 Alpha")
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 
-	@Mod(modid = "Runix", name = "Runix", version = "0.1 Alpha")
-	@NetworkMod(clientSideRequired = true, serverSideRequired = false)
-
-	public class Runix {
+public class Runix {
 	
 	@SidedProxy(clientSide = "com.newlinegaming.Runix.ClientProxy", serverSide = "com.newlinegaming.Runix.CommonProxy")
 	public static CommonProxy proxy;
@@ -47,13 +46,9 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 	public Runix() 
 	{	
 		//Language Registry
-		
 		LanguageRegistry.addName(RunixPlaceHolder, "Runix");
 			
 		//Event Registry
-		
 		MinecraftForge.EVENT_BUS.register(new RuneHandler());
-		
-	
 	}
 }

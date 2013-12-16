@@ -24,7 +24,8 @@ public abstract class AbstractRune {
 	public abstract int[][][] blockPattern();
 	
 	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
-	 * information for future use.  
+	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
+	 * a (possibly static) class variable.
 	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 * @param worldX
 	 * @param worldY
