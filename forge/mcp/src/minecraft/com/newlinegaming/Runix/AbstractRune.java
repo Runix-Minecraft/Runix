@@ -79,4 +79,6 @@ public abstract class AbstractRune {
 		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		//TODO: check for Lava, fire, and void
 	}
+	
+	
 }

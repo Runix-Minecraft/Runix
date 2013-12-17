@@ -14,11 +14,12 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RuneHandler {
+    public TiersVanilla tiers;
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-
     public ArrayList<AbstractRune> activeRunes = new ArrayList<AbstractRune>();
 
-    public RuneHandler() {
+    public RuneHandler() {      
+        tiers = new TiersVanilla(); //load the list of block tiers
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
@@ -67,7 +68,12 @@ public class RuneHandler {
                     int blockX = coords.posX - blockPattern[y][z].length / 2 + x;
                     int blockY = coords.posY - y; // Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
                     int blockZ = coords.posZ - blockPattern[y].length / 2 + z;
-                    if (coords.worldObj.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x])
+                    int blockID = coords.worldObj.getBlockId(blockX, blockY, blockZ);
+                    if( blockPattern[y][z][x] == AbstractRune.NONE ){
+                        if( !tiers.isTier0(blockID) )
+                            return false;
+                    }
+                    else if (blockID != blockPattern[y][z][x])
                         return false;
                         // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
                 }
