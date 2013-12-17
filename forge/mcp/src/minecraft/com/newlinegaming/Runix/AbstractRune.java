@@ -85,8 +85,8 @@ public abstract class AbstractRune {
 	 * @param direction to move in if they encounter blocks
 	 */
 	protected void safelyMovePlayer(EntityPlayer player, WorldCoordinates coords, Direction direction) {
-		while( (player.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
-				|| player.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
+        while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
+				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
 		
 		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...

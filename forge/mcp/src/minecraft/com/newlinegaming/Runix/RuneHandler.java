@@ -44,8 +44,6 @@ public class RuneHandler {
         }
     }
 
-
-
     private AbstractRune checkForAnyRunePattern(WorldCoordinates coords) {
         boolean result = false;
         for (int i = 0; i < runeRegistry.size(); i++) {
@@ -63,15 +61,15 @@ public class RuneHandler {
     }
 
     private boolean checkRunePattern(int[][][] blockPattern, WorldCoordinates coords) {
-    	int tierID = 0;
+        int tierID = 0;
         for (int y = 0; y < blockPattern.length; y++) {
             for (int z = 0; z < blockPattern[y].length; z++) {
                 for (int x = 0; x < blockPattern[y][z].length; x++) {
                     // World coordinates + relative offset + half the size of the rune (for middle)
-                    int blockX = coords.posX - blockPattern[y][z].length / 2 + x;
-                    int blockY = coords.posY - y; // Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
-                    int blockZ = coords.posZ - blockPattern[y].length / 2 + z;
-                    int blockID = coords.worldObj.getBlockId(blockX, blockY, blockZ);
+                    // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
+                    WorldCoordinates target = coords.offset(-blockPattern[y][z].length / 2 + x,  -y,  -blockPattern[y].length / 2 + z);
+                    int blockID = target.getBlockId();
+                    // Handle special Template Values
                     if( blockPattern[y][z][x] == AbstractRune.NONE ){
                         if( !tiers.isTier0(blockID) )
                             return false;
@@ -79,8 +77,6 @@ public class RuneHandler {
                     else if (blockID != blockPattern[y][z][x])
                         return false;
                         // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
-                    }
-                    // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
                 }
             }
         }

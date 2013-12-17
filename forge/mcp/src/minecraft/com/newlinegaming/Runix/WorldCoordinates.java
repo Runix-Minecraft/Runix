@@ -37,8 +37,13 @@ public class WorldCoordinates extends ChunkCoordinates {
             this.worldObj = defaultWorld();
     }
 
+    /**Creates a new WorldCoordinates based off of a previous one and a relative vector*/
+    public WorldCoordinates offset(int dX, int dY, int dZ){
+        return new WorldCoordinates(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ);
+    }
+    
     public World defaultWorld() {
-        return WorldProvider.getProviderForDimension(0).worldObj;
+        return WorldProvider.getProviderForDimension(0).worldObj;//TODO: Josiah: This is not working correctly atm
     }
 
     @Override
@@ -58,7 +63,18 @@ public class WorldCoordinates extends ChunkCoordinates {
             return false;
         }
     }
-    
-    
+
+    /**Simple wrapper method for getBlockID()*/
+    public int getBlockId(){
+        return this.worldObj.getBlockId(this.posX, this.posY, this.posZ);
+    }
+
+    /**Simple wrapper method for setBlockID()
+     * @param blockID
+     * @return true if successful
+     */
+    public boolean setBlockId(int blockID){
+        return this.worldObj.setBlock(posX, posY, posZ, blockID);
+    }
 
 }
