@@ -14,9 +14,10 @@ public abstract class AbstractRune {
 	
 	//Josiah: I'd be happy to find a more compact way to right this,
 	//but enum requires .value to be used as an int, which we need.
-	public static final int TIR = -1; //Tier
-    public static final int SIG = -2; //Signature block
-    public static final int NON = -3; //Non-Tier, Tier 0
+    public static final int TIER = -1; //Tier
+    public static final int SIGN = -2; //Signature block
+    public static final int NONE = -3; //Non-Tier, Tier 0
+    public static final int ENTY = -4; //Entity blocks with special data like heads, picture frames, ect... 
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
 	
 	public AbstractRune(){}
