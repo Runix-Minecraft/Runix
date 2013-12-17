@@ -4,6 +4,8 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -30,21 +32,11 @@ public class RuneHandler {
                     new WorldCoordinates(event.entityPlayer.worldObj, event.x, event.y, event.z));
     }
 
-    public void aetherSay(String msg) {
-        /** TODO: The double messages can be fixed by using a proper Proxy
-         * (client side only, I think) See:
-         * https://github.com/denoflionsx/GateCopy
-         * /blob/master/src/denoflionsx/GateCopy/Proxy/ProxyClient.java
-         * Runix.clientSide?
-         */
-        Minecraft.getMinecraft().thePlayer.addChatMessage(msg);
-    }
-
     /**Detects a rune pattern, executes it, and stores persistent runes.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldCoordinates coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
-            aetherSay("Recognized" + createdRune.getClass().getName()+ " activated by" + player.username + " at " + coords.posX +"," + coords.posZ );
+            Runix.proxy.aetherSay("Recognized " + createdRune.getClass().getName() + " activated by " + player.username + " at " + coords.posX + "," + coords.posY + "," + coords.posZ );
             createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }
