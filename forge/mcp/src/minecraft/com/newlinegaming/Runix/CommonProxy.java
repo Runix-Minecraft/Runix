@@ -8,10 +8,4 @@ public class CommonProxy {
     public void registerRenderInformation() {
 
     }
-    
-    public void aetherSay(String msg) {
-
-	
-    }
-
 }

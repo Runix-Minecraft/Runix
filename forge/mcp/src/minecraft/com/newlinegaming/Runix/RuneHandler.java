@@ -28,7 +28,7 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
-    	AbstractRune.message(event.entityPlayer, event.action.toString() + " event created by FORGE");
+    	AbstractRune.aetherSay(event.entityPlayer, event.action.toString() + " event created by FORGE");
         if (event.action == Action.RIGHT_CLICK_BLOCK)
             possibleRuneActivationEvent(event.entityPlayer, 
                     new WorldCoordinates(event.entityPlayer.worldObj, event.x, event.y, event.z));
@@ -39,7 +39,7 @@ public class RuneHandler {
     	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
-            Runix.proxy.aetherSay("Recognized " + createdRune.getRuneName() + " activated at " + coords.posX + "," + coords.posY + "," + coords.posZ );
+            createdRune.aetherSay(player, "Recognized " + createdRune.getRuneName() + " activated at " + coords.posX + "," + coords.posY + "," + coords.posZ );
             createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }

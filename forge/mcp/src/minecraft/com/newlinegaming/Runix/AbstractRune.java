@@ -97,9 +97,10 @@ public abstract class AbstractRune {
 	/** returns the unique name of the rune */
 	public abstract String getRuneName();
 	
-	public static void message(EntityPlayer player, String message)
+	public static void aetherSay(EntityPlayer player, String message)
 	{
-		player.sendChatToPlayer(ChatMessageComponent.createFromText(message));
+	    if(player.worldObj.isRemote)
+	        player.sendChatToPlayer(ChatMessageComponent.createFromText(message));
 	}
 	
 	/**Checks to see if there is a block match for the Rune blockPattern center at 

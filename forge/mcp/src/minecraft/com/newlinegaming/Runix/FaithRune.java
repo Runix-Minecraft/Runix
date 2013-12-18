@@ -50,9 +50,9 @@ public class FaithRune extends AbstractRune{
 	
 	public void floatIsland(EntityPlayer player,WorldCoordinates islandCentre)
 	{
-		message(player,EnumChatFormatting.GREEN+"Floating an island");
+		aetherSay(player,EnumChatFormatting.GREEN+"Floating an island");
 		List<WorldCoordinates> points = Util_SphericalFunctions.getSphere(islandCentre, 8);
-		message(player,EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
+		aetherSay(player,EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
 	}
 	
 
