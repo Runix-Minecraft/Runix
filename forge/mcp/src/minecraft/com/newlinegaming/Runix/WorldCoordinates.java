@@ -1,5 +1,6 @@
 package com.newlinegaming.Runix;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -74,6 +75,8 @@ public class WorldCoordinates extends ChunkCoordinates {
      * @return true if successful
      */
     public boolean setBlockId(int blockID){
+        if(getBlockId() == Block.bedrock.blockID)
+            return false; //TODO: make this more nuanced behavior
         return this.worldObj.setBlock(posX, posY, posZ, blockID);
     }
 
