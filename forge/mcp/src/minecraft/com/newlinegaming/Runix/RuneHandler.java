@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -38,7 +39,7 @@ public class RuneHandler {
     	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
-            createdRune.aetherSay(player, createdRune.getRuneName() + " activated at " + coords.posX + "," + coords.posY + "," + coords.posZ );
+            createdRune.aetherSay(player, "The aether sees you activating a " + EnumChatFormatting.GREEN + createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
             createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }

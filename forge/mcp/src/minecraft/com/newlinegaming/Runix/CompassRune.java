@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public class CompassRune extends AbstractRune{
 
@@ -12,6 +13,7 @@ public class CompassRune extends AbstractRune{
 	}
 
 	public void execute(EntityPlayer player, WorldCoordinates coords){
+	    aetherSay(player,EnumChatFormatting.GREEN+"Compass Accepted.");
 	    int ink = getTierInkBlock(coords);
 		int[][][] compassOutcome = new int [][][]
 				{{{ 0 ,ink, 0 }, //TODO: pass meta-data

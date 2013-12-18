@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class TeleporterRune extends AbstractRune {
@@ -22,6 +23,7 @@ public class TeleporterRune extends AbstractRune {
 	 * WorldXYZ are not used.
 	 */
 	public void execute(EntityPlayer player, WorldCoordinates coords) {
+	    aetherSay(player,EnumChatFormatting.GREEN+"Teleporter Accepted.");
 	    WorldCoordinates destination;
 		if( WaypointRune.waypoints.isEmpty()){
 		    destination = new WorldCoordinates(player.worldObj.getSpawnPoint());
