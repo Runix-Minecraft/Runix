@@ -28,7 +28,6 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
-    	AbstractRune.aetherSay(event.entityPlayer, event.action.toString() + " event created by FORGE");
         if (event.action == Action.RIGHT_CLICK_BLOCK)
             possibleRuneActivationEvent(event.entityPlayer, 
                     new WorldCoordinates(event.entityPlayer.worldObj, event.x, event.y, event.z));
