@@ -3,6 +3,7 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public class WaypointRune extends AbstractRune {
     public static ArrayList<WaypointRune> waypoints = new ArrayList<WaypointRune>();
@@ -27,6 +28,7 @@ public class WaypointRune extends AbstractRune {
 
     @Override
     public void execute(EntityPlayer player, WorldCoordinates coords) {
+	aetherSay(player,EnumChatFormatting.GREEN+"Waypoint Accepted.");
         WaypointRune persistentCopy = new WaypointRune(coords);
         addWaypoint((WaypointRune) persistentCopy);
         //handler.aetherSay("Waypoint added to persistence list");
