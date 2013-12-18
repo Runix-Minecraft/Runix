@@ -18,11 +18,11 @@ public class WaypointRune extends AbstractRune {
     @Override
     public int[][][] blockPattern() {
         return new int[][][]
-                {{{0,4,4,4,0},
+                {{{NONE,4,4,4,NONE},
                   {4,4,0,4,4},
                   {4,0,4,0,4},
                   {4,4,0,4,4},
-                  {0,4,4,4,0}}};
+                  {NONE,4,4,4,NONE}}};
     }
 
     @Override
