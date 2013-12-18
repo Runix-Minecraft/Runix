@@ -17,7 +17,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 public class RuneHandler {
     public static TiersVanilla tiers;
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-    public ArrayList<AbstractRune> activeRunes = new ArrayList<AbstractRune>();
 
     public RuneHandler() {      
         tiers = new TiersVanilla(); //load the list of block tiers
@@ -34,7 +33,7 @@ public class RuneHandler {
                     new WorldCoordinates(event.entityPlayer.worldObj, event.x, event.y, event.z));
     }
 
-    /**Detects a rune pattern, executes it, and stores persistent runes.*/
+    /**Detects a rune pattern, and executes it.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldCoordinates coords) {
     	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
@@ -53,7 +52,7 @@ public class RuneHandler {
         boolean result = false;
         for (int i = 0; i < runeRegistry.size(); i++) {
             result = runeRegistry.get(i).checkRunePattern(coords);
-            if (result) {// Josiah: this seems redundant, should we just return a populated Rune object instead?
+            if (result) {
                 return runeRegistry.get(i);
             }
         }

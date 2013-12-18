@@ -104,7 +104,7 @@ public abstract class AbstractRune {
 	        player.sendChatToPlayer(ChatMessageComponent.createFromText(message));
 	}
 
-    private void aetherSay(World worldObj, String message) {
+    public void aetherSay(World worldObj, String message) {
         if(worldObj.isRemote)
             Minecraft.getMinecraft().thePlayer.addChatMessage(message); 
     }

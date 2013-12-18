@@ -4,15 +4,11 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import net.minecraft.block.Block;
-// Josiah: I added these imports, They should help
 
 
 public class TiersVanilla {
-    //Josiah: For naming block ids use the vanilla constants instead of hand typing from the wiki.
-    //Example:   Tier2.add(Block.torchWood.blockID);  or Block.sandStone.blockID
-
+    
     public static ArrayList<Integer> Tier0;
     public static ArrayList<Integer> Tier1;
     public static ArrayList<Integer> Tier2;

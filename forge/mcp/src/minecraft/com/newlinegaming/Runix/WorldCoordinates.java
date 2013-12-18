@@ -70,6 +70,11 @@ public class WorldCoordinates extends ChunkCoordinates {
         return this.worldObj.getBlockId(this.posX, this.posY, this.posZ);
     }
 
+    /** Sister function to getBlockID() for meta values. */
+    public int getMetaId() {
+        return worldObj.getBlockMetadata(posX, posY, posZ);
+    }
+
     /**Simple wrapper method for setBlockID()
      * @param blockID
      * @return true if successful

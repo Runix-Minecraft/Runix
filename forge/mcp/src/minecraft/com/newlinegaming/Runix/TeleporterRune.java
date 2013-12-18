@@ -1,13 +1,9 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 public class TeleporterRune extends AbstractRune {
+    
 
 	public int[][][] blockPattern(){
 		return new int[][][]
@@ -24,13 +20,24 @@ public class TeleporterRune extends AbstractRune {
 	 */
 	public void execute(EntityPlayer player, WorldCoordinates coords) {
 	    accept(player);
+	    Signature signature = new Signature(this, coords);
 	    WorldCoordinates destination;
 		if( WaypointRune.waypoints.isEmpty()){
 		    destination = new WorldCoordinates(player.worldObj.getSpawnPoint());
 		    destination.worldObj = player.worldObj;
 		}
 		else{
-    	    WaypointRune wp = WaypointRune.waypoints.get(WaypointRune.waypoints.size()-1);// most recent
+    	    WaypointRune wp = null;
+    	    for( WaypointRune candidate : WaypointRune.waypoints){
+    	        if( new Signature(candidate, candidate.location).equals( signature ) ){
+    	            wp = candidate;
+    	            break;
+    	        }
+    	    }
+    	    if( wp == null){
+    	        aetherSay(player, "A waypoint with that signature cannot be found.");
+    	        return;
+    	    }
     	    destination = new WorldCoordinates(wp.location);
 		}
 		safelyMovePlayer(player, destination);
