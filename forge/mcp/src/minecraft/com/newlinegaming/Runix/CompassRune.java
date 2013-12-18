@@ -18,5 +18,11 @@ public class CompassRune extends AbstractRune{
 				  {4,0,4}}};
 		stampBlockTemplate(compassOutcome, player, coords);
 	}
+	
+	public String getRuneName()
+	{
+		return "Compass";
+	}
+	
 
 }

@@ -27,6 +27,7 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
+    	AbstractRune.message(event.entityPlayer, event.action.toString() + " event created by FORGE");
         if (event.action == Action.RIGHT_CLICK_BLOCK)
             possibleRuneActivationEvent(event.entityPlayer, 
                     new WorldCoordinates(event.entityPlayer.worldObj, event.x, event.y, event.z));
@@ -34,6 +35,7 @@ public class RuneHandler {
 
     /**Detects a rune pattern, executes it, and stores persistent runes.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldCoordinates coords) {
+    	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
             Runix.proxy.aetherSay("Recognized " + createdRune.getClass().getName() + " activated by " + player.username + " at " + coords.posX + "," + coords.posY + "," + coords.posZ );
@@ -60,6 +62,7 @@ public class RuneHandler {
     }
 
     private boolean checkRunePattern(int[][][] blockPattern, WorldCoordinates coords) {
+    	int tierID = 0;
         for (int y = 0; y < blockPattern.length; y++) {
             for (int z = 0; z < blockPattern[y].length; z++) {
                 for (int x = 0; x < blockPattern[y][z].length; x++) {
@@ -67,9 +70,36 @@ public class RuneHandler {
                     int blockX = coords.posX - blockPattern[y][z].length / 2 + x;
                     int blockY = coords.posY - y; // Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
                     int blockZ = coords.posZ - blockPattern[y].length / 2 + z;
+                    switch (blockPattern[y][z][x])
+                    {
+                    case -1: 
+                    {
+                    	if (tierID == 0)
+                    	{
+                    		tierID = coords.worldObj.getBlockId(blockX, blockY, blockZ);
+                    		break;
+                    	}
+                    	else if (tierID > 0 && coords.worldObj.getBlockId(blockX, blockY, blockZ) == tierID)
+                    	{
+                    		
+                    	}
+                    	//tier
+                    	break;
+                    }
+                    case -2:
+                    {
+                    	//signature (!= -1)
+                    	break;
+                    }
+                    default:
+                    {
+                    	
+                    	
+                    }
                     if (coords.worldObj.getBlockId(blockX, blockY, blockZ) != blockPattern[y][z][x])
                         return false;
-                        // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
+                    }
+                    // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
                 }
             }
         }

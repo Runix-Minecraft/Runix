@@ -1,7 +1,9 @@
 package com.newlinegaming.Runix;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 /** This class contains the basic functions that Runes will use to execute their functions.  Any reusable code or concepts should go in
@@ -61,6 +63,17 @@ public abstract class AbstractRune {
 		return true;//TODO: build permission checking
 	}
 	
+	/** This method takes the player and the rune, and verifies that a rune can be used. to go with perms/disabled runes.txt or whatever
+	 * @param player - the caster
+	 * @param rune - the rune being cast
+	 * @return
+	 */
+	static boolean runeAllowed(EntityPlayer player, AbstractRune rune)
+	{
+		// arbi
+		player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN+rune.getRuneName()+ " accepted"));
+		return true;
+	}
 	
 	protected void safelyMovePlayer(EntityPlayer player, WorldCoordinates coords) {
 		safelyMovePlayer(player, coords, Direction.UP);
@@ -78,5 +91,13 @@ public abstract class AbstractRune {
 		
 		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		//TODO: check for Lava, fire, and void
+	}
+	
+	/** returns the unique name of the rune */
+	public abstract String getRuneName();
+	
+	public static void message(EntityPlayer player, String message)
+	{
+		player.sendChatToPlayer(ChatMessageComponent.createFromText(message));
 	}
 }

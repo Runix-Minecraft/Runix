@@ -30,7 +30,12 @@ public class TeleporterRune extends AbstractRune {
     	    destination = new WorldCoordinates(wp.location);
 		}
 		safelyMovePlayer(player, destination);
+		
 	}
 
+	public String getRuneName()
+	{
+		return "Teleporter";
+	}
 
 }

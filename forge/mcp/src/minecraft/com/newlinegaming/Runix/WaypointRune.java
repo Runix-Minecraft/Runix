@@ -40,4 +40,8 @@ public class WaypointRune extends AbstractRune {
         }
         waypoints.add(wp);
     }
+    public String getRuneName()
+	{
+		return "Waypoint";
+	}
 }
