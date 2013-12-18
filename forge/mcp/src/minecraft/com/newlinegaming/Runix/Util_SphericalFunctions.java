@@ -32,7 +32,7 @@ public class Util_SphericalFunctions {
 		World world = coords.worldObj;
 		LinkedList<WorldCoordinates> returnvalues = new LinkedList();
 		for (int z = -radius; z <= radius; z++)
-			for (int y = -radius; y < radius; y++)
+			for (int y = -radius; y < radius; y++)  //Josiah: perhaps you should put the y as the top loop so that it animates top to bottom instead of side to side
 				for (int x = -radius; x < radius; x++)
 				{
 					if(radiusCheck(x,y,z, radius))

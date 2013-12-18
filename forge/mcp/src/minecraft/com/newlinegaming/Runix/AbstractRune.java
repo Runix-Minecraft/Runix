@@ -48,17 +48,11 @@ public abstract class AbstractRune {
 	 */
 	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, WorldCoordinates coords)
 	{
-		World world = player.worldObj;
-		//TODO: Josiah: this loop is lifted from RuneHandler.checkRunePattern.  Abstract this into a shape iterator
 		for (int y = 0; y < template.length; y++) {
 			for (int z = 0; z < template[y].length; z++) {
 				for (int x = 0; x < template[y][z].length; x++) {
-                    //World coordinates + relative offset + half the size of the rune (for middle)
-					int blockX = coords.posX - template[y][z].length /2 + x;
-					int blockY = coords.posY - y; //Josiah: the activation and "center" block for 3D runes is the top layer, at the moment
-					int blockZ = coords.posZ - template[y].length /2 + z;
-
-					world.setBlock(blockX, blockY, blockZ, template[y][z][x]);
+                    WorldCoordinates target = coords.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
+					target.setBlockId( template[y][z][x] );
                 }
             }
 		}
@@ -122,9 +116,9 @@ public abstract class AbstractRune {
         for (int y = 0; y < pattern.length; y++) {
             for (int z = 0; z < pattern[y].length; z++) {
                 for (int x = 0; x < pattern[y][z].length; x++) {
+                    WorldCoordinates target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
                     // World coordinates + relative offset + half the size of the rune (for middle)
                     // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
-                    WorldCoordinates target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
                     int blockID = target.getBlockId();
                     int patternID = pattern[y][z][x];
                     // Handle special Template Values
@@ -161,7 +155,7 @@ public abstract class AbstractRune {
 
     protected int getTierInkBlock(WorldCoordinates coords) {
         int [][][] pattern = blockPattern();
-        for (int y = 0; y < pattern.length; y++) {//TODO: Josiah: Third duplicate of this code == bad!
+        for (int y = 0; y < pattern.length; y++) {
             for (int z = 0; z < pattern[y].length; z++) {
                 for (int x = 0; x < pattern[y][z].length; x++) {
                     if( pattern[y][z][x] == TIER ){
