@@ -19,6 +19,7 @@ public class TiersVanilla {
         Block[] Tier0Blocks = new Block[]{
             Block.sand, Block.stone, Block.dirt, Block.grass, Block.tallGrass, Block.snow, 
             Block.mycelium, Block.netherrack, Block.signPost, Block.signWall};
+        //Josiah: Anything that the ground can be made of, in any Biome, is Tier 0
         
         Tier0 = loadBlockIds(Tier0Blocks);
         Tier0.add( 0 );//Josiah: for whatever reason, AIR is not defined... so we have to add it manually.

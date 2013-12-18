@@ -10,11 +10,11 @@ public class TeleporterRune extends AbstractRune {
 
 	public int[][][] blockPattern(){
 		return new int[][][]
-				{{{NONE,4,0,4,NONE},
-				  {4,4,4,4,4},
-				  {0,4,3,4,0},
-				  {4,4,4,4,4},
-				  {NONE,4,0,4,NONE}}};
+				{{{NONE,TIER,SIGN,TIER,NONE},
+				  {TIER,TIER,TIER,TIER,TIER},
+				  {SIGN,TIER,NONE,TIER,SIGN},
+				  {TIER,TIER,TIER,TIER,TIER},
+				  {NONE,TIER,SIGN,TIER,NONE}}};
 	}
 	
 	@Override

@@ -38,7 +38,7 @@ public class RuneHandler {
     	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
-            createdRune.aetherSay(player, "Recognized " + createdRune.getRuneName() + " activated at " + coords.posX + "," + coords.posY + "," + coords.posZ );
+            createdRune.aetherSay(player, createdRune.getRuneName() + " activated at " + coords.posX + "," + coords.posY + "," + coords.posZ );
             createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }

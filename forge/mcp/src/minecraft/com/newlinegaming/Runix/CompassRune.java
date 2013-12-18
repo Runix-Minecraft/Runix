@@ -6,16 +6,17 @@ public class CompassRune extends AbstractRune{
 
 	public int[][][] blockPattern(){
 		return new int [][][] 
-            {{{4,0,4},
-              {0,4,0},
-              {4,0,4}}};
+            {{{TIER, 0 ,TIER},
+              { 0 ,TIER, 0 },
+              {TIER, 0 ,TIER}}}; //This is AIR 0 on purpose
 	}
 
 	public void execute(EntityPlayer player, WorldCoordinates coords){
+	    int ink = getTierInkBlock(coords);
 		int[][][] compassOutcome = new int [][][]
-				{{{0,4,0},
-				  {4,0,4},
-				  {4,0,4}}};
+				{{{ 0 ,ink, 0 }, //TODO: pass meta-data
+				  {ink, 0 ,ink},
+				  {ink, 0 ,ink}}};
 		stampBlockTemplate(compassOutcome, player, coords);
 	}
 	

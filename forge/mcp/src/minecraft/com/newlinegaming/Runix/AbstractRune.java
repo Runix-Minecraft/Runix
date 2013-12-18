@@ -1,5 +1,6 @@
 package com.newlinegaming.Runix;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.ChunkCoordinates;
@@ -102,6 +103,11 @@ public abstract class AbstractRune {
 	    if(player.worldObj.isRemote)
 	        player.sendChatToPlayer(ChatMessageComponent.createFromText(message));
 	}
+
+    private void aetherSay(World worldObj, String message) {
+        if(worldObj.isRemote)
+            Minecraft.getMinecraft().thePlayer.addChatMessage(message); 
+    }
 	
 	/**Checks to see if there is a block match for the Rune blockPattern center at 
 	 * WorldCoordinates coords.  
@@ -128,12 +134,24 @@ public abstract class AbstractRune {
                                 return false; 
                             break;
                         case TIER:
-                            if( blockID != inkID )
+                            if( blockID != inkID ){
+//                                aetherSay(coords.worldObj, "Found " + blockID + " ink is " + inkID);
                                 return false; //inconsistent Tier block
+                            }
+                            break;
+                        case SIGN: 
+                            if( blockID == inkID )
+                                return false; //you can't use your ink as part of your signature, it ruins the shape
+                            break;
                         default:
-                            if (blockID != patternID)//normal block
+                            if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers
+                                aetherSay(coords.worldObj, "ERROR: This rune is using an unaccounted for number!");
+                            if (blockID != patternID){//normal block
+//                                aetherSay(coords.worldObj, "Found " + blockID + " expected " + patternID);
                                 return false;
-                        // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
+                            }
+                            break;
+                        
                     }
                 }
             }
@@ -141,7 +159,7 @@ public abstract class AbstractRune {
         return true;
     }
 
-    private int getTierInkBlock(WorldCoordinates coords) {
+    protected int getTierInkBlock(WorldCoordinates coords) {
         int [][][] pattern = blockPattern();
         for (int y = 0; y < pattern.length; y++) {//TODO: Josiah: Third duplicate of this code == bad!
             for (int z = 0; z < pattern[y].length; z++) {
@@ -155,4 +173,6 @@ public abstract class AbstractRune {
         }
         return -1; //There was no TIER mentioned in the pattern
     }
+    
+    
 }
