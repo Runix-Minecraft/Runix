@@ -39,7 +39,7 @@ public class RuneHandler {
     	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
-            createdRune.aetherSay(player, "The aether sees you activating a " + EnumChatFormatting.GREEN + createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+            createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
             createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }

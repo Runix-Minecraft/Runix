@@ -18,7 +18,7 @@ public abstract class AbstractRune {
 	//Josiah: I'd be happy to find a more compact way to right this,
 	//but enum requires .value to be used as an int, which we need.
     public static final int TIER = -1; //Tier
-    public static final int SIGN = -2; //Signature block
+    public static final int SIGR = -2; //Signature block
     public static final int NONE = -3; //Non-Tier, Tier 0
     public static final int ENTY = -4; //Entity blocks with special data like heads, picture frames, ect... 
     //Josiah: I'm not sure what to do with ENTY? 
@@ -139,7 +139,7 @@ public abstract class AbstractRune {
                                 return false; //inconsistent Tier block
                             }
                             break;
-                        case SIGN: 
+                        case SIGR: 
                             if( blockID == inkID )
                                 return false; //you can't use your ink as part of your signature, it ruins the shape
                             break;
@@ -172,6 +172,12 @@ public abstract class AbstractRune {
             }
         }
         return -1; //There was no TIER mentioned in the pattern
+    }
+
+    /** Call accept() once you are sure the rune will be executed to tell the player it was successful.
+     */
+    protected void accept(EntityPlayer player) {
+        aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
     }
     
     

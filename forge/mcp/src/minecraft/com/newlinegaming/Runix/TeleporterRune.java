@@ -11,11 +11,11 @@ public class TeleporterRune extends AbstractRune {
 
 	public int[][][] blockPattern(){
 		return new int[][][]
-				{{{NONE,TIER,SIGN,TIER,NONE},
+				{{{NONE,TIER,SIGR,TIER,NONE},
 				  {TIER,TIER,TIER,TIER,TIER},
-				  {SIGN,TIER,NONE,TIER,SIGN},
+				  {SIGR,TIER,NONE,TIER,SIGR},
 				  {TIER,TIER,TIER,TIER,TIER},
-				  {NONE,TIER,SIGN,TIER,NONE}}};
+				  {NONE,TIER,SIGR,TIER,NONE}}};
 	}
 	
 	@Override
@@ -23,7 +23,7 @@ public class TeleporterRune extends AbstractRune {
 	 * WorldXYZ are not used.
 	 */
 	public void execute(EntityPlayer player, WorldCoordinates coords) {
-	    aetherSay(player,EnumChatFormatting.GREEN+"Teleporter Accepted.");
+	    accept(player);
 	    WorldCoordinates destination;
 		if( WaypointRune.waypoints.isEmpty()){
 		    destination = new WorldCoordinates(player.worldObj.getSpawnPoint());
