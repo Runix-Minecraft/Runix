@@ -34,9 +34,8 @@ public class TeleporterRune extends AbstractRune {
 		safelyMovePlayer(player, destination);
 	}
 
-	public String getRuneName()
-	{
-		return "Teleporter";
+    public String getRuneName() {
+        return "Teleporter";
 	}
 
 }

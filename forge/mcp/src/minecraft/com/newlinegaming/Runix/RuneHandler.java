@@ -14,7 +14,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RuneHandler {
-    public TiersVanilla tiers;
+    public static TiersVanilla tiers;
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
     public ArrayList<AbstractRune> activeRunes = new ArrayList<AbstractRune>();
 
@@ -39,47 +39,25 @@ public class RuneHandler {
     	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
-            Runix.proxy.aetherSay("Recognized " + createdRune.getClass().getName() + " activated by " + player.username + " at " + coords.posX + "," + coords.posY + "," + coords.posZ );
+            Runix.proxy.aetherSay("Recognized " + createdRune.getRuneName() + " activated at " + coords.posX + "," + coords.posY + "," + coords.posZ );
             createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
         }
     }
 
+    /**This is the main switch board between all of the runes.  It iterates through all Runes in the order that
+     * they are registered and asks if each one matches the pattern of blocks at the coordinates.
+     * @param coords
+     * @return AbstractRune class if there is a match, null otherwise
+     */
     private AbstractRune checkForAnyRunePattern(WorldCoordinates coords) {
         boolean result = false;
         for (int i = 0; i < runeRegistry.size(); i++) {
-            int[][][] blockPattern = runeRegistry.get(i).blockPattern();
-            if (blockPattern == null) {
-                System.err.println(runeRegistry.get(i).getClass().getName() + " failed to set a blockPattern in their constructor.");
-                continue;
-            }
-            result = checkRunePattern(blockPattern, coords);
-            if (result) {
+            result = runeRegistry.get(i).checkRunePattern(coords);
+            if (result) {// Josiah: this seems redundant, should we just return a populated Rune object instead?
                 return runeRegistry.get(i);
             }
         }
         return null;
     }
 
-    private boolean checkRunePattern(int[][][] blockPattern, WorldCoordinates coords) {
-        int tierID = 0;
-        for (int y = 0; y < blockPattern.length; y++) {
-            for (int z = 0; z < blockPattern[y].length; z++) {
-                for (int x = 0; x < blockPattern[y][z].length; x++) {
-                    // World coordinates + relative offset + half the size of the rune (for middle)
-                    // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
-                    WorldCoordinates target = coords.offset(-blockPattern[y][z].length / 2 + x,  -y,  -blockPattern[y].length / 2 + z);
-                    int blockID = target.getBlockId();
-                    // Handle special Template Values
-                    if( blockPattern[y][z][x] == AbstractRune.NONE ){
-                        if( !tiers.isTier0(blockID) )
-                            return false;
-                    }
-                    else if (blockID != blockPattern[y][z][x])
-                        return false;
-                        // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
-                }
-            }
-        }
-        return true;
-    }
 }

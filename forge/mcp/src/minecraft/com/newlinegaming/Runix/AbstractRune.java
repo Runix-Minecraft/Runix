@@ -20,6 +20,7 @@ public abstract class AbstractRune {
     public static final int SIGN = -2; //Signature block
     public static final int NONE = -3; //Non-Tier, Tier 0
     public static final int ENTY = -4; //Entity blocks with special data like heads, picture frames, ect... 
+    //Josiah: I'm not sure what to do with ENTY? 
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
 	
 	public AbstractRune(){}
@@ -100,4 +101,57 @@ public abstract class AbstractRune {
 	{
 		player.sendChatToPlayer(ChatMessageComponent.createFromText(message));
 	}
+	
+	/**Checks to see if there is a block match for the Rune blockPattern center at 
+	 * WorldCoordinates coords.  
+	 * @return true if there is a valid match
+	 */
+    public boolean checkRunePattern(WorldCoordinates coords) {
+        int [][][] pattern = blockPattern();
+        int tierID = 0;
+        int inkID = getTierInkBlock(coords);
+        if( RuneHandler.tiers.isTier0(inkID) )
+            return false;
+        for (int y = 0; y < pattern.length; y++) {
+            for (int z = 0; z < pattern[y].length; z++) {
+                for (int x = 0; x < pattern[y][z].length; x++) {
+                    // World coordinates + relative offset + half the size of the rune (for middle)
+                    // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
+                    WorldCoordinates target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
+                    int blockID = target.getBlockId();
+                    int patternID = pattern[y][z][x];
+                    // Handle special Template Values
+                    switch(patternID){
+                        case NONE: 
+                            if( !RuneHandler.tiers.isTier0(blockID) )
+                                return false; 
+                            break;
+                        case TIER:
+                            if( blockID != inkID )
+                                return false; //inconsistent Tier block
+                        default:
+                            if (blockID != patternID)//normal block
+                                return false;
+                        // aetherSay("Found " + world.getBlockId(blockX, blockY, blockZ) + " expected " + blockPattern[y][z][x]);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private int getTierInkBlock(WorldCoordinates coords) {
+        int [][][] pattern = blockPattern();
+        for (int y = 0; y < pattern.length; y++) {//TODO: Josiah: Third duplicate of this code == bad!
+            for (int z = 0; z < pattern[y].length; z++) {
+                for (int x = 0; x < pattern[y][z].length; x++) {
+                    if( pattern[y][z][x] == TIER ){
+                        WorldCoordinates target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
+                        return target.getBlockId();
+                    }
+                }
+            }
+        }
+        return -1; //There was no TIER mentioned in the pattern
+    }
 }
