@@ -48,7 +48,8 @@ public class RunecraftRune extends AbstractRune {
                 for(WorldCoordinates n : neighbors) {
                     int blockID = n.getBlockId();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
-                    if( !workingSet.contains(n) && !RuneHandler.tiers.isTier0(n.getBlockId()) ) {
+                    if( !workingSet.contains(n) && !RuneHandler.tiers.isNatural(blockID) ) {
+                        //TODO: possible slow down = long list of natural blocks
                         workingSet.add(n);
                         nextEdge.add(n);
                     }
