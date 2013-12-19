@@ -1,5 +1,8 @@
 package com.newlinegaming.Runix;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
@@ -172,6 +175,18 @@ public abstract class AbstractRune {
      */
     protected void accept(EntityPlayer player) {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
+    }
+
+    protected void moveShape(HashSet<WorldCoordinates> vehicleBlocks, int dX, int dY, int dZ) {
+        //map each WorldCoordinate to a blockID
+        HashMap<WorldCoordinates, Integer> savedPattern = new HashMap<WorldCoordinates, Integer>();
+        for(WorldCoordinates loc : vehicleBlocks){
+            savedPattern.put(loc, new Integer(loc.getBlockId()));
+            loc.setBlockId(0); // delete old block
+        }
+        //offset(0,0,1) all coordinates //set to blockID
+        for(WorldCoordinates start : savedPattern.keySet())
+            start.offset(dX, dY, dZ).setBlockId(savedPattern.get(start)); //place new block 1 to the South
     }
     
     
