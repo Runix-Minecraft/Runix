@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
@@ -83,6 +85,21 @@ public class WorldCoordinates extends ChunkCoordinates {
         if(getBlockId() == Block.bedrock.blockID)
             return false; //TODO: make this more nuanced behavior
         return this.worldObj.setBlock(posX, posY, posZ, blockID);
+    }
+    
+    public String toString(){
+        return "(" + posX + "," + posY +  "," + posZ + ")"; 
+    }
+
+    public ArrayList<WorldCoordinates> getNeighbors() {
+        ArrayList<WorldCoordinates> neighbors = new ArrayList<WorldCoordinates>();
+        neighbors.add(offset(-1,0,0));
+        neighbors.add(offset(0,-1,0));
+        neighbors.add(offset(0,0,-1));
+        neighbors.add(offset(1,0,0));
+        neighbors.add(offset(0,1,0));
+        neighbors.add(offset(0,0,1));
+        return neighbors;
     }
 
 }
