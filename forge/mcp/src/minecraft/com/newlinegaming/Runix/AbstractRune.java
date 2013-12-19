@@ -114,7 +114,7 @@ public abstract class AbstractRune {
         int [][][] pattern = blockPattern();
         int tierID = 0;
         int inkID = getTierInkBlock(coords);
-        if( RuneHandler.tiers.isTier0(inkID) )
+        if( Tiers.isTier0(inkID) )
             return false;
         for (int y = 0; y < pattern.length; y++) {
             for (int z = 0; z < pattern[y].length; z++) {
@@ -127,7 +127,7 @@ public abstract class AbstractRune {
                     // Handle special Template Values
                     switch(patternID){
                         case NONE: 
-                            if( !RuneHandler.tiers.isTier0(blockID) )
+                            if( !Tiers.isTier0(blockID) )
                                 return false; 
                             break;
                         case TIER:

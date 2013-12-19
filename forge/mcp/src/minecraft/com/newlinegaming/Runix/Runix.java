@@ -47,6 +47,7 @@ public class Runix {
 	{	
 		//Language Registry
 		LanguageRegistry.addName(RunixPlaceHolder, "Runix");
+        Tiers tiers = new Tiers(); //load the list of block tiers
 			
 		//Event Registry
 		MinecraftForge.EVENT_BUS.register(new RuneHandler());

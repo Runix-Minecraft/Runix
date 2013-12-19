@@ -8,13 +8,13 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 
 
-public class TiersVanilla {
+public class Tiers {
     
-    public static ArrayList<Integer> Tier0;
-    public static ArrayList<Integer> naturalBlocks;
-    protected HashMap<Integer, Integer> allTiers = new HashMap<Integer, Integer>();
+    private static ArrayList<Integer> Tier0;
+    private static ArrayList<Integer> naturalBlocks;
+    private static HashMap<Integer, Integer> allTiers = new HashMap<Integer, Integer>();
     
-    public TiersVanilla(){
+    public Tiers(){
         Block[] Tier0Blocks = new Block[]{
             Block.sand, Block.stone, Block.dirt, Block.grass, Block.tallGrass, Block.snow, 
             Block.mycelium, Block.netherrack, Block.signPost, Block.signWall};
@@ -102,16 +102,16 @@ public class TiersVanilla {
         return IDs;
     }
     
-    public int getTier(int blockID){
+    public static int getTier(int blockID){
         return (int) allTiers.get(new Integer(blockID));
     }
     
-    public boolean isTier0(int blockID){
+    public static boolean isTier0(int blockID){
         return Tier0.contains(new Integer(blockID));
     }
 
     /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/
-    public boolean isNatural(int blockID){
+    public static boolean isNatural(int blockID){
         return naturalBlocks.contains(new Integer(blockID));
     }
     

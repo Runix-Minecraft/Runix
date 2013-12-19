@@ -15,11 +15,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RuneHandler {
-    public static TiersVanilla tiers;
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
 
     public RuneHandler() {      
-        tiers = new TiersVanilla(); //load the list of block tiers
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
@@ -36,7 +34,6 @@ public class RuneHandler {
 
     /**Detects a rune pattern, and executes it.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldCoordinates coords) {
-    	
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
             createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
