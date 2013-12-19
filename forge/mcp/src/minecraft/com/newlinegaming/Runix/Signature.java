@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Signature {
+    
     public ArrayList<Integer> IDs;
     public ArrayList<Integer> metas;
     
@@ -42,7 +43,4 @@ public class Signature {
         }
         return true;//Note: this will return true for 2 empty signatures
     }
-    
-    
-    
 }

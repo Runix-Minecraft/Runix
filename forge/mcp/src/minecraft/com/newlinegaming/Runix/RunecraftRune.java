@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
@@ -14,7 +15,7 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
     public WorldCoordinates location;
     public EntityPlayer driver;
     public int tier;
-    private HashSet<WorldCoordinates> vehicleBlocks;
+    private HashMap<WorldCoordinates, SigBlock> vehicleBlocks;
     
     public RunecraftRune(){}
     
@@ -22,10 +23,14 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
     {
         location = new WorldCoordinates(coords);
         driver = player;
+        scanForVehicleShape(coords, player);
+        updateEveryXTicks(4);
+    }
+
+    protected void scanForVehicleShape(WorldCoordinates coords, EntityPlayer player) {
         tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
         vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
         aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
-        updateEveryXTicks(20);
     }
 
     /** This registers the rune as being actively updated.  Forge (thru RuneTimer) will call
@@ -39,9 +44,16 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
 
 
     void onUpdateTick(EntityPlayer subject) {
-        safelyMovePlayer(driver, location.offset(0, 1, 0));
-        moveShape(vehicleBlocks, 0, 1, 0); //Josiah: I'm not sure if we should move the player or blocks first
-        location = location.offset(0, 1, 0);
+        //TODO: we're not currently using subject
+        if(driver != null && !driver.worldObj.isRemote)
+        {//Josiah: turns out running this on server and client side causes strange duplications
+            int dX = (int) (driver.posX - location.posX - .5);
+            int dY = (int) (driver.posY - location.posY - 1);
+            int dZ = (int) (driver.posZ - location.posZ - .5);
+            //safelyMovePlayer(driver, location.offset(0, 1, 0));
+            vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
+            location = location.offset(dX, dY, dZ);
+        }
     }
 
     @Override
@@ -52,7 +64,7 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
         return new int[][][]
                 {{{LPIS,IRON,GLAS},
                   
-                  {IRON,NONE,IRON},
+                  {IRON,KEY ,IRON},
                   
                   {TIER,IRON,TIER}}};
     }
@@ -60,18 +72,26 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
     @Override
     public void execute(EntityPlayer player, WorldCoordinates coords) {
         accept(player);
-        if( addOrRemoveVehicle(coords, player) )
+        if( addOrToggleVehicle(coords, player) )
             aetherSay(player, "The Runecraft is now locked to your body.");
         else
             aetherSay(player, "You are now free from the Runecraft.");
     }
 
     /** This method exists to ensure that no duplicate vehicles are persisted. */
-    public boolean addOrRemoveVehicle(WorldCoordinates centerPoint, EntityPlayer player) {
+    public boolean addOrToggleVehicle(WorldCoordinates centerPoint, EntityPlayer player) {
         for(RunecraftRune oldRCV : activeVehicles){
-            if( oldRCV.location.equals(centerPoint) ){
-                activeVehicles.remove(oldRCV);
-                return false; 
+            if( oldRCV.location.equals(centerPoint) )// if it exists already, toggle state
+            {
+                if(oldRCV.driver == null){ // not currently active
+                    oldRCV.driver = player; // assign a driver and start
+                    oldRCV.scanForVehicleShape(centerPoint, player);
+                    return true;
+                }
+                else{
+                    oldRCV.driver = null; //turn off the vehicle
+                    return false;
+                }
             }
         }
         activeVehicles.add(new RunecraftRune(centerPoint, player));
@@ -79,12 +99,12 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
     }
     
     
-    private HashSet<WorldCoordinates> conductanceStep(WorldCoordinates startPoint, int maxDistance) {
+    private HashMap<WorldCoordinates, SigBlock> conductanceStep(WorldCoordinates startPoint, int maxDistance) {
         //TODO: perhaps rename WorldCoordinates to WorldXYZ
-        HashSet<WorldCoordinates> workingSet = new HashSet<WorldCoordinates>();
+        HashMap<WorldCoordinates, SigBlock> workingSet = new HashMap<WorldCoordinates, SigBlock>();
         HashSet<WorldCoordinates> activeEdge;
         HashSet<WorldCoordinates> nextEdge = new HashSet<WorldCoordinates>();
-        workingSet.add(startPoint);
+        workingSet.put(startPoint, startPoint.getSigBlock());
         nextEdge.add(startPoint);
         
         for(int iterationStep = maxDistance; iterationStep > 0; iterationStep--) {
@@ -96,9 +116,9 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
                 for(WorldCoordinates n : neighbors) {
                     int blockID = n.getBlockId();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
-                    if( !workingSet.contains(n) && !Tiers.isNatural(blockID) ) {
+                    if( !workingSet.keySet().contains(n) && !Tiers.isNatural(blockID) ) {
                         //TODO: possible slow down = long list of natural blocks
-                        workingSet.add(n);
+                        workingSet.put(n, n.getSigBlock());
                         nextEdge.add(n);
                     }
                 }

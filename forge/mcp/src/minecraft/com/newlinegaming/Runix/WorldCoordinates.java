@@ -44,7 +44,15 @@ public class WorldCoordinates extends ChunkCoordinates {
     public WorldCoordinates offset(int dX, int dY, int dZ){
         return new WorldCoordinates(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ);
     }
-    
+
+    /**Similar to offset(), but updates the current instance instead of a new one.*/ 
+    public WorldCoordinates bump(int dX, int dY, int dZ) {
+        posX += dX;
+        posY += dY;
+        posZ += dZ;
+        return this;
+    }
+
     public World defaultWorld() {
         return WorldProvider.getProviderForDimension(0).worldObj;//TODO: Josiah: This is not working correctly atm
     }
@@ -87,6 +95,14 @@ public class WorldCoordinates extends ChunkCoordinates {
         return this.worldObj.setBlock(posX, posY, posZ, blockID);
     }
     
+    public boolean setBlockId(SigBlock sig){
+        if(getBlockId() == Block.bedrock.blockID)
+            return false; //TODO: make this more nuanced behavior
+        return this.worldObj.setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
+        //NOTE: Use last arg 3 if you want a block update.
+    }
+    
+    
     public String toString(){
         return "(" + posX + "," + posY +  "," + posZ + ")"; 
     }
@@ -100,6 +116,10 @@ public class WorldCoordinates extends ChunkCoordinates {
         neighbors.add(offset(0,1,0));
         neighbors.add(offset(0,0,1));
         return neighbors;
+    }
+
+    public SigBlock getSigBlock() {
+        return new SigBlock(getBlockId(), getMetaId());
     }
 
 }

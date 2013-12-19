@@ -1,12 +1,10 @@
 package com.newlinegaming.Runix;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
@@ -25,6 +23,7 @@ public abstract class AbstractRune {
     public static final int NONE = -3; //Non-Tier, Tier 0
     public static final int ENTY = -4; //Entity blocks with special data like heads, picture frames, ect... 
     //Josiah: I'm not sure what to do with ENTY? 
+    public static final int KEY = -5;
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
 	
 	public AbstractRune(){}
@@ -140,6 +139,10 @@ public abstract class AbstractRune {
                             if( blockID == inkID )
                                 return false; //you can't use your ink as part of your signature, it ruins the shape
                             break;
+                        case KEY:
+                            if( Tiers.isTier0(blockID) )
+                                return false; //can be ink, or SIGR but not T0
+                            break;
                         default:
                             if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers
                                 aetherSay(coords.worldObj, "ERROR: This rune is using an unaccounted for number!");
@@ -177,16 +180,20 @@ public abstract class AbstractRune {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
     }
 
-    protected void moveShape(HashSet<WorldCoordinates> vehicleBlocks, int dX, int dY, int dZ) {
-        //map each WorldCoordinate to a blockID
-        HashMap<WorldCoordinates, Integer> savedPattern = new HashMap<WorldCoordinates, Integer>();
-        for(WorldCoordinates loc : vehicleBlocks){
-            savedPattern.put(loc, new Integer(loc.getBlockId()));
-            loc.setBlockId(0); // delete old block
+    protected HashMap<WorldCoordinates, SigBlock> moveShape(HashMap<WorldCoordinates, SigBlock> vehicleBlocks, int dX, int dY, int dZ) {
+        //Josiah: If you're having trouble with glitches, try only running it on the server side
+        //if( !world.isRemote ) //this is only true server side
+        for(WorldCoordinates loc : vehicleBlocks.keySet())
+            loc.setBlockId(0); // delete old block in a separate loop to avoid collisions
+
+        HashMap<WorldCoordinates, SigBlock> newPositions = new HashMap<WorldCoordinates, SigBlock>();
+        for(WorldCoordinates start : vehicleBlocks.keySet()){
+            WorldCoordinates target = start.offset(dX, dY, dZ);
+            SigBlock sig = vehicleBlocks.get(start);
+            target.setBlockId(sig); //place new block 1 to the South
+            newPositions.put(target, sig);
         }
-        //offset(0,0,1) all coordinates //set to blockID
-        for(WorldCoordinates start : savedPattern.keySet())
-            start.offset(dX, dY, dZ).setBlockId(savedPattern.get(start)); //place new block 1 to the South
+        return newPositions;
     }
     
     
