@@ -37,6 +37,8 @@ public class RunecraftRune extends AbstractTimedRune {
             int dX = (int) (driver.posX - location.posX - .5);
             int dY = (int) (driver.posY - location.posY - 1);
             int dZ = (int) (driver.posZ - location.posZ - .5);
+            if(driver.isSneaking())
+                dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
                 location = location.offset(dX, dY, dZ);
