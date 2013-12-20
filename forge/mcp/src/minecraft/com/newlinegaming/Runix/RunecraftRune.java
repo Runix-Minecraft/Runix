@@ -6,10 +6,8 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
-public class RunecraftRune extends AbstractRune {//TODO: candidate for a persistence interface
+public class RunecraftRune extends AbstractTimedRune {
     
     public static ArrayList<RunecraftRune> activeVehicles = new ArrayList<RunecraftRune>();
     public WorldCoordinates location;
@@ -19,6 +17,11 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
     
     public RunecraftRune(){}
     
+    /**Runecraft Runix Vehicle is now working and tracking with player while active.  
+     * Toggle it by right clicking the center block.  You can jump up to travel up, just not down yet.
+     * @param coords Center rune block that the vehicle is checked from 
+     * @param player Person that the vehicle gloms on to
+     */
     public RunecraftRune(WorldCoordinates coords, EntityPlayer player)
     {
         location = new WorldCoordinates(coords);
@@ -27,32 +30,17 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
         updateEveryXTicks(4);
     }
 
-    protected void scanForVehicleShape(WorldCoordinates coords, EntityPlayer player) {
-        tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
-        vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
-        aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
-    }
-
-    /** This registers the rune as being actively updated.  Forge (thru RuneTimer) will call
-     * onUpdateTick() every xTicks from here on out until it is turned off.  There are
-     * 20 ticks per second.
-     * @param xTicks number of ticks to wait between calls.  20 ticks = 1 second
-     */
-    protected void updateEveryXTicks(int xTicks) {
-        TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
-    }
-
-
-    void onUpdateTick(EntityPlayer subject) {
+    protected void onUpdateTick(EntityPlayer subject) {
         //TODO: we're not currently using subject
         if(driver != null && !driver.worldObj.isRemote)
         {//Josiah: turns out running this on server and client side causes strange duplications
             int dX = (int) (driver.posX - location.posX - .5);
             int dY = (int) (driver.posY - location.posY - 1);
             int dZ = (int) (driver.posZ - location.posZ - .5);
-            //safelyMovePlayer(driver, location.offset(0, 1, 0));
-            vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
-            location = location.offset(dX, dY, dZ);
+            if(dX != 0 || dY != 0 || dZ != 0){
+                vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
+                location = location.offset(dX, dY, dZ);
+            }
         }
     }
 
@@ -98,6 +86,11 @@ public class RunecraftRune extends AbstractRune {//TODO: candidate for a persist
         return true;
     }
     
+    protected void scanForVehicleShape(WorldCoordinates coords, EntityPlayer player) {
+        tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
+        vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
+        aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
+    }
     
     private HashMap<WorldCoordinates, SigBlock> conductanceStep(WorldCoordinates startPoint, int maxDistance) {
         //TODO: perhaps rename WorldCoordinates to WorldXYZ

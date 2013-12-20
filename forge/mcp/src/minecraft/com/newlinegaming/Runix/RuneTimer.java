@@ -8,10 +8,10 @@ import cpw.mods.fml.common.TickType;
 
 public class RuneTimer implements ITickHandler
 {
-    RunecraftRune rune;
+    AbstractTimedRune rune;
     private int currentTimer;
     private int maxTimer = 20;
-    RuneTimer(RunecraftRune r, int waitTicks){
+    RuneTimer(AbstractTimedRune r, int waitTicks){
         rune = r;
         currentTimer = 0;
         maxTimer = waitTicks;
@@ -27,7 +27,6 @@ public class RuneTimer implements ITickHandler
                 rune.onUpdateTick((EntityPlayer) tickData[0]);
             }
         }
-//        System.out.println("Tick");
     }
 
     @Override
