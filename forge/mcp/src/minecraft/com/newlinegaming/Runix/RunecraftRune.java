@@ -49,10 +49,8 @@ public class RunecraftRune extends AbstractTimedRune {
     @Override
     public int[][][] blockPattern() {
         int IRON = Block.blockIron.blockID;
-        int LPIS = Block.blockLapis.blockID;
-        int GLAS = Block.glass.blockID;
         return new int[][][]
-                {{{LPIS,IRON,GLAS},
+                {{{TIER,IRON,TIER},
                   
                   {IRON,KEY ,IRON},
                   
@@ -62,24 +60,40 @@ public class RunecraftRune extends AbstractTimedRune {
     @Override
     public void execute(EntityPlayer player, WorldCoordinates coords) {
         accept(player);
-        if( addOrToggleVehicle(coords, player) )
-            aetherSay(player, "The Runecraft is now locked to your body.");
-        else
-            aetherSay(player, "You are now free from the Runecraft.");
+        if(!player.worldObj.isRemote){
+            if( addOrToggleVehicle(coords, player) )
+                aetherSay(player, "The Runecraft is now locked to your body.");
+            else
+                aetherSay(player, "You are now free from the Runecraft.");
+        }
     }
 
-    /** This method exists to ensure that no duplicate vehicles are persisted. */
+    /** This method exists to ensure that no duplicate vehicles are persisted. 
+     * NOTE: This is an odd method to program for because it is a different instance of Runecraft
+     * that is doing something on behalf of the subject Runecraft.  Be very careful to not
+     * change class variable, but always call oldRCV.variable.*/
     public boolean addOrToggleVehicle(WorldCoordinates centerPoint, EntityPlayer player) {
         for(RunecraftRune oldRCV : activeVehicles){
-            if( oldRCV.location.equals(centerPoint) )// if it exists already, toggle state
+            if( oldRCV.driver != null && oldRCV.driver.equals(player)){//currently active Rune, to be turned off
+                oldRCV.driver = null; //turn off the vehicle
+                return false;
+            }
+        }
+        for(RunecraftRune oldRCV : activeVehicles){
+            if( oldRCV.location.equals( centerPoint ) )// if it exists already, toggle state
             {
                 if(oldRCV.driver == null){ // not currently active
                     oldRCV.driver = player; // assign a driver and start
-                    oldRCV.scanForVehicleShape(centerPoint, player);
-                    return true;
+                    HashMap<WorldCoordinates, SigBlock> oldVehicleShape = oldRCV.vehicleBlocks;
+                    if( oldRCV.scanForVehicleShape(centerPoint, player) )
+                        return true;
+                    else{
+                        oldRCV.vehicleBlocks = rescanBlocks(oldVehicleShape);
+                        return true;
+                    }
                 }
-                else{
-                    oldRCV.driver = null; //turn off the vehicle
+                else{ //there's already a driver, but it's not the current player
+                    aetherSay(player, "Stop messing with someone else's ride.");
                     return false;
                 }
             }
@@ -88,12 +102,30 @@ public class RunecraftRune extends AbstractTimedRune {
         return true;
     }
     
-    protected void scanForVehicleShape(WorldCoordinates coords, EntityPlayer player) {
+    private HashMap<WorldCoordinates, SigBlock> rescanBlocks(HashMap<WorldCoordinates, SigBlock> oldVehicleShape) {
+        HashMap<WorldCoordinates, SigBlock> newVehicle = new HashMap<WorldCoordinates, SigBlock>();
+        for(WorldCoordinates xyz : oldVehicleShape.keySet()){
+            SigBlock block = xyz.getSigBlock();
+            if(block.blockID != 0) // We specifically want to exclude AIR to avoid confusing collisions
+                newVehicle.put(xyz, block);
+        }
+        return newVehicle;
+    }
+
+    protected boolean scanForVehicleShape(WorldCoordinates coords, EntityPlayer player) {
         tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
         vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
-        aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
+        if(vehicleBlocks.isEmpty()){
+            aetherSay(player, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
+            return false;   
+        }
+        else{
+            aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
+            return true;
+        }
     }
     
+    /**This will return an empty list if the activation would tear a structure in two. */
     private HashMap<WorldCoordinates, SigBlock> conductanceStep(WorldCoordinates startPoint, int maxDistance) {
         //TODO: perhaps rename WorldCoordinates to WorldXYZ
         HashMap<WorldCoordinates, SigBlock> workingSet = new HashMap<WorldCoordinates, SigBlock>();
@@ -102,9 +134,12 @@ public class RunecraftRune extends AbstractTimedRune {
         workingSet.put(startPoint, startPoint.getSigBlock());
         nextEdge.add(startPoint);
         
-        for(int iterationStep = maxDistance; iterationStep > 0; iterationStep--) {
+        for(int iterationStep = maxDistance+1; iterationStep > 0; iterationStep--) {
             activeEdge = nextEdge;
             nextEdge = new HashSet<WorldCoordinates>();
+          //tear detection: this should be empty by the last step
+            if(iterationStep == 1 && activeEdge.size() != 0) 
+                return new HashMap<WorldCoordinates, SigBlock>();
             
             for(WorldCoordinates block : activeEdge) {
                 ArrayList<WorldCoordinates> neighbors = block.getNeighbors();
