@@ -27,10 +27,10 @@ import net.minecraft.entity.player.EntityPlayer;
 public class RubricControl extends AbstractRune{
   
     public static ArrayList<RubricControl> storedPatterns=new ArrayList<RubricControl>();
-    public HashMap<WorldCoordinates, SigBlock> structure;
-    public WorldCoordinates anchorpoint;
+    public HashMap<WorldXYZ, SigBlock> structure;
+    public WorldXYZ anchorpoint;
     
-    public RubricControl(HashMap<WorldCoordinates, SigBlock> building, WorldCoordinates location){
+    public RubricControl(HashMap<WorldXYZ, SigBlock> building, WorldXYZ location){
 	
 	structure = building;
 	anchorpoint = location;
@@ -56,12 +56,12 @@ public class RubricControl extends AbstractRune{
     }
 
     @Override
-    public void execute(EntityPlayer player, WorldCoordinates coords) {
+    public void execute(EntityPlayer player, WorldXYZ coords) {
 	accept(player);
-	HashMap<WorldCoordinates, SigBlock> structure=conductanceStep(coords, 50);
+	HashMap<WorldXYZ, SigBlock> structure=conductanceStep(coords, 50);
 	storedPatterns.add(new RubricControl(structure, coords));
 	moveShape(structure, 0, 20, 0);
-	for(WorldCoordinates XYZ : structure.keySet())
+	for(WorldXYZ XYZ : structure.keySet())
 	{
 	   	    //note this is just for visual effect, at least for the time being
 	    XYZ.setBlockId(12);

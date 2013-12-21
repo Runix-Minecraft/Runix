@@ -9,10 +9,10 @@ import net.minecraft.entity.player.EntityPlayer;
 public class RunecraftRune extends AbstractTimedRune {
     
     public static ArrayList<RunecraftRune> activeVehicles = new ArrayList<RunecraftRune>();
-    public WorldCoordinates location;
+    public WorldXYZ location;
     public EntityPlayer driver;
     public int tier;
-    private HashMap<WorldCoordinates, SigBlock> vehicleBlocks;
+    private HashMap<WorldXYZ, SigBlock> vehicleBlocks;
     
     public RunecraftRune(){}
     
@@ -21,9 +21,9 @@ public class RunecraftRune extends AbstractTimedRune {
      * @param coords Center rune block that the vehicle is checked from 
      * @param player Person that the vehicle gloms on to
      */
-    public RunecraftRune(WorldCoordinates coords, EntityPlayer player)
+    public RunecraftRune(WorldXYZ coords, EntityPlayer player)
     {
-        location = new WorldCoordinates(coords);
+        location = new WorldXYZ(coords);
         driver = player;
         scanForVehicleShape(coords, player);
         updateEveryXTicks(4);
@@ -57,7 +57,7 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @Override
-    public void execute(EntityPlayer player, WorldCoordinates coords) {
+    public void execute(EntityPlayer player, WorldXYZ coords) {
         accept(player);
         if(!player.worldObj.isRemote){
             if( addOrToggleVehicle(coords, player) )
@@ -71,7 +71,7 @@ public class RunecraftRune extends AbstractTimedRune {
      * NOTE: This is an odd method to program for because it is a different instance of Runecraft
      * that is doing something on behalf of the subject Runecraft.  Be very careful to not
      * change class variable, but always call oldRCV.variable.*/
-    public boolean addOrToggleVehicle(WorldCoordinates centerPoint, EntityPlayer player) {
+    public boolean addOrToggleVehicle(WorldXYZ centerPoint, EntityPlayer player) {
         for(RunecraftRune oldRCV : activeVehicles){
             if( oldRCV.driver != null && oldRCV.driver.equals(player)){//currently active Rune, to be turned off
                 oldRCV.driver = null; //turn off the vehicle
@@ -83,7 +83,7 @@ public class RunecraftRune extends AbstractTimedRune {
             {
                 if(oldRCV.driver == null){ // not currently active
                     oldRCV.driver = player; // assign a driver and start
-                    HashMap<WorldCoordinates, SigBlock> oldVehicleShape = oldRCV.vehicleBlocks;
+                    HashMap<WorldXYZ, SigBlock> oldVehicleShape = oldRCV.vehicleBlocks;
                     if( oldRCV.scanForVehicleShape(centerPoint, player) )
                         return true;
                     else{
@@ -101,9 +101,9 @@ public class RunecraftRune extends AbstractTimedRune {
         return true;
     }
     
-    private HashMap<WorldCoordinates, SigBlock> rescanBlocks(HashMap<WorldCoordinates, SigBlock> oldVehicleShape) {
-        HashMap<WorldCoordinates, SigBlock> newVehicle = new HashMap<WorldCoordinates, SigBlock>();
-        for(WorldCoordinates xyz : oldVehicleShape.keySet()){
+    private HashMap<WorldXYZ, SigBlock> rescanBlocks(HashMap<WorldXYZ, SigBlock> oldVehicleShape) {
+        HashMap<WorldXYZ, SigBlock> newVehicle = new HashMap<WorldXYZ, SigBlock>();
+        for(WorldXYZ xyz : oldVehicleShape.keySet()){
             SigBlock block = xyz.getSigBlock();
             if(block.blockID != 0) // We specifically want to exclude AIR to avoid confusing collisions
                 newVehicle.put(xyz, block);
@@ -111,7 +111,7 @@ public class RunecraftRune extends AbstractTimedRune {
         return newVehicle;
     }
 
-    protected boolean scanForVehicleShape(WorldCoordinates coords, EntityPlayer player) {
+    protected boolean scanForVehicleShape(WorldXYZ coords, EntityPlayer player) {
         tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
         vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
         if(vehicleBlocks.isEmpty()){

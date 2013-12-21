@@ -38,7 +38,7 @@ public abstract class AbstractRune {
 	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 * @param coords World and xyz that Rune was activated in.
 	 */
-	public abstract void execute(EntityPlayer player, WorldCoordinates coords);//
+	public abstract void execute(EntityPlayer player, WorldXYZ coords);//
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
@@ -50,12 +50,12 @@ public abstract class AbstractRune {
 	 * @param worldZ
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
-	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, WorldCoordinates coords)
+	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, WorldXYZ coords)
 	{
 		for (int y = 0; y < template.length; y++) {
 			for (int z = 0; z < template[y].length; z++) {
 				for (int x = 0; x < template[y][z].length; x++) {
-                    WorldCoordinates target = coords.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
+                    WorldXYZ target = coords.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
 					target.setBlockId( template[y][z][x] );
                 }
             }
@@ -75,7 +75,7 @@ public abstract class AbstractRune {
 		return true;
 	}
 	
-	protected void safelyMovePlayer(EntityPlayer player, WorldCoordinates coords) {
+	protected void safelyMovePlayer(EntityPlayer player, WorldXYZ coords) {
 		safelyMovePlayer(player, coords, Direction.UP);
 	}
 	
@@ -84,7 +84,7 @@ public abstract class AbstractRune {
 	 * @param coords Target destination
 	 * @param direction to move in if they encounter blocks
 	 */
-	protected void safelyMovePlayer(EntityPlayer player, WorldCoordinates coords, Direction direction) {
+	protected void safelyMovePlayer(EntityPlayer player, WorldXYZ coords, Direction direction) {
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
@@ -108,10 +108,10 @@ public abstract class AbstractRune {
     }
 	
 	/**Checks to see if there is a block match for the Rune blockPattern center at 
-	 * WorldCoordinates coords.  
+	 * WorldXYZ coords.  
 	 * @return true if there is a valid match
 	 */
-    public boolean checkRunePattern(WorldCoordinates coords) {
+    public boolean checkRunePattern(WorldXYZ coords) {
         int [][][] pattern = blockPattern();
         int tierID = 0;
         int inkID = getTierInkBlock(coords);
@@ -120,7 +120,7 @@ public abstract class AbstractRune {
         for (int y = 0; y < pattern.length; y++) {
             for (int z = 0; z < pattern[y].length; z++) {
                 for (int x = 0; x < pattern[y][z].length; x++) {
-                    WorldCoordinates target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
+                    WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
                     // World coordinates + relative offset + half the size of the rune (for middle)
                     // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
                     int blockID = target.getBlockId();
@@ -161,13 +161,13 @@ public abstract class AbstractRune {
         return true;
     }
 
-    protected int getTierInkBlock(WorldCoordinates coords) {
+    protected int getTierInkBlock(WorldXYZ coords) {
         int [][][] pattern = blockPattern();
         for (int y = 0; y < pattern.length; y++) {
             for (int z = 0; z < pattern[y].length; z++) {
                 for (int x = 0; x < pattern[y][z].length; x++) {
                     if( pattern[y][z][x] == TIER ){
-                        WorldCoordinates target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
+                        WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
                         return target.getBlockId();
                     }
                 }
@@ -184,15 +184,15 @@ public abstract class AbstractRune {
 
     
     
-    protected HashMap<WorldCoordinates, SigBlock> moveShape(HashMap<WorldCoordinates, SigBlock> vehicleBlocks, int dX, int dY, int dZ) {
+    protected HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> vehicleBlocks, int dX, int dY, int dZ) {
         //Josiah: If you're having trouble with glitches, try only running it on the server side
         //if( !world.isRemote ) //this is only true server side
-        for(WorldCoordinates loc : vehicleBlocks.keySet())
+        for(WorldXYZ loc : vehicleBlocks.keySet())
             loc.setBlockId(0); // delete old block in a separate loop to avoid collisions
 
-        HashMap<WorldCoordinates, SigBlock> newPositions = new HashMap<WorldCoordinates, SigBlock>();
-        for(WorldCoordinates start : vehicleBlocks.keySet()){
-            WorldCoordinates target = start.offset(dX, dY, dZ);
+        HashMap<WorldXYZ, SigBlock> newPositions = new HashMap<WorldXYZ, SigBlock>();
+        for(WorldXYZ start : vehicleBlocks.keySet()){
+            WorldXYZ target = start.offset(dX, dY, dZ);
             SigBlock sig = vehicleBlocks.get(start);
             target.setBlockId(sig); //place new block 1 to the South
             newPositions.put(target, sig);
@@ -201,24 +201,24 @@ public abstract class AbstractRune {
     }
 
     /**This will return an empty list if the activation would tear a structure in two. */
-    public HashMap<WorldCoordinates, SigBlock> conductanceStep(WorldCoordinates startPoint, int maxDistance) {
-        //TODO: perhaps rename WorldCoordinates to WorldXYZ
-        HashMap<WorldCoordinates, SigBlock> workingSet = new HashMap<WorldCoordinates, SigBlock>();
-        HashSet<WorldCoordinates> activeEdge;
-        HashSet<WorldCoordinates> nextEdge = new HashSet<WorldCoordinates>();
+    public HashMap<WorldXYZ, SigBlock> conductanceStep(WorldXYZ startPoint, int maxDistance) {
+        //TODO: perhaps rename WorldXYZ to WorldXYZ
+        HashMap<WorldXYZ, SigBlock> workingSet = new HashMap<WorldXYZ, SigBlock>();
+        HashSet<WorldXYZ> activeEdge;
+        HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
         workingSet.put(startPoint, startPoint.getSigBlock());
         nextEdge.add(startPoint);
         
         for(int iterationStep = maxDistance+1; iterationStep > 0; iterationStep--) {
             activeEdge = nextEdge;
-            nextEdge = new HashSet<WorldCoordinates>();
+            nextEdge = new HashSet<WorldXYZ>();
           //tear detection: this should be empty by the last step
             if(iterationStep == 1 && activeEdge.size() != 0) 
-                return new HashMap<WorldCoordinates, SigBlock>();
+                return new HashMap<WorldXYZ, SigBlock>();
             
-            for(WorldCoordinates block : activeEdge) {
-                ArrayList<WorldCoordinates> neighbors = block.getNeighbors();
-                for(WorldCoordinates n : neighbors) {
+            for(WorldXYZ block : activeEdge) {
+                ArrayList<WorldXYZ> neighbors = block.getNeighbors();
+                for(WorldXYZ n : neighbors) {
                     int blockID = n.getBlockId();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
                     if( !workingSet.keySet().contains(n) && !Tiers.isNatural(blockID) ) {

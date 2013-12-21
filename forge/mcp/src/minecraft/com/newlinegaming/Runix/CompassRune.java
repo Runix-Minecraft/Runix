@@ -12,7 +12,7 @@ public class CompassRune extends AbstractRune{
               {TIER, 0 ,TIER}}}; //This is AIR 0 on purpose
 	}
 
-	public void execute(EntityPlayer player, WorldCoordinates coords){
+	public void execute(EntityPlayer player, WorldXYZ coords){
 	    int ink = getTierInkBlock(coords);
 		int[][][] compassOutcome = new int [][][]
 				{{{ 0 ,ink, 0 }, //TODO: pass meta-data

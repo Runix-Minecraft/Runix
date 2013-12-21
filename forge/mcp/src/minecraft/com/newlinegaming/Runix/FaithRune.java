@@ -12,7 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class FaithRune extends AbstractRune{
 	public String runeName = "Faith";
 	static List<FaithRune> activeFaithList = new LinkedList<FaithRune>();
-	public WorldCoordinates islandCoords;
+	public WorldXYZ islandCoords;
 	public Integer radius;
 	public int[][][] blockPattern(){
 		return new int [][][] 
@@ -24,7 +24,7 @@ public class FaithRune extends AbstractRune{
              {41,0,41}}};
 	}
 	
-	public void execute(EntityPlayer player, WorldCoordinates coords)
+	public void execute(EntityPlayer player, WorldXYZ coords)
 	{
 		if (!runeAllowed(player, this)) return;
 		for (FaithRune fr : activeFaithList)
@@ -48,10 +48,10 @@ public class FaithRune extends AbstractRune{
 		return "Faith";
 	}
 	
-	public void floatIsland(EntityPlayer player,WorldCoordinates islandCentre)
+	public void floatIsland(EntityPlayer player,WorldXYZ islandCentre)
 	{
 		aetherSay(player,EnumChatFormatting.GREEN+"Floating an island");
-		List<WorldCoordinates> points = Util_SphericalFunctions.getSphere(islandCentre, 8);
+		List<WorldXYZ> points = Util_SphericalFunctions.getSphere(islandCentre, 8);
 		aetherSay(player,EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
 	}
 	

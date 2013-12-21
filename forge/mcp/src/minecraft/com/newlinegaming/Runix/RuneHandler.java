@@ -30,11 +30,11 @@ public class RuneHandler {
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.action == Action.RIGHT_CLICK_BLOCK)
             possibleRuneActivationEvent(event.entityPlayer, 
-                    new WorldCoordinates(event.entityPlayer.worldObj, event.x, event.y, event.z));
+                    new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z));
     }
 
     /**Detects a rune pattern, and executes it.*/
-    public void possibleRuneActivationEvent(EntityPlayer player, WorldCoordinates coords) {
+    public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
             createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
@@ -47,7 +47,7 @@ public class RuneHandler {
      * @param coords
      * @return AbstractRune class if there is a match, null otherwise
      */
-    private AbstractRune checkForAnyRunePattern(WorldCoordinates coords) {
+    private AbstractRune checkForAnyRunePattern(WorldXYZ coords) {
         boolean result = false;
         for (int i = 0; i < runeRegistry.size(); i++) {
             result = runeRegistry.get(i).checkRunePattern(coords);

@@ -6,13 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class WaypointRune extends AbstractRune {
     public static ArrayList<WaypointRune> waypoints = new ArrayList<WaypointRune>();
-    public WorldCoordinates location;
+    public WorldXYZ location;
 
     public WaypointRune(){}
     
-    public WaypointRune(WorldCoordinates coords)
+    public WaypointRune(WorldXYZ coords)
     {
-        this.location = new WorldCoordinates(coords);
+        this.location = new WorldXYZ(coords);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class WaypointRune extends AbstractRune {
     }
 
     @Override
-    public void execute(EntityPlayer player, WorldCoordinates coords) {
+    public void execute(EntityPlayer player, WorldXYZ coords) {
         AbstractRune persistentCopy = new WaypointRune(coords);
         if( addWaypoint((WaypointRune) persistentCopy) )
             accept(player);

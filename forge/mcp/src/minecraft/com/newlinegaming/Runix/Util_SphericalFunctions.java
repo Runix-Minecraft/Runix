@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 public class Util_SphericalFunctions {
 
 	
-	public static boolean radiusCheck(WorldCoordinates loc, int radius)
+	public static boolean radiusCheck(WorldXYZ loc, int radius)
 	{
 		if((loc.posX*loc.posX)+(loc.posY*loc.posY)+(loc.posZ*loc.posZ) > (radius*radius))
 		{return false;}
@@ -27,17 +27,17 @@ public class Util_SphericalFunctions {
 		}
 		
 	}
-	public static List<WorldCoordinates> getSphere (WorldCoordinates coords, int radius) 
+	public static List<WorldXYZ> getSphere (WorldXYZ coords, int radius) 
 	{
 		World world = coords.worldObj;
-		LinkedList<WorldCoordinates> returnvalues = new LinkedList();
+		LinkedList<WorldXYZ> returnvalues = new LinkedList();
 		for (int z = -radius; z <= radius; z++)
 			for (int y = -radius; y < radius; y++)  //Josiah: perhaps you should put the y as the top loop so that it animates top to bottom instead of side to side
 				for (int x = -radius; x < radius; x++)
 				{
 					if(radiusCheck(x,y,z, radius))
 					{
-						WorldCoordinates point = new WorldCoordinates(world,coords.posX+x,coords.posY+y,coords.posZ+z);
+						WorldXYZ point = new WorldXYZ(world,coords.posX+x,coords.posY+y,coords.posZ+z);
 						returnvalues.add(point);
 					}
 				}

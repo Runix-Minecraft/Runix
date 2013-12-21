@@ -11,42 +11,42 @@ import net.minecraft.world.WorldProvider;
 /**This class was created for Runix to ensure that when transferring between sets of coordinates,
  * the World is always known.  It extends ChunkCoordinates used by the rest of minecraft, but tracks
  * World and contains helper methods useful to Runix.*/
-public class WorldCoordinates extends ChunkCoordinates {
+public class WorldXYZ extends ChunkCoordinates {
 
     public World worldObj;
     
-    public WorldCoordinates() {
+    public WorldXYZ() {
         this.posX = 0;
         this.posY = 64;
         this.posZ = 0;
         this.worldObj = defaultWorld();
     }
 
-    public WorldCoordinates(int x, int y, int z) {
+    public WorldXYZ(int x, int y, int z) {
         super(x, y, z);
         this.worldObj = defaultWorld();
     }
 
-    public WorldCoordinates(World world, int x, int y, int z) {
+    public WorldXYZ(World world, int x, int y, int z) {
         super(x, y, z);
         this.worldObj = world;
     }
     
-    public WorldCoordinates(ChunkCoordinates otherGuy) {
+    public WorldXYZ(ChunkCoordinates otherGuy) {
         super(otherGuy);
-        if( otherGuy instanceof WorldCoordinates)
-            this.worldObj = ((WorldCoordinates) otherGuy).worldObj;
+        if( otherGuy instanceof WorldXYZ)
+            this.worldObj = ((WorldXYZ) otherGuy).worldObj;
         else
             this.worldObj = defaultWorld();
     }
 
-    /**Creates a new WorldCoordinates based off of a previous one and a relative vector*/
-    public WorldCoordinates offset(int dX, int dY, int dZ){
-        return new WorldCoordinates(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ);
+    /**Creates a new WorldXYZ based off of a previous one and a relative vector*/
+    public WorldXYZ offset(int dX, int dY, int dZ){
+        return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ);
     }
 
     /**Similar to offset(), but updates the current instance instead of a new one.*/ 
-    public WorldCoordinates bump(int dX, int dY, int dZ) {
+    public WorldXYZ bump(int dX, int dY, int dZ) {
         posX += dX;
         posY += dY;
         posZ += dZ;
@@ -66,8 +66,8 @@ public class WorldCoordinates extends ChunkCoordinates {
         else{
             ChunkCoordinates other = (ChunkCoordinates)otherObj;
             if( this.posX == other.posX && this.posY == other.posY && this.posZ == other.posZ){
-                if(other instanceof WorldCoordinates)
-                    return ((WorldCoordinates) other).worldObj == this.worldObj;
+                if(other instanceof WorldXYZ)
+                    return ((WorldXYZ) other).worldObj == this.worldObj;
                 else
                     return true;
             }
@@ -107,8 +107,8 @@ public class WorldCoordinates extends ChunkCoordinates {
         return "(" + posX + "," + posY +  "," + posZ + ")"; 
     }
 
-    public ArrayList<WorldCoordinates> getNeighbors() {
-        ArrayList<WorldCoordinates> neighbors = new ArrayList<WorldCoordinates>();
+    public ArrayList<WorldXYZ> getNeighbors() {
+        ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
         neighbors.add(offset(-1,0,0));
         neighbors.add(offset(0,-1,0));
         neighbors.add(offset(0,0,-1));

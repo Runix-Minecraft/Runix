@@ -14,7 +14,7 @@ public class Signature {
         metas = new ArrayList<Integer>();// Arrays.asList(0)
     }
 
-    public Signature(AbstractRune rune, WorldCoordinates coords){
+    public Signature(AbstractRune rune, WorldXYZ coords){
         IDs = new ArrayList<Integer>();
         metas = new ArrayList<Integer>();
         
@@ -23,7 +23,7 @@ public class Signature {
             for (int z = 0; z < pattern[y].length; z++) {
                 for (int x = 0; x < pattern[y][z].length; x++) {
                     if( pattern[y][z][x] == AbstractRune.SIGR ){
-                        WorldCoordinates target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
+                        WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
                         IDs.add(new Integer(target.getBlockId()));
                         metas.add(new Integer(target.getMetaId()));
                     }

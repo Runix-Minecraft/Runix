@@ -18,12 +18,12 @@ public class TeleporterRune extends AbstractRune {
 	/**This method moves the player to spawn.
 	 * WorldXYZ are not used.
 	 */
-	public void execute(EntityPlayer player, WorldCoordinates coords) {
+	public void execute(EntityPlayer player, WorldXYZ coords) {
 	    accept(player);
 	    Signature signature = new Signature(this, coords);
-	    WorldCoordinates destination;
+	    WorldXYZ destination;
 		if( WaypointRune.waypoints.isEmpty()){
-		    destination = new WorldCoordinates(player.worldObj.getSpawnPoint());
+		    destination = new WorldXYZ(player.worldObj.getSpawnPoint());
 		    destination.worldObj = player.worldObj;
 		}
 		else{
@@ -38,7 +38,7 @@ public class TeleporterRune extends AbstractRune {
     	        aetherSay(player, "A waypoint with that signature cannot be found.");
     	        return;
     	    }
-    	    destination = new WorldCoordinates(wp.location);
+    	    destination = new WorldXYZ(wp.location);
 		}
 		safelyMovePlayer(player, destination);
 	}
