@@ -23,6 +23,7 @@ public class RuneHandler {
         runeRegistry.add(new CompassRune());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune());
+        runeRegistry.add(new RubricControl());
     }
 
     @ForgeSubscribe

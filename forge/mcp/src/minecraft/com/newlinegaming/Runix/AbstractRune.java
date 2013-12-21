@@ -1,6 +1,8 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -180,6 +182,8 @@ public abstract class AbstractRune {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
     }
 
+    
+    
     protected HashMap<WorldCoordinates, SigBlock> moveShape(HashMap<WorldCoordinates, SigBlock> vehicleBlocks, int dX, int dY, int dZ) {
         //Josiah: If you're having trouble with glitches, try only running it on the server side
         //if( !world.isRemote ) //this is only true server side
@@ -194,6 +198,38 @@ public abstract class AbstractRune {
             newPositions.put(target, sig);
         }
         return newPositions;
+    }
+
+    /**This will return an empty list if the activation would tear a structure in two. */
+    public HashMap<WorldCoordinates, SigBlock> conductanceStep(WorldCoordinates startPoint, int maxDistance) {
+        //TODO: perhaps rename WorldCoordinates to WorldXYZ
+        HashMap<WorldCoordinates, SigBlock> workingSet = new HashMap<WorldCoordinates, SigBlock>();
+        HashSet<WorldCoordinates> activeEdge;
+        HashSet<WorldCoordinates> nextEdge = new HashSet<WorldCoordinates>();
+        workingSet.put(startPoint, startPoint.getSigBlock());
+        nextEdge.add(startPoint);
+        
+        for(int iterationStep = maxDistance+1; iterationStep > 0; iterationStep--) {
+            activeEdge = nextEdge;
+            nextEdge = new HashSet<WorldCoordinates>();
+          //tear detection: this should be empty by the last step
+            if(iterationStep == 1 && activeEdge.size() != 0) 
+                return new HashMap<WorldCoordinates, SigBlock>();
+            
+            for(WorldCoordinates block : activeEdge) {
+                ArrayList<WorldCoordinates> neighbors = block.getNeighbors();
+                for(WorldCoordinates n : neighbors) {
+                    int blockID = n.getBlockId();
+                    // && blockID != 0 && blockID != 1){  // this is the Fun version!
+                    if( !workingSet.keySet().contains(n) && !Tiers.isNatural(blockID) ) {
+                        //TODO: possible slow down = long list of natural blocks
+                        workingSet.put(n, n.getSigBlock());
+                        nextEdge.add(n);
+                    }
+                }
+            }
+        }
+        return workingSet;
     }
     
     
