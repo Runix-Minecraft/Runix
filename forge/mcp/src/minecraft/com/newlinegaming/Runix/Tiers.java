@@ -12,6 +12,7 @@ public class Tiers {
     
     private static ArrayList<Integer> Tier0;
     private static ArrayList<Integer> naturalBlocks;
+    private static ArrayList<Integer> moveSensitiveBlocks;
     private static HashMap<Integer, Integer> allTiers = new HashMap<Integer, Integer>();
     
     public Tiers(){
@@ -29,6 +30,26 @@ public class Tiers {
             Block.ice, Block.sapling, Block.wood};
         naturalBlocks = loadBlockIds(extraNaturalBlocks);
         naturalBlocks.addAll(Tier0);
+        
+        Block[] attachedOrFallingBlocks = new Block[]{
+            Block.anvil, Block.cocoaPlant, Block.carrot, Block.carpet, Block.crops,
+            Block.potato, Block.portal, Block.endPortal, Block.brewingStand, 
+            Block.cactus, Block.deadBush, Block.dragonEgg, Block.fire,
+            Block.grass, Block.gravel, Block.lavaMoving, Block.lavaStill,
+            Block.ladder, Block.leaves, Block.leaves, Block.melonStem,
+            Block.mushroomBrown, Block.mushroomRed, Block.netherStalk, Block.pistonExtension,
+            Block.plantRed, Block.plantYellow, Block.pressurePlateGold, Block.pressurePlateIron,
+            Block.pressurePlateStone, Block.pressurePlatePlanks, Block.pumpkinStem,
+            Block.rail, Block.railActivator, Block.railDetector, Block.railPowered,
+            Block.redstoneComparatorActive, Block.redstoneComparatorIdle, 
+            Block.redstoneRepeaterActive, Block.redstoneRepeaterIdle,
+            Block.redstoneWire, Block.reed, Block.sand, Block.sapling, 
+            Block.signPost, Block.signWall, Block.skull, Block.stoneButton,
+            Block.tallGrass, Block.tripWire, Block.tripWireSource,
+            Block.torchWood, Block.torchRedstoneActive, Block.torchRedstoneIdle,
+            Block.vine, Block.waterlily, Block.waterMoving, Block.waterStill, 
+            Block.woodenButton};
+        moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
         
         Block[] Tier1Blocks = new Block[]{
         	Block.cobblestone, Block.stairsCobblestone, Block.cobblestoneWall, 
@@ -115,6 +136,13 @@ public class Tiers {
         return naturalBlocks.contains(new Integer(blockID));
     }
     
+    /*This is a list of all the blocks that need special treatment when moving groups of blocks
+     * like FTP or Runecraft.  All independent blocks need to be placed first because all of these
+     * blocks attach to other blocks or (in the case of liquids) need to be held in by solid blocks.
+     */
+    public static boolean isMoveSensitive(int blockID){
+        return moveSensitiveBlocks.contains(new Integer(blockID));
+    }
 }
 
 

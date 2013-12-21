@@ -191,12 +191,19 @@ public abstract class AbstractRune {
             loc.setBlockId(0); // delete old block in a separate loop to avoid collisions
 
         HashMap<WorldXYZ, SigBlock> newPositions = new HashMap<WorldXYZ, SigBlock>();
+        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ start : vehicleBlocks.keySet()){
             WorldXYZ target = start.offset(dX, dY, dZ);
             SigBlock sig = vehicleBlocks.get(start);
-            target.setBlockId(sig); //place new block 1 to the South
+            if( !Tiers.isMoveSensitive(sig.blockID) )
+                target.setBlockId(sig);
+            else
+                sensitiveBlocks.put(target, sig);
             newPositions.put(target, sig);
         }
+        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //blocks like torches and redstone
+            specialPos.setBlockId(sensitiveBlocks.get(specialPos)); 
+        
         return newPositions;
     }
 
