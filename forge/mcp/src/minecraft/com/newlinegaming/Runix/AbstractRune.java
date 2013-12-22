@@ -183,8 +183,6 @@ public abstract class AbstractRune {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
     }
 
-    
-    
     protected HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> vehicleBlocks, int dX, int dY, int dZ) {
         //Josiah: If you're having trouble with glitches, try only running it on the server side
         //if( !world.isRemote ) //this is only true server side
@@ -243,6 +241,15 @@ public abstract class AbstractRune {
             }
         }
         return workingSet;
+    }
+
+    protected boolean shapeCollides(HashMap<WorldXYZ, SigBlock> shape, int dX, int dY, int dZ) {
+        for(WorldXYZ start : shape.keySet()){
+            WorldXYZ target = start.offset(dX, dY, dZ);
+            if( target.getBlockId() != 0 && !shape.containsKey(target) )
+                return true; //TODO: check for isCrushable
+        }
+        return false;
     }
     
     
