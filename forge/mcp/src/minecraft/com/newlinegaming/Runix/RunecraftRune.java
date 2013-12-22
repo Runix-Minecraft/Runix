@@ -6,6 +6,10 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RunecraftRune extends AbstractTimedRune {
     
@@ -28,32 +32,7 @@ public class RunecraftRune extends AbstractTimedRune {
         driver = player;
         scanForVehicleShape(coords, player);
         updateEveryXTicks(4);
-    }
-
-    protected void onUpdateTick(EntityPlayer subject) {
-        //TODO: we're not currently using subject
-        if(driver != null && !driver.worldObj.isRemote)
-        {//Josiah: turns out running this on server and client side causes strange duplications
-            int dX = (int) (driver.posX - location.posX - .5);
-            int dY = (int) (driver.posY - location.posY - 1);
-            int dZ = (int) (driver.posZ - location.posZ - .5);
-            if( 10 < location.getDistanceSquared((int)driver.posX, (int)driver.posY, (int)driver.posZ) ){
-                driver = null; //Vehicle has been abandoned
-                return; //Vehicle should stop moving until someone is at the wheel again
-            }
-            if(driver.isSneaking())
-                dY -= 1;
-            if(dX != 0 || dY != 0 || dZ != 0){
-                if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
-                    vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
-                    location = location.offset(dX, dY, dZ);
-                }
-                else{
-                    aetherSay(driver, "CRUNCH!");
-                    safelyMovePlayer(driver, location.offset(0, 1, 0));//TODO: not working because it's server side only
-                }
-            }
-        }
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -78,6 +57,41 @@ public class RunecraftRune extends AbstractTimedRune {
         }
     }
 
+    @Override
+    protected void onUpdateTick(EntityPlayer subject) {
+        //TODO: we're not currently using subject
+        if(driver != null && !driver.worldObj.isRemote)
+        {//Josiah: turns out running this on server and client side causes strange duplications
+            int dX = (int) (driver.posX - location.posX - .5);
+            int dY = (int) (driver.posY - location.posY - 1);
+            int dZ = (int) (driver.posZ - location.posZ - .5);
+            if( 10 < location.getDistanceSquared((int)driver.posX, (int)driver.posY, (int)driver.posZ) ){
+                driver = null; //Vehicle has been abandoned
+                return; //Vehicle should stop moving until someone is at the wheel again
+            }
+            if(driver.isSneaking())
+                dY -= 1;
+            if(dX != 0 || dY != 0 || dZ != 0){
+                if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
+                    vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
+                    location = location.offset(dX, dY, dZ);
+                }
+                else{
+                    aetherSay(driver, "CRUNCH!");
+//                    safelyMovePlayer(driver, location.offset(0, 1, 0));//TODO: not working because it's server side only
+                }
+            }
+        }
+    }
+
+    @ForgeSubscribe
+    public void playerInteractEvent(PlayerInteractEvent event) {
+        if (driver != null && event.action == Action.LEFT_CLICK_BLOCK)
+            if( event.isCancelable() )
+                if( vehicleBlocks.containsKey(new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z) ))
+                    event.setCanceled(true); //build protect
+    }
+    
     /** This method exists to ensure that no duplicate vehicles are persisted. 
      * NOTE: This is an odd method to program for because it is a different instance of Runecraft
      * that is doing something on behalf of the subject Runecraft.  Be very careful to not
