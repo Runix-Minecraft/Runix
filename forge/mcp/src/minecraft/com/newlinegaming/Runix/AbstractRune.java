@@ -3,6 +3,7 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -187,18 +188,23 @@ public abstract class AbstractRune {
     protected HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> vehicleBlocks, int dX, int dY, int dZ) {
         //Josiah: If you're having trouble with glitches, try only running it on the server side
         //if( !world.isRemote ) //this is only true server side
+        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
+        for(Entry<WorldXYZ, SigBlock> pair : vehicleBlocks.entrySet()){
+            if( Tiers.isMoveSensitive(pair.getValue().blockID) ){
+                sensitiveBlocks.put(pair.getKey().offset(dX, dY, dZ), pair.getValue());
+                pair.getKey().setBlockId(0);
+            }//Josiah: Hopefully this isn't too slow.  I coulddn't find a shorter path to preserving these blocks
+        }
+        
         for(WorldXYZ loc : vehicleBlocks.keySet())
             loc.setBlockId(0); // delete old block in a separate loop to avoid collisions
 
         HashMap<WorldXYZ, SigBlock> newPositions = new HashMap<WorldXYZ, SigBlock>();
-        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ start : vehicleBlocks.keySet()){
             WorldXYZ target = start.offset(dX, dY, dZ);
             SigBlock sig = vehicleBlocks.get(start);
             if( !Tiers.isMoveSensitive(sig.blockID) )
                 target.setBlockId(sig);
-            else
-                sensitiveBlocks.put(target, sig);
             newPositions.put(target, sig);
         }
         for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //blocks like torches and redstone
