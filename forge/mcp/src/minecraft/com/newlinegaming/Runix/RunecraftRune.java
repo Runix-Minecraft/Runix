@@ -5,11 +5,14 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+
+import org.lwjgl.opengl.GL11;
 
 public class RunecraftRune extends AbstractTimedRune {
     
@@ -18,8 +21,10 @@ public class RunecraftRune extends AbstractTimedRune {
     public EntityPlayer driver;
     public int tier;
     private HashMap<WorldXYZ, SigBlock> vehicleBlocks;
+    private float wireFrameDrawOffset;
     
-    public RunecraftRune(){}
+    public RunecraftRune(){
+        wireFrameDrawOffset = 0.0f;}
     
     /**Runecraft Runix Vehicle is now working and tracking with player while active.  
      * Toggle it by right clicking the center block.  You can jump up to travel up, just not down yet.
@@ -84,6 +89,39 @@ public class RunecraftRune extends AbstractTimedRune {
         }
     }
 
+    @ForgeSubscribe
+    public void renderWireframe(RenderWorldLastEvent evt)
+    {
+        if(driver == null || wireFrameDrawOffset > 0.5)
+            return;
+        wireFrameDrawOffset += 0.01f;//this is both geometry and animation timer
+        double doubleX = driver.posX - 0.5;
+        double doubleY = driver.posY + 0.1;
+        double doubleZ = driver.posZ - 0.5;
+
+        GL11.glPushMatrix();
+            GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
+            GL11.glColor3ub((byte)0,(byte)216,(byte)216);
+            
+            for(WorldXYZ block : vehicleBlocks.keySet()){
+                renderWireCube(block.posX, block.posY, block.posZ, wireFrameDrawOffset);
+            }
+        GL11.glPopMatrix();
+    }
+
+    /**Makes a wireframe Cube given an XYZ posiiton
+     */
+    protected void renderWireCube(float mx, float my, float mz, float offset) {
+        my -= 0.4f;
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+            GL11.glVertex3f(mx+offset, my, mz+offset);
+            GL11.glVertex3f(mx+offset, my, mz-offset);
+            GL11.glVertex3f(mx-offset, my, mz-offset);
+            GL11.glVertex3f(mx-offset, my, mz+offset);
+            GL11.glVertex3f(mx+offset, my, mz+offset);
+        GL11.glEnd();
+    }
+    
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (driver != null && event.action == Action.LEFT_CLICK_BLOCK)
@@ -158,6 +196,7 @@ public class RunecraftRune extends AbstractTimedRune {
     protected boolean scanForVehicleShape(WorldXYZ coords, EntityPlayer player) {
         tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
         vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
+        wireFrameDrawOffset = 0.0f;
         if(vehicleBlocks.isEmpty()){
             aetherSay(player, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
             return false;   
