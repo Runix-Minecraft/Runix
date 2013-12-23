@@ -26,9 +26,8 @@ public class RubricRecallRune extends AbstractRune{
 	}
 
 	@Override
-	public String getRuneName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getRuneName() {  return "RubricRecallRune";
+		
 	}
 	
 	
