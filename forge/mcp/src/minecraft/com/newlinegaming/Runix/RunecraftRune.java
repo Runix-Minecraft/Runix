@@ -87,9 +87,28 @@ public class RunecraftRune extends AbstractTimedRune {
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (driver != null && event.action == Action.LEFT_CLICK_BLOCK)
-            if( event.isCancelable() )
-                if( vehicleBlocks.containsKey(new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z) ))
+            if( event.isCancelable() ){
+                WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
+                if( vehicleBlocks.containsKey( punchBlock ))
+                    if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){
+                        //GEOMETRY: figure out if we're on the left or right side of the rune relative to the player
+                        float yaw = driver.rotationYawHead;//assumption: you're looking at the block you right clicked
+                        yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
+                        double opposite = driver.posZ - location.posZ - .5;
+                        double adjacent = driver.posX - location.posX - .5;
+                        double angle = Math.toDegrees(Math.atan( opposite / adjacent )) + 90.0;
+                        if( adjacent > 0.0)
+                            angle += 180.0;
+                        System.out.println("Rune: " + angle + "  Yaw: " + yaw + " = " + (angle - yaw));
+                        if( ((angle - yaw) < 180.0 && (angle - yaw) > 0.0) ||
+                                ((angle - yaw) < -180.0 && (angle - yaw) > -360.0) )
+                            System.out.println("Looking to the right.");
+                        else
+                            System.out.println("Looking to the left.");
+
+                    }
                     event.setCanceled(true); //build protect
+            }
     }
     
     /** This method exists to ensure that no duplicate vehicles are persisted. 
