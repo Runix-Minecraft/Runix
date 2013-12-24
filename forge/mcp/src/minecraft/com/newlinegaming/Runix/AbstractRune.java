@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -19,15 +20,13 @@ public abstract class AbstractRune {
 	
 	enum Direction {UP, DOWN, NORTH, EAST, SOUTH, WEST};// vectors[(int)Direction.UP] = new int[]{0,1,0};
 	
-	//Josiah: I'd be happy to find a more compact way to right this,
-	//but enum requires .value to be used as an int, which we need.
     public static final int TIER = -1; //Tier
     public static final int SIGR = -2; //Signature block
     public static final int NONE = -3; //Non-Tier, Tier 0
+    //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
     public static final int ENTY = -4; //Entity blocks with special data like heads, picture frames, ect... 
     //Josiah: I'm not sure what to do with ENTY? 
     public static final int KEY = -5;
-    //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
 	
 	public AbstractRune(){}
 
@@ -208,6 +207,7 @@ public abstract class AbstractRune {
         for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //blocks like torches and redstone
             specialPos.setBlockId(sensitiveBlocks.get(specialPos)); 
         
+        RuneHandler.getInstance().moveMagic(vehicleBlocks.keySet(), dX, dY, dZ);
         return newPositions;
     }
 
@@ -250,6 +250,10 @@ public abstract class AbstractRune {
                 return true; //TODO: check for isCrushable
         }
         return false;
+    }
+
+    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
+        //Default behavior is nothing.  Override this for persistent runes
     }
     
     

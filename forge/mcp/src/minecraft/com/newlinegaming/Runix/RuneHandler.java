@@ -3,21 +3,20 @@ package com.newlinegaming.Runix;
 /** Josiah: I'm just writing some notes down as code.  This hasn't been tested yet. */
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RuneHandler {
+    private static RuneHandler instance = null;//Singleton pattern
+    
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-
-    public RuneHandler() {      
+    
+    private RuneHandler() {      
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
@@ -25,6 +24,12 @@ public class RuneHandler {
         runeRegistry.add(new RunecraftRune());
         runeRegistry.add(new RubricCreationRune());
         runeRegistry.add(new RubricRecallRune());
+    }
+    
+    public static RuneHandler getInstance(){
+        if(instance == null)
+            instance = new RuneHandler();
+        return instance;
     }
 
     @ForgeSubscribe
@@ -59,4 +64,11 @@ public class RuneHandler {
         return null;
     }
 
+    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ){
+        for(AbstractRune rune : runeRegistry){
+            rune.moveMagic(blocks, dX, dY, dZ);
+        }
+    }
+//    public JSON extractMagic(Collection<WorldXYZ> blocks)
+    
 }

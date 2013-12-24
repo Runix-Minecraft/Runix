@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -46,4 +47,12 @@ public class WaypointRune extends AbstractRune {
     public String getRuneName() {
 		return "Waypoint";
 	}
+    
+    @Override
+    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
+        for(WaypointRune wp : waypoints){
+            if(blocks.contains(wp.location) )
+                wp.location.bump(dX, dY, dZ);
+        }
+    }
 }

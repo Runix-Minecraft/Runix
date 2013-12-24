@@ -30,6 +30,7 @@ public class RubricCreationRune extends AbstractRune{
     public HashMap<WorldXYZ, SigBlock> structure;
     public WorldXYZ anchorpoint;
     
+    public RubricCreationRune(){}
     public RubricCreationRune(HashMap<WorldXYZ, SigBlock> building, WorldXYZ location){
 	
 	structure = building;
