@@ -35,11 +35,6 @@ public class RubricCreationRune extends AbstractRune{
 	structure = building;
 	anchorpoint = location;
     }
-    
-    
-    public RubricCreationRune() {
-	// TODO Auto-generated constructor stub
-    }
 
 
     @Override
@@ -64,13 +59,13 @@ public class RubricCreationRune extends AbstractRune{
 	for(WorldXYZ XYZ : structure.keySet())
 	{
 	   	    //note this is just for visual effect, at least for the time being
-	    XYZ.setBlockId(12);
+	    XYZ.setBlockId(0);
 	    
 	}
     }
 
     @Override
-    public String getRuneName() { return "Rubric";
+    public String getRuneName() { return "RubricCreationRune";
 
     }
 

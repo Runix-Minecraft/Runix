@@ -24,6 +24,7 @@ public class RuneHandler {
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune());
         runeRegistry.add(new RubricCreationRune());
+        runeRegistry.add(new RubricRecallRune());
     }
 
     @ForgeSubscribe
