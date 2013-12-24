@@ -211,6 +211,42 @@ public abstract class AbstractRune {
         return newPositions;
     }
 
+    protected HashMap<WorldXYZ, SigBlock> rotateShape(HashMap<WorldXYZ, SigBlock> vehicleBlocks, WorldXYZ centerPoint, boolean counterClockwise) {
+        HashMap<WorldXYZ, WorldXYZ> targetPositions = Util_SphericalFunctions. //get the rotation mapping
+                xzRotation(vehicleBlocks.keySet(), centerPoint, counterClockwise);
+
+        for(WorldXYZ endPos : targetPositions.values())
+            System.out.println(endPos.toString());
+        
+        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
+        for(WorldXYZ startingPosition : vehicleBlocks.keySet()){
+            SigBlock block = vehicleBlocks.get(startingPosition);
+            if( Tiers.isMoveSensitive(block.blockID) ){
+                sensitiveBlocks.put(targetPositions.get(startingPosition)  , block);
+                startingPosition.setBlockId(0);//delete sensitive blocks first to prevent drops
+            }//Josiah: Hopefully this isn't too slow.  I coulddn't find a shorter path to preserving these blocks
+        }
+        
+        for(WorldXYZ loc : vehicleBlocks.keySet())
+            loc.setBlockId(0); // delete old block in a separate loop to avoid collisions with the new positioning
+
+        HashMap<WorldXYZ, SigBlock> newPositions = new HashMap<WorldXYZ, SigBlock>();
+        for(WorldXYZ start : vehicleBlocks.keySet()){
+            WorldXYZ target = targetPositions.get(start);
+            SigBlock sig = vehicleBlocks.get(start);
+            if( !Tiers.isMoveSensitive(sig.blockID) )
+                target.setBlockId(sig);
+            newPositions.put(target, sig);
+        }
+        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //blocks like torches and redstone
+            specialPos.setBlockId(sensitiveBlocks.get(specialPos)); 
+        
+//        RuneHandler.getInstance().moveMagic(vehicleBlocks.keySet(), dX, dY, dZ);
+        return newPositions;
+    }
+    
+    
+    
     /**This will return an empty list if the activation would tear a structure in two. */
     public HashMap<WorldXYZ, SigBlock> conductanceStep(WorldXYZ startPoint, int maxDistance) {
         //TODO: perhaps rename WorldXYZ to WorldXYZ

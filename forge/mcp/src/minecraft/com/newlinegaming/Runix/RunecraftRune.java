@@ -101,25 +101,30 @@ public class RunecraftRune extends AbstractTimedRune {
             if( event.isCancelable() ){
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.containsKey( punchBlock ))
-                    if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){
-                        //GEOMETRY: figure out if we're on the left or right side of the rune relative to the player
-                        float yaw = driver.rotationYawHead;//assumption: you're looking at the block you right clicked
-                        yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
-                        double opposite = driver.posZ - location.posZ - .5;
-                        double adjacent = driver.posX - location.posX - .5;
-                        double angle = Math.toDegrees(Math.atan( opposite / adjacent )) + 90.0;
-                        if( adjacent > 0.0)
-                            angle += 180.0;
-                        System.out.println("Rune: " + angle + "  Yaw: " + yaw + " = " + (angle - yaw));
-                        if( ((angle - yaw) < 180.0 && (angle - yaw) > 0.0) ||
-                                ((angle - yaw) < -180.0 && (angle - yaw) > -360.0) )
-                            System.out.println("Looking to the right.");
-                        else
-                            System.out.println("Looking to the left.");
-
+                    if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
+                        boolean counterClockwise = !lookingRightOfCenterBlock(driver, location);
+                        vehicleBlocks = rotateShape(vehicleBlocks, location, counterClockwise);
                     }
                     event.setCanceled(true); //build protect
             }
+    }
+
+    /**Geometry: figure out if we're on the left or right side of the rune relative to the player
+     */
+    protected boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
+        float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
+        yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
+        double opposite = player.posZ - referencePoint.posZ - .5;
+        double adjacent = player.posX - referencePoint.posX - .5;
+        double angle = Math.toDegrees(Math.atan( opposite / adjacent )) + 90.0;
+        if( adjacent > 0.0)
+            angle += 180.0;
+//        System.out.println("Rune: " + angle + "  Yaw: " + yaw + " = " + (angle - yaw));
+        if( ((angle - yaw) < 180.0 && (angle - yaw) > 0.0) || //the difference between the angle to the reference
+                ((angle - yaw) < -180.0 && (angle - yaw) > -360.0) )//and the angle we're looking determines left/right
+            return true;
+        else
+            return false;
     }
     
     /** This method exists to ensure that no duplicate vehicles are persisted. 
