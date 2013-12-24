@@ -78,7 +78,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
-                    vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
+                    vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ);
                     location = location.offset(dX, dY, dZ);
                 }
                 else{
