@@ -37,9 +37,6 @@ public class RubricCreationRune extends AbstractRune{
 	anchorpoint = location;
     }
 
-    public RubricCreationRune(){
-    	
-    }
     
     @Override
     public int[][][] blockPattern() {
