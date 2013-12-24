@@ -22,7 +22,7 @@ public class RenderHelper {
     public void highlightBoxes(Collection<WorldXYZ> structureBlocks, EntityPlayer player){
         if(progress > 1.0)
             return;
-        progress += 0.01f;//animation timer
+        progress += 0.04f;//animation timer
         double doubleX = player.posX - 0.5;
         double doubleY = player.posY + 0.1;
         double doubleZ = player.posZ - 0.5;
