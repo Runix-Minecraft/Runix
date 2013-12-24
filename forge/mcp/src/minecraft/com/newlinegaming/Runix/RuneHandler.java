@@ -15,9 +15,11 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class RuneHandler {
+    private static RuneHandler instance = null;//Singleton pattern
+    
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-
-    public RuneHandler() {      
+    
+    private RuneHandler() {      
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
@@ -25,6 +27,12 @@ public class RuneHandler {
         runeRegistry.add(new RunecraftRune());
         runeRegistry.add(new RubricCreationRune());
         runeRegistry.add(new RubricRecallRune());
+    }
+    
+    public static RuneHandler getInstance(){
+        if(instance == null)
+            instance = new RuneHandler();
+        return instance;
     }
 
     @ForgeSubscribe
