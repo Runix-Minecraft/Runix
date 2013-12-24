@@ -70,7 +70,7 @@ public class RubricCreationRune extends AbstractRune{
     }
 
     @Override
-    public String getRuneName() { return "Rubric";
+    public String getRuneName() { return "RubricCreationRune";
 
     }
 
