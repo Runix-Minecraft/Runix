@@ -3,10 +3,13 @@ package com.newlinegaming.Runix;
 /** Josiah: I'm just writing some notes down as code.  This hasn't been tested yet. */
 
 import java.util.ArrayList;
-import java.util.Collection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -64,11 +67,4 @@ public class RuneHandler {
         return null;
     }
 
-    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ){
-        for(AbstractRune rune : runeRegistry){
-            rune.moveMagic(blocks, dX, dY, dZ);
-        }
-    }
-//    public JSON extractMagic(Collection<WorldXYZ> blocks)
-    
 }
