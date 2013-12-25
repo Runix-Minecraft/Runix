@@ -37,7 +37,7 @@ public class RubricCreationRune extends AbstractRune{
 	anchorpoint = location;
     }
 
-
+    
     @Override
     public int[][][] blockPattern() {
 	int RT=Block.torchRedstoneActive.blockID;

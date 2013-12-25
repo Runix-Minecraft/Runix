@@ -1,7 +1,6 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -207,7 +206,6 @@ public abstract class AbstractRune {
         for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //blocks like torches and redstone
             specialPos.setBlockId(sensitiveBlocks.get(specialPos)); 
         
-        RuneHandler.getInstance().moveMagic(vehicleBlocks.keySet(), dX, dY, dZ);
         return newPositions;
     }
 
@@ -286,10 +284,6 @@ public abstract class AbstractRune {
                 return true; //TODO: check for isCrushable
         }
         return false;
-    }
-
-    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        //Default behavior is nothing.  Override this for persistent runes
     }
     
     
