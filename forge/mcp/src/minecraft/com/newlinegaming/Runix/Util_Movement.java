@@ -74,7 +74,7 @@ public class Util_Movement {
         for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //blocks like torches and redstone
             specialPos.setBlockId(sensitiveBlocks.get(specialPos)); 
         
-//        RuneHandler.getInstance().moveMagic(vehicleBlocks.keySet(), dX, dY, dZ);
+        RuneHandler.getInstance().moveMagic(moveMapping);
         return newStructure;
     }
     

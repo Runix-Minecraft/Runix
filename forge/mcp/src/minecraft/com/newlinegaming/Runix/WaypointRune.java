@@ -2,6 +2,7 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -53,6 +54,14 @@ public class WaypointRune extends AbstractRune {
         for(WaypointRune wp : waypoints){
             if(blocks.contains(wp.location) )
                 wp.location.bump(dX, dY, dZ);
+        }
+    }
+
+    @Override
+    public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
+        for(WaypointRune wp : waypoints){
+            if(positionsMoved.keySet().contains(wp.location) )
+                wp.location = positionsMoved.get(wp.location); //grab the destination keyed by source position
         }
     }
 }

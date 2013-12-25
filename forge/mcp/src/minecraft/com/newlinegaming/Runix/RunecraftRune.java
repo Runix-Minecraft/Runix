@@ -25,8 +25,8 @@ public class RunecraftRune extends AbstractTimedRune {
     
     public RunecraftRune(){}
     
-    /**Runecraft Runix Vehicle is now working and tracking with player while active.  
-     * Toggle it by right clicking the center block.  You can jump up to travel up, just not down yet.
+    /**Runecraft Runix Vehicle blocks track with a player while active.  
+     * Toggle it by right clicking the center block.  You can jump up to travel up, sneak to go down.
      * @param coords Center rune block that the vehicle is checked from 
      * @param player Person that the vehicle gloms on to
      */

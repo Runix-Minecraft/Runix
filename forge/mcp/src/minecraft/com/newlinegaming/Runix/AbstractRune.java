@@ -223,15 +223,19 @@ public abstract class AbstractRune {
         return false;
     }
 
-    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        //Default behavior is nothing.  Override this for persistent runes
-    }
-    
     protected boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
             if( !move.containsKey(newPos) && newPos.getBlockId() != 0 )//doesn't overlap with the old position
                 return true; //TODO: check for isCrushable
         }
         return false;
+    }
+
+    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
+        //Default behavior is nothing.  Override this for persistent runes
+    }
+    
+    public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
+        // Default behavior is nothing. Override this for persistent runes
     }
 }

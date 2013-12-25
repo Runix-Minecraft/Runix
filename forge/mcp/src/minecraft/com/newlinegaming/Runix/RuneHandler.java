@@ -4,6 +4,7 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -67,6 +68,12 @@ public class RuneHandler {
     public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ){
         for(AbstractRune rune : runeRegistry){
             rune.moveMagic(blocks, dX, dY, dZ);
+        }
+    }
+    
+    public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved){
+        for(AbstractRune rune : runeRegistry){
+            rune.moveMagic(positionsMoved);
         }
     }
 //    public JSON extractMagic(Collection<WorldXYZ> blocks)
