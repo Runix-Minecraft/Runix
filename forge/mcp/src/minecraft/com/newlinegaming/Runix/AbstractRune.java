@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -181,8 +182,6 @@ public abstract class AbstractRune {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
     }
 
-    
-    
     /**This will return an empty list if the activation would tear a structure in two. */
     public HashMap<WorldXYZ, SigBlock> conductanceStep(WorldXYZ startPoint, int maxDistance) {
         //TODO: perhaps rename WorldXYZ to WorldXYZ
@@ -222,6 +221,10 @@ public abstract class AbstractRune {
                 return true; //TODO: check for isCrushable
         }
         return false;
+    }
+
+    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
+        //Default behavior is nothing.  Override this for persistent runes
     }
     
     protected boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {

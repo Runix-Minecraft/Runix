@@ -57,7 +57,7 @@ public class RunecraftRune extends AbstractTimedRune {
         if(!player.worldObj.isRemote){
             if( addOrToggleVehicle(coords, player) )
                 aetherSay(player, "The Runecraft is now locked to your body.");
-            else 
+            else
                 aetherSay(player, "You are now free from the Runecraft.");
         }
     }
