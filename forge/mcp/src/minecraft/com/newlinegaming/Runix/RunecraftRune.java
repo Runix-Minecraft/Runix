@@ -57,7 +57,7 @@ public class RunecraftRune extends AbstractTimedRune {
         if(!player.worldObj.isRemote){
             if( addOrToggleVehicle(coords, player) )
                 aetherSay(player, "The Runecraft is now locked to your body.");
-            else
+            else 
                 aetherSay(player, "You are now free from the Runecraft.");
         }
     }
@@ -78,7 +78,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
-                    vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ);
+                    vehicleBlocks = Util_Movement.moveShape(vehicleBlocks, dX, dY, dZ);
                     location = location.offset(dX, dY, dZ);
                 }
                 else{
@@ -104,9 +104,9 @@ public class RunecraftRune extends AbstractTimedRune {
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
                         if(!location.worldObj.isRemote){  //server side only
                             boolean counterClockwise = !lookingRightOfCenterBlock(driver, location);
-                            HashMap<WorldXYZ, WorldXYZ> move = Util_SphericalFunctions.xzRotation(vehicleBlocks.keySet(), location, counterClockwise);
+                            HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks.keySet(), location, counterClockwise);
                             if( !shapeCollides(move) )
-                                vehicleBlocks = rotateShape(move);
+                                vehicleBlocks = Util_Movement.rotateShape(move);
                         }
                     }
                     event.setCanceled(true); //build protect

@@ -46,13 +46,4 @@ public class Util_SphericalFunctions {
 		return returnvalues;
 	}
 	
-	//TODO: This helper may be unnecessary given WorldXYZ.rotate()
-	public static HashMap<WorldXYZ, WorldXYZ> xzRotation(Collection<WorldXYZ> startingShape, WorldXYZ centerPoint, boolean counterClockwise){
-	    //centerPoint is also the axis of rotation
-	    HashMap<WorldXYZ, WorldXYZ> rotationMapping = new HashMap<WorldXYZ, WorldXYZ>();
-	    for( WorldXYZ point : startingShape ){
-            rotationMapping.put(point, point.rotate(centerPoint, counterClockwise));//flip sign on X
-	    }
-	    return rotationMapping;
-	}
 }

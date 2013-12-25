@@ -53,21 +53,20 @@ public class RubricCreationRune extends AbstractRune{
 
     @Override
     public void execute(EntityPlayer player, WorldXYZ coords) {
-	accept(player);
-	HashMap<WorldXYZ, SigBlock> structure=conductanceStep(coords, 50);
-	storedPatterns.add(new RubricCreationRune(structure, coords));
-	moveShape(structure, 0, 20, 0);
-	for(WorldXYZ XYZ : structure.keySet())
-	{
-	   	    //note this is just for visual effect, at least for the time being
-	    XYZ.setBlockId(0);
-	    
-	}
+        accept(player);
+        HashMap<WorldXYZ, SigBlock> structure = conductanceStep(coords, 50);
+        storedPatterns.add(new RubricCreationRune(structure, coords));
+        Util_Movement.moveShape(structure, 0, 20, 0);
+        for (WorldXYZ XYZ : structure.keySet()) {
+            // note this is just for visual effect, at least for the time being
+            XYZ.setBlockId(0);
+
+        }
     }
 
     @Override
-    public String getRuneName() { return "RubricCreationRune";
-
+    public String getRuneName() {
+        return "Rubric Creator";
     }
 
 }
