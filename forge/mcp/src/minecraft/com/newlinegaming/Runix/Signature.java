@@ -2,6 +2,7 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Signature {
     
@@ -32,11 +33,12 @@ public class Signature {
     public boolean equals(Signature other){
         if( blocks.size() != other.blocks.size() )
             return false;
-        boolean answer = other.blocks.containsAll(blocks);
-        answer = answer && blocks.containsAll(other.blocks);
+        for( SigBlock b : blocks){
+            if( Collections.frequency(other.blocks, b) != Collections.frequency(blocks, b))
+                return false;
+        }
 //        System.out.println("Comparing:" + this + " =? " + other + " = " + answer);
-        //TODO: ensure the two signatures have the same number of instances of each block i.e. 3 cobble vs 1 cobble
-        return answer;
+        return true;
     }
     
     public String toString(){
