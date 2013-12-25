@@ -78,7 +78,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
-                    vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ); //Josiah: I'm not sure if we should move the player or blocks first
+                    vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ);
                     location = location.offset(dX, dY, dZ);
                 }
                 else{
@@ -104,7 +104,9 @@ public class RunecraftRune extends AbstractTimedRune {
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
                         if(!location.worldObj.isRemote){  //server side only
                             boolean counterClockwise = !lookingRightOfCenterBlock(driver, location);
-                            vehicleBlocks = rotateShape(vehicleBlocks, location, counterClockwise);
+                            HashMap<WorldXYZ, WorldXYZ> move = Util_SphericalFunctions.xzRotation(vehicleBlocks.keySet(), location, counterClockwise);
+                            if( !shapeCollides(move) )
+                                vehicleBlocks = rotateShape(move);
                         }
                     }
                     event.setCanceled(true); //build protect
@@ -113,6 +115,7 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     /**Geometry: figure out if we're on the left or right side of the rune relative to the player
+     * TODO: This should really be in some geometry file, but I don't know where to put it.
      */
     protected boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
         float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
