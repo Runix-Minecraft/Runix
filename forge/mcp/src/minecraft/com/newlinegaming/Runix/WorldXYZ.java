@@ -55,10 +55,9 @@ public class WorldXYZ extends ChunkCoordinates {
     
     public WorldXYZ rotate(WorldXYZ referencePoint, boolean counterClockwise){
         Vector3 d = Vector3.offset(referencePoint, this);// determine quadrant relative to reference
-        if( ((d.x > 0 ?1:0) + (d.z > 0 ?1:0) + (counterClockwise ?1:0))   % 2 == 0)
-            return referencePoint.offset((int)d.z, 0, -(int)d.x);//flip sign on X
-        else
-            return referencePoint.offset(-(int)d.z, 0, (int)d.x);//flip sign on Z
+        //Josiah: you have no idea how hard it was to get this one line of code
+        return referencePoint.offset(-d.z, d.y, d.x);//flip sign on z
+        //TODO: counter-clockwise
     }
 
     public World defaultWorld() {

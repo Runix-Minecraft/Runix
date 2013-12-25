@@ -2,11 +2,11 @@ package com.newlinegaming.Runix;
 
 public class Vector3{// extends paulscode.sound.Vector3D.{
 
-    float x;
-    float y;
-    float z;
+    int x;
+    int y;
+    int z;
     
-    public Vector3(float mx, float my, float mz){
+    public Vector3(int mx, int my, int mz){
         x = mx;
         y = my;
         z = mz;

@@ -17,9 +17,9 @@ import org.lwjgl.opengl.GL11;
 public class RunecraftRune extends AbstractTimedRune {
     
     public static ArrayList<RunecraftRune> activeVehicles = new ArrayList<RunecraftRune>();
-    public WorldXYZ location;
-    public EntityPlayer driver;
-    public int tier;
+    public WorldXYZ location = null;
+    public EntityPlayer driver = null;
+    public int tier = 1;
     private HashMap<WorldXYZ, SigBlock> vehicleBlocks;
     private RenderHelper renderer;
     
@@ -102,10 +102,13 @@ public class RunecraftRune extends AbstractTimedRune {
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.containsKey( punchBlock ))
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
-                        boolean counterClockwise = !lookingRightOfCenterBlock(driver, location);
-                        vehicleBlocks = rotateShape(vehicleBlocks, location, counterClockwise);
+                        if(!location.worldObj.isRemote){  //server side only
+                            boolean counterClockwise = !lookingRightOfCenterBlock(driver, location);
+                            vehicleBlocks = rotateShape(vehicleBlocks, location, counterClockwise);
+                        }
                     }
                     event.setCanceled(true); //build protect
+                    System.out.println("Runecraft protected");
             }
     }
 

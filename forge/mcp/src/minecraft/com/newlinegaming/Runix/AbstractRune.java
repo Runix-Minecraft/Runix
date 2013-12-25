@@ -215,8 +215,8 @@ public abstract class AbstractRune {
         HashMap<WorldXYZ, WorldXYZ> targetPositions = Util_SphericalFunctions. //get the rotation mapping
                 xzRotation(vehicleBlocks.keySet(), centerPoint, counterClockwise);
 
-        for(WorldXYZ endPos : targetPositions.values())
-            System.out.println(endPos.toString());
+//        for(WorldXYZ startPos : targetPositions.keySet())
+//            System.out.println(startPos + " -> " + targetPositions.get(startPos));
         
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ startingPosition : vehicleBlocks.keySet()){
