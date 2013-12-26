@@ -18,8 +18,10 @@ public class RenderHelper {
     public void reset(){
         progress = 0.0f;
     }
-    
     public void highlightBoxes(Collection<WorldXYZ> structureBlocks, EntityPlayer player){
+    	highlightBoxes(structureBlocks, player,0, 216, 216);
+    }
+    public void highlightBoxes(Collection<WorldXYZ> structureBlocks, EntityPlayer player,int R,int G, int B){
         if(progress > 1.0)
             return;
         progress += 0.04f;//animation timer
@@ -29,7 +31,7 @@ public class RenderHelper {
     
         GL11.glPushMatrix();
             GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
-            GL11.glColor3ub((byte)0,(byte)216,(byte)216);
+            GL11.glColor3ub((byte)R,(byte)G,(byte)B);
             
             for(WorldXYZ block : structureBlocks){
                 renderWireCube(block.posX, block.posY, block.posZ, progress);
