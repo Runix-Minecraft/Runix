@@ -5,43 +5,38 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
+/**PhantomTorch functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class PhantomTorchRune extends AbstractTimedRune {
     public static ArrayList<PhantomTorchRune> activeMagic = new ArrayList<PhantomTorchRune>();
     public EntityPlayer player = null;
-    private ArrayList<WorldXYZ> previousLocations;
     protected int tier = 1;
     
     public PhantomTorchRune() {}
     public PhantomTorchRune(EntityPlayer activator, WorldXYZ location) {
         player = activator;
         tier = getTier(location);
-        previousLocations = new ArrayList<WorldXYZ>();
-        for(int i = 0; i < tier*tier; ++i)
-            previousLocations.add(new WorldXYZ(player)); //this needs to be pre-populated to set the number of torches
-        updateEveryXTicks(20);
+        updateEveryXTicks(10);
     }
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
         if(subject.equals(player))
         {
-            ArrayList<WorldXYZ> newLocations = new ArrayList<WorldXYZ>();
-            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(player), tier+1);
-            int size = sphere.size();
-            for(WorldXYZ previousLocation : previousLocations)
+            World world = subject.worldObj;
+            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(player), 7);
+            for(WorldXYZ newPos : sphere)
             {
-                if(previousLocation.getBlockId() == Block.torchWood.blockID)
-                    previousLocation.setBlockId(0);//delete old torch
-                
-                WorldXYZ newPos = sphere.get(new Random().nextInt(size));
-                if(newPos.getBlockId() == 0) //set torch
-                    newPos.setBlockId(Block.torchWood.blockID);
-                newLocations.add(newPos);
+                Material base = world.getBlockMaterial( ((int)newPos.posX), ((int)newPos.posY-1), ((int)newPos.posZ) );
+                if(newPos.getBlockId() == 0 && base.isSolid() && 
+                        world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 7){ //adjustable
+                    newPos.setBlockId(Block.torchWood.blockID);//set torch
+                    return; //Light levels don't update til the end of the tick, so we need to exit
+                }
             }
-            previousLocations.clear();
-            previousLocations = newLocations;
         }
     }
 
@@ -57,7 +52,7 @@ public class PhantomTorchRune extends AbstractTimedRune {
 
     @Override
     public void execute(EntityPlayer player, WorldXYZ coords) {
-        if(player.worldObj.isRemote)
+        if(!player.worldObj.isRemote)
             activeMagic.add(new PhantomTorchRune(player, coords));
     }
 

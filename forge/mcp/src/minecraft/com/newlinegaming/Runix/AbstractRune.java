@@ -51,7 +51,7 @@ public abstract class AbstractRune {
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
 	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, WorldXYZ coords)
-	{
+	{//TODO this can be changed to iterating over HashMap<WorldXYZ, SigBlock> to match standards elsewhere
 		for (int y = 0; y < template.length; y++) {
 			for (int z = 0; z < template[y].length; z++) {
 				for (int x = 0; x < template[y][z].length; x++) {
