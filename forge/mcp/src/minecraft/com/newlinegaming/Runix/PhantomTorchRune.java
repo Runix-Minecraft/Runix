@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PhantomTorchRune extends AbstractTimedRune {
-
     public static ArrayList<PhantomTorchRune> activeMagic = new ArrayList<PhantomTorchRune>();
     public EntityPlayer player = null;
     private WorldXYZ previousLocation;
@@ -15,12 +14,12 @@ public class PhantomTorchRune extends AbstractTimedRune {
     public PhantomTorchRune(EntityPlayer activator, WorldXYZ location) {
         player = activator;
         previousLocation = location;
-        updateEveryXTicks(20);
+        updateEveryXTicks(100);
     }
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(!subject.worldObj.isRemote  && subject.equals(player)){
+        if(subject.equals(player)){
             if(previousLocation.getBlockId() == Block.torchWood.blockID)
                 previousLocation.setBlockId(0);//delete old torch
             WorldXYZ newPos = new WorldXYZ(player.worldObj, (int)player.posX, (int)player.posY-1, (int)player.posZ);
@@ -43,7 +42,8 @@ public class PhantomTorchRune extends AbstractTimedRune {
 
     @Override
     public void execute(EntityPlayer player, WorldXYZ coords) {
-        activeMagic.add(new PhantomTorchRune(player, coords));
+        if(player.worldObj.isRemote)
+            activeMagic.add(new PhantomTorchRune(player, coords));
     }
 
     @Override

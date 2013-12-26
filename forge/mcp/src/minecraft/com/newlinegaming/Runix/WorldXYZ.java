@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import cpw.mods.fml.client.FMLClientHandler;
 
 
 /**This class was created for Runix to ensure that when transferring between sets of coordinates,
@@ -62,7 +63,8 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public World defaultWorld() {
-        return WorldProvider.getProviderForDimension(0).worldObj;//TODO: Josiah: This is not working correctly atm
+        return FMLClientHandler.instance().getServer().worldServerForDimension(0);
+//        return WorldProvider.getProviderForDimension(0).worldObj;//TODO: Josiah: This is not working correctly atm
     }
 
     @Override
