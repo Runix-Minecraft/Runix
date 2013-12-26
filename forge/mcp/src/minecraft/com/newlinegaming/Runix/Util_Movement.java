@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 public class Util_Movement {
 
     public static HashMap<WorldXYZ, WorldXYZ> xzRotation(Collection<WorldXYZ> startingShape, WorldXYZ centerPoint, boolean counterClockwise){
@@ -77,7 +79,24 @@ public class Util_Movement {
         RuneHandler.getInstance().moveMagic(moveMapping);
         return newStructure;
     }
-    
+
+    /**Geometry: figure out if we're on the left or right side of the rune relative to the player
+     */
+    public static boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
+        float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
+        yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
+        double opposite = player.posZ - referencePoint.posZ - .5;
+        double adjacent = player.posX - referencePoint.posX - .5;
+        double angle = Math.toDegrees(Math.atan( opposite / adjacent )) + 90.0;
+        if( adjacent > 0.0)
+            angle += 180.0;
+//        System.out.println("Rune: " + angle + "  Yaw: " + yaw + " = " + (angle - yaw));
+        if( ((angle - yaw) < 180.0 && (angle - yaw) > 0.0) || //the difference between the angle to the reference
+                ((angle - yaw) < -180.0 && (angle - yaw) > -360.0) )//and the angle we're looking determines left/right
+            return true;
+        else
+            return false;
+    }
 
 
 }

@@ -31,9 +31,7 @@ public class Signature {
     }
     
     public boolean equals(Signature other){
-        if( blocks.size() != other.blocks.size() )
-            return false;
-        for( SigBlock b : blocks){
+        for( SigBlock b : blocks){//ensure the two signatures have the same number of instances of each block i.e. 3 cobble vs 1 cobble
             if( Collections.frequency(other.blocks, b) != Collections.frequency(blocks, b))
                 return false;
         }

@@ -22,13 +22,13 @@ public class TeleporterRune extends AbstractRune {
 	    accept(player);
 	    Signature signature = new Signature(this, coords);
 	    WorldXYZ destination;
-		if( WaypointRune.waypoints.isEmpty()){
+		if( WaypointRune.activeMagic.isEmpty()){
 		    destination = new WorldXYZ(player.worldObj.getSpawnPoint());
 		    destination.worldObj = player.worldObj;
 		}
-		else{
+		else{ 
     	    WaypointRune wp = null;
-    	    for( WaypointRune candidate : WaypointRune.waypoints){
+    	    for( WaypointRune candidate : WaypointRune.activeMagic){
     	        if( new Signature(candidate, candidate.location).equals( signature ) ){
     	            wp = candidate;
     	            break;

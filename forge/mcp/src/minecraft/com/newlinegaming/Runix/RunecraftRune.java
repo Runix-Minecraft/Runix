@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RunecraftRune extends AbstractTimedRune {
     
-    public static ArrayList<RunecraftRune> activeVehicles = new ArrayList<RunecraftRune>();
+    public static ArrayList<RunecraftRune> activeMagic = new ArrayList<RunecraftRune>();
     public WorldXYZ location = null;
     public EntityPlayer driver = null;
     public int tier = 1;
@@ -42,13 +42,13 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @Override
     public int[][][] blockPattern() {
-        int IRON = Block.blockIron.blockID;
+        int GOLD = Block.oreGold.blockID;
         return new int[][][]
-                {{{TIER,IRON,TIER},
+                {{{TIER,GOLD,TIER},
                   
-                  {IRON,KEY ,IRON},
+                  {GOLD,KEY ,GOLD},
                   
-                  {TIER,IRON,TIER}}};
+                  {TIER,GOLD,TIER}}};
     }
 
     @Override
@@ -103,7 +103,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 if( vehicleBlocks.containsKey( punchBlock ))
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
                         if(!location.worldObj.isRemote){  //server side only
-                            boolean counterClockwise = !lookingRightOfCenterBlock(driver, location);
+                            boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(driver, location);
                             HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks.keySet(), location, counterClockwise);
                             if( !shapeCollides(move) )
                                 vehicleBlocks = Util_Movement.rotateShape(move);
@@ -114,37 +114,19 @@ public class RunecraftRune extends AbstractTimedRune {
             }
     }
 
-    /**Geometry: figure out if we're on the left or right side of the rune relative to the player
-     * TODO: This should really be in some geometry file, but I don't know where to put it.
-     */
-    protected boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
-        float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
-        yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
-        double opposite = player.posZ - referencePoint.posZ - .5;
-        double adjacent = player.posX - referencePoint.posX - .5;
-        double angle = Math.toDegrees(Math.atan( opposite / adjacent )) + 90.0;
-        if( adjacent > 0.0)
-            angle += 180.0;
-//        System.out.println("Rune: " + angle + "  Yaw: " + yaw + " = " + (angle - yaw));
-        if( ((angle - yaw) < 180.0 && (angle - yaw) > 0.0) || //the difference between the angle to the reference
-                ((angle - yaw) < -180.0 && (angle - yaw) > -360.0) )//and the angle we're looking determines left/right
-            return true;
-        else
-            return false;
-    }
     
     /** This method exists to ensure that no duplicate vehicles are persisted. 
      * NOTE: This is an odd method to program for because it is a different instance of Runecraft
      * that is doing something on behalf of the subject Runecraft.  Be very careful to not
      * change class variable, but always call oldRCV.variable.*/
     public boolean addOrToggleVehicle(WorldXYZ centerPoint, EntityPlayer player) {
-        for(RunecraftRune oldRCV : activeVehicles){
+        for(RunecraftRune oldRCV : activeMagic){
             if( oldRCV.driver != null && oldRCV.driver.equals(player)){//currently active Rune, to be turned off
                 oldRCV.driver = null; //turn off the vehicle
                 return false;
             }
         }
-        for(RunecraftRune oldRCV : activeVehicles){
+        for(RunecraftRune oldRCV : activeMagic){
             if( oldRCV.location.equals( centerPoint ) )// if it exists already, toggle state
             {
                 if(oldRCV.driver == null){ // not currently active
@@ -163,7 +145,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 }
             }
         }
-        activeVehicles.add(new RunecraftRune(centerPoint, player));
+        activeMagic.add(new RunecraftRune(centerPoint, player));
         return true;
     }
     

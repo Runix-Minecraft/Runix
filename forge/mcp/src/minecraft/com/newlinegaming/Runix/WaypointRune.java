@@ -6,9 +6,9 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class WaypointRune extends AbstractRune {
-    public static ArrayList<WaypointRune> waypoints = new ArrayList<WaypointRune>();
-    public WorldXYZ location;
+public class WaypointRune extends AbstractRune implements PersistentRune{
+    public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>();
+    public WorldXYZ location = null;
 
     public WaypointRune(){}
     
@@ -34,14 +34,14 @@ public class WaypointRune extends AbstractRune {
             accept(player);
     }
 
-    /** This method exists to ensure that no duplicate waypoints are persisted. */
+    /** This method exists to ensure that no duplicate activeMagic are persisted. */
     public boolean addWaypoint(WaypointRune wp) {
-        for(WaypointRune oldWP : waypoints){
+        for(WaypointRune oldWP : activeMagic){
             //this will handle the odd case where you have 2 wps in different dimensions with the same xyz
             if( oldWP.location.equals(wp.location) )  
                 return false; //ensure there are no duplicates
         }
-        waypoints.add(wp);
+        activeMagic.add(wp);
         return true;
     }
 
@@ -51,7 +51,7 @@ public class WaypointRune extends AbstractRune {
     
     @Override
     public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        for(WaypointRune wp : waypoints){
+        for(WaypointRune wp : activeMagic){
             if(blocks.contains(wp.location) )
                 wp.location.bump(dX, dY, dZ);
         }
@@ -59,9 +59,15 @@ public class WaypointRune extends AbstractRune {
 
     @Override
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
-        for(WaypointRune wp : waypoints){
+        for(WaypointRune wp : activeMagic){
             if(positionsMoved.keySet().contains(wp.location) )
                 wp.location = positionsMoved.get(wp.location); //grab the destination keyed by source position
         }
+    }
+
+    @Override
+    public void saveActiveRunes() {
+        System.out.println(getRuneName() + " saving data.");
+        //TODO output JSON file
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.WorldEvent.Save;
 
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
@@ -40,12 +41,20 @@ public class RuneHandler {
                     new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z));
     }
 
+    @ForgeSubscribe
+    public void saving(Save s){
+        System.out.println("SAVE ALL THE THINGS!");
+        for(AbstractRune r : runeRegistry)
+            if( r instanceof PersistentRune)
+                ((PersistentRune) r).saveActiveRunes();
+    }
+    
     /**Detects a rune pattern, and executes it.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         if (createdRune != null) {
             createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
-            createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or waypoints
+            createdRune.execute(player, coords);//if isPersistent, this will add itself to activeRunes or activeMagic
         }
     }
 
