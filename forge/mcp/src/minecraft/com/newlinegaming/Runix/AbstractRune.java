@@ -161,6 +161,11 @@ public abstract class AbstractRune {
         return true;
     }
 
+    protected int getTier(WorldXYZ coords){
+        int blockID = getTierInkBlock(coords);
+        return blockID != -1 ? Tiers.getTier(blockID) : 1;
+    }
+    
     protected int getTierInkBlock(WorldXYZ coords) {
         int [][][] pattern = blockPattern();
         for (int y = 0; y < pattern.length; y++) {

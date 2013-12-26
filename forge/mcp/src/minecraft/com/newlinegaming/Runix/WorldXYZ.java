@@ -3,9 +3,9 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import cpw.mods.fml.client.FMLClientHandler;
 
 
@@ -31,6 +31,11 @@ public class WorldXYZ extends ChunkCoordinates {
     public WorldXYZ(World world, int x, int y, int z) {
         super(x, y, z);
         this.worldObj = world;
+    }
+
+    public WorldXYZ(EntityPlayer player){
+        super((int)(player.posX+.5), (int)(player.posY-1), (int)(player.posZ+.5));
+        worldObj = player.worldObj;
     }
     
     public WorldXYZ(ChunkCoordinates otherGuy) {

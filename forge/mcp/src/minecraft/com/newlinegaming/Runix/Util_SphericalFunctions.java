@@ -1,5 +1,6 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,26 +11,24 @@ import net.minecraft.world.World;
 public class Util_SphericalFunctions {
 
 	
-	public static boolean radiusCheck(WorldXYZ loc, int radius)
-	{
-		if((loc.posX*loc.posX)+(loc.posY*loc.posY)+(loc.posZ*loc.posZ) > (radius*radius))
-		{return false;}
-		else 
-		{
-		return true;
-		}
-	}
-	public static boolean radiusCheck(int x, int y, int z, int rd)
-	{
-		if((x*x)+(y*y)+(z*z) > (rd*rd))
-		{return false;}
-		else 
-		{
-		return true;
-		}
-		
-	}
-	public static List<WorldXYZ> getSphere (WorldXYZ coords, int radius) 
+    public static boolean radiusCheck(WorldXYZ loc, int radius) {
+        if ((loc.posX * loc.posX) + (loc.posY * loc.posY) + (loc.posZ * loc.posZ) > (radius * radius)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean radiusCheck(int x, int y, int z, int rd) {
+        if ((x * x) + (y * y) + (z * z) > (rd * rd)) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+    
+	public static LinkedList<WorldXYZ> getSphere (WorldXYZ coords, int radius) 
 	{
 		World world = coords.worldObj;
 		LinkedList<WorldXYZ> returnvalues = new LinkedList();
@@ -46,4 +45,11 @@ public class Util_SphericalFunctions {
 		return returnvalues;
 	}
 	
+	public static LinkedList<WorldXYZ> getShell(WorldXYZ center, int radius){
+	    //Josiah: I wrote this so it's probably got holes...
+	    LinkedList<WorldXYZ> bigSphere = getSphere(center, radius);
+	    LinkedList<WorldXYZ> smallerSphere = getSphere(center, radius-1);
+        bigSphere.removeAll(smallerSphere);
+	    return bigSphere;
+	}
 }

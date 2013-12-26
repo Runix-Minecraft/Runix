@@ -1,6 +1,5 @@
 package com.newlinegaming.Runix;
 
-/** Josiah: I'm just writing some notes down as code.  This hasn't been tested yet. */
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +12,18 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
+/**
+ * RuneHandler is the main switchboard between all Runes. It contains
+ * runeRegistry, which is the list of all runes to scan for matches and be
+ * executed. It is a singleton and so RuneHandler.getInsance() is a good way to
+ * jump back to a global context.
+ * 
+ * It should not contain any code specific to a single rune. Runes that depend
+ * on each other such as Teleporter and Waypoint should use each other's static
+ * activeMagic list instead of going through RuneHandler. Generic open-ended
+ * interaction such as moveMagic() are handled through RuneHandler, since there
+ * is no telling how many runes it could affect.
+ */
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
     
