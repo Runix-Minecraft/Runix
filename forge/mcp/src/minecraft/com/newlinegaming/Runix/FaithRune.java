@@ -9,11 +9,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 
-public class FaithRune extends AbstractRune{
+public class FaithRune extends PersistentRune{
 	public String runeName = "Faith";
-	static List<FaithRune> activeFaithList = new LinkedList<FaithRune>();
-	public WorldXYZ islandCoords;
+	protected static List<PersistentRune> activeFaithList = new LinkedList<PersistentRune>();
 	public Integer radius;
+	
+//	public FaithRune(EntityPlayer creator, WorldXYZ loc, int radius)
+//	{
+//	    super(loc, creator);
+//	}
+	
 	public int[][][] blockPattern(){
 		return new int [][][] 
            {{{0,0,0},
@@ -27,11 +32,12 @@ public class FaithRune extends AbstractRune{
 	public void execute(EntityPlayer player, WorldXYZ coords)
 	{
 		if (!runeAllowed(player, this)) return;
-		for (FaithRune fr : activeFaithList)
-		{
-			if (fr.islandCoords != null && fr.radius != null)
+		for (PersistentRune tmp : activeFaithList)
+		{//Josiah: sorry, there's no way to get around type casting and still have an interface or abstract parent 
+		    FaithRune fr = (FaithRune)tmp;
+			if (fr.location != null && fr.radius != null)
 			{
-				if(Util_SphericalFunctions.radiusCheck(fr.islandCoords, fr.radius+8))
+				if(Util_SphericalFunctions.radiusCheck(fr.location, fr.radius+8))
 				{
 					player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED+"ISLANDS TOO CLOSE"));
 					return;
@@ -54,6 +60,16 @@ public class FaithRune extends AbstractRune{
 		List<WorldXYZ> points = Util_SphericalFunctions.getSphere(islandCentre, 8);
 		aetherSay(player,EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
 	}
+
+    @Override
+    public void saveActiveRunes() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public List<PersistentRune> getActiveMagic() {
+        return activeFaithList;
+    }
 	
 
 	

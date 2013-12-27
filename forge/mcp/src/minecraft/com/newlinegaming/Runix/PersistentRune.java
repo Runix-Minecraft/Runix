@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -20,7 +21,7 @@ public abstract class PersistentRune extends AbstractRune{
     
     /**There's no way to have a static field in an abstract class so we use a getter instead*/ 
     //public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>(); 
-    public abstract ArrayList<PersistentRune> getActiveMagic();
+    public abstract List<PersistentRune> getActiveMagic();
 
     /** This method exists to ensure that no duplicate activeMagic are persisted. 
      * 
