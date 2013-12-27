@@ -13,7 +13,7 @@ public class Tiers {
     private static ArrayList<Integer> Tier0;
     private static ArrayList<Integer> naturalBlocks;
     private static ArrayList<Integer> moveSensitiveBlocks;
-    private static HashMap<Integer, Integer> allTiers = new HashMap<Integer, Integer>();
+    private static int[] blockEnergy;
     
     public Tiers(){
         Block[] Tier0Blocks = new Block[]{
@@ -36,7 +36,7 @@ public class Tiers {
             Block.potato, Block.portal, Block.endPortal, Block.brewingStand, 
             Block.cactus, Block.deadBush, Block.dragonEgg, Block.fire,
             Block.grass, Block.gravel, Block.lavaMoving, Block.lavaStill,
-            Block.ladder, Block.leaves, Block.leaves, Block.melonStem,
+            Block.ladder, Block.leaves, Block.melonStem,
             Block.mushroomBrown, Block.mushroomRed, Block.netherStalk,
             Block.pistonExtension, Block.plantRed, Block.plantYellow, Block.pressurePlateGold,
             Block.pressurePlateIron, Block.pressurePlateStone, Block.pressurePlatePlanks, Block.pumpkinStem,
@@ -51,66 +51,173 @@ public class Tiers {
             Block.woodenButton};
         moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
         
-        Block[] Tier1Blocks = new Block[]{
-        	Block.cobblestone, Block.stairsCobblestone, Block.cobblestoneWall, 
-        	Block.pressurePlateStone, Block.sand, Block.stairsSandStone, Block.gravel,
-        	Block.torchWood, Block.whiteStone, Block.leaves, Block.furnaceBurning, 
-        	Block.furnaceIdle, Block.stoneButton, Block.stoneSingleSlab, Block.fire,
-        	Block.planks, Block.stairsWoodOak, Block.stairsWoodBirch, Block.stairsWoodJungle,
-        	Block.stairsWoodSpruce, Block.fence, Block.pressurePlatePlanks, Block.woodenButton,
-        	Block.sandStone, Block.glass, Block.netherrack, Block.lever, Block.ice,
-        	Block.cactus, Block.tripWire, Block.ladder, Block.bedrock,
-        	Block.thinGlass, Block.tilledField};
-        
-        Block[] Tier2Blocks = new Block[]{
-        	Block.waterStill, Block.waterMoving, Block.cloth, Block.wood, Block.netherBrick,
-        	Block.stairsNetherBrick, Block.netherFence, Block.carrot, Block.reed, Block.waterlily,
-        	Block.cocoaPlant, Block.melon, Block.workbench, Block.chest, Block.chestTrapped,
-        	Block.glass, Block.blockNetherQuartz, Block.stoneBrick, Block.slowSand, Block.doorWood,
-        	Block.trapdoor, Block.mushroomCapBrown, Block.mushroomCapRed, Block.mushroomBrown, 
-        	Block.mushroomRed, Block.potato, Block.crops, Block.sapling, Block.netherStalk, 
-        	Block.portal, Block.skull, Block.pumpkinStem, Block.melonStem, Block.endPortal};
-        
-        Block[] Tier3Blocks = new Block[]{
-        	Block.oreIron, Block.redstoneWire, Block.torchRedstoneActive, Block.torchRedstoneIdle,
-        	Block.obsidian, Block.pumpkin, Block.pumpkinLantern, Block.pistonBase, Block.blockClay,
-        	Block.bookShelf, Block.rail, Block.railDetector, Block.fenceIron, Block.flowerPot, Block.bed,
-        	Block.cake, Block.dispenser, Block.oreCoal, Block.oreRedstone, Block.oreRedstoneGlowing,
-        	Block.redstoneRepeaterActive, Block.redstoneRepeaterIdle, Block.cobblestoneMossy, Block.pistonStickyBase,
-        	Block.music, Block.lavaMoving, Block.lavaStill, Block.tripWireSource, Block.web, Block.sponge};
-        
-        Block[] Tier4Blocks = new Block[]{
-        	Block.glowStone, Block.redstoneLampIdle, Block.redstoneLampActive, Block.blockRedstone,
-        	Block.oreGold, Block.oreLapis, Block.blockIron, Block.doorIron, Block.cauldron,
-        	Block.brewingStand, Block.railPowered, Block.railActivator, Block.enderChest, Block.tnt};
-        
-        Block[] Tier5Blocks = new Block[]{
-        	Block.oreDiamond, Block.oreEmerald, Block.blockLapis, Block.anvil, Block.jukebox, Block.enchantmentTable,};
-        
-        Block[] Tier6Blocks = new Block[]{
-        	Block.blockDiamond, Block.blockEmerald, Block.blockGold, Block.mobSpawner, Block.endPortalFrame};
-        
-        Block[] Tier7Blocks = new Block[]{
-        	Block.dragonEgg, Block.beacon};
-        
-        	
-        populateTierMap(Tier0Blocks, 0); //Josiah: anyone know how to procedurally fetch variable names?
-        populateTierMap(Tier1Blocks, 1);
-        populateTierMap(Tier2Blocks, 2);
-        populateTierMap(Tier3Blocks, 3);
-        populateTierMap(Tier4Blocks, 4);
-        populateTierMap(Tier5Blocks, 5);
-        populateTierMap(Tier6Blocks, 6);
-        populateTierMap(Tier7Blocks, 7);
+        blockEnergy = new int[]{ //the blockID is the index for this array.  The value at blockEnergy[blockID] = runic energy
+                1,   //Air
+                1,   //Smooth Stone
+                1,   //Grass
+                1,   //Dirt
+                1,   //Cobblestone
+                8,   //Wooden Plank
+                32,  //Sapling
+                1,   //Bedrock
+                16,  //Water
+                16,  //Stationary Water
+                80,  //Lava
+                80,  //Stationary Lava
+                5,   //Sand
+                31,  //Gravel
+                1519,    //Gold Ore
+                158,     //Iron Ore
+                84,  //Coal Ore
+                32,  //Wood Log
+                1,   //Leaves
+                256,     //Sponge
+                10,  //Glass
+                3964,    //Lapis Lazuli Ore
+                5946,    //Lapis Lazuli Block
+                352,     //Dispenser
+                20,  //Sandstone
+                210,     //Note Block
+                96,  //Bed
+                1543,    //Powered Rail
+                59,  //Detector Rail
+                304,     //Sticky Piston
+                3038,    //Cobweb
+                1,   //Tall Grass
+                1,   //Dead Bush
+                304,     //Piston
+                1,   //Piston Head
+                24,  //Wool
+                1,   //Moving Block
+                16,  //Dandelion
+                16,  //Rose
+                192,     //Brown Mushroom
+                192,     //Red Mushroom
+                13671,   //Gold Block
+                1422,    //Iron Block
+                2,   //Double Slab
+                1,   //Stone Slab
+                279,     //Brick Block
+                680,     //TNT
+                336,     //Bookshelf
+                13207,   //Moss Stone
+                80,  //Obsidian
+                12,  //Torch
+                4,   //Fire
+                330175,  //Monster Spawner
+                12,  //Wooden Stairs
+                64,  //Chest
+                146,     //Redstone
+                3566,    //Diamond Ore
+                32094,   //Diamond Block
+                32,  //Crafting Table
+                24,  //Wheat
+                1,   //Soil
+                8,   //Furnace
+                8,   //Burning Furnace
+                52,  //Sign
+                48,  //Wooden Door
+                28,  //Ladder
+                59,  //Rails
+                1,   //Cobblestone Stairs
+                52,  //Sign
+                5,   //Lever
+                2,   //Stone Pressure Plate
+                948,     //Iron Door
+                16,  //Wooden Pressure Plate
+                655,     //Redstone Ore
+                655,     //Glowing Redstone Ore
+                150,     //Redstone Torch (off)
+                150,     //Redstone Torch
+                2,   //Stone Button
+                1,   //Snow
+                1,   //Ice
+                1,   //Snow Block
+                96,  //Cactus
+                237,     //Clay Block
+                32,  //Sugar Cane
+                3630,    //Jukebox
+                12,  //Fence
+                192,     //Pumpkin
+                1,   //Netherrack
+                760,     //Soul Sand
+                3038,    //Glowstone
+                0,   //Portal
+                192,     //JackOLantern
+                173,     //Cake
+                437,     //Redstone Repeater (off)
+                437,     //Redstone Repeater
+                0,   //Locked Chest
+                0,   //Trapdoor
+                0,   //Stone (Silverfish)
+                12,  //Stone Brick
+                0,   //Red Mushroom Cap
+                0,   //Brown Mushroom Cap
+                59,  //Iron Bars
+                0,   //Glass Pane
+                0,   //Melon Block
+                0,   //Pumpkin Stem
+                0,   //Melon Stem
+                0,   //Vines
+                0,   //Fence Gate
+                0,   //Brick Stairs
+                0,   //Stone Brick Stairs
+                1,   //Mycelium
+                3566,    //Lily Pad
+                46,  //Nether Brick
+                0,   //Nether Brick Fence
+                0,   //Nether Brick Stairs
+                0,   //Nether Wart
+                7452,    //Enchantment Table
+                360,     //Brewing Stand
+                1106,    //Cauldron
+                0,   //End Portal
+                0,   //End Portal Frame
+                1,   //End Stone
+                320940,  //Dragon Egg
+                3620,    //Redstone Lamp
+                3620,    //Redstone Lamp (on)
+                0,   //Double Wooden Slab
+                0,   //Wooden Slab
+                0,   //Cocoa Plant
+                0,   //Sandstone Stairs
+                3038,    //Emerald Ore
+                2584,    //Ender Chest
+                158,     //Tripwire Hook
+                69,  //Tripwire
+                27342,   //Emerald Block
+                0,   //Stairs
+                0,   //Stairs
+                0,   //Stairs
+                0,   //Command Block
+                320940,  //Beacon
+                1,   //Cobblestone Wall
+                79,  //Flower Pot
+                0,   //Carrots
+                0,   //Potatoes
+                2,   //Wooden Button
+                23,  //Head
+                4898    //Anvil
+                //TODO: Add newer blocks
+        };
     }
 
-    private void populateTierMap(Block[] singleTier, Integer value) {
-        for(Block b : singleTier){
-            allTiers.put(b.blockID, value);
-        }
-        
+    public static int getTier(int blockID){
+        if(isTier0(blockID))
+            return 0;
+        int energy = blockEnergy[blockID];
+        energy = energy < 1 ? 1 : energy; // log(0) = crash bad
+        return getTierFromEnergy(energy);
     }
 
+    public static boolean isTier0(int blockID){
+        return Tier0.contains(new Integer(blockID));
+    }
+
+    private static int getTierFromEnergy(int energy){
+        return (int) (Math.log(energy) / Math.log(2));
+    }
+    
     /**The idea behind this method is to take a list of Blocks and pull all the ids. 
      * It really only exists to cut down on the number of ".blockID" that is in this file given
      * how long it will be.  
@@ -123,20 +230,14 @@ public class Tiers {
         return IDs;
     }
     
-    public static int getTier(int blockID){
-        return (int) allTiers.get(new Integer(blockID));
-    }
     
-    public static boolean isTier0(int blockID){
-        return Tier0.contains(new Integer(blockID));
-    }
-
+    
     /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/
     public static boolean isNatural(int blockID){
         return naturalBlocks.contains(new Integer(blockID));
     }
     
-    /*This is a list of all the blocks that need special treatment when moving groups of blocks
+    /**This is a list of all the blocks that need special treatment when moving groups of blocks
      * like FTP or Runecraft.  All independent blocks need to be placed first because all of these
      * blocks attach to other blocks or (in the case of liquids) need to be held in by solid blocks.
      */

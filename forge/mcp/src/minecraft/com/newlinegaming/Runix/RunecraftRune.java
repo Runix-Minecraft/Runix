@@ -162,7 +162,8 @@ public class RunecraftRune extends AbstractTimedRune {
 
     protected boolean scanForVehicleShape(WorldXYZ coords, EntityPlayer player2) {
         tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
-        vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
+        vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier));
+        System.out.println("Detected Tier " + tier);
         renderer.reset();
         if(vehicleBlocks.isEmpty()){
             aetherSay(player2, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
