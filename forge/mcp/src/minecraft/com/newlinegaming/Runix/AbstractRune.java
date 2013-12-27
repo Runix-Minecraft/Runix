@@ -88,7 +88,9 @@ public abstract class AbstractRune {
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
-		
+        
+        if(!coords.worldObj.equals(player.worldObj))
+            player.travelToDimension(coords.worldObj.provider.dimensionId);
 		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		//TODO: check for Lava, fire, and void
 	}

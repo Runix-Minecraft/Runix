@@ -42,7 +42,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
             }
         }
     }
-
+  
     @Override
     public int[][][] blockPattern() {
         int GOLD = Block.oreGold.blockID;
