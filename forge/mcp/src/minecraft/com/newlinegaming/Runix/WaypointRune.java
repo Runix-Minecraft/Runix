@@ -6,9 +6,8 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class WaypointRune extends AbstractRune implements PersistentRune{
-    public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>();
-    public WorldXYZ location = null;
+public class WaypointRune extends PersistentRune{
+    private static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
 
     public WaypointRune(){}
     
@@ -29,20 +28,9 @@ public class WaypointRune extends AbstractRune implements PersistentRune{
 
     @Override
     public void execute(EntityPlayer player, WorldXYZ coords) {
-        AbstractRune persistentCopy = new WaypointRune(coords);
-        if( addWaypoint((WaypointRune) persistentCopy) )
+        PersistentRune copy = new WaypointRune(coords);
+        if( addOrRejectDuplicate(copy) )
             accept(player);
-    }
-
-    /** This method exists to ensure that no duplicate activeMagic are persisted. */
-    public boolean addWaypoint(WaypointRune wp) {
-        for(WaypointRune oldWP : activeMagic){
-            //this will handle the odd case where you have 2 wps in different dimensions with the same xyz
-            if( oldWP.location.equals(wp.location) )  
-                return false; //ensure there are no duplicates
-        }
-        activeMagic.add(wp);
-        return true;
     }
 
     public String getRuneName() {
@@ -51,7 +39,8 @@ public class WaypointRune extends AbstractRune implements PersistentRune{
     
     @Override
     public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        for(WaypointRune wp : activeMagic){
+        for(PersistentRune tmp : activeMagic){
+            PersistentRune wp = (PersistentRune) tmp;
             if(blocks.contains(wp.location) )
                 wp.location.bump(dX, dY, dZ);
         }
@@ -59,7 +48,8 @@ public class WaypointRune extends AbstractRune implements PersistentRune{
 
     @Override
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
-        for(WaypointRune wp : activeMagic){
+        for(PersistentRune tmp : activeMagic){
+            PersistentRune wp = (PersistentRune) tmp;
             if(positionsMoved.keySet().contains(wp.location) )
                 wp.location = positionsMoved.get(wp.location); //grab the destination keyed by source position
         }
@@ -69,5 +59,10 @@ public class WaypointRune extends AbstractRune implements PersistentRune{
     public void saveActiveRunes() {
         System.out.println(getRuneName() + " saving data.");
         //TODO output JSON file
+    }
+
+    @Override
+    public ArrayList<PersistentRune> getActiveMagic() {
+        return activeMagic;
     }
 }

@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 
 public class TeleporterRune extends AbstractRune {
@@ -22,13 +24,16 @@ public class TeleporterRune extends AbstractRune {
 	    accept(player);
 	    Signature signature = new Signature(this, coords);
 	    WorldXYZ destination;
-		if( WaypointRune.activeMagic.isEmpty()){
+	    //This is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
+	    ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
+	    
+		if( waypointList.isEmpty()){
 		    destination = new WorldXYZ(player.worldObj.getSpawnPoint());
 		    destination.worldObj = player.worldObj;
 		}
 		else{ 
-    	    WaypointRune wp = null;
-    	    for( WaypointRune candidate : WaypointRune.activeMagic){
+    	    PersistentRune wp = null;
+    	    for( PersistentRune candidate : waypointList){
     	        if( new Signature(candidate, candidate.location).equals( signature ) ){
     	            wp = candidate;
     	            break;

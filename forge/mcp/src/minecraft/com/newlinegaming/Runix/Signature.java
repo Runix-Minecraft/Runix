@@ -22,7 +22,10 @@ public class Signature {
                 for (int x = 0; x < pattern[y][z].length; x++) {
                     if( pattern[y][z][x] == AbstractRune.SIGR ){
                         WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
-                        blocks.add(new SigBlock(target.getBlockId(), target.getMetaId() ));
+                        if( !Tiers.isTier0(target.getBlockId()) )
+                            blocks.add(new SigBlock(target.getBlockId(), target.getMetaId() ));
+                        else
+                            blocks.add(new SigBlock(0,0));
                     }
                 }
             }
