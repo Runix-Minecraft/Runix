@@ -51,10 +51,13 @@ public class RubricCreationRune extends AbstractRune {
 
 	@Override
 	public int[][][] blockPattern() {
-		int RT = Block.torchRedstoneActive.blockID;
-		return new int[][][] { { { 0, TIER, 0, TIER, 0 },
-				{ TIER, TIER, RT, TIER, TIER }, { 0, RT, TIER, RT, 0 },
-				{ TIER, TIER, RT, TIER, TIER }, { 0, TIER, 0, TIER, 0 } } };
+		int RTCH = Block.torchRedstoneActive.blockID;
+		return new int[][][] 
+		      {{{ NONE,TIER,SIGR,TIER,NONE },
+				{ TIER,TIER,RTCH,TIER,TIER },
+				{ SIGR,RTCH,TIER,RTCH,SIGR },
+				{ TIER,TIER,RTCH,TIER,TIER },
+				{ NONE,TIER,SIGR,TIER,NONE }}};
 
 	}
 
@@ -62,9 +65,11 @@ public class RubricCreationRune extends AbstractRune {
 	public void execute(EntityPlayer player, WorldXYZ coords) {
 		accept(player);
 		HashMap<WorldXYZ, SigBlock> structure = conductanceStep(coords, 50);
+		
 		storedPatterns.add(new RubricCreationRune(structure, coords, player));
+		
 		ItemStack toolused = player.getCurrentEquippedItem();
-		if (toolused!=null && toolused.itemID != Item.book.itemID) {
+		if (toolused!=null && toolused.itemID == Item.book.itemID) {
 			for (WorldXYZ XYZ : structure.keySet()) {
 				XYZ.setBlockId(0);
 			}
