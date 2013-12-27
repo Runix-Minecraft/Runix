@@ -64,11 +64,6 @@ public class PhantomTorchRune extends AbstractTimedRune {
     }
 
     @Override
-    public void saveActiveRunes() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;
     }
