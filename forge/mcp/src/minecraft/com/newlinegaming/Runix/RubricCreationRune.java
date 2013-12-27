@@ -29,27 +29,23 @@ import net.minecraftforge.event.ForgeSubscribe;
 //import net.minecraft.nbt.NBTTagString;
 //import net.minecraft.world.World;
 
-public class RubricCreationRune extends AbstractRune {
+public class RubricCreationRune extends PersistentRune {
 
-	public static ArrayList<RubricCreationRune> storedPatterns = new ArrayList<RubricCreationRune>();
+	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<PersistentRune>();
 	public HashMap<WorldXYZ, SigBlock> structure;
-	public WorldXYZ anchorpoint;
-	private RenderHelper renderer;
-	private EntityPlayer player = null;
+	protected RenderHelper renderer;
 
-	public RubricCreationRune() {
-	}
+    public RubricCreationRune() {}
 
-	public RubricCreationRune(HashMap<WorldXYZ, SigBlock> building,
-			WorldXYZ location, EntityPlayer player2) {
+    public RubricCreationRune(HashMap<WorldXYZ, SigBlock> building, WorldXYZ coords, EntityPlayer player2) 
+    {
+	    super(coords, player2);
 		structure = building;
-		anchorpoint = location;
 		renderer = new RenderHelper();
 		MinecraftForge.EVENT_BUS.register(this);
-		player = player2;
 	}
 
-	@Override
+    @Override
 	public int[][][] blockPattern() {
 		int RTCH = Block.torchRedstoneActive.blockID;
 		return new int[][][] 
@@ -66,7 +62,11 @@ public class RubricCreationRune extends AbstractRune {
 		accept(player);
 		HashMap<WorldXYZ, SigBlock> structure = conductanceStep(coords, 50);
 		
-		storedPatterns.add(new RubricCreationRune(structure, coords, player));
+		RubricCreationRune match = ((RubricCreationRune)getRuneByLocation(coords));
+		if( match != null)
+		    match.renderer.reset();
+		else
+		    getActiveMagic().add(new RubricCreationRune(structure, coords, player));
 		
 		ItemStack toolused = player.getCurrentEquippedItem();
 		if (toolused!=null && toolused.itemID == Item.book.itemID) {
@@ -77,7 +77,15 @@ public class RubricCreationRune extends AbstractRune {
 		}
 	}
 
-	@ForgeSubscribe
+	public PersistentRune getRuneByLocation(WorldXYZ coords) {
+	    for(PersistentRune rune : getActiveMagic()){
+            if( rune.location.equals(coords) )
+                return rune;
+	    }
+        return null;
+    }
+
+    @ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
 		if (player != null)
 			renderer.highlightBoxes(structure.keySet(), player, 221, 0, 0);
@@ -88,5 +96,15 @@ public class RubricCreationRune extends AbstractRune {
 	public String getRuneName() {
 		return "Rubric Creator";
 	}
+
+    @Override
+    public void saveActiveRunes() {
+        //TODO: does nothing
+    }
+
+    @Override
+    public ArrayList<PersistentRune> getActiveMagic() {
+        return storedPatterns;
+    }
 
 }

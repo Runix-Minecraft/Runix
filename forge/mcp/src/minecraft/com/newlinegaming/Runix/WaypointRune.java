@@ -11,9 +11,9 @@ public class WaypointRune extends PersistentRune{
 
     public WaypointRune(){}
     
-    public WaypointRune(WorldXYZ coords)
+    public WaypointRune(WorldXYZ coords, EntityPlayer player)
     {
-        this.location = new WorldXYZ(coords);
+        super(coords, player);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class WaypointRune extends PersistentRune{
 
     @Override
     public void execute(EntityPlayer player, WorldXYZ coords) {
-        PersistentRune copy = new WaypointRune(coords);
+        PersistentRune copy = new WaypointRune(coords, player);
         if( addOrRejectDuplicate(copy) )
             accept(player);
     }

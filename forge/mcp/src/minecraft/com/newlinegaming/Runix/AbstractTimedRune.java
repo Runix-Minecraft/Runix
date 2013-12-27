@@ -4,7 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-public abstract class AbstractTimedRune extends AbstractRune {
+public abstract class AbstractTimedRune extends PersistentRune {
+
+    public AbstractTimedRune(){}
+    public AbstractTimedRune(WorldXYZ coords, EntityPlayer player2) {
+        super(coords, player2);
+    }
 
     /** This registers the rune as being actively updated.  Forge (thru RuneTimer) will call
      * onUpdateTick() every xTicks from here on out until it is turned off.  There are

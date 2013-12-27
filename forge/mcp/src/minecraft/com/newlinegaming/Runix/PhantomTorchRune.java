@@ -11,14 +11,13 @@ import net.minecraft.world.World;
 
 /**PhantomTorch functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class PhantomTorchRune extends AbstractTimedRune {
-    public static ArrayList<PhantomTorchRune> activeMagic = new ArrayList<PhantomTorchRune>();
-    public EntityPlayer player = null;
+    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     protected int tier = 1;
     
     public PhantomTorchRune() {}
 
-    public PhantomTorchRune(EntityPlayer activator, WorldXYZ location) {
-        player = activator;
+    public PhantomTorchRune(EntityPlayer activator, WorldXYZ coords) {
+        super(coords, activator);
         tier = getTier(location);
         updateEveryXTicks(10);
     }
@@ -28,7 +27,9 @@ public class PhantomTorchRune extends AbstractTimedRune {
         if(subject.equals(player))
         {
             World world = subject.worldObj;//sphere can be optimized to donut
-            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(player), 7);
+            //location is not a good criteria for activeMagic collisions, this is solved by constantly updating location
+            location = new WorldXYZ(player);
+            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
             for(WorldXYZ newPos : sphere)
             {
                 Material base = world.getBlockMaterial( ((int)newPos.posX), ((int)newPos.posY-1), ((int)newPos.posZ) );
@@ -60,6 +61,16 @@ public class PhantomTorchRune extends AbstractTimedRune {
     @Override
     public String getRuneName() {
         return "Phantom Torch";
+    }
+
+    @Override
+    public void saveActiveRunes() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public ArrayList<PersistentRune> getActiveMagic() {
+        return activeMagic;
     }
 
 }

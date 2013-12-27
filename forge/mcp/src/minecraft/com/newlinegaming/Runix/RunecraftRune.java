@@ -16,9 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RunecraftRune extends AbstractTimedRune {
     
-    public static ArrayList<RunecraftRune> activeMagic = new ArrayList<RunecraftRune>();
-    public WorldXYZ location = null;
-    public EntityPlayer driver = null;
+    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     public int tier = 1;
     private HashMap<WorldXYZ, SigBlock> vehicleBlocks;
     private RenderHelper renderer;
@@ -30,12 +28,11 @@ public class RunecraftRune extends AbstractTimedRune {
      * @param coords Center rune block that the vehicle is checked from 
      * @param player Person that the vehicle gloms on to
      */
-    public RunecraftRune(WorldXYZ coords, EntityPlayer player)
+    public RunecraftRune(WorldXYZ coords, EntityPlayer player2)
     {
-        location = new WorldXYZ(coords);
-        driver = player;
+        super(coords, player2);
         renderer = new RenderHelper();
-        scanForVehicleShape(coords, player);
+        scanForVehicleShape(coords, player2);
         updateEveryXTicks(4);
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -52,29 +49,29 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @Override
-    public void execute(EntityPlayer player, WorldXYZ coords) {
-        accept(player);
-        if(!player.worldObj.isRemote){
-            if( addOrToggleVehicle(coords, player) )
-                aetherSay(player, "The Runecraft is now locked to your body.");
+    public void execute(EntityPlayer activator, WorldXYZ coords) {
+        accept(activator);
+        if(!activator.worldObj.isRemote){
+            if( addOrToggleVehicle(coords, activator) )
+                aetherSay(activator, "The Runecraft is now locked to your body.");
             else
-                aetherSay(player, "You are now free from the Runecraft.");
+                aetherSay(activator, "You are now free from the Runecraft.");
         }
     }
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
         //TODO: we're not currently using subject
-        if(driver != null && !driver.worldObj.isRemote)
+        if(player != null && !player.worldObj.isRemote)
         {//Josiah: turns out running this on server and client side causes strange duplications
-            int dX = (int) (driver.posX - location.posX - .5);
-            int dY = (int) (driver.posY - location.posY - 1);
-            int dZ = (int) (driver.posZ - location.posZ - .5);
-            if( 10 < location.getDistanceSquared((int)driver.posX, (int)driver.posY, (int)driver.posZ) ){
-                driver = null; //Vehicle has been abandoned
+            int dX = (int) (player.posX - location.posX - .5);
+            int dY = (int) (player.posY - location.posY - 1);
+            int dZ = (int) (player.posZ - location.posZ - .5);
+            if( 10 < location.getDistanceSquared((int)player.posX, (int)player.posY, (int)player.posZ) ){
+                player = null; //Vehicle has been abandoned
                 return; //Vehicle should stop moving until someone is at the wheel again
             }
-            if(driver.isSneaking())
+            if(player.isSneaking())
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
@@ -82,8 +79,8 @@ public class RunecraftRune extends AbstractTimedRune {
                     location = location.offset(dX, dY, dZ);
                 }
                 else{
-                    aetherSay(driver, "CRUNCH!");
-//                    safelyMovePlayer(driver, location.offset(0, 1, 0));//TODO: not working because it's server side only
+                    aetherSay(player, "CRUNCH!");
+//                    safelyMovePlayer(player, location.offset(0, 1, 0));//TODO: not working because it's server side only
                 }
             }
         }
@@ -91,19 +88,19 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @ForgeSubscribe
     public void renderWireframe(RenderWorldLastEvent evt){
-        if(driver != null )
-            renderer.highlightBoxes(vehicleBlocks.keySet(), driver);
+        if(player != null )
+            renderer.highlightBoxes(vehicleBlocks.keySet(), player);
     }
     
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if (driver != null && event.action == Action.LEFT_CLICK_BLOCK)
+        if (player != null && event.action == Action.LEFT_CLICK_BLOCK)
             if( event.isCancelable() ){
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.containsKey( punchBlock ))
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
                         if(!location.worldObj.isRemote){  //server side only
-                            boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(driver, location);
+                            boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(player, location);
                             HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks.keySet(), location, counterClockwise);
                             if( !shapeCollides(move) )
                                 vehicleBlocks = Util_Movement.rotateShape(move);
@@ -118,34 +115,38 @@ public class RunecraftRune extends AbstractTimedRune {
     /** This method exists to ensure that no duplicate vehicles are persisted. 
      * NOTE: This is an odd method to program for because it is a different instance of Runecraft
      * that is doing something on behalf of the subject Runecraft.  Be very careful to not
-     * change class variable, but always call oldRCV.variable.*/
-    public boolean addOrToggleVehicle(WorldXYZ centerPoint, EntityPlayer player) {
-        for(RunecraftRune oldRCV : activeMagic){
-            if( oldRCV.driver != null && oldRCV.driver.equals(player)){//currently active Rune, to be turned off
-                oldRCV.driver = null; //turn off the vehicle
+     * change class variable, but always call oldRCV.variable.
+     * 
+     * Similar to addOrRejectDuplicate(), but with more complex logic.*/
+    public boolean addOrToggleVehicle(WorldXYZ centerPoint, EntityPlayer activator) {
+        for(PersistentRune tmp : activeMagic){
+            RunecraftRune oldRCV = (RunecraftRune)tmp;
+            if( oldRCV.player != null && oldRCV.player.equals(activator)){//currently active Rune, to be turned off
+                oldRCV.player = null; //turn off the vehicle
                 return false;
             }
         }
-        for(RunecraftRune oldRCV : activeMagic){
+        for(PersistentRune tmp : activeMagic){
+            RunecraftRune oldRCV = (RunecraftRune)tmp;
             if( oldRCV.location.equals( centerPoint ) )// if it exists already, toggle state
             {
-                if(oldRCV.driver == null){ // not currently active
-                    oldRCV.driver = player; // assign a driver and start
+                if(oldRCV.player == null){ // not currently active
+                    oldRCV.player = activator; // assign a player and start
                     HashMap<WorldXYZ, SigBlock> oldVehicleShape = oldRCV.vehicleBlocks;
-                    if( oldRCV.scanForVehicleShape(centerPoint, player) )
+                    if( oldRCV.scanForVehicleShape(centerPoint, activator) )
                         return true;
                     else{
                         oldRCV.vehicleBlocks = rescanBlocks(oldVehicleShape);
                         return true;
                     }
                 }
-                else{ //there's already a driver, but it's not the current player
-                    aetherSay(player, "Stop messing with someone else's ride.");
+                else{ //there's already a player, but it's not the current player
+                    aetherSay(activator, "Stop messing with someone else's ride.");
                     return false;
                 }
             }
         }
-        activeMagic.add(new RunecraftRune(centerPoint, player));
+        activeMagic.add(new RunecraftRune(centerPoint, activator));
         return true;
     }
     
@@ -159,21 +160,31 @@ public class RunecraftRune extends AbstractTimedRune {
         return newVehicle;
     }
 
-    protected boolean scanForVehicleShape(WorldXYZ coords, EntityPlayer player) {
+    protected boolean scanForVehicleShape(WorldXYZ coords, EntityPlayer player2) {
         tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
         vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier+1));
         renderer.reset();
         if(vehicleBlocks.isEmpty()){
-            aetherSay(player, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
+            aetherSay(player2, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
             return false;   
         }
         else{
-            aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
+            aetherSay(player2, "Found " + vehicleBlocks.size() + " tier blocks");
             return true;
         }
     }
     
     public String getRuneName() {
         return "Runecraft";
+    }
+
+    @Override
+    public void saveActiveRunes() {
+        //TODO: actually do something here
+    }
+
+    @Override
+    public ArrayList<PersistentRune> getActiveMagic() {
+        return activeMagic;
     }
 }
