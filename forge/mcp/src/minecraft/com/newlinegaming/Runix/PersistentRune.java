@@ -9,6 +9,7 @@ public abstract class PersistentRune extends AbstractRune{
     
     public EntityPlayer player = null;
     public WorldXYZ location = null;
+    public boolean disabled = false;
     
     public PersistentRune(){}
     
@@ -23,6 +24,13 @@ public abstract class PersistentRune extends AbstractRune{
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>(); */ 
     public abstract List<PersistentRune> getActiveMagic();
 
+    /**Returns the rune at that location or constructs a new one as if execute() were called on it
+     * @param runeClass a pointer to the class constructor to be called*/
+    public PersistentRune getOrCreateRuneByLocation(EntityPlayer player2, WorldXYZ coords, Class<? extends PersistentRune> runeClass){
+        return getRuneByLocation(coords);
+//        return new runeClass(coords, player2);
+    }
+
     /** This method exists to ensure that no duplicate activeMagic are persisted. 
      * 
      * NOTE: There's still a danger of duplication for Runes that are registered to an
@@ -35,5 +43,14 @@ public abstract class PersistentRune extends AbstractRune{
         }
         getActiveMagic().add(newGuy);
         return true;
+    }
+
+    /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */
+    public PersistentRune getRuneByLocation(WorldXYZ coords) {
+        for(PersistentRune rune : getActiveMagic()){
+            if( rune.location.equals(coords) )
+                return rune;
+        }
+        return null;
     }
 }

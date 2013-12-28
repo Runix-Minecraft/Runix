@@ -24,7 +24,8 @@ public class RuneTimer implements ITickHandler
             if( currentTimer >= maxTimer)
             {
                 currentTimer = 0;
-                rune.onUpdateTick((EntityPlayer) tickData[0]);
+                if(rune.disabled == false)
+                    rune.onUpdateTick((EntityPlayer) tickData[0]);
             }
         }
     }

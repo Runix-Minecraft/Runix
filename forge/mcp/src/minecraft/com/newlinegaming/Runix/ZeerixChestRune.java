@@ -35,6 +35,10 @@ public class ZeerixChestRune extends AbstractTimedRune {
                 if(newPos.getBlockId() == 0 && base.isSolid() && !top.isSolid()){
                     if(location.getBlockId() == Block.enderChest.blockID)
                         location.setBlockId(0); //delete old chest
+                    else{
+                        disabled = true; //someone broke the Zeerix Chest!
+                        return;
+                    }
                     newPos.setBlockId(Block.enderChest.blockID); //place chest
                     location = newPos;
                     return;

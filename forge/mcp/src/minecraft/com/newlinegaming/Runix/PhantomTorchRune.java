@@ -12,8 +12,6 @@ import net.minecraft.world.World;
 /**PhantomTorch functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class PhantomTorchRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
-    private boolean disabled = false;
-    
     public PhantomTorchRune() {}
 
     public PhantomTorchRune(EntityPlayer activator, WorldXYZ coords) {
@@ -24,7 +22,7 @@ public class PhantomTorchRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(!disabled && subject.equals(player) && !subject.worldObj.isRemote)
+        if(subject.equals(player) && !subject.worldObj.isRemote)
         {
             World world = subject.worldObj;//sphere can be optimized to donut
             //location is not a good criteria for activeMagic collisions, this is solved by constantly updating location
