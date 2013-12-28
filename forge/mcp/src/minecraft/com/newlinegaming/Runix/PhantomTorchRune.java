@@ -54,7 +54,7 @@ public class PhantomTorchRune extends AbstractTimedRune {
     }
 
     @Override
-    public void execute(EntityPlayer player, WorldXYZ coords) {
+    public void execute(WorldXYZ coords, EntityPlayer player) {
         if(!player.worldObj.isRemote)
             activeMagic.add(new PhantomTorchRune(player, coords));
     }

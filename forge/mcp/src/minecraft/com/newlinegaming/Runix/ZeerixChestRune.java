@@ -58,7 +58,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
     }
 
     @Override
-    public void execute(EntityPlayer activator, WorldXYZ coords) {
+    public void execute(WorldXYZ coords, EntityPlayer activator) {
         if(!activator.worldObj.isRemote)
             activeMagic.add(new ZeerixChestRune(coords.offset(0, -2, 0), activator));
     }

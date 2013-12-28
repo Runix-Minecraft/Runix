@@ -29,7 +29,7 @@ public class FaithRune extends PersistentRune{
              {41,0,41}}};
 	}
 	
-	public void execute(EntityPlayer player, WorldXYZ coords)
+	public void execute(WorldXYZ coords, EntityPlayer player)
 	{
 		if (!runeAllowed(player, this)) return;
 		for (PersistentRune tmp : activeFaithList)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public abstract class PersistentRune extends AbstractRune{
     
@@ -23,6 +24,34 @@ public abstract class PersistentRune extends AbstractRune{
     /**There's no way to have a static field in an abstract class so we use a getter instead
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>(); */ 
     public abstract List<PersistentRune> getActiveMagic();
+    
+    @Override
+    /**Consolidated all the PersistRune execute functions into a single execute() that searches 
+     * for duplicates, builds a new rune if neccessary, then notifies the rune it has been poked.
+     */
+    public void execute(WorldXYZ coords, EntityPlayer activator) {
+//      if(activator.worldObj.isRemote)
+//          return;
+        PersistentRune match = getRuneByLocation(coords);
+        if( match == null){
+            try {
+                match = this.getClass().getConstructor(WorldXYZ.class, EntityPlayer.class).newInstance(coords, activator);
+                getActiveMagic().add(match);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        accept(activator);
+        match.poke(activator, coords);
+    }
+    
+    protected void poke(EntityPlayer poker, WorldXYZ coords){}
+    
+    
+    @Override
+    protected void accept(EntityPlayer player) {
+        aetherSay(player, EnumChatFormatting.GREEN + getRuneName()+ getActiveMagic().size() + " Accepted.");
+    }
 
     /**Returns the rune at that location or constructs a new one as if execute() were called on it
      * @param runeClass a pointer to the class constructor to be called*/

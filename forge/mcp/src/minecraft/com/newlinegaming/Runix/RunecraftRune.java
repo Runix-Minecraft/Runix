@@ -49,17 +49,6 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @Override
-    public void execute(EntityPlayer activator, WorldXYZ coords) {
-        accept(activator);
-        if(!activator.worldObj.isRemote){
-            if( addOrToggleVehicle(coords, activator) )
-                aetherSay(activator, "The Runecraft is now locked to your body.");
-            else
-                aetherSay(activator, "You are now free from the Runecraft.");
-        }
-    }
-
-    @Override
     protected void onUpdateTick(EntityPlayer subject) {
         //TODO: we're not currently using subject
         if(player != null && !player.worldObj.isRemote)
@@ -110,46 +99,24 @@ public class RunecraftRune extends AbstractTimedRune {
                     System.out.println("Runecraft protected");
             }
     }
-
     
-    /** This method exists to ensure that no duplicate vehicles are persisted. 
-     * NOTE: This is an odd method to program for because it is a different instance of Runecraft
-     * that is doing something on behalf of the subject Runecraft.  Be very careful to not
-     * change class variable, but always call oldRCV.variable.
-     * 
-     * Similar to addOrRejectDuplicate(), but with more complex logic.*/
-    public boolean addOrToggleVehicle(WorldXYZ centerPoint, EntityPlayer activator) {
-        for(PersistentRune tmp : activeMagic){
-            RunecraftRune oldRCV = (RunecraftRune)tmp;
-            if( oldRCV.player != null && oldRCV.player.equals(activator)){//currently active Rune, to be turned off
-                oldRCV.player = null; //turn off the vehicle
-                return false;
-            }
+    @Override
+    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+        accept(poker);
+        if(player != null){
+            player = null;
+            aetherSay(poker, "You are now free from the Runecraft.");
+            return;
         }
-        for(PersistentRune tmp : activeMagic){
-            RunecraftRune oldRCV = (RunecraftRune)tmp;
-            if( oldRCV.location.equals( centerPoint ) )// if it exists already, toggle state
-            {
-                if(oldRCV.player == null){ // not currently active
-                    oldRCV.player = activator; // assign a player and start
-                    HashMap<WorldXYZ, SigBlock> oldVehicleShape = oldRCV.vehicleBlocks;
-                    if( oldRCV.scanForVehicleShape(centerPoint, activator) )
-                        return true;
-                    else{
-                        oldRCV.vehicleBlocks = rescanBlocks(oldVehicleShape);
-                        return true;
-                    }
-                }
-                else{ //there's already a player, but it's not the current player
-                    aetherSay(activator, "Stop messing with someone else's ride.");
-                    return false;
-                }
-            }
-        }
-        activeMagic.add(new RunecraftRune(centerPoint, activator));
-        return true;
+        player = poker; // assign a player and start
+        aetherSay(poker, "The Runecraft is now locked to your body.");
+        HashMap<WorldXYZ, SigBlock> oldVehicleShape = vehicleBlocks;
+        if( scanForVehicleShape(coords, poker) )
+            return;
+        else
+            vehicleBlocks = rescanBlocks(oldVehicleShape);
     }
-    
+
     private HashMap<WorldXYZ, SigBlock> rescanBlocks(HashMap<WorldXYZ, SigBlock> oldVehicleShape) {
         HashMap<WorldXYZ, SigBlock> newVehicle = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ xyz : oldVehicleShape.keySet()){

@@ -20,7 +20,7 @@ public class RubricRecallRune extends AbstractRune{
 	}
 
 	@Override
-	public void execute(EntityPlayer player, WorldXYZ coords) {
+	public void execute(WorldXYZ coords, EntityPlayer player) {
 		// TODO Auto-generated method stub
 		
 	}

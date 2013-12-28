@@ -36,10 +36,10 @@ public abstract class AbstractRune {
 	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
 	 * a (possibly static) class variable.
-	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 * @param coords World and xyz that Rune was activated in.
+	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 */
-	public abstract void execute(EntityPlayer player, WorldXYZ coords);//
+	public abstract void execute(WorldXYZ coords, EntityPlayer player);//
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
@@ -90,8 +90,8 @@ public abstract class AbstractRune {
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
         
-        if(!coords.worldObj.equals(player.worldObj))
-            player.travelToDimension(coords.worldObj.provider.dimensionId);//TODO: only server side?
+//        if(!coords.worldObj.equals(player.worldObj) && !player.worldObj.isRemote)
+//            player.travelToDimension(coords.worldObj.provider.dimensionId);//TODO: only server side?
 		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		//TODO: check for Lava, fire, and void
 	}
@@ -145,8 +145,10 @@ public abstract class AbstractRune {
                                 return false; //you can't use your ink as part of your signature, it ruins the shape
                             break;
                         case KEY:
-                            if( Tiers.isTier0(blockID) )
-                                return false; //can be ink, or SIGR but not T0
+                            if( !target.equals(coords) )//key block must be center block
+                                return false;
+//                            if( Tiers.isTier0(blockID) ) //key block can be anything
+//                                return false; //can be ink, or SIGR but not T0
                             break;
                         default:
                             if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers

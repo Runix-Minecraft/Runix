@@ -1,5 +1,6 @@
 package com.newlinegaming.Runix;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,10 +38,10 @@ public class RubricCreationRune extends PersistentRune {
 
     public RubricCreationRune() {}
 
-    public RubricCreationRune(HashMap<WorldXYZ, SigBlock> building, WorldXYZ coords, EntityPlayer player2) 
+    public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
 	    super(coords, player2);
-		structure = building;
+		structure = conductanceStep(coords, 50);;
 		renderer = new RenderHelper();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -57,35 +58,20 @@ public class RubricCreationRune extends PersistentRune {
 
 	}
 
-	@Override
-	public void execute(EntityPlayer player, WorldXYZ coords) {
-		accept(player);
-		HashMap<WorldXYZ, SigBlock> structure = conductanceStep(coords, 50);
-		
-		RubricCreationRune match = ((RubricCreationRune)getRuneByLocation(coords));
-		if( match != null)
-		    match.renderer.reset();
-		else
-		    getActiveMagic().add(new RubricCreationRune(structure, coords, player));
-		
-		ItemStack toolused = player.getCurrentEquippedItem();
-		if (toolused!=null && toolused.itemID == Item.book.itemID) {
-			for (WorldXYZ XYZ : structure.keySet()) {
-				XYZ.setBlockId(0);
-			}
 
-		}
+	@Override
+	protected void poke(EntityPlayer poker, WorldXYZ coords){
+        renderer.reset();
+
+        ItemStack toolused = poker.getCurrentEquippedItem();
+        if (toolused!=null && toolused.itemID == Item.book.itemID) {
+            for (WorldXYZ XYZ : structure.keySet()) {
+                XYZ.setBlockId(0);
+            }
+        }
 	}
 
-	public PersistentRune getRuneByLocation(WorldXYZ coords) {
-	    for(PersistentRune rune : getActiveMagic()){
-            if( rune.location.equals(coords) )
-                return rune;
-	    }
-        return null;
-    }
-
-    @ForgeSubscribe
+	@ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
 		if (player != null)
 			renderer.highlightBoxes(structure.keySet(), player, 221, 0, 0);

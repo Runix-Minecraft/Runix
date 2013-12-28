@@ -26,13 +26,6 @@ public class WaypointRune extends PersistentRune{
                   {NONE,TIER,TIER,TIER,NONE}}};
     }
 
-    @Override
-    public void execute(EntityPlayer player, WorldXYZ coords) {
-        PersistentRune copy = new WaypointRune(coords, player);
-        if( addOrRejectDuplicate(copy) )
-            accept(player);
-    }
-
     public String getRuneName() {
 		return "Waypoint";
 	}

@@ -1,11 +1,20 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class TeleporterRune extends AbstractRune {
+public class TeleporterRune extends PersistentRune {
+
+    private static ArrayList<PersistentRune> energizedTeleporters = new ArrayList<PersistentRune>();
     
+    public TeleporterRune(){}
+    
+    public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
+        super(coords, activator);
+        energy = 1000;
+    }
 
 	public int[][][] blockPattern(){
 		return new int[][][]
@@ -16,18 +25,13 @@ public class TeleporterRune extends AbstractRune {
 				  {NONE,TIER,SIGR,TIER,NONE}}};
 	}
 	
-	@Override
-	/**Teleport the player to the WaypointRune with a matching signature
-	 */
-	public void execute(EntityPlayer player, WorldXYZ coords) {
-	    accept(player);
+	
+    @Override
+    /**Teleport the player to the WaypointRune with a matching signature
+     */
+    protected void poke(EntityPlayer poker, WorldXYZ coords) {
 //	    if(Tiers.getTier(coords.getBlockId()) > 0){
 //	        consumeKeyBlock(coords...)
-//	    }
-	    // if coords.equals(location)
-	    //     execute as normal
-	    // else
-	    //     find matching rune or construct new rune and pass off execution
 	    
 	    Signature signature = new Signature(this, coords);
 	    WorldXYZ destination;
@@ -46,11 +50,18 @@ public class TeleporterRune extends AbstractRune {
 	        return;
 	    }
 	    destination = new WorldXYZ(wp.location);
+	    energy -= destination.getDistanceSquaredToChunkCoordinates(new WorldXYZ(poker)) * .22;
+	    aetherSay(poker, energy + " energy left");
 		safelyMovePlayer(player, destination);
 	}
-
+	
     public String getRuneName() {
         return "Teleporter";
 	}
+
+    @Override
+    public List<PersistentRune> getActiveMagic() {
+        return energizedTeleporters;
+    }
 
 }
