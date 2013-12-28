@@ -201,6 +201,10 @@ public class Tiers {
                 //TODO: Add newer blocks
         };
     }
+    
+    public static int getEnergy(int blockID){
+        return blockEnergy[blockID];
+    }
 
     public static int getTier(int blockID){
         if(isTier0(blockID))

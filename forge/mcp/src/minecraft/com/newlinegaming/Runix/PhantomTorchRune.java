@@ -12,19 +12,19 @@ import net.minecraft.world.World;
 /**PhantomTorch functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class PhantomTorchRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
-    protected int tier = 1;
+    private boolean disabled = false;
     
     public PhantomTorchRune() {}
 
     public PhantomTorchRune(EntityPlayer activator, WorldXYZ coords) {
         super(coords, activator);
-        tier = getTier(location);
+        consumeRune(coords);
         updateEveryXTicks(10);
     }
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(player))
+        if(!disabled && subject.equals(player) && !subject.worldObj.isRemote)
         {
             World world = subject.worldObj;//sphere can be optimized to donut
             //location is not a good criteria for activeMagic collisions, this is solved by constantly updating location
@@ -36,6 +36,9 @@ public class PhantomTorchRune extends AbstractTimedRune {
                 if(newPos.getBlockId() == 0 && base.isSolid() && 
                         world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4){ //adjustable
                     newPos.setBlockId(Block.torchWood.blockID);//set torch
+                    energy -= Tiers.getEnergy(Block.torchWood.blockID);
+                    if(energy < Tiers.getEnergy(Block.torchWood.blockID))
+                        disabled = true; //TODO: kill thyself
                     return; //Light levels don't update til the end of the tick, so we need to exit
                 }
             }

@@ -18,6 +18,7 @@ import net.minecraft.world.World;
  */
 public abstract class AbstractRune {
 	
+    protected int energy = 0;
 	enum Direction {UP, DOWN, NORTH, EAST, SOUTH, WEST};// vectors[(int)Direction.UP] = new int[]{0,1,0};
 	
     public static final int TIER = -1; //Tier
@@ -26,7 +27,7 @@ public abstract class AbstractRune {
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
     public static final int ENTY = -4; //Entity blocks with special data like heads, picture frames, ect... 
     //Josiah: I'm not sure what to do with ENTY? 
-    public static final int KEY = -5;
+    public static final int KEY = -5; //required to be in the middle of the rune
 	
 	public AbstractRune(){}
 
@@ -90,7 +91,7 @@ public abstract class AbstractRune {
 			coords.posY += 1; 
         
         if(!coords.worldObj.equals(player.worldObj))
-            player.travelToDimension(coords.worldObj.provider.dimensionId);
+            player.travelToDimension(coords.worldObj.provider.dimensionId);//TODO: only server side?
 		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		//TODO: check for Lava, fire, and void
 	}
@@ -244,5 +245,25 @@ public abstract class AbstractRune {
     
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         // Default behavior is nothing. Override this for persistent runes
+    }
+
+    protected void consumeRune(WorldXYZ coords) {
+        
+        //iterate a blockPattern()
+        int[][][] template = blockPattern();
+        for (int y = 0; y < template.length; y++) {
+            for (int z = 0; z < template[y].length; z++) {
+                for (int x = 0; x < template[y][z].length; x++) {
+                    WorldXYZ target = coords.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
+                    //for each block, get blockID
+                    int blockID = target.getBlockId();
+                    if(template[y][z][x] == NONE)
+                        continue; // we don't consume these
+                    energy += Tiers.getEnergy(blockID);//convert ID into energy
+                    target.setBlockId(0);// delete the block
+                }
+            }
+        }
+        
     }
 }
