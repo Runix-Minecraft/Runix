@@ -1,8 +1,6 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -30,24 +28,6 @@ public class WaypointRune extends PersistentRune{
 		return "Waypoint";
 	}
     
-    @Override
-    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        for(PersistentRune tmp : activeMagic){
-            PersistentRune wp = (PersistentRune) tmp;
-            if(blocks.contains(wp.location) )
-                wp.location.bump(dX, dY, dZ);
-        }
-    }
-
-    @Override
-    public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
-        for(PersistentRune tmp : activeMagic){
-            PersistentRune wp = (PersistentRune) tmp;
-            if(positionsMoved.keySet().contains(wp.location) )
-                wp.location = positionsMoved.get(wp.location); //grab the destination keyed by source position
-        }
-    }
-
     @Override
     public void saveActiveRunes() {
         System.out.println(getRuneName() + " saving data.");
