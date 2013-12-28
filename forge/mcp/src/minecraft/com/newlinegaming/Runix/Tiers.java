@@ -197,8 +197,51 @@ public class Tiers {
                 0,   //Potatoes
                 2,   //Wooden Button
                 23,  //Head
-                4898    //Anvil
-                //TODO: Add newer blocks
+                4898, //Anvil
+                222 , //Trapped Chest
+                3038, //Weighted Pressure Plate (light)
+                316 , //Weighted Pressure Plate (heavy)
+                607 , //Redstone Comparator (inactive)
+                607 , //Redstone Comparator (active)
+                503 , //Daylight Sensor
+                1310, //Redstone Block
+                158 , //Nether Quartz Ore
+                854 , //Hopper
+                632 , //Quartz Block
+                948 , //Quartz Stairs
+                84  , //Activator Rail
+                153 , //Dropper
+                248 , //Stained Clay
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                216 , //Hay Bale
+                16  , //Carpet
+                248 , //Hardened Clay
+                756 , //Block of Coal
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0   , //
+                0    //
         };
     }
     
