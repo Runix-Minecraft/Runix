@@ -31,8 +31,8 @@ public class RunecraftRune extends AbstractTimedRune {
     public RunecraftRune(WorldXYZ coords, EntityPlayer player2)
     {
         super(coords, player2);
+        player = null; //this is because poke() acts as if the Rune was activated a second time when it is first constructed
         renderer = new RenderHelper();
-        scanForVehicleShape(coords, player2);
         updateEveryXTicks(4);
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -49,23 +49,30 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @Override
+    public void execute(WorldXYZ coords, EntityPlayer activator) {
+        if(!activator.worldObj.isRemote)//server only
+            super.execute(coords, activator);
+    }
+
+    @Override
     protected void onUpdateTick(EntityPlayer subject) {
+        System.out.println("Runecraft array: " + getActiveMagic().size());
         //TODO: we're not currently using subject
         if(player != null && !player.worldObj.isRemote)
         {//Josiah: turns out running this on server and client side causes strange duplications
             int dX = (int) (player.posX - location.posX - .5);
             int dY = (int) (player.posY - location.posY - 1);
             int dZ = (int) (player.posZ - location.posZ - .5);
-            if( 10 < location.getDistanceSquared((int)player.posX, (int)player.posY, (int)player.posZ) ){
-                player = null; //Vehicle has been abandoned
-                return; //Vehicle should stop moving until someone is at the wheel again
-            }
+//            if( 10 < location.getDistanceSquared((int)player.posX, (int)player.posY, (int)player.posZ) ){
+//                player = null; //Vehicle has been abandoned
+//                return; //Vehicle should stop moving until someone is at the wheel again
+//            }
             if(player.isSneaking())
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
                     vehicleBlocks = Util_Movement.moveShape(vehicleBlocks, dX, dY, dZ);
-                    location = location.offset(dX, dY, dZ);
+                    //location.bump(dX, dY, dZ);  //location gets moved through moveShape registry
                 }
                 else{
                     aetherSay(player, "CRUNCH!");
@@ -102,7 +109,8 @@ public class RunecraftRune extends AbstractTimedRune {
     
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-        accept(poker);
+        if(poker.worldObj.isRemote)
+            return;
         if(player != null){
             player = null;
             aetherSay(poker, "You are now free from the Runecraft.");
@@ -111,7 +119,7 @@ public class RunecraftRune extends AbstractTimedRune {
         player = poker; // assign a player and start
         aetherSay(poker, "The Runecraft is now locked to your body.");
         HashMap<WorldXYZ, SigBlock> oldVehicleShape = vehicleBlocks;
-        if( scanForVehicleShape(coords, poker) )
+        if( scanForVehicleShape() )
             return;
         else
             vehicleBlocks = rescanBlocks(oldVehicleShape);
@@ -127,17 +135,16 @@ public class RunecraftRune extends AbstractTimedRune {
         return newVehicle;
     }
 
-    protected boolean scanForVehicleShape(WorldXYZ coords, EntityPlayer player2) {
-        tier = Tiers.getTier( coords.offset(-1, 0, -1).getBlockId() );
-        vehicleBlocks = conductanceStep(coords, (int)Math.pow(2, tier));
-        System.out.println("Detected Tier " + tier);
+    protected boolean scanForVehicleShape() {
+        tier = getTier(location) ;
+        vehicleBlocks = conductanceStep(location, (int)Math.pow(2, tier));
         renderer.reset();
         if(vehicleBlocks.isEmpty()){
-            aetherSay(player2, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
+            aetherSay(player, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
             return false;   
         }
         else{
-            aetherSay(player2, "Found " + vehicleBlocks.size() + " tier blocks");
+            aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
             return true;
         }
     }

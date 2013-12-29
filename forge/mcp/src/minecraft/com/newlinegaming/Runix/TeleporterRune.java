@@ -52,7 +52,7 @@ public class TeleporterRune extends PersistentRune {
 	    destination = new WorldXYZ(wp.location);
 	    energy -= destination.getDistanceSquaredToChunkCoordinates(new WorldXYZ(poker)) * .22;
 	    aetherSay(poker, energy + " energy left");
-		safelyMovePlayer(player, destination);
+		teleportPlayer(player, destination);
 	}
 	
     public String getRuneName() {

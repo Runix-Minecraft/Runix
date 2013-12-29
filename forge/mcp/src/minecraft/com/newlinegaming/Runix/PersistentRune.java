@@ -82,9 +82,9 @@ public abstract class PersistentRune extends AbstractRune{
      * any runes that are affected.  Ideally, runes should be coded so that moving the center block is
      * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.*/
     public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        for(PersistentRune wp : getActiveMagic()){
-            if(blocks.contains(wp.location) )
-                wp.location.bump(dX, dY, dZ);
+        for(PersistentRune rune : getActiveMagic()){
+            if(blocks.contains(rune.location) )
+                rune.location.bump(dX, dY, dZ);
         }
     }
 
@@ -92,9 +92,9 @@ public abstract class PersistentRune extends AbstractRune{
     /**as moveMagic() but the parameters allow any kind of transformation.  This is used by rotation to
      * map the starting position as a key, and the end position as the value.     */
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
-        for(PersistentRune wp : getActiveMagic()){
-            if(positionsMoved.keySet().contains(wp.location) )
-                wp.location = positionsMoved.get(wp.location); //grab the destination keyed by source position
+        for(PersistentRune rune : getActiveMagic()){
+            if(positionsMoved.keySet().contains(rune.location) )
+                rune.location = positionsMoved.get(rune.location); //grab the destination keyed by source position
         }
     }
 }

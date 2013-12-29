@@ -39,7 +39,7 @@ public abstract class AbstractRune {
 	 * @param coords World and xyz that Rune was activated in.
 	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 */
-	public abstract void execute(WorldXYZ coords, EntityPlayer player);//
+	public abstract void execute(WorldXYZ coords, EntityPlayer player);
 	
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
@@ -76,8 +76,8 @@ public abstract class AbstractRune {
 		return true;
 	}
 	
-	protected void safelyMovePlayer(EntityPlayer player, WorldXYZ coords) {
-		safelyMovePlayer(player, coords, Direction.UP);
+	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) {
+		teleportPlayer(player, coords, Direction.UP);
 	}
 	
 	/**This method should be used for any teleport or similar move that may land the player in some blocks.
@@ -85,7 +85,7 @@ public abstract class AbstractRune {
 	 * @param coords Target destination
 	 * @param direction to move in if they encounter blocks
 	 */
-	protected void safelyMovePlayer(EntityPlayer player, WorldXYZ coords, Direction direction) {
+	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords, Direction direction) {
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
@@ -99,10 +99,10 @@ public abstract class AbstractRune {
 	/** returns the unique name of the rune */
 	public abstract String getRuneName();
 	
-	public static void aetherSay(EntityPlayer player, String message)
+	public static void aetherSay(EntityPlayer recipient, String message)
 	{
-	    if(player.worldObj.isRemote)
-	        player.sendChatToPlayer(ChatMessageComponent.createFromText(message));
+	    if(recipient.worldObj.isRemote && recipient != null)
+	        recipient.sendChatToPlayer(ChatMessageComponent.createFromText(message));
 	}
 
     public void aetherSay(World worldObj, String message) {
@@ -194,7 +194,6 @@ public abstract class AbstractRune {
 
     /**This will return an empty list if the activation would tear a structure in two. */
     public HashMap<WorldXYZ, SigBlock> conductanceStep(WorldXYZ startPoint, int maxDistance) {
-        //TODO: perhaps rename WorldXYZ to WorldXYZ
         HashMap<WorldXYZ, SigBlock> workingSet = new HashMap<WorldXYZ, SigBlock>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
@@ -250,7 +249,6 @@ public abstract class AbstractRune {
     }
 
     protected void consumeRune(WorldXYZ coords) {
-        
         //iterate a blockPattern()
         int[][][] template = blockPattern();
         for (int y = 0; y < template.length; y++) {
