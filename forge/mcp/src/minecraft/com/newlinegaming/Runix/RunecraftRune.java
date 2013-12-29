@@ -85,11 +85,6 @@ public class RunecraftRune extends AbstractTimedRune {
         }
     }
 
-    private HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> structure, int dX, int dY, int dZ) throws NotEnoughRunicEnergyException {
-        spendEnergy(Tiers.blockMoveCost * structure.size());
-        return Util_Movement.moveShape(vehicleBlocks, dX, dY, dZ);
-    }
-
     @ForgeSubscribe
     public void renderWireframe(RenderWorldLastEvent evt){
         if(player != null )

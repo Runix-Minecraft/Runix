@@ -358,4 +358,9 @@ public abstract class AbstractRune {
         }
     }
 
+    protected HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> structure, int dX, int dY, int dZ) throws NotEnoughRunicEnergyException {
+        spendEnergy(Tiers.blockMoveCost * structure.size());
+        return Util_Movement.moveShape(structure, dX, dY, dZ);
+    }
+
 }
