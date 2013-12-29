@@ -37,8 +37,8 @@ public abstract class PersistentRune extends AbstractRune{
      * even if it is only to call super(coords, activator) in order for persistence to work correctly.
      */
     public void execute(WorldXYZ coords, EntityPlayer activator) {
-//        if(activator.worldObj.isRemote)//runes server side only
-//            return;
+        if(activator.worldObj.isRemote)//runes server side only
+            return;
         PersistentRune match = null;
         if(oneRunePerPerson())
             match = getRuneByPlayer(activator);

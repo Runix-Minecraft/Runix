@@ -94,10 +94,28 @@ public abstract class AbstractRune {
         
 //        if(!coords.worldObj.equals(player.worldObj) && !player.worldObj.isRemote)
 //            player.travelToDimension(coords.worldObj.provider.dimensionId);//TODO: only server side?
-		subject.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
+		subject.setPositionAndUpdate(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		System.out.println("Done Teleporting");
 		//TODO: check for Lava, fire, and void
 	}
+	
+    /* Example Code:
+     * @Override
+    public ItemStack onItemRightClick(ItemStack var1, World var2, EntityPlayer var3) {
+        Side side = FMLCommonHandler.instance().getEffectiveSide();
+        if (side == Side.SERVER) {
+
+            if (var3 instanceof EntityPlayerMP) {
+                WorldServer worldserver = (WorldServer) var2;
+                EntityPlayerMP var4 = (EntityPlayerMP) var3;
+                if (var3.ridingEntity == null && var3.riddenByEntity == null && var3 instanceof EntityPlayer && var4.dimension != 0) {
+                    var4.mcServer.getConfigurationManager().transferPlayerToDimension(var4, 20, new TeleporterAlzairio(worldserver));
+                }
+            }
+        }
+        return var1;
+    }*/	
+	
 	
 	/** returns the unique name of the rune */
 	public abstract String getRuneName();
