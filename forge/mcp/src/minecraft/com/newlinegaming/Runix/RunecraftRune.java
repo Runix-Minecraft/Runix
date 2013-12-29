@@ -62,10 +62,10 @@ public class RunecraftRune extends AbstractTimedRune {
             int dX = (int) (player.posX - location.posX - .5);
             int dY = (int) (player.posY - location.posY - 1);
             int dZ = (int) (player.posZ - location.posZ - .5);
-//            if( 10 < location.getDistanceSquared((int)player.posX, (int)player.posY, (int)player.posZ) ){
-//                player = null; //Vehicle has been abandoned
-//                return; //Vehicle should stop moving until someone is at the wheel again
-//            }
+            if( 10 < location.getDistanceSquared((int)player.posX, (int)player.posY, (int)player.posZ) ){
+                player = null; //Vehicle has been abandoned
+                return; //Vehicle should stop moving until someone is at the wheel again
+            }
             if(player.isSneaking())
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
