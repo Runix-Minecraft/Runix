@@ -56,7 +56,6 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void saving(Save s){
-        System.out.println("SAVE ALL THE THINGS!");
         for(AbstractRune r : runeRegistry)
             if( r instanceof PersistentRune)
                 ((PersistentRune) r).saveActiveRunes();

@@ -128,4 +128,10 @@ public abstract class PersistentRune extends AbstractRune{
                 rune.location = positionsMoved.get(rune.location); //grab the destination keyed by source position
         }
     }
+
+    protected void reportOutOfGas(EntityPlayer listener) {
+        aetherSay(listener, "We require more Vespene Gas.");
+        System.out.println(getRuneName() + ": We require more Vespene Gas; " + energy);
+        disabled = true;
+    }
 }

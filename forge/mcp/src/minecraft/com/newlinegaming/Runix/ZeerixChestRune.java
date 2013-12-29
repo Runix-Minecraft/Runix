@@ -1,13 +1,13 @@
     package com.newlinegaming.Runix;
 
     import java.util.ArrayList;
-    import java.util.LinkedList;
-    import java.util.Random;
+import java.util.LinkedList;
+import java.util.Random;
 
     import net.minecraft.block.Block;
-    import net.minecraft.block.material.Material;
-    import net.minecraft.entity.player.EntityPlayer;
-    import net.minecraft.world.World;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 public class ZeerixChestRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
@@ -33,18 +33,15 @@ public class ZeerixChestRune extends AbstractTimedRune {
                 Material base = world.getBlockMaterial( ((int)newPos.posX), ((int)newPos.posY-1), ((int)newPos.posZ) );
                 Material top = world.getBlockMaterial( ((int)newPos.posX), ((int)newPos.posY+1), ((int)newPos.posZ) );
                 if(newPos.getBlockId() == 0 && base.isSolid() && !top.isSolid()){
-                    if(location.getBlockId() == Block.enderChest.blockID)
-                        location.setBlockId(0); //delete old chest
-                    else{//someone broke the Zeerix Chest!
-                        energy -= Tiers.getEnergy(Block.enderChest.blockID);//charge for a replacement
-                        if( energy < 0){
-                            disabled = true;
-                            return;
-                        }
+                    try{
+                        if(location.getBlockId() != Block.enderChest.blockID)
+                            setBlockId(location, Block.enderChest.blockID);//charge for a replacement
+                        moveBlock(location, newPos);
+                    }catch( NotEnoughRunicEnergyException e){
+                        reportOutOfGas(player);
                     }
-                    newPos.setBlockId(Block.enderChest.blockID); //place chest
-                    location = newPos;
-                    return;
+                    
+                    return; //we only need place the chest in one good position
                 }
             }
         }

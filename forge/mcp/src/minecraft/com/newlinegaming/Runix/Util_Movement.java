@@ -56,7 +56,7 @@ public class Util_Movement {
     }
 
     /**See notes on moveShape*/
-    public static HashMap<WorldXYZ, SigBlock> rotateShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
+    public static HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
     {
         HashMap<WorldXYZ, SigBlock> oldStructure = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ p : moveMapping.keySet()){
@@ -107,6 +107,8 @@ public class Util_Movement {
         else
             return false;
     }
+
+   
 
 
 }

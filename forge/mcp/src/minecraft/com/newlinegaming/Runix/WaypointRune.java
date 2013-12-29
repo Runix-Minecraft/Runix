@@ -30,7 +30,6 @@ public class WaypointRune extends PersistentRune{
     
     @Override
     public void saveActiveRunes() {
-        System.out.println(getRuneName() + " saving data.");
         //TODO output JSON file
     }
 

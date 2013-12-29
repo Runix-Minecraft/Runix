@@ -10,6 +10,12 @@ import net.minecraft.block.Block;
 
 public class Tiers {
     
+    //Cost category values from the Spreadsheet
+    //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
+    public static final int blockMoveCost = 8;
+    public static final int blockBreakCost = 12;
+    public static final float movementPerMeterCost = 0.22f;
+    
     private static ArrayList<Integer> Tier0;
     private static ArrayList<Integer> naturalBlocks;
     private static ArrayList<Integer> moveSensitiveBlocks;

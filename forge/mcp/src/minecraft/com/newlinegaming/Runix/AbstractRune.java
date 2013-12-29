@@ -265,4 +265,35 @@ public abstract class AbstractRune {
             }
         }
     }
+
+    public void setBlockId(WorldXYZ coords, int blockID) throws NotEnoughRunicEnergyException {
+        if( blockID == 0 )//this is actually breaking, not paying for air
+            spendEnergy(Tiers.blockBreakCost);
+        else
+            spendEnergy(Tiers.getEnergy(blockID));        
+        coords.setBlockId(blockID);
+    }
+
+    /**
+     * @param energyCost 
+     * @throws NotEnoughRunicEnergyException
+     */
+    protected void spendEnergy(int energyCost) throws NotEnoughRunicEnergyException {
+        if( energy < energyCost){
+            throw new NotEnoughRunicEnergyException();
+        }
+        energy -= energyCost;
+    }
+
+    /**This is a minature convenience version of moveShape(moveMapping) for single blocks
+     * @throws NotEnoughRunicEnergyException */
+    public void moveBlock(WorldXYZ location, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
+        newPos.setBlockId(location.getSigBlock());
+        location.setBlockId(0);
+        spendEnergy(Tiers.blockMoveCost);
+        
+        HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
+        moveMapping.put(location, newPos);
+        RuneHandler.getInstance().moveMagic(moveMapping);
+    }
 }
