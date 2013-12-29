@@ -13,7 +13,7 @@ public class TeleporterRune extends PersistentRune {
     
     public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
         super(coords, activator);
-        energy = 10000;
+        energy = 100;
     }
 
 	public int[][][] blockPattern(){
@@ -30,8 +30,7 @@ public class TeleporterRune extends PersistentRune {
     /**Teleport the player to the WaypointRune with a matching signature
      */
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-//	    if(Tiers.getTier(coords.getBlockId()) > 0){
-//	        consumeKeyBlock(coords...)
+        consumeKeyBlock(coords);
 	    
 	    Signature signature = new Signature(this, coords);
 	    WorldXYZ destination;

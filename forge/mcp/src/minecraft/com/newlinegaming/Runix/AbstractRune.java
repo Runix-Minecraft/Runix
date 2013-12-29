@@ -1,11 +1,14 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
@@ -90,6 +93,7 @@ public abstract class AbstractRune {
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
+        //TODO: distance should be calculated after the Nether -> Overworld transform has been done
         spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
         
         if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
@@ -170,9 +174,8 @@ public abstract class AbstractRune {
                                 return false; //you can't use your ink as part of your signature, it ruins the shape
                             break;
                         case KEY:
-                            if( !target.equals(coords) )//key block must be center block
+                            if( !target.equals(coords) || Tiers.isTier0(blockID) )//key block must be center block
                                 return false;
-//                            if( Tiers.isTier0(blockID) ) //key block can be anything
 //                                return false; //can be ink, or SIGR but not T0
                             break;
                         default:
@@ -345,6 +348,14 @@ public abstract class AbstractRune {
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
         moveMapping.put(location, newPos);
         RuneHandler.getInstance().moveMagic(moveMapping);
+    }
+
+    protected void consumeKeyBlock(WorldXYZ coords) {
+        if(Tiers.getTier(coords.getBlockId()) > 1){
+            List<WorldXYZ> wrapper = Arrays.asList(coords);
+            consumeRune(wrapper);
+            coords.setBlockId(Block.cobblestone.blockID);//we don't want air sitting here
+        }
     }
 
 }

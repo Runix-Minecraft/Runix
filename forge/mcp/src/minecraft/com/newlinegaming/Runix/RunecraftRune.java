@@ -108,6 +108,7 @@ public class RunecraftRune extends AbstractTimedRune {
     
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
+        consumeKeyBlock(coords);
         if(poker.worldObj.isRemote)
             return;
         if(player != null){
