@@ -70,7 +70,11 @@ public class RunecraftRune extends AbstractTimedRune {
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
-                    vehicleBlocks = Util_Movement.moveShape(vehicleBlocks, dX, dY, dZ);
+                    try {
+                        vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ);
+                    } catch (NotEnoughRunicEnergyException e) {
+                        reportOutOfGas(player);
+                    }
                     //location.bump(dX, dY, dZ);  //location gets moved through moveShape registry
                 }
                 else{
@@ -79,6 +83,11 @@ public class RunecraftRune extends AbstractTimedRune {
                 }
             }
         }
+    }
+
+    private HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> structure, int dX, int dY, int dZ) throws NotEnoughRunicEnergyException {
+        spendEnergy(Tiers.blockMoveCost * structure.size());
+        return Util_Movement.moveShape(vehicleBlocks, dX, dY, dZ);
     }
 
     @ForgeSubscribe
