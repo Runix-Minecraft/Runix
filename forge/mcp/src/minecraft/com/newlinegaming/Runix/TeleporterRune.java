@@ -13,7 +13,7 @@ public class TeleporterRune extends PersistentRune {
     
     public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
         super(coords, activator);
-        energy = 100;
+        energy = 10000;
     }
 
 	public int[][][] blockPattern(){

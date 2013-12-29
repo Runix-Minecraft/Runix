@@ -64,9 +64,11 @@ public class RuneHandler {
     /**Detects a rune pattern, and executes it.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
+        //TODO: check for Activator Rail in hand and subscribe the rune to minecart events
         if (createdRune != null) {
-            createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
-            createdRune.execute(coords, player);//if isPersistent, this will add itself to activeRunes or activeMagic
+            createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
+                    createdRune.getRuneName() + EnumChatFormatting.WHITE + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+            createdRune.execute(coords, player);
         }
     }
 

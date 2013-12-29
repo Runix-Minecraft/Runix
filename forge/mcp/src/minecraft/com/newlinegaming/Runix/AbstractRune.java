@@ -92,8 +92,8 @@ public abstract class AbstractRune {
 			coords.posY += 1; 
         spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
         
-//        if(!coords.worldObj.equals(player.worldObj) && !player.worldObj.isRemote)
-//            player.travelToDimension(coords.worldObj.provider.dimensionId);//TODO: only server side?
+        if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
+            subject.travelToDimension(coords.worldObj.provider.dimensionId);
 		subject.setPositionAndUpdate(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
 		System.out.println("Done Teleporting");
 		//TODO: check for Lava, fire, and void

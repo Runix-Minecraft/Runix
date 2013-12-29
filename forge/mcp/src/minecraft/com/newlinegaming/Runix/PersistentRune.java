@@ -29,7 +29,7 @@ public abstract class PersistentRune extends AbstractRune{
     public abstract List<PersistentRune> getActiveMagic();
     
     @Override
-    /**Consolidated all the PersistRune execute functions into a single execute() that searches 
+    /**Consolidated all the PersistentRune execute functions into a single execute() that searches 
      * for duplicates based on location, builds a new rune if necessary, then notifies the 
      * rune it has been poked.
      * 
