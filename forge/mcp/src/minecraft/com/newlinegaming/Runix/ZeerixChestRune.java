@@ -35,9 +35,12 @@ public class ZeerixChestRune extends AbstractTimedRune {
                 if(newPos.getBlockId() == 0 && base.isSolid() && !top.isSolid()){
                     if(location.getBlockId() == Block.enderChest.blockID)
                         location.setBlockId(0); //delete old chest
-                    else{
-                        disabled = true; //someone broke the Zeerix Chest!
-                        return;
+                    else{//someone broke the Zeerix Chest!
+                        energy -= Tiers.getEnergy(Block.enderChest.blockID);//charge for a replacement
+                        if( energy < 0){
+                            disabled = true;
+                            return;
+                        }
                     }
                     newPos.setBlockId(Block.enderChest.blockID); //place chest
                     location = newPos;
@@ -58,12 +61,6 @@ public class ZeerixChestRune extends AbstractTimedRune {
     }
 
     @Override
-    public void execute(WorldXYZ coords, EntityPlayer activator) {
-        if(!activator.worldObj.isRemote)
-            activeMagic.add(new ZeerixChestRune(coords.offset(0, -2, 0), activator));
-    }
-
-    @Override
     public String getRuneName() {
         return "Zeerix Chest";
     }
@@ -71,6 +68,11 @@ public class ZeerixChestRune extends AbstractTimedRune {
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;
+    }
+
+    @Override
+    public boolean oneRunePerPerson() {
+        return true;
     }
 
 }

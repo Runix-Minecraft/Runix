@@ -56,7 +56,6 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        System.out.println("Runecraft array: " + getActiveMagic().size());
         //TODO: we're not currently using subject
         if(player != null && !player.worldObj.isRemote)
         {//Josiah: turns out running this on server and client side causes strange duplications
@@ -161,5 +160,10 @@ public class RunecraftRune extends AbstractTimedRune {
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;
+    }
+
+    @Override
+    public boolean oneRunePerPerson() {
+        return true;
     }
 }

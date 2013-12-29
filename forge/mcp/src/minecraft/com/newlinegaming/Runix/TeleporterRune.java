@@ -64,4 +64,8 @@ public class TeleporterRune extends PersistentRune {
         return energizedTeleporters;
     }
 
+    public boolean oneRunePerPerson() {
+        return false;
+    }
+
 }

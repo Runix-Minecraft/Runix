@@ -14,7 +14,7 @@ public class PhantomTorchRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     public PhantomTorchRune() {}
 
-    public PhantomTorchRune(EntityPlayer activator, WorldXYZ coords) {
+    public PhantomTorchRune( WorldXYZ coords, EntityPlayer activator ) {
         super(coords, activator);
         consumeRune(coords);
         updateEveryXTicks(10);
@@ -25,7 +25,6 @@ public class PhantomTorchRune extends AbstractTimedRune {
         if(subject.equals(player) && !subject.worldObj.isRemote)
         {
             World world = subject.worldObj;//sphere can be optimized to donut
-            //location is not a good criteria for activeMagic collisions, this is solved by constantly updating location
             location = new WorldXYZ(player);
             LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
             for(WorldXYZ newPos : sphere)
@@ -35,8 +34,9 @@ public class PhantomTorchRune extends AbstractTimedRune {
                         world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4){ //adjustable
                     newPos.setBlockId(Block.torchWood.blockID);//set torch
                     energy -= Tiers.getEnergy(Block.torchWood.blockID);
+                    System.out.println("Energy Left: " + energy);
                     if(energy < Tiers.getEnergy(Block.torchWood.blockID))
-                        disabled = true; //TODO: kill thyself
+                        disabled = true;
                     return; //Light levels don't update til the end of the tick, so we need to exit
                 }
             }
@@ -54,12 +54,6 @@ public class PhantomTorchRune extends AbstractTimedRune {
     }
 
     @Override
-    public void execute(WorldXYZ coords, EntityPlayer player) {
-        if(!player.worldObj.isRemote)
-            activeMagic.add(new PhantomTorchRune(player, coords));
-    }
-
-    @Override
     public String getRuneName() {
         return "Phantom Torch";
     }
@@ -67,6 +61,11 @@ public class PhantomTorchRune extends AbstractTimedRune {
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;
+    }
+
+    @Override
+    public boolean oneRunePerPerson() {
+        return true;
     }
 
 }

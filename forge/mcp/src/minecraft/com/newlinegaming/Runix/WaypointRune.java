@@ -38,4 +38,9 @@ public class WaypointRune extends PersistentRune{
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;
     }
+
+    @Override
+    public boolean oneRunePerPerson() {
+        return false;
+    }
 }

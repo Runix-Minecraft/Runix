@@ -93,4 +93,9 @@ public class RubricCreationRune extends PersistentRune {
         return storedPatterns;
     }
 
+    @Override
+    public boolean oneRunePerPerson() {
+        return false;
+    }
+
 }

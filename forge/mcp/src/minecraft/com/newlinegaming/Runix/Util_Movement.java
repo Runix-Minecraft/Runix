@@ -17,6 +17,15 @@ public class Util_Movement {
         return rotationMapping;
     }
     
+    
+    /** Note: when designing moving runes, DO NOT update your PersistentRune.location variable.  
+     * moveShape() calls moveMagic() which will update everything including yourself.
+     * @param vehicleBlocks
+     * @param dX
+     * @param dY
+     * @param dZ
+     * @return
+     */
     public static HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> vehicleBlocks, int dX, int dY, int dZ) {
         //Josiah: If you're having trouble with glitches, try only running it on the server side
         //if( !world.isRemote ) //this is only true server side
@@ -46,6 +55,7 @@ public class Util_Movement {
         return newPositions;
     }
 
+    /**See notes on moveShape*/
     public static HashMap<WorldXYZ, SigBlock> rotateShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
     {
         HashMap<WorldXYZ, SigBlock> oldStructure = new HashMap<WorldXYZ, SigBlock>();

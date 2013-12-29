@@ -264,6 +264,5 @@ public abstract class AbstractRune {
                 }
             }
         }
-        
     }
 }

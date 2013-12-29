@@ -70,6 +70,11 @@ public class FaithRune extends PersistentRune{
     public List<PersistentRune> getActiveMagic() {
         return activeFaithList;
     }
+
+    @Override
+    public boolean oneRunePerPerson() {
+        return false;
+    }
 	
 
 	
