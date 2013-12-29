@@ -76,7 +76,7 @@ public abstract class AbstractRune {
 		return true;
 	}
 	
-	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) {
+	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
 		teleportPlayer(player, coords, Direction.UP);
 	}
 	
@@ -84,15 +84,18 @@ public abstract class AbstractRune {
 	 * @param player
 	 * @param coords Target destination
 	 * @param direction to move in if they encounter blocks
+	 * @throws NotEnoughRunicEnergyException 
 	 */
-	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords, Direction direction) {
+	protected void teleportPlayer(EntityPlayer subject, WorldXYZ coords, Direction direction) throws NotEnoughRunicEnergyException {
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
+        spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
         
 //        if(!coords.worldObj.equals(player.worldObj) && !player.worldObj.isRemote)
 //            player.travelToDimension(coords.worldObj.provider.dimensionId);//TODO: only server side?
-		player.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
+		subject.setPosition(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
+		System.out.println("Done Teleporting");
 		//TODO: check for Lava, fire, and void
 	}
 	
@@ -103,11 +106,15 @@ public abstract class AbstractRune {
 	{
 	    if(recipient.worldObj.isRemote && recipient != null)
 	        recipient.sendChatToPlayer(ChatMessageComponent.createFromText(message));
+	    else
+	        System.out.println(message);
 	}
 
     public void aetherSay(World worldObj, String message) {
         if(worldObj.isRemote)
             Minecraft.getMinecraft().thePlayer.addChatMessage(message); 
+        else
+            System.out.println(message);
     }
 	
 	/**Checks to see if there is a block match for the Rune blockPattern center at 
@@ -248,24 +255,49 @@ public abstract class AbstractRune {
         // Default behavior is nothing. Override this for persistent runes
     }
 
-    protected void consumeRune(WorldXYZ coords) {
-        //iterate a blockPattern()
-        int[][][] template = blockPattern();
+    /**This is essentially a way to make iterating over blockPatterns much easier by
+     * enabling a single for loop:  for(WorldXYZ target : shape.keySet)
+     * @param template
+     * @param centerPoint
+     * @return
+     */
+    HashMap<WorldXYZ, SigBlock> templateToShape(int[][][] template, WorldXYZ centerPoint){
+        HashMap<WorldXYZ, SigBlock> shape = new HashMap<WorldXYZ, SigBlock>();
         for (int y = 0; y < template.length; y++) {
             for (int z = 0; z < template[y].length; z++) {
                 for (int x = 0; x < template[y][z].length; x++) {
-                    WorldXYZ target = coords.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
-                    //for each block, get blockID
-                    int blockID = target.getBlockId();
-                    if(template[y][z][x] == NONE)
-                        continue; // we don't consume these
-                    energy += Tiers.getEnergy(blockID);//convert ID into energy
-                    target.setBlockId(0);// delete the block
+                    WorldXYZ target = centerPoint.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
+                    shape.put(target, new SigBlock(template[y][z][x],0));
                 }
             }
         }
+        return shape;
+    }
+    
+    /**Removes the shape and adds its block energy to the rune*/
+    protected void consumeRune(WorldXYZ coords) {
+        HashMap<WorldXYZ, SigBlock> shape = templateToShape( blockPattern(), coords);
+        for( WorldXYZ target : shape.keySet()){
+            //for each block, get blockID
+            int blockID = target.getBlockId();
+            if(shape.get(target).blockID == NONE)
+                continue; // we don't consume these
+            energy += Tiers.getEnergy(blockID);//convert ID into energy
+            target.setBlockId(0);// delete the block
+        }
+        System.out.println(getRuneName() + " energy: " + energy);
     }
 
+    /**Removes the shape and adds its block energy to the rune*/
+    protected void consumeRune(Collection<WorldXYZ> shape) {
+        for(WorldXYZ target : shape){
+            int blockID = target.getBlockId();
+            energy += Tiers.getEnergy(blockID);//convert ID into energy
+            target.setBlockId(0);// delete the block
+        }
+        System.out.println(getRuneName() + " energy: " + energy);
+    }
+    
     public void setBlockId(WorldXYZ coords, int blockID) throws NotEnoughRunicEnergyException {
         if( blockID == 0 )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
@@ -296,4 +328,5 @@ public abstract class AbstractRune {
         moveMapping.put(location, newPos);
         RuneHandler.getInstance().moveMagic(moveMapping);
     }
+
 }

@@ -37,15 +37,17 @@ public abstract class PersistentRune extends AbstractRune{
      * even if it is only to call super(coords, activator) in order for persistence to work correctly.
      */
     public void execute(WorldXYZ coords, EntityPlayer activator) {
-        if(activator.worldObj.isRemote)
-            return;
+//        if(activator.worldObj.isRemote)//runes server side only
+//            return;
         PersistentRune match = null;
         if(oneRunePerPerson())
             match = getRuneByPlayer(activator);
         if(match == null)//didn't find anything through players
             match = getRuneByLocation(coords);//check if the Rune already exists
+        if(activator.worldObj.isRemote && match == null)
+            System.out.println("Client was unable to find a match.");
         
-        if( match == null){//can't find anything: creat a new one
+        if( match == null ){//can't find anything: creat a new one
             try {//this is a Java trick called reflection that grabs a constructor based on the parameters
                 match = this.getClass().getConstructor(WorldXYZ.class, EntityPlayer.class).newInstance(coords, activator);
                 getActiveMagic().add(match);//add our new Rune to the list
@@ -74,6 +76,8 @@ public abstract class PersistentRune extends AbstractRune{
      * @param coords center block
      */
     protected void poke(EntityPlayer poker, WorldXYZ coords){
+        if(poker.worldObj.isRemote)
+          return;
         if(oneRunePerPerson()){
             consumeRune(coords);
         }
@@ -96,7 +100,6 @@ public abstract class PersistentRune extends AbstractRune{
     /**Prints a verification message to the user */
     protected void accept(EntityPlayer player) {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName()+"_"+ getActiveMagic().size() + " Accepted.");
-        System.out.println(getRuneName()+"_"+ getActiveMagic().size() + " Accepted.");
     }
 
     /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */

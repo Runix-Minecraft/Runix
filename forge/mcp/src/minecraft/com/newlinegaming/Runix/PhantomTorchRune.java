@@ -32,11 +32,11 @@ public class PhantomTorchRune extends AbstractTimedRune {
                 Material base = world.getBlockMaterial( ((int)newPos.posX), ((int)newPos.posY-1), ((int)newPos.posZ) );
                 if(newPos.getBlockId() == 0 && base.isSolid() && 
                         world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4){ //adjustable
-                    newPos.setBlockId(Block.torchWood.blockID);//set torch
-                    energy -= Tiers.getEnergy(Block.torchWood.blockID);
-                    System.out.println("Energy Left: " + energy);
-                    if(energy < Tiers.getEnergy(Block.torchWood.blockID))
-                        disabled = true;
+                    try {
+                        setBlockId(newPos, Block.torchWood.blockID);//set torch
+                    } catch (NotEnoughRunicEnergyException e) {
+                        reportOutOfGas(player);
+                    }
                     return; //Light levels don't update til the end of the tick, so we need to exit
                 }
             }

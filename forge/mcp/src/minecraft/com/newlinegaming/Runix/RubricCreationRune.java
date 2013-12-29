@@ -1,6 +1,5 @@
 package com.newlinegaming.Runix;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -64,13 +63,17 @@ public class RubricCreationRune extends PersistentRune {
         renderer.reset();
 
         ItemStack toolused = poker.getCurrentEquippedItem();
-        if (toolused!=null && toolused.itemID == Item.book.itemID) {
-            for (WorldXYZ XYZ : structure.keySet()) {
-                XYZ.setBlockId(0);
-            }
-        }
+        if (toolused!=null && toolused.itemID == Item.book.itemID) 
+            consumeRune(structure.keySet());
 	}
 
+	public void unpackStructure(EntityPlayer initiator, WorldXYZ unpackAnchor){
+	    //try{
+	    //for structure
+	        //setBlockID(
+	    //catch: need more energy
+	}
+	
 	@ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
 		if (player != null)

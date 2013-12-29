@@ -59,6 +59,7 @@ public class FaithRune extends PersistentRune{
 		aetherSay(player,EnumChatFormatting.GREEN+"Floating an island");
 		List<WorldXYZ> points = Util_SphericalFunctions.getSphere(islandCentre, 8);
 		aetherSay(player,EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
+		//use AbstractRune.moveShape() which will charge energy for the move
 	}
 
     @Override

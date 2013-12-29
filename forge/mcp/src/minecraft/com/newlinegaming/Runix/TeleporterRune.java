@@ -13,7 +13,7 @@ public class TeleporterRune extends PersistentRune {
     
     public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
         super(coords, activator);
-        energy = 1000;
+        energy = 100;
     }
 
 	public int[][][] blockPattern(){
@@ -37,7 +37,7 @@ public class TeleporterRune extends PersistentRune {
 	    WorldXYZ destination;
 	    //This is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
 	    ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
-	    
+	    System.out.println("waypointList.size()" + waypointList.size());
 	    PersistentRune wp = null;
 	    for( PersistentRune candidate : waypointList){
 	        if( new Signature(candidate, candidate.location).equals( signature ) ){
@@ -46,13 +46,15 @@ public class TeleporterRune extends PersistentRune {
 	        }
 	    }
 	    if( wp == null){
-	        aetherSay(player, "A waypoint with that signature cannot be found.");
+	        aetherSay(poker, "A waypoint with that signature cannot be found.");
 	        return;
 	    }
 	    destination = new WorldXYZ(wp.location);
-	    energy -= destination.getDistanceSquaredToChunkCoordinates(new WorldXYZ(poker)) * .22;
-	    aetherSay(poker, energy + " energy left");
-		teleportPlayer(player, destination);
+		try {
+            teleportPlayer(poker, destination);
+        } catch (NotEnoughRunicEnergyException e) {
+            reportOutOfGas(poker);
+        }
 	}
 	
     public String getRuneName() {
