@@ -358,7 +358,7 @@ public abstract class AbstractRune {
                 ++blocksMovedToNewArea;
         }
         spendEnergy( Tiers.blockMoveCost * blocksMovedToNewArea );
-        return Util_Movement.moveShape(moveMapping);
+        return Util_Movement.performMove(moveMapping);
     }
 
 }

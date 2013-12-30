@@ -22,38 +22,34 @@ public class Util_Movement {
 
     /**Note: when designing moving runes, DO NOT update your PersistentRune.location variable.  
      * moveShape() calls moveMagic() which will update everything including yourself.*/
-    public static HashSet<WorldXYZ> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
+    public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
     {
-        HashMap<WorldXYZ, SigBlock> oldStructure = new HashMap<WorldXYZ, SigBlock>();
-        for(WorldXYZ p : moveMapping.keySet()){
-            oldStructure.put(p, p.getSigBlock());//record original before we mess it up
-        }
-        
+        HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
-        for(WorldXYZ startingPosition : moveMapping.keySet()){
-            SigBlock block = startingPosition.getSigBlock();
-            if( Tiers.isMoveSensitive(block.blockID) ){
-                sensitiveBlocks.put(moveMapping.get(startingPosition)  , block);
-                startingPosition.setBlockId(0);//delete sensitive blocks first to prevent drops
+        for(WorldXYZ point : moveMapping.keySet()){
+            SigBlock block = point.getSigBlock();
+            if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
+                sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
+                point.setBlockId(0);//delete sensitive blocks first to prevent drops
+            }else{
+                newStructure.put(moveMapping.get(point), block);//record original at new location
             }
         }
         
-        for(WorldXYZ loc : moveMapping.keySet())
+        for(WorldXYZ loc : moveMapping.keySet()) //Delete everything
             loc.setBlockId(0); // delete old block in a separate loop to avoid collisions with the new positioning
 
-        HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
-        for(WorldXYZ start : oldStructure.keySet()){
-            WorldXYZ target = moveMapping.get(start);
-            SigBlock sig = oldStructure.get(start);
-            if( !Tiers.isMoveSensitive(sig.blockID) )
-                target.setBlockId(sig);
-            newStructure.put(target, sig);
-        }
-        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //blocks like torches and redstone
-            specialPos.setBlockId(sensitiveBlocks.get(specialPos)); 
+        for(WorldXYZ destination : newStructure.keySet()) //place all the blocks at new location
+            destination.setBlockId(newStructure.get(destination));//doesn't include sensitive blocks
+
+        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //Place all the sensitive blocks
+            specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone 
         
         RuneHandler.getInstance().moveMagic(moveMapping);
-        return new HashSet<WorldXYZ>(newStructure.keySet());
+
+        HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>(newStructure.keySet());
+        newPositions.addAll(sensitiveBlocks.keySet());//merge sensitive locations back in with normal
+        return newPositions;
     }
 
     /**Geometry: figure out if we're on the left or right side of the rune relative to the player

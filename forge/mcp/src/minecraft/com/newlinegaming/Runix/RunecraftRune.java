@@ -104,7 +104,7 @@ public class RunecraftRune extends AbstractTimedRune {
                             boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(player, location);
                             HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
                             if( !shapeCollides(move) )
-                                vehicleBlocks = Util_Movement.moveShape(move);
+                                vehicleBlocks = Util_Movement.performMove(move);
                         }
                     }
                     event.setCanceled(true); //build protect
