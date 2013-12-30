@@ -75,6 +75,7 @@ public class RunecraftRune extends AbstractTimedRune {
                         vehicleBlocks = moveShape(move);
                     } catch (NotEnoughRunicEnergyException e) {
                         reportOutOfGas(player);
+                        player = null;
                     }
                     //location.bump(dX, dY, dZ);  //location gets moved through moveShape registry
                 }

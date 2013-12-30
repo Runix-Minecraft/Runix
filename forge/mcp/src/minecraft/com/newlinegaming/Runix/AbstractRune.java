@@ -341,12 +341,14 @@ public abstract class AbstractRune {
         RuneHandler.getInstance().moveMagic(moveMapping);
     }
 
-    protected void consumeKeyBlock(WorldXYZ coords) {
+    protected boolean consumeKeyBlock(WorldXYZ coords) {
         if(Tiers.getTier(coords.getBlockId()) > 1){
             List<WorldXYZ> wrapper = Arrays.asList(coords);
             consumeRune(wrapper);
             coords.setBlockId(Block.cobblestone.blockID);//we don't want air sitting here
+            return true;
         }
+        return false;
     }
 
     protected HashSet<WorldXYZ> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) throws NotEnoughRunicEnergyException {

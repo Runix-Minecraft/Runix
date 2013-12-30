@@ -110,6 +110,16 @@ public abstract class PersistentRune extends AbstractRune{
         }
         return null;
     }
+
+    @Override
+    /**Adds re-enabling runes to consumeKeyBlock*/
+    protected boolean consumeKeyBlock(WorldXYZ coords) {
+        if(super.consumeKeyBlock(coords)){
+            disabled = false;
+            return true;
+        }
+        return false;
+    }
     
     @Override
     /**moveMagic() based on translation offset.  This will slide the PersistentRune.location value for
