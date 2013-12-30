@@ -352,8 +352,12 @@ public abstract class AbstractRune {
     }
 
     protected HashSet<WorldXYZ> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) throws NotEnoughRunicEnergyException {
-        
-        spendEnergy(Tiers.blockMoveCost * moveMapping.size());
+        int blocksMovedToNewArea = 0;
+        for(WorldXYZ point : moveMapping.values()){
+            if( !moveMapping.containsKey(point) )
+                ++blocksMovedToNewArea;
+        }
+        spendEnergy( Tiers.blockMoveCost * blocksMovedToNewArea );
         return Util_Movement.moveShape(moveMapping);
     }
 

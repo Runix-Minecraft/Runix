@@ -16,7 +16,7 @@ public class RunecraftRune extends AbstractTimedRune {
     
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     public int tier = 1;
-    private HashSet<WorldXYZ> vehicleBlocks;
+    private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
     private RenderHelper renderer;
     
     public RunecraftRune(){}
