@@ -89,7 +89,8 @@ public abstract class AbstractRune {
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
-	protected void teleportPlayer(EntityPlayer subject, WorldXYZ coords, Direction direction) throws NotEnoughRunicEnergyException {
+	protected void teleportPlayer(EntityPlayer subject, WorldXYZ loc, Direction direction) throws NotEnoughRunicEnergyException {
+	    WorldXYZ coords = new WorldXYZ(loc);//it's important to give it NEW coords object because it will be changed
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords.posY += 1; 
@@ -340,13 +341,13 @@ public abstract class AbstractRune {
 
     /**This is a minature convenience version of moveShape(moveMapping) for single blocks
      * @throws NotEnoughRunicEnergyException */
-    public void moveBlock(WorldXYZ location, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
-        newPos.setBlockId(location.getSigBlock());
-        location.setBlockId(0);
+    public void moveBlock(WorldXYZ coords, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
+        newPos.setBlockId(coords.getSigBlock());
+        coords.setBlockId(0);
         spendEnergy(Tiers.blockMoveCost);
         
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
-        moveMapping.put(location, newPos);
+        moveMapping.put(coords, newPos);
         RuneHandler.getInstance().moveMagic(moveMapping);
     }
 

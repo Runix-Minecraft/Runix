@@ -22,13 +22,17 @@ public class FerrousWheelRune extends PersistentRune {
 
     @Override
     public void execute(WorldXYZ coords, EntityPlayer activator) {
-        if(!activator.worldObj.isRemote)//server only
+        if(!activator.worldObj.isRemote){//server only
             super.execute(coords, activator);
+        }
+            
     }
 
     
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
+        if(poker.worldObj.isRemote)
+            return;
         consumeKeyBlock(coords);
         if( !guestList.contains(poker.username) )
             guestList.add(poker.username);
@@ -37,7 +41,6 @@ public class FerrousWheelRune extends PersistentRune {
             aetherSay(poker, "Create more of these runes to teleport between them.");
             return;
         }
-            
         try {
             teleportPlayer(poker, next.location);
         } catch (NotEnoughRunicEnergyException e) {
@@ -51,12 +54,14 @@ public class FerrousWheelRune extends PersistentRune {
         int start = globalWheel.indexOf(this);
         for(int i = (start + 1) % globalWheel.size(); i != start; i = (i+1) % globalWheel.size()){
             FerrousWheelRune fw = (FerrousWheelRune)globalWheel.get(i);
-            System.out.println(i + fw.guestList.toString());
-            System.out.println(i + location.toString() + " vs " + fw.location);
-            if(fw.guestList.contains(user.username) && !fw.location.equals(location) && !fw.location.equals(location.offset(0, 1, 0)))
+            if( fw.guestList.contains(user.username) && !fw.location.equals(location) )
                 return fw;
         }
         return null;
+    }
+    
+    public String toString(){
+        return hashCode() + ": @" + location.toString() + " guests: " + guestList;
     }
     
     @Override
