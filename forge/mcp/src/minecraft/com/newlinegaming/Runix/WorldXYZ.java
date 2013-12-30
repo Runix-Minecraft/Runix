@@ -128,12 +128,33 @@ public class WorldXYZ extends ChunkCoordinates {
 
     public ArrayList<WorldXYZ> getNeighbors() {
         ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
+        //6 cardinal sides
         neighbors.add(offset(-1,0,0));
         neighbors.add(offset(0,-1,0));
         neighbors.add(offset(0,0,-1));
-        neighbors.add(offset(1,0,0));
-        neighbors.add(offset(0,1,0));
-        neighbors.add(offset(0,0,1));
+        neighbors.add(offset( 1,0,0));
+        neighbors.add(offset(0, 1,0));
+        neighbors.add(offset(0,0, 1));
+        
+        //12 edge diagonals
+        //Josiah: If there was a way to get Build Master and Runecraft to cooperate without these 
+        //extra 12 checks I would really rather only do 1/3 the workload when loading large Runecraft
+        //structures
+        neighbors.add(offset( 1, 1, 0));
+        neighbors.add(offset(-1, 1, 0));
+        neighbors.add(offset( 0, 1, 1));
+        neighbors.add(offset( 0, 1,-1));
+
+        neighbors.add(offset( 1, 0, 1));
+        neighbors.add(offset(-1, 0, 1));
+        neighbors.add(offset( 1, 0,-1));
+        neighbors.add(offset(-1, 0,-1));
+
+        neighbors.add(offset( 1,-1, 0));
+        neighbors.add(offset(-1,-1, 0));
+        neighbors.add(offset( 0,-1, 1));
+        neighbors.add(offset( 0,-1,-1));
+        //the 8 corner diagonals are not included
         return neighbors;
     }
 

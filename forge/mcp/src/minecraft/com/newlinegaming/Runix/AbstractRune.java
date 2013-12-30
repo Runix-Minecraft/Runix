@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 public abstract class AbstractRune {
 	
     protected int energy = 0;
-	enum Direction {UP, DOWN, NORTH, EAST, SOUTH, WEST};// vectors[(int)Direction.UP] = new int[]{0,1,0};
 	
     public static final int TIER = -1; //Tier
     public static final int SIGR = -2; //Signature block
@@ -79,7 +78,7 @@ public abstract class AbstractRune {
 	}
 	
 	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
-		teleportPlayer(player, coords, Direction.UP);
+		teleportPlayer(player, coords, Vector3.UP);
 	}
 	
 	/**This method should be used for any teleport or similar move that may land the player in some blocks.
@@ -88,17 +87,17 @@ public abstract class AbstractRune {
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
-	protected void teleportPlayer(EntityPlayer subject, WorldXYZ loc, Direction direction) throws NotEnoughRunicEnergyException {
+	protected void teleportPlayer(EntityPlayer subject, WorldXYZ loc, Vector3 direction) throws NotEnoughRunicEnergyException {
 	    WorldXYZ coords = new WorldXYZ(loc);//it's important to give it NEW coords object because it will be changed
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
-			coords.posY += 1; 
+			coords = coords.offset(direction); 
         //TODO: distance should be calculated after the Nether -> Overworld transform has been done
         spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
         
         if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
             subject.travelToDimension(coords.worldObj.provider.dimensionId);
-		subject.setPositionAndUpdate(coords.posX+0.5, coords.posY+1.5, coords.posZ+0.5);//Josiah: This is Y+2 because of testing...
+		subject.setPositionAndUpdate(coords.posX+0.5, coords.posY+1, coords.posZ+0.5);
 		System.out.println("Done Teleporting");
 		//TODO: check for Lava, fire, and void
 	}
