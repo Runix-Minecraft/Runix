@@ -14,7 +14,8 @@ import cpw.mods.fml.client.FMLClientHandler;
  * World and contains helper methods useful to Runix.*/
 public class WorldXYZ extends ChunkCoordinates {
 
-    public World worldObj;
+    public World worldObj = null;
+    public int face = 0;
     
     public WorldXYZ() {
         this.posX = 0;
@@ -33,6 +34,12 @@ public class WorldXYZ extends ChunkCoordinates {
         this.worldObj = world;
     }
 
+    public WorldXYZ(World world, int x, int y, int z, int face) {
+        super(x,y,z);
+        this.worldObj = world;
+        this.face  = face;
+    }
+
     public WorldXYZ(EntityPlayer player){
         super((int)(player.posX+.5), (int)(player.posY-1), (int)(player.posZ+.5));
         worldObj = player.worldObj;
@@ -40,19 +47,21 @@ public class WorldXYZ extends ChunkCoordinates {
     
     public WorldXYZ(ChunkCoordinates otherGuy) {
         super(otherGuy);
-        if( otherGuy instanceof WorldXYZ)
+        if( otherGuy instanceof WorldXYZ){
             this.worldObj = ((WorldXYZ) otherGuy).worldObj;
+            face = ((WorldXYZ) otherGuy).face;
+        }
         else
             this.worldObj = defaultWorld();
     }
 
     /**Creates a new WorldXYZ based off of a previous one and a relative vector*/
     public WorldXYZ offset(int dX, int dY, int dZ){
-        return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ);
+        return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ, face);
     }
     
     public WorldXYZ offset(Vector3 delta){
-        return new WorldXYZ(this.worldObj, posX + delta.x, posY + delta.y, posZ + delta.z);
+        return new WorldXYZ(this.worldObj, posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
 
     /**Similar to offset(), but updates the current instance instead of a new one.*/ 
@@ -65,10 +74,10 @@ public class WorldXYZ extends ChunkCoordinates {
     
     public WorldXYZ rotate(WorldXYZ referencePoint, boolean counterClockwise){
         Vector3 d = Vector3.offset(referencePoint, this);// determine quadrant relative to reference
-        //Josiah: you have no idea how hard it was to get this one line of code
         int reverse = counterClockwise ? -1 : 1;
+        //Josiah: you have no idea how hard it was to get this one line of code
         return referencePoint.offset(reverse * -d.z, d.y, reverse * d.x);//flip sign on z
-        //TODO: counter-clockwise
+        //TODO: if NORTH EAST WEST SOUTH, modify resultant face to match ?counterClockwise
     }
 
     public World defaultWorld() {
@@ -87,7 +96,7 @@ public class WorldXYZ extends ChunkCoordinates {
             if( this.posX == other.posX && this.posY == other.posY && this.posZ == other.posZ){
                 if(other instanceof WorldXYZ)
                     return ((WorldXYZ) other).worldObj == this.worldObj;
-                else
+                else //TODO: Should we check for face?
                     return true;
             }
             return false;
@@ -129,12 +138,12 @@ public class WorldXYZ extends ChunkCoordinates {
     public ArrayList<WorldXYZ> getNeighbors() {
         ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
         //6 cardinal sides
-        neighbors.add(offset(-1,0,0));
+        neighbors.add(offset(0, 1,0));
         neighbors.add(offset(0,-1,0));
         neighbors.add(offset(0,0,-1));
         neighbors.add(offset( 1,0,0));
-        neighbors.add(offset(0, 1,0));
         neighbors.add(offset(0,0, 1));
+        neighbors.add(offset(-1,0,0));
         
         //12 edge diagonals
         //Josiah: If there was a way to get Build Master and Runecraft to cooperate without these 

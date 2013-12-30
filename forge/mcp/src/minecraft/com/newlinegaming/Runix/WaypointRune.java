@@ -24,6 +24,12 @@ public class WaypointRune extends PersistentRune{
                   {NONE,TIER,TIER,TIER,NONE}}};
     }
 
+    @Override
+    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+        location.face = coords.face; //update the facing of the waypoint
+        aetherSay(poker, "Waypoint is now facing " + Vector3.faceString[location.face]);
+    }
+
     public String getRuneName() {
 		return "Waypoint";
 	}

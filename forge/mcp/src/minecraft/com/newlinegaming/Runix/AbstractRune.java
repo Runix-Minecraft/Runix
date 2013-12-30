@@ -77,18 +77,15 @@ public abstract class AbstractRune {
 		return true;
 	}
 	
-	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
-		teleportPlayer(player, coords, Vector3.UP);
-	}
-	
 	/**This method should be used for any teleport or similar move that may land the player in some blocks.
 	 * @param player
 	 * @param coords Target destination
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
-	protected void teleportPlayer(EntityPlayer subject, WorldXYZ loc, Vector3 direction) throws NotEnoughRunicEnergyException {
+	protected void teleportPlayer(EntityPlayer subject, WorldXYZ loc) throws NotEnoughRunicEnergyException {
 	    WorldXYZ coords = new WorldXYZ(loc);//it's important to give it NEW coords object because it will be changed
+	    Vector3 direction = Vector3.facing[loc.face];
         while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
 				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
 			coords = coords.offset(direction); 
@@ -97,7 +94,7 @@ public abstract class AbstractRune {
         
         if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
             subject.travelToDimension(coords.worldObj.provider.dimensionId);
-		subject.setPositionAndUpdate(coords.posX+0.5, coords.posY+1, coords.posZ+0.5);
+		subject.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
 		System.out.println("Done Teleporting");
 		//TODO: check for Lava, fire, and void
 	}
