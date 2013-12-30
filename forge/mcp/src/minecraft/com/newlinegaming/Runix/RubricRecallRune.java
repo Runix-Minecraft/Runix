@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 public class RubricRecallRune extends AbstractRune{
 
 	@Override
-		public int[][][] blockPattern() {
+		public int[][][] runicFormulae() {
 			int RT=Block.torchRedstoneActive.blockID;
 			int AIR=0;
 			return new int [][][] 

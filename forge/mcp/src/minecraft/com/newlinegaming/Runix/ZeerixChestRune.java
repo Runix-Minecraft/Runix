@@ -48,7 +48,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
     }
   
     @Override
-    public int[][][] blockPattern() {
+    public int[][][] runicFormulae() {
         int GOLD = Block.oreGold.blockID;
         int CHST = Block.enderChest.blockID;
         return new int [][][] //NOTE: This is vertical notice the double }}

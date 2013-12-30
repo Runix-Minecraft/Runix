@@ -55,7 +55,7 @@ public class RubricCreationRune extends PersistentRune {
     }
 
     @Override
-	public int[][][] blockPattern() {
+	public int[][][] runicFormulae() {
 		int RTCH = Block.torchRedstoneActive.blockID;
 		return new int[][][] 
 		      {{{ NONE,TIER,SIGR,TIER,NONE },

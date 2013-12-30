@@ -32,11 +32,11 @@ public abstract class AbstractRune {
 	
 	public AbstractRune(){}
 
-	public abstract int[][][] blockPattern();
+	public abstract int[][][] runicFormulae();
 	
 	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
-	 * a (possibly static) class variable.
+	 * a static class variable.
 	 * @param coords World and xyz that Rune was activated in.
 	 * @param player We pass the player instead of World so that Runes can later affect the Player
 	 */
@@ -45,20 +45,20 @@ public abstract class AbstractRune {
 	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
 	 * calls for 0 (AIR).
-	 * @param template The blockPattern to be stamped.
+	 * @param pattern The blockPattern to be stamped.
 	 * @param player used to check for build permissions.  Player also provides worldObj.
 	 * @param worldX
 	 * @param worldY
 	 * @param worldZ
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
-	protected boolean stampBlockTemplate(int[][][] template, EntityPlayer player, WorldXYZ coords)
+	protected boolean stampBlockPattern(int[][][] pattern, EntityPlayer player, WorldXYZ coords)
 	{//TODO this can be changed to iterating over HashMap<WorldXYZ, SigBlock> to match standards elsewhere
-		for (int y = 0; y < template.length; y++) {
-			for (int z = 0; z < template[y].length; z++) {
-				for (int x = 0; x < template[y][z].length; x++) {
-                    WorldXYZ target = coords.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
-					target.setBlockId( template[y][z][x] );
+		for (int y = 0; y < pattern.length; y++) {
+			for (int z = 0; z < pattern[y].length; z++) {
+				for (int x = 0; x < pattern[y][z].length; x++) {
+                    WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
+					target.setBlockId( pattern[y][z][x] );
                 }
             }
 		}
@@ -145,7 +145,7 @@ public abstract class AbstractRune {
         if( Tiers.isTier0(inkID) )
             return false;
 
-        HashMap<WorldXYZ, SigBlock> shape = templateToShape(blockPattern(), coords);
+        HashMap<WorldXYZ, SigBlock> shape = patternToShape(runicFormulae(), coords);
         for (WorldXYZ target : shape.keySet()) 
         {
             int blockID = target.getBlockId();
@@ -189,7 +189,7 @@ public abstract class AbstractRune {
     }
     
     protected int getTierInkBlock(WorldXYZ coords) {
-        HashMap<WorldXYZ, SigBlock> shape = templateToShape(blockPattern(), coords);
+        HashMap<WorldXYZ, SigBlock> shape = patternToShape(runicFormulae(), coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == TIER) {
                 return target.getBlockId();
@@ -251,21 +251,26 @@ public abstract class AbstractRune {
         // Default behavior is nothing. Override this for persistent runes
     }
 
-    /**This is essentially a way to make iterating over blockPatterns much easier by
-     * enabling a single for loop:  for(WorldXYZ target : shape.keySet)
-     * @param template
+    /**
+     * This is essentially a way to make iterating over blockPatterns much
+     * easier by enabling a single for loop: for(WorldXYZ target : shape.keySet) 
+     * blockPattern() "iterator" actually a HashMap<WorldXYZ, SigBlock>. The
+     * WorldXYZ serves as a comparison for world coordinates and the world block
+     * can be had through WorldXYZ.getBlockID(). The HashMap SigBlock is
+     * actually the runic formulae including special values like TIER.
+     * @param pattern
      * @param centerPoint
      * @return
      */
-    HashMap<WorldXYZ, SigBlock> templateToShape(int[][][] template, WorldXYZ centerPoint){
+    HashMap<WorldXYZ, SigBlock> patternToShape(int[][][] pattern, WorldXYZ centerPoint){
         // World coordinates + relative offset + half the size of the rune (for middle)
         // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
         HashMap<WorldXYZ, SigBlock> shape = new HashMap<WorldXYZ, SigBlock>();
-        for (int y = 0; y < template.length; y++) {
-            for (int z = 0; z < template[y].length; z++) {
-                for (int x = 0; x < template[y][z].length; x++) {
-                    WorldXYZ target = centerPoint.offset(-template[y][z].length / 2 + x,  -y,  -template[y].length / 2 + z);
-                    shape.put(target, new SigBlock(template[y][z][x],0));
+        for (int y = 0; y < pattern.length; y++) {
+            for (int z = 0; z < pattern[y].length; z++) {
+                for (int x = 0; x < pattern[y][z].length; x++) {
+                    WorldXYZ target = centerPoint.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
+                    shape.put(target, new SigBlock(pattern[y][z][x],0));
                 }
             }
         }
@@ -274,7 +279,7 @@ public abstract class AbstractRune {
     
     /**Removes the shape and adds its block energy to the rune*/
     protected void consumeRune(WorldXYZ coords) {
-        HashMap<WorldXYZ, SigBlock> shape = templateToShape( blockPattern(), coords);
+        HashMap<WorldXYZ, SigBlock> shape = patternToShape( runicFormulae(), coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID
             int blockID = target.getBlockId();
