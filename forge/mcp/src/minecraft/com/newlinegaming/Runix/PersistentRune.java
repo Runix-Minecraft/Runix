@@ -110,7 +110,7 @@ public abstract class PersistentRune extends AbstractRune{
         }
         return null;
     }
-
+    
     @Override
     /**moveMagic() based on translation offset.  This will slide the PersistentRune.location value for
      * any runes that are affected.  Ideally, runes should be coded so that moving the center block is

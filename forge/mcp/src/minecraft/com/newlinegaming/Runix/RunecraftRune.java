@@ -2,23 +2,21 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-import org.lwjgl.opengl.GL11;
-
 public class RunecraftRune extends AbstractTimedRune {
     
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     public int tier = 1;
-    private HashMap<WorldXYZ, SigBlock> vehicleBlocks;
+    private HashSet<WorldXYZ> vehicleBlocks;
     private RenderHelper renderer;
     
     public RunecraftRune(){}
@@ -57,8 +55,10 @@ public class RunecraftRune extends AbstractTimedRune {
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
         //TODO: we're not currently using subject
-        if(player != null && !player.worldObj.isRemote)
-        {//Josiah: turns out running this on server and client side causes strange duplications
+        if(player != null && energy < 100){
+            reportOutOfGas(player);
+        }
+        if(player != null && !player.worldObj.isRemote){//Josiah: turns out running this on server and client side causes strange duplications
             int dX = (int) (player.posX - location.posX - .5);
             int dY = (int) (player.posY - location.posY - 1);
             int dZ = (int) (player.posZ - location.posZ - .5);
@@ -69,9 +69,10 @@ public class RunecraftRune extends AbstractTimedRune {
             if(player.isSneaking())
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
-                if( !shapeCollides(vehicleBlocks, dX, dY, dZ)){
+                HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
+                if( !shapeCollides(move) ){
                     try {
-                        vehicleBlocks = moveShape(vehicleBlocks, dX, dY, dZ);
+                        vehicleBlocks = moveShape(move);
                     } catch (NotEnoughRunicEnergyException e) {
                         reportOutOfGas(player);
                     }
@@ -88,7 +89,7 @@ public class RunecraftRune extends AbstractTimedRune {
     @ForgeSubscribe
     public void renderWireframe(RenderWorldLastEvent evt){
         if(player != null )
-            renderer.highlightBoxes(vehicleBlocks.keySet(), player);
+            renderer.highlightBoxes(vehicleBlocks, player);
     }
     
     @ForgeSubscribe
@@ -96,11 +97,11 @@ public class RunecraftRune extends AbstractTimedRune {
         if (player != null && event.action == Action.LEFT_CLICK_BLOCK)
             if( event.isCancelable() ){
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
-                if( vehicleBlocks.containsKey( punchBlock ))
+                if( vehicleBlocks.contains( punchBlock ))
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
                         if(!location.worldObj.isRemote){  //server side only
                             boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(player, location);
-                            HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks.keySet(), location, counterClockwise);
+                            HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
                             if( !shapeCollides(move) )
                                 vehicleBlocks = Util_Movement.moveShape(move);
                         }
@@ -122,21 +123,19 @@ public class RunecraftRune extends AbstractTimedRune {
         }
         player = poker; // assign a player and start
         aetherSay(poker, "The Runecraft is now locked to your body.");
-        HashMap<WorldXYZ, SigBlock> oldVehicleShape = vehicleBlocks;
+        HashSet<WorldXYZ> oldVehicleShape = vehicleBlocks;
         if( scanForVehicleShape() )
             return;
         else
             vehicleBlocks = rescanBlocks(oldVehicleShape);
     }
 
-    private HashMap<WorldXYZ, SigBlock> rescanBlocks(HashMap<WorldXYZ, SigBlock> oldVehicleShape) {
-        HashMap<WorldXYZ, SigBlock> newVehicle = new HashMap<WorldXYZ, SigBlock>();
-        for(WorldXYZ xyz : oldVehicleShape.keySet()){
-            SigBlock block = xyz.getSigBlock();
-            if(block.blockID != 0) // We specifically want to exclude AIR to avoid confusing collisions
-                newVehicle.put(xyz, block);
+    private HashSet<WorldXYZ> rescanBlocks(HashSet<WorldXYZ> oldVehicleShape) {
+        for(WorldXYZ xyz : oldVehicleShape){
+            if(xyz.getBlockId() == 0) // We specifically want to exclude AIR to avoid confusing collisions
+                oldVehicleShape.remove(xyz);
         }
-        return newVehicle;
+        return oldVehicleShape;
     }
 
     protected boolean scanForVehicleShape() {

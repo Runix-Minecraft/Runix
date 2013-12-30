@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -222,11 +221,11 @@ public abstract class AbstractRune {
     }
 
     /**This will return an empty list if the activation would tear a structure in two. */
-    public HashMap<WorldXYZ, SigBlock> conductanceStep(WorldXYZ startPoint, int maxDistance) {
-        HashMap<WorldXYZ, SigBlock> workingSet = new HashMap<WorldXYZ, SigBlock>();
+    public HashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
+        HashSet<WorldXYZ> workingSet = new HashSet<WorldXYZ>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
-        workingSet.put(startPoint, startPoint.getSigBlock());
+        workingSet.add(startPoint);
         nextEdge.add(startPoint);
         
         for(int iterationStep = maxDistance+1; iterationStep > 0; iterationStep--) {
@@ -234,31 +233,22 @@ public abstract class AbstractRune {
             nextEdge = new HashSet<WorldXYZ>();
           //tear detection: this should be empty by the last step
             if(iterationStep == 1 && activeEdge.size() != 0) 
-                return new HashMap<WorldXYZ, SigBlock>();
+                return new HashSet<WorldXYZ>();
             
             for(WorldXYZ block : activeEdge) {
                 ArrayList<WorldXYZ> neighbors = block.getNeighbors();
                 for(WorldXYZ n : neighbors) {
                     int blockID = n.getBlockId();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
-                    if( !workingSet.keySet().contains(n) && !Tiers.isNatural(blockID) ) {
+                    if( !workingSet.contains(n) && !Tiers.isNatural(blockID) ) {
                         //TODO: possible slow down = long list of natural blocks
-                        workingSet.put(n, n.getSigBlock());
+                        workingSet.add(n);
                         nextEdge.add(n);
                     }
                 }
             }
         }
         return workingSet;
-    }
-
-    protected boolean shapeCollides(HashMap<WorldXYZ, SigBlock> shape, int dX, int dY, int dZ) {
-        for(WorldXYZ start : shape.keySet()){
-            WorldXYZ target = start.offset(dX, dY, dZ);
-            if( target.getBlockId() != 0 && !shape.containsKey(target) )
-                return true; //TODO: check for isCrushable
-        }
-        return false;
     }
 
     protected boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
@@ -359,9 +349,10 @@ public abstract class AbstractRune {
         }
     }
 
-    protected HashMap<WorldXYZ, SigBlock> moveShape(HashMap<WorldXYZ, SigBlock> structure, int dX, int dY, int dZ) throws NotEnoughRunicEnergyException {
-        spendEnergy(Tiers.blockMoveCost * structure.size());
-        return Util_Movement.moveShape(structure, dX, dY, dZ);
+    protected HashSet<WorldXYZ> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) throws NotEnoughRunicEnergyException {
+        
+        spendEnergy(Tiers.blockMoveCost * moveMapping.size());
+        return Util_Movement.moveShape(moveMapping);
     }
 
 }

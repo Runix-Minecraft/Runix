@@ -50,6 +50,10 @@ public class WorldXYZ extends ChunkCoordinates {
     public WorldXYZ offset(int dX, int dY, int dZ){
         return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ);
     }
+    
+    public WorldXYZ offset(Vector3 delta){
+        return new WorldXYZ(this.worldObj, posX + delta.x, posY + delta.y, posZ + delta.z);
+    }
 
     /**Similar to offset(), but updates the current instance instead of a new one.*/ 
     public WorldXYZ bump(int dX, int dY, int dZ) {

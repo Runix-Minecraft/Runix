@@ -2,6 +2,7 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,10 +41,18 @@ public class RubricCreationRune extends PersistentRune {
     public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
 	    super(coords, player2);
-		structure = conductanceStep(coords, 50);;
+		HashSet<WorldXYZ> shape = conductanceStep(coords, 50);;
+		structure = scanStructure(shape);
 		renderer = new RenderHelper();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
+
+    private HashMap<WorldXYZ, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
+        HashMap<WorldXYZ, SigBlock> fullData = new HashMap<WorldXYZ, SigBlock>();
+        for(WorldXYZ point : shape)
+            fullData.put(point, point.getSigBlock());
+        return fullData;
+    }
 
     @Override
 	public int[][][] blockPattern() {
