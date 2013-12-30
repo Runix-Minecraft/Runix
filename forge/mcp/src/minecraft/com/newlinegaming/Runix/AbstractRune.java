@@ -26,9 +26,9 @@ public abstract class AbstractRune {
     public static final int SIGR = -2; //Signature block
     public static final int NONE = -3; //Non-Tier, Tier 0
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
-    public static final int ENTY = -4; //Entity blocks with special data like heads, picture frames, ect... 
+    public static final int KEY = -4; //required to be in the middle of the rune
+    public static final int ENTY = -5; //Entity blocks with special data like heads, picture frames, ect... 
     //Josiah: I'm not sure what to do with ENTY? 
-    public static final int KEY = -5; //required to be in the middle of the rune
 	
 	public AbstractRune(){}
 
@@ -140,51 +140,44 @@ public abstract class AbstractRune {
 	 * @return true if there is a valid match
 	 */
     public boolean checkRunePattern(WorldXYZ coords) {
-        int [][][] pattern = blockPattern();
         int tierID = 0;
         int inkID = getTierInkBlock(coords);
         if( Tiers.isTier0(inkID) )
             return false;
-        for (int y = 0; y < pattern.length; y++) {
-            for (int z = 0; z < pattern[y].length; z++) {
-                for (int x = 0; x < pattern[y][z].length; x++) {
-                    WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
-                    // World coordinates + relative offset + half the size of the rune (for middle)
-                    // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
-                    int blockID = target.getBlockId();
-                    int patternID = pattern[y][z][x];
-                    // Handle special Template Values
-                    switch(patternID){
-                        case NONE: 
-                            if( !Tiers.isTier0(blockID) )
-                                return false; 
-                            break;
-                        case TIER:
-                            if( blockID != inkID ){
+
+        HashMap<WorldXYZ, SigBlock> shape = templateToShape(blockPattern(), coords);
+        for (WorldXYZ target : shape.keySet()) 
+        {
+            int blockID = target.getBlockId();
+            int patternID = shape.get(target).blockID;
+            switch(patternID){// Handle special Template Values
+                case NONE: 
+                    if( !Tiers.isTier0(blockID) )
+                        return false; 
+                    break;
+                case TIER:
+                    if( blockID != inkID ){
 //                                aetherSay(coords.worldObj, "Found " + blockID + " ink is " + inkID);
-                                return false; //inconsistent Tier block
-                            }
-                            break;
-                        case SIGR: 
-                            if( blockID == inkID )
-                                return false; //you can't use your ink as part of your signature, it ruins the shape
-                            break;
-                        case KEY:
-                            if( !target.equals(coords) || Tiers.isTier0(blockID) )//key block must be center block
-                                return false;
-//                                return false; //can be ink, or SIGR but not T0
-                            break;
-                        default:
-                            if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers
-                                aetherSay(coords.worldObj, "ERROR: This rune is using an unaccounted for number!");
-                            if (blockID != patternID){//normal block
-//                                aetherSay(coords.worldObj, "Found " + blockID + " expected " + patternID);
-                                return false;
-                            }
-                            break;
-                        
+                        return false; //inconsistent Tier block
                     }
-                }
+                    break;
+                case SIGR: 
+                    if( blockID == inkID )
+                        return false; //you can't use your ink as part of your signature, it ruins the shape
+                    break;
+                case KEY:
+                    if( !target.equals(coords) || Tiers.isTier0(blockID) )//key block must be center block
+                        return false;//can be ink, or SIGR but not T0
+                    break;
+                default:
+                    if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers
+                        aetherSay(coords.worldObj, "ERROR: This rune is using an unaccounted for number!");
+                    if (blockID != patternID){//normal block
+//                                aetherSay(coords.worldObj, "Found " + blockID + " expected " + patternID);
+                        return false;
+                    }
+                    break;
+                
             }
         }
         return true;
@@ -196,18 +189,13 @@ public abstract class AbstractRune {
     }
     
     protected int getTierInkBlock(WorldXYZ coords) {
-        int [][][] pattern = blockPattern();
-        for (int y = 0; y < pattern.length; y++) {
-            for (int z = 0; z < pattern[y].length; z++) {
-                for (int x = 0; x < pattern[y][z].length; x++) {
-                    if( pattern[y][z][x] == TIER ){
-                        WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
-                        return target.getBlockId();
-                    }
-                }
+        HashMap<WorldXYZ, SigBlock> shape = templateToShape(blockPattern(), coords);
+        for (WorldXYZ target : shape.keySet()) {
+            if (shape.get(target).blockID == TIER) {
+                return target.getBlockId();
             }
         }
-        return -1; //There was no TIER mentioned in the pattern
+        return -1; // There was no TIER mentioned in the pattern
     }
 
     /** Call accept() once you are sure the rune will be executed to tell the player it was successful.
@@ -270,6 +258,8 @@ public abstract class AbstractRune {
      * @return
      */
     HashMap<WorldXYZ, SigBlock> templateToShape(int[][][] template, WorldXYZ centerPoint){
+        // World coordinates + relative offset + half the size of the rune (for middle)
+        // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
         HashMap<WorldXYZ, SigBlock> shape = new HashMap<WorldXYZ, SigBlock>();
         for (int y = 0; y < template.length; y++) {
             for (int z = 0; z < template[y].length; z++) {

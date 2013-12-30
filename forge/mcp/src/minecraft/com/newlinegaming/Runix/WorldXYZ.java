@@ -15,7 +15,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 public class WorldXYZ extends ChunkCoordinates {
 
     public World worldObj = null;
-    public int face = 0;
+    public int face = 1;
     
     public WorldXYZ() {
         this.posX = 0;
@@ -103,11 +103,15 @@ public class WorldXYZ extends ChunkCoordinates {
         }
     }
 
+    public SigBlock getSigBlock() {
+        return new SigBlock(getBlockId(), getMetaId());
+    }
+
     /**Simple wrapper method for getBlockID()*/
     public int getBlockId(){
         return this.worldObj.getBlockId(this.posX, this.posY, this.posZ);
     }
-
+    
     /** Sister function to getBlockID() for meta values. */
     public int getMetaId() {
         return worldObj.getBlockMetadata(posX, posY, posZ);
@@ -167,8 +171,5 @@ public class WorldXYZ extends ChunkCoordinates {
         return neighbors;
     }
 
-    public SigBlock getSigBlock() {
-        return new SigBlock(getBlockId(), getMetaId());
-    }
 
 }
