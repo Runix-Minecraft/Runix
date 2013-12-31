@@ -52,8 +52,8 @@ public class RuneHandler {
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
-            WorldXYZ pos = new WorldXYZ(event.x, event.y, event.z);
-            System.out.println("Right Click event " + pos + "Facing" + event.face + " clicks: "+ ++nClicks);
+//            WorldXYZ pos = new WorldXYZ(event.x, event.y, event.z);
+//            System.out.println("Right Click event " + pos + "Facing" + event.face + " clicks: "+ ++nClicks);
 //            System.out.println("u: "+ event.useBlock + " I: " + event.useItem);
             possibleRuneActivationEvent(event.entityPlayer, 
                     new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z, event.face));
@@ -74,7 +74,7 @@ public class RuneHandler {
         if (createdRune != null) {
             createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
                     createdRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
-                    coords.face + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+                    Vector3.faceString[coords.face] + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
             createdRune.execute(coords, player);
         }
     }

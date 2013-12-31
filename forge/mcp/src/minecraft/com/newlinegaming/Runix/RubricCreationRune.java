@@ -63,7 +63,6 @@ public class RubricCreationRune extends PersistentRune {
 				{ SIGR,RTCH,TIER,RTCH,SIGR },
 				{ TIER,TIER,RTCH,TIER,TIER },
 				{ NONE,TIER,SIGR,TIER,NONE }}};
-
 	}
 
 
