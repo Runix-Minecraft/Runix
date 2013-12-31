@@ -75,7 +75,7 @@ public class FerrousWheelRune extends PersistentRune {
     }
 
     @Override
-    public int[][][] runicFormulae() {
+    public int[][][] runicTemplateOriginal() {
         int IRON = Block.oreIron.blockID;
         return new int[][][]
                 {{{IRON,IRON,IRON},

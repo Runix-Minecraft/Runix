@@ -19,7 +19,7 @@ public class FaithRune extends PersistentRune{
 //	    super(loc, creator);
 //	}
 	
-	public int[][][] runicFormulae(){
+	public int[][][] runicTemplateOriginal(){
 		return new int [][][] 
            {{{0,0,0},
              {0,41,0},

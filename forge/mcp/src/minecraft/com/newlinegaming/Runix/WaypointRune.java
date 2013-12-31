@@ -15,7 +15,7 @@ public class WaypointRune extends PersistentRune{
     }
 
     @Override
-    public int[][][] runicFormulae() {
+    public int[][][] runicTemplateOriginal() {
         return new int[][][]
                 {{{NONE,TIER,TIER,TIER,NONE},
                   {TIER,TIER,SIGR,TIER,TIER},

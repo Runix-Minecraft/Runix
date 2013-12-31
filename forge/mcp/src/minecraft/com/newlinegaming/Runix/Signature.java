@@ -17,7 +17,7 @@ public class Signature {
     public Signature(AbstractRune rune, WorldXYZ coords) {
         blocks = new ArrayList<SigBlock>();
 
-        HashMap<WorldXYZ, SigBlock> shape = rune.patternToShape(rune.runicFormulae(), coords);
+        HashMap<WorldXYZ, SigBlock> shape = rune.runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == AbstractRune.SIGR) {
                 if (!Tiers.isTier0(target.getBlockId()))

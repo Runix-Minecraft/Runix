@@ -32,7 +32,20 @@ public abstract class AbstractRune {
 	
 	public AbstractRune(){}
 
-	public abstract int[][][] runicFormulae();
+	/**Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
+	 * defined in your class, never use it.  Use runicFormulae() instead.
+	 */
+	protected abstract int[][][] runicTemplateOriginal();
+
+	/** Use this method to check Rune template compliance, not runicTemplateOriginal().
+	 * This method will take the facing of coords and use it to match orientation for vertical runes.
+	 * @param coords world coordinates and facing to check against the rune
+	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
+	 * the runeTemplate for that block, which can be special values like TIER or KEY.
+	 */
+	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
+	    return patternToShape(runicTemplateOriginal(), coords); 
+	}
 	
 	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
@@ -145,7 +158,7 @@ public abstract class AbstractRune {
         if( Tiers.isTier0(inkID) )
             return false;
 
-        HashMap<WorldXYZ, SigBlock> shape = patternToShape(runicFormulae(), coords);
+        HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {
             int blockID = target.getBlockId();
@@ -189,7 +202,7 @@ public abstract class AbstractRune {
     }
     
     protected int getTierInkBlock(WorldXYZ coords) {
-        HashMap<WorldXYZ, SigBlock> shape = patternToShape(runicFormulae(), coords);
+        HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == TIER) {
                 return target.getBlockId();
@@ -279,7 +292,7 @@ public abstract class AbstractRune {
     
     /**Removes the shape and adds its block energy to the rune*/
     protected void consumeRune(WorldXYZ coords) {
-        HashMap<WorldXYZ, SigBlock> shape = patternToShape( runicFormulae(), coords);
+        HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID
             int blockID = target.getBlockId();
