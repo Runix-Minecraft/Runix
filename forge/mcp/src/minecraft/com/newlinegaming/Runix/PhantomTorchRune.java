@@ -45,6 +45,7 @@ public class PhantomTorchRune extends AbstractTimedRune {
 
     @Override
     public int[][][] runicTemplateOriginal() {
+        this.flatRuneOnly = true;
         int REDW = Block.redstoneWire.blockID;
         int TRCH = Block.torchWood.blockID;
         return new int [][][]//TODO: if you're having trouble with this, it's because people click on the side of the torch, not the top 

@@ -5,7 +5,9 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class CompassRune extends AbstractRune{
 
+    
 	public int[][][] runicTemplateOriginal(){
+	    this.flatRuneOnly = true;
 		return new int [][][] 
             {{{TIER, 0 ,TIER},
               { 0 ,TIER, 0 },
