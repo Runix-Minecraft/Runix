@@ -74,7 +74,7 @@ public class RuneHandler {
         if (createdRune != null) {
             createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
                     createdRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
-                    coords.face + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+                    Vector3.faceString[coords.face] + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
             createdRune.execute(coords, player);
         }
     }

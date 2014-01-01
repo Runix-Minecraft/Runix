@@ -80,9 +80,9 @@ public class WorldXYZ extends ChunkCoordinates {
         Vector3 d = Vector3.offset(referencePoint, this);// determine quadrant relative to reference
         int direction = counterClockwise ? -1 : 1;
         //handle facing rotation:
-        int index = Vector3.xzRotationOrder.indexOf(new Integer(referencePoint.face));
-        if(index > -1) //not up or down
-            face = Vector3.xzRotationOrder.get( (index+direction ) % 4 );
+//        int index = Vector3.xzRotationOrder.indexOf(new Integer(referencePoint.face));
+//        if(index > -1) //not up or down
+//            face = Vector3.xzRotationOrder.get( (index+direction ) % 4 );
         //Josiah: you have no idea how hard it was to get this one line of code
         return referencePoint.offset(direction * -d.z, d.y, direction * d.x, face);
     }

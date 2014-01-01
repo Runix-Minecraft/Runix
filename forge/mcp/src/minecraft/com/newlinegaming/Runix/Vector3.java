@@ -14,8 +14,8 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final Vector3[] facing = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
     //use like this: WorldXYZ point = point.offset(Vector3.facing[point.face])
     public static final String[] faceString = {"DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST"};
-    public static final ArrayList<Integer> xzRotationOrder = 
-            (ArrayList<Integer>) Arrays.asList(2, 5, 3, 4);  
+//    public static final ArrayList<Integer> xzRotationOrder = 
+//            (ArrayList<Integer>) Arrays.asList(new Integer(2), new Integer(5), new Integer(3), new Integer(4));  
     
     int x;
     int y;
