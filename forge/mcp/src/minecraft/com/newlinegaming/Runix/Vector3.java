@@ -1,5 +1,8 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final Vector3 UP =    new Vector3(0, 1,0);
     public static final Vector3 DOWN =  new Vector3(0,-1,0);
@@ -11,6 +14,8 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final Vector3[] facing = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
     //use like this: WorldXYZ point = point.offset(Vector3.facing[point.face])
     public static final String[] faceString = {"DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST"};
+    public static final ArrayList<Integer> xzRotationOrder = 
+            (ArrayList<Integer>) Arrays.asList(2, 5, 3, 4);  
     
     int x;
     int y;

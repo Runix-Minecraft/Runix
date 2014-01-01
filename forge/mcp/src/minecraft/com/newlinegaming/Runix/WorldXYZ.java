@@ -59,6 +59,10 @@ public class WorldXYZ extends ChunkCoordinates {
     public WorldXYZ offset(int dX, int dY, int dZ){
         return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ, face);
     }
+
+    public WorldXYZ offset(int dX, int dY, int dZ, int facing) {
+        return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ, facing);
+    }
     
     public WorldXYZ offset(Vector3 delta){
         return new WorldXYZ(this.worldObj, posX + delta.x, posY + delta.y, posZ + delta.z, face);
@@ -74,10 +78,13 @@ public class WorldXYZ extends ChunkCoordinates {
     
     public WorldXYZ rotate(WorldXYZ referencePoint, boolean counterClockwise){
         Vector3 d = Vector3.offset(referencePoint, this);// determine quadrant relative to reference
-        int reverse = counterClockwise ? -1 : 1;
+        int direction = counterClockwise ? -1 : 1;
+        //handle facing rotation:
+        int index = Vector3.xzRotationOrder.indexOf(new Integer(referencePoint.face));
+        if(index > -1) //not up or down
+            face = Vector3.xzRotationOrder.get( (index+direction ) % 4 );
         //Josiah: you have no idea how hard it was to get this one line of code
-        return referencePoint.offset(reverse * -d.z, d.y, reverse * d.x);//flip sign on z
-        //TODO: if NORTH EAST WEST SOUTH, modify resultant face to match ?counterClockwise
+        return referencePoint.offset(direction * -d.z, d.y, direction * d.x, face);
     }
 
     public World defaultWorld() {
