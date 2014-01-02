@@ -10,11 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 /**PhantomTorch functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
-public class PhantomTorchRune extends AbstractTimedRune {
+public class TorchBearerRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
-    public PhantomTorchRune() {}
+    public TorchBearerRune() {}
 
-    public PhantomTorchRune( WorldXYZ coords, EntityPlayer activator ) {
+    public TorchBearerRune( WorldXYZ coords, EntityPlayer activator ) {
         super(coords, activator);
         consumeRune(coords);
         updateEveryXTicks(10);
@@ -56,7 +56,7 @@ public class PhantomTorchRune extends AbstractTimedRune {
 
     @Override
     public String getRuneName() {
-        return "Phantom Torch";
+        return "Torch Bearer";
     }
 
     @Override

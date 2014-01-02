@@ -38,7 +38,7 @@ public class RuneHandler {
         runeRegistry.add(new RunecraftRune());
         runeRegistry.add(new RubricCreationRune());
         runeRegistry.add(new RubricRecallRune());
-        runeRegistry.add(new PhantomTorchRune());
+        runeRegistry.add(new TorchBearerRune());
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
     }
