@@ -128,8 +128,9 @@ public abstract class PersistentRune extends AbstractRune{
      * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.  */
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         for(PersistentRune rune : getActiveMagic()){
-            if(positionsMoved.keySet().contains(rune.location) )
-                rune.location = positionsMoved.get(rune.location); //grab the destination keyed by source position
+            if(positionsMoved.keySet().contains(rune.location) ){//grab the destination keyed by source position
+                rune.location = positionsMoved.get(rune.location).overrideFacing(rune.location.face); //preserve old facing for runes
+            }
         }
     }
 
