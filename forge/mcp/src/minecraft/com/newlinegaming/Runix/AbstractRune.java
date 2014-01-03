@@ -89,26 +89,47 @@ public abstract class AbstractRune {
 		return true;
 	}
 	
-	/**This method should be used for any teleport or similar move that may land the player in some blocks.
+	/**This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
+	 * less than 20 meters onto something that's not fire or lava.
+	 * This method should be used for any teleport or similar move that may land the player in some blocks.
 	 * @param player
 	 * @param coords Target destination
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
-	protected void teleportPlayer(EntityPlayer subject, WorldXYZ loc) throws NotEnoughRunicEnergyException {
-	    WorldXYZ coords = new WorldXYZ(loc);//it's important to give it NEW coords object because it will be changed
-	    Vector3 direction = Vector3.facing[loc.face];
-        while ((coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) != 0 
-				|| coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) != 0) && coords.posY < 255)
-			coords = coords.offset(direction); 
-        //TODO: distance should be calculated after the Nether -> Overworld transform has been done
-        spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
-        
-        if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
-            subject.travelToDimension(coords.worldObj.provider.dimensionId);
-		subject.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
-		System.out.println("Done Teleporting");
-		//TODO: check for Lava, fire, and void
+	protected void teleportPlayer(EntityPlayer subject, WorldXYZ coords) throws NotEnoughRunicEnergyException {
+	    Vector3 direction = Vector3.facing[coords.face];
+	    for(int tries = 0; tries < 100; ++tries)
+	    {
+	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
+	                && coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) == 0 
+	                && coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) == 0)//two AIR blocks
+	        {  
+	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
+	            {//begin scanning downward
+	                int block = coords.worldObj.getBlockId(coords.posX, coords.posY-drop, coords.posZ);
+	                if(block != 0){ //We found something not AIR
+    	                if( block != Block.lavaStill.blockID && block != Block.lavaMoving.blockID//check for Lava, fire, and void  
+    	                        && block != Block.fire.blockID)
+    	                {//safety checking
+    	                    //TODO: distance should be calculated after the Nether -> Overworld transform has been done
+    	                    spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
+    
+    	                    if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
+    	                        subject.travelToDimension(coords.worldObj.provider.dimensionId);
+    	                    subject.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
+    	                    System.out.println("Done Teleporting");
+    	                    return;
+    	                }
+    	                else{//if we teleport now, the player will land on an unsafe block
+    	                    break; //break out of the drop loop and proceed on scanning a new location
+    	                }
+	                }
+	            } 
+	        }
+            coords = coords.offset(direction);
+	    }
+	    System.out.println("There was no safe place to put your character.");
 	}
 	
     /* Example Code:
@@ -257,10 +278,6 @@ public abstract class AbstractRune {
         return false;
     }
 
-    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        //Default behavior is nothing.  Override this for persistent runes
-    }
-    
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         // Default behavior is nothing. Override this for persistent runes
     }
