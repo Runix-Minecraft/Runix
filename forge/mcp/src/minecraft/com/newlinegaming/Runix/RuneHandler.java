@@ -94,12 +94,6 @@ public class RuneHandler {
         }
         return null;
     }
-
-    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ){
-        for(AbstractRune rune : runeRegistry){
-            rune.moveMagic(blocks, dX, dY, dZ);
-        }
-    }
     
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved){
         for(AbstractRune rune : runeRegistry){

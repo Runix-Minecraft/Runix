@@ -120,21 +120,12 @@ public abstract class PersistentRune extends AbstractRune{
         }
         return false;
     }
-    
-    @Override
-    /**moveMagic() based on translation offset.  This will slide the PersistentRune.location value for
-     * any runes that are affected.  Ideally, runes should be coded so that moving the center block is
-     * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.*/
-    public void moveMagic(Collection<WorldXYZ> blocks, int dX, int dY, int dZ) {
-        for(PersistentRune rune : getActiveMagic()){
-            if(blocks.contains(rune.location) )
-                rune.location.bump(dX, dY, dZ);
-        }
-    }
 
     @Override
     /**as moveMagic() but the parameters allow any kind of transformation.  This is used by rotation to
-     * map the starting position as a key, and the end position as the value.     */
+     * map the starting position as a key, and the end position as the value.   
+     *  Ideally, runes should be coded so that moving the center block is
+     * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.  */
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         for(PersistentRune rune : getActiveMagic()){
             if(positionsMoved.keySet().contains(rune.location) )
