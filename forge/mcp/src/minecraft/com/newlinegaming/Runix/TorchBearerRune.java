@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 /**TorchBearer functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
@@ -30,7 +31,8 @@ public class TorchBearerRune extends AbstractTimedRune {
             for(WorldXYZ newPos : sphere)
             {
                 if(newPos.getBlockId() == 0 && newPos.offset(Vector3.DOWN).isSolid() && 
-                        world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4){ //adjustable
+                        world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4 //adjustable
+                        && !world.isDaytime()){// don't place during the day time
                     try {
                         setBlockId(newPos, Block.torchWood.blockID);//set torch
                     } catch (NotEnoughRunicEnergyException e) {
