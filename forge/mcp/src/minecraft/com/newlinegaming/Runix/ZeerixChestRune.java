@@ -49,7 +49,6 @@ public class ZeerixChestRune extends AbstractTimedRune {
   
     @Override
     public int[][][] runicTemplateOriginal() {
-        this.flatRuneOnly = true;
         int GOLD = Block.oreGold.blockID;
         int CHST = Block.enderChest.blockID;
         return new int [][][] //NOTE: This is vertical notice the double }}
@@ -72,5 +71,8 @@ public class ZeerixChestRune extends AbstractTimedRune {
     public boolean oneRunePerPerson() {
         return true;
     }
-
+    
+    public boolean isFlatRuneOnly() {
+        return true;
+    }
 }

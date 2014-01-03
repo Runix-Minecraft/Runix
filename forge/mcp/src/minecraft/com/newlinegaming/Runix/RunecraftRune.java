@@ -167,4 +167,8 @@ public class RunecraftRune extends AbstractTimedRune {
     public boolean oneRunePerPerson() {
         return true;
     }
+
+    public boolean isFlatRuneOnly() {
+        return false;
+    }
 }

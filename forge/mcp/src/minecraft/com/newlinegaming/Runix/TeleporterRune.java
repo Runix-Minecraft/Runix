@@ -17,7 +17,6 @@ public class TeleporterRune extends PersistentRune {
     }
 
 	public int[][][] runicTemplateOriginal(){
-	    flatRuneOnly = false;
 		return new int[][][]
 				{{{NONE,TIER,SIGR,TIER,NONE},
 				  {TIER,TIER,TIER,TIER,TIER},
@@ -67,6 +66,11 @@ public class TeleporterRune extends PersistentRune {
     }
 
     public boolean oneRunePerPerson() {
+        return false;
+    }
+
+    @Override
+    public boolean isFlatRuneOnly() {
         return false;
     }
 

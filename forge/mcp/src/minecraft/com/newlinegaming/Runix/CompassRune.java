@@ -7,9 +7,10 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class CompassRune extends AbstractRune{
 
+    CompassRune(){
+    }
     
 	public int[][][] runicTemplateOriginal(){
-	    this.flatRuneOnly = true;
 		return new int [][][] 
             {{{TIER, 0 ,TIER},
               { 0 ,TIER, 0 },
@@ -34,5 +35,8 @@ public class CompassRune extends AbstractRune{
 		return "Compass";
 	}
 	
+	public boolean isFlatRuneOnly() {
+	    return true;
+	}
 
 }

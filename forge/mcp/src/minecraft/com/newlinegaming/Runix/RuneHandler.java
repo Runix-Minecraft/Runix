@@ -51,6 +51,7 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
+        //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
         if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
 //            WorldXYZ pos = new WorldXYZ(event.x, event.y, event.z);
 //            System.out.println("Right Click event " + pos + "Facing" + event.face + " clicks: "+ ++nClicks);

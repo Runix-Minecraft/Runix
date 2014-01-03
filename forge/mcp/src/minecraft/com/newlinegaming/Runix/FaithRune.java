@@ -20,7 +20,6 @@ public class FaithRune extends PersistentRune{
 //	}
 	
 	public int[][][] runicTemplateOriginal(){
-        this.flatRuneOnly = true;
 		return new int [][][] 
            {{{0,0,0},
              {0,41,0},
@@ -71,6 +70,10 @@ public class FaithRune extends PersistentRune{
     @Override
     public boolean oneRunePerPerson() {
         return false;
+    }
+    
+    public boolean isFlatRuneOnly(){
+        return true;
     }
 	
 

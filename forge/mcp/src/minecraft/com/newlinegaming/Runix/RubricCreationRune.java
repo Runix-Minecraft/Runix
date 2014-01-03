@@ -108,5 +108,8 @@ public class RubricCreationRune extends PersistentRune {
     public boolean oneRunePerPerson() {
         return false;
     }
-
+    
+    public boolean isFlatRuneOnly() {
+        return false; //TODO: Consider this
+    }
 }

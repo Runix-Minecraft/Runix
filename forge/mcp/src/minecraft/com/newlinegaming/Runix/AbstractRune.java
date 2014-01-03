@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 public abstract class AbstractRune {
 	
     protected int energy = 0;
-    protected boolean flatRuneOnly = false;
 	
     public static final int TIER = -1; //Tier
     public static final int SIGR = -2; //Signature block
@@ -38,17 +37,17 @@ public abstract class AbstractRune {
 	 */
 	protected abstract int[][][] runicTemplateOriginal();
 
-	/** Use this method to check Rune template compliance, not runicTemplateOriginal().
+	public abstract boolean isFlatRuneOnly();
+
+    /** Use this method to check Rune template compliance, not runicTemplateOriginal().
 	 * This method will take the facing of coords and use it to match orientation for vertical runes.
 	 * @param coords world coordinates and facing to check against the rune
 	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
 	 * the runeTemplate for that block, which can be special values like TIER or KEY.
 	 */
 	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
-	    if(flatRuneOnly){
-	        coords = new WorldXYZ(coords); //we need a new object so we don't side-effect other Runes
-	        coords.face = 1;//override the facing to make it only pointing up (normal template orientation)
-	    }
+	    if(isFlatRuneOnly())
+	        coords = coords.overrideFacing(1); //we need a new object so we don't side-effect other Runes
 	    return patternToShape(runicTemplateOriginal(), coords); 
 	}
 	
@@ -328,6 +327,8 @@ public abstract class AbstractRune {
     
     /**Removes the shape and adds its block energy to the rune*/
     protected void consumeRune(WorldXYZ coords) {
+        if(isFlatRuneOnly())
+            coords = coords.overrideFacing(1);
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID

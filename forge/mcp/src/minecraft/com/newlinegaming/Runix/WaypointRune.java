@@ -46,4 +46,9 @@ public class WaypointRune extends PersistentRune{
     public boolean oneRunePerPerson() {
         return false;
     }
+
+    public boolean isFlatRuneOnly() {
+        return false;
+    }
+    
 }

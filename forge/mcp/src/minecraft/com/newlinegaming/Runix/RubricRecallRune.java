@@ -34,6 +34,9 @@ public class RubricRecallRune extends AbstractRune{
 	public String getRuneName() {  return "RubricRecallRune";
 		
 	}
-	
+
+    public boolean isFlatRuneOnly() {
+        return false;
+    }
 	
 }

@@ -73,7 +73,11 @@ public class FerrousWheelRune extends PersistentRune {
     public boolean oneRunePerPerson() {
         return false;
     }
-
+    
+    public boolean isFlatRuneOnly() {
+        return false;
+    }
+    
     @Override
     public int[][][] runicTemplateOriginal() {
         int IRON = Block.oreIron.blockID;

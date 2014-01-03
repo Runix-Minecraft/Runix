@@ -79,7 +79,7 @@ public abstract class PersistentRune extends AbstractRune{
         if(poker.worldObj.isRemote)
           return;
         if(oneRunePerPerson()){
-            consumeRune(coords);//TODO adjust for flatRuneOnly
+            consumeRune(coords);
         }
     }
     

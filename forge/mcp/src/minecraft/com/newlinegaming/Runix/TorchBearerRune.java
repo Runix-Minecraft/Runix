@@ -17,7 +17,6 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     public TorchBearerRune( WorldXYZ coords, EntityPlayer activator ) {
         super(coords, activator);
-        consumeRune(coords);
         updateEveryXTicks(10);
     }
 
@@ -46,10 +45,9 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     public int[][][] runicTemplateOriginal() {
-        this.flatRuneOnly = true;
         int REDW = Block.redstoneWire.blockID;
         int TRCH = Block.torchWood.blockID;
-        return new int [][][]//TODO: if you're having trouble with this, it's because people click on the side of the torch, not the top 
+        return new int [][][] 
                 {{{REDW,TRCH,REDW},
                   {TRCH,TIER,TRCH},
                   {REDW,TRCH,REDW}}}; 
@@ -67,6 +65,11 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     public boolean oneRunePerPerson() {
+        return true;
+    }
+
+    @Override
+    public boolean isFlatRuneOnly() {
         return true;
     }
 
