@@ -68,6 +68,13 @@ public class WorldXYZ extends ChunkCoordinates {
         return new WorldXYZ(this.worldObj, posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
 
+    /**Like offset() but for facing instead.  Returning a new instance avoids side-effecting*/
+    public WorldXYZ overrideFacing(int face2) {
+        WorldXYZ n = new WorldXYZ(this);
+        n.face = face2;
+        return n;
+    }
+    
     /**Similar to offset(), but updates the current instance instead of a new one.*/ 
     public WorldXYZ bump(int dX, int dY, int dZ) {
         posX += dX;
@@ -177,6 +184,12 @@ public class WorldXYZ extends ChunkCoordinates {
         //the 8 corner diagonals are not included
         return neighbors;
     }
+
+    public double getDistance(WorldXYZ other) {
+        double xzDist_2 =  (posX - other.posX)*(posX - other.posX) + (posZ - other.posZ)*(posZ - other.posZ);//Math.sqrt(
+        return Math.sqrt( xzDist_2 + (posY - other.posY)*(posY - other.posY));
+    }
+
 
 
 }
