@@ -29,7 +29,7 @@ public class TorchBearerRune extends AbstractTimedRune {
             LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
             for(WorldXYZ newPos : sphere)
             {
-                if(newPos.getBlockId() == 0 && newPos.offset(0,-1,0).isSolid() && 
+                if(newPos.getBlockId() == 0 && newPos.offset(Vector3.DOWN).isSolid() && 
                         world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4){ //adjustable
                     try {
                         setBlockId(newPos, Block.torchWood.blockID);//set torch

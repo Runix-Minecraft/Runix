@@ -30,9 +30,9 @@ public class ZeerixChestRune extends AbstractTimedRune {
             LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(player), 4);
             for(WorldXYZ newPos : sphere)
             {
-                Material base = world.getBlockMaterial( ((int)newPos.posX), ((int)newPos.posY-1), ((int)newPos.posZ) );
-                Material top = world.getBlockMaterial( ((int)newPos.posX), ((int)newPos.posY+1), ((int)newPos.posZ) );
-                if(newPos.getBlockId() == 0 && base.isSolid() && !top.isSolid()){
+                if(newPos.getBlockId() == 0 
+                        && newPos.offset(Vector3.DOWN).isSolid()// base is solid 
+                        && !newPos.offset(Vector3.UP).isSolid()){//room to open lid
                     try{
                         if(location.getBlockId() != Block.enderChest.blockID)
                             setBlockId(location, Block.enderChest.blockID);//charge for a replacement
