@@ -97,7 +97,6 @@ public class WorldXYZ extends ChunkCoordinates {
 
     public World defaultWorld() {
         return FMLClientHandler.instance().getServer().worldServerForDimension(0);
-//        return WorldProvider.getProviderForDimension(0).worldObj;//TODO: Josiah: This is not working correctly atm
     }
 
     @Override
@@ -136,15 +135,15 @@ public class WorldXYZ extends ChunkCoordinates {
      * @param blockID
      * @return true if successful
      */
-    public boolean setBlockId(int blockID){
-        if(getBlockId() == Block.bedrock.blockID)
-            return false; //TODO: make this more nuanced behavior
+    public boolean setBlockIdAndUpdate(int blockID){
+        if(blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+            return false; //You cannot delete or place bedrock
         return this.worldObj.setBlock(posX, posY, posZ, blockID);
     }
     
     public boolean setBlockId(SigBlock sig){
-        if(getBlockId() == Block.bedrock.blockID)
-            return false; //TODO: make this more nuanced behavior
+        if(sig.blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+            return false; //You cannot delete or place bedrock
         return this.worldObj.setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }

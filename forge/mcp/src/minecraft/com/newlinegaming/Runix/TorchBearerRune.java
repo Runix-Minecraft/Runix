@@ -33,7 +33,7 @@ public class TorchBearerRune extends AbstractTimedRune {
                         world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4 //adjustable
                         && !world.isDaytime()){// don't place during the day time
                     try {
-                        setBlockId(newPos, Block.torchWood.blockID);//set torch
+                        setBlockIdAndUpdate(newPos, Block.torchWood.blockID);//set torch
                     } catch (NotEnoughRunicEnergyException e) {
                         reportOutOfGas(player);
                     }

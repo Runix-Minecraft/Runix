@@ -35,7 +35,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
                         && !newPos.offset(Vector3.UP).isSolid()){//room to open lid
                     try{
                         if(location.getBlockId() != Block.enderChest.blockID)
-                            setBlockId(location, Block.enderChest.blockID);//charge for a replacement
+                            setBlockIdAndUpdate(location, Block.enderChest.blockID);//charge for a replacement
                         moveBlock(location, newPos);
                     }catch( NotEnoughRunicEnergyException e){
                         reportOutOfGas(player);

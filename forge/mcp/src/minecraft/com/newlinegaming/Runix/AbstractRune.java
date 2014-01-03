@@ -336,7 +336,7 @@ public abstract class AbstractRune {
             if(shape.get(target).blockID == NONE)
                 continue; // we don't consume these
             energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockId(0);// delete the block
+            target.setBlockIdAndUpdate(0);// delete the block
         }
         System.out.println(getRuneName() + " energy: " + energy);
     }
@@ -346,17 +346,17 @@ public abstract class AbstractRune {
         for(WorldXYZ target : shape){
             int blockID = target.getBlockId();
             energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockId(0);// delete the block
+            target.setBlockIdAndUpdate(0);// delete the block
         }
         System.out.println(getRuneName() + " energy: " + energy);
     }
     
-    public void setBlockId(WorldXYZ coords, int blockID) throws NotEnoughRunicEnergyException {
+    public void setBlockIdAndUpdate(WorldXYZ coords, int blockID) throws NotEnoughRunicEnergyException {
         if( blockID == 0 )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
         else
             spendEnergy(Tiers.getEnergy(blockID));        
-        coords.setBlockId(blockID);
+        coords.setBlockIdAndUpdate(blockID);
     }
 
     /**
@@ -374,7 +374,7 @@ public abstract class AbstractRune {
      * @throws NotEnoughRunicEnergyException */
     public void moveBlock(WorldXYZ coords, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
         newPos.setBlockId(coords.getSigBlock());
-        coords.setBlockId(0);
+        coords.setBlockIdAndUpdate(0);
         spendEnergy(Tiers.blockMoveCost);
         
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
@@ -386,7 +386,7 @@ public abstract class AbstractRune {
         if(Tiers.getTier(coords.getBlockId()) > 1){
             List<WorldXYZ> wrapper = Arrays.asList(coords);
             consumeRune(wrapper);
-            coords.setBlockId(Block.cobblestone.blockID);//we don't want air sitting here
+            coords.setBlockIdAndUpdate(Block.cobblestone.blockID);//we don't want air sitting here
             return true;
         }
         return false;

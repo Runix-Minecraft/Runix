@@ -24,20 +24,21 @@ public class Util_Movement {
      * moveShape() calls moveMagic() which will update everything including yourself.*/
     public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
     {
+        SigBlock AIR = new SigBlock(0,0);
         HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ point : moveMapping.keySet()){
             SigBlock block = point.getSigBlock();
             if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
                 sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
-                point.setBlockId(0);//delete sensitive blocks first to prevent drops
+                point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
             }else{
                 newStructure.put(moveMapping.get(point), block);//record original at new location
             }
         }
         
         for(WorldXYZ loc : moveMapping.keySet()) //Delete everything
-            loc.setBlockId(0); // delete old block in a separate loop to avoid collisions with the new positioning
+            loc.setBlockId(AIR); // delete old block in a separate loop to avoid collisions with the new positioning
 
         for(WorldXYZ destination : newStructure.keySet()) //place all the blocks at new location
             destination.setBlockId(newStructure.get(destination));//doesn't include sensitive blocks

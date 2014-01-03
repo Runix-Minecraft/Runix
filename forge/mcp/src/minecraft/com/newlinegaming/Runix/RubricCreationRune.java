@@ -95,11 +95,6 @@ public class RubricCreationRune extends PersistentRune {
 	}
 
     @Override
-    public void saveActiveRunes() {
-        //TODO: does nothing
-    }
-
-    @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return storedPatterns;
     }
