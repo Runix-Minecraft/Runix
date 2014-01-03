@@ -3,6 +3,7 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
@@ -188,6 +189,11 @@ public class WorldXYZ extends ChunkCoordinates {
     public double getDistance(WorldXYZ other) {
         double xzDist_2 =  (posX - other.posX)*(posX - other.posX) + (posZ - other.posZ)*(posZ - other.posZ);//Math.sqrt(
         return Math.sqrt( xzDist_2 + (posY - other.posY)*(posY - other.posY));
+    }
+
+    public boolean isSolid() {
+        Material base = worldObj.getBlockMaterial(posX, posY, posZ );
+        return base.isSolid();
     }
 
 

@@ -108,10 +108,13 @@ public abstract class AbstractRune {
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
 	                int block = coords.worldObj.getBlockId(coords.posX, coords.posY-drop, coords.posZ);
-	                if(block != 0){ //We found something not AIR
-    	                if( block != Block.lavaStill.blockID && block != Block.lavaMoving.blockID//check for Lava, fire, and void  
-    	                        && block != Block.fire.blockID)
-    	                {//safety checking
+	                if(block != 0)
+	                { //We found something not AIR
+    	                if( block == Block.lavaStill.blockID || block == Block.lavaMoving.blockID//check for Lava, fire, and void  
+    	                        || block == Block.fire.blockID){//if we teleport now, the player will land on an unsafe block
+                            break; //break out of the drop loop and proceed on scanning a new location
+                        }
+    	                else if(coords.offset(0, -drop, 0).isSolid()){
     	                    //TODO: distance should be calculated after the Nether -> Overworld transform has been done
     	                    spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
     
@@ -120,10 +123,7 @@ public abstract class AbstractRune {
     	                    subject.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
     	                    System.out.println("Done Teleporting");
     	                    return;
-    	                }
-    	                else{//if we teleport now, the player will land on an unsafe block
-    	                    break; //break out of the drop loop and proceed on scanning a new location
-    	                }
+    	                }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
 	                }
 	            } 
 	        }
