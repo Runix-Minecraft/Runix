@@ -23,9 +23,8 @@ public class CompassRune extends AbstractRune{
 				{{{ 0 ,ink, 0 }, //TODO: pass meta-data
 				  {ink, 0 ,ink},
 				  {ink, 0 ,ink}}};
-		WorldXYZ flatPoint = new WorldXYZ(coords);
-		flatPoint.face = 1;
-        HashMap<WorldXYZ, SigBlock> stamp = patternToShape(compassOutcome, flatPoint);
+		coords.overrideFacing(1);
+        HashMap<WorldXYZ, SigBlock> stamp = patternToShape(compassOutcome, coords);
 		if(stampBlockPattern(stamp, player))
 		    accept(player);
 	}

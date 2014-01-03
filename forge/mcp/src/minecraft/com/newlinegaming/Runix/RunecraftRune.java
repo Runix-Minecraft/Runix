@@ -54,7 +54,8 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        //TODO: we're not currently using subject
+        if(player != null && !subject.equals(player) )
+            return;
         if(player != null && energy < 100){
             reportOutOfGas(player);
         }
@@ -78,11 +79,9 @@ public class RunecraftRune extends AbstractTimedRune {
                         reportOutOfGas(player);
                         player = null;
                     }
-                    //location.bump(dX, dY, dZ);  //location gets moved through moveShape registry
                 }
                 else{
                     aetherSay(player, "CRUNCH!");
-//                    safelyMovePlayer(player, location.offset(0, 1, 0));//TODO: not working because it's server side only
                 }
             }
         }

@@ -21,7 +21,6 @@ public class RubricRecallRune extends AbstractRune{
 
 	@Override
 	public void execute(WorldXYZ coords, EntityPlayer player) {
-		// TODO Auto-generated method stub
 		//find match signature in RubricCreationRune.getActiveMagic()
 	    //consume Rune for energy
 	    //transfer energy to Rubric rune

@@ -20,8 +20,14 @@ public abstract class AbstractTimedRune extends PersistentRune {
         TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
     }
 
-    //TODO: We really need a way to completely remove timers once they're done that doesn't require
-    //server restart.  At the moment, RunecraftRune simply pauses itself by not responding to onUpdateTick();
+    //To completely remove timers once they're done :  
+//    public static void unbind(){
+//        if(instance != null){
+//            MinecraftForge.EVENT_BUS.unregister(instance);
+//            instance = null;
+//        }
+//    }
+//    At the moment, RunecraftRune simply pauses itself by not responding to onUpdateTick();
     
     protected abstract void onUpdateTick(EntityPlayer subject);
 

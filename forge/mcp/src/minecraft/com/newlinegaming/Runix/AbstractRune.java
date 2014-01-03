@@ -257,7 +257,6 @@ public abstract class AbstractRune {
                     int blockID = n.getBlockId();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
                     if( !workingSet.contains(n) && !Tiers.isNatural(blockID) ) {
-                        //TODO: possible slow down = long list of natural blocks
                         workingSet.add(n);
                         nextEdge.add(n);
                     }

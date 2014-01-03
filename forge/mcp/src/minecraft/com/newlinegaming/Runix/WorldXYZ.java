@@ -110,7 +110,7 @@ public class WorldXYZ extends ChunkCoordinates {
             if( this.posX == other.posX && this.posY == other.posY && this.posZ == other.posZ){
                 if(other instanceof WorldXYZ)
                     return ((WorldXYZ) other).worldObj == this.worldObj;
-                else //TODO: Should we check for face?
+                else //NOTE: This does not compare the face of each coordinate
                     return true;
             }
             return false;

@@ -28,7 +28,6 @@ public class WaypointRune extends PersistentRune{
     /**Waypoints will detect which side of the key block you activate from and use 
      * that to direct the player's teleport.*/
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-        //TODO: Restrict to legal face given rune facing and orientation 
         location.face = coords.face; //update the facing of the waypoint
         aetherSay(poker, "Waypoint is now facing " + Vector3.faceString[location.face]);
     }
