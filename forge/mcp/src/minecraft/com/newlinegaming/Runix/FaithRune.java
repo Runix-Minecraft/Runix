@@ -64,11 +64,6 @@ public class FaithRune extends PersistentRune{
 	}
 
     @Override
-    public void saveActiveRunes() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
     public List<PersistentRune> getActiveMagic() {
         return activeFaithList;
     }

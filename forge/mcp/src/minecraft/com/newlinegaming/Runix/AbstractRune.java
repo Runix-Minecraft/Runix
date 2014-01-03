@@ -70,16 +70,10 @@ public abstract class AbstractRune {
 	 * @param worldZ
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
-	protected boolean stampBlockPattern(int[][][] pattern, EntityPlayer player, WorldXYZ coords)
-	{//TODO this can be changed to iterating over HashMap<WorldXYZ, SigBlock> to match standards elsewhere
-		for (int y = 0; y < pattern.length; y++) {
-			for (int z = 0; z < pattern[y].length; z++) {
-				for (int x = 0; x < pattern[y][z].length; x++) {
-                    WorldXYZ target = coords.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);
-					target.setBlockId( pattern[y][z][x] );
-                }
-            }
-		}
+	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player)
+	{
+		for(WorldXYZ target : stamp.keySet())
+		    target.setBlockId( stamp.get(target) );
 		return true;//TODO: build permission checking
 	}
 	

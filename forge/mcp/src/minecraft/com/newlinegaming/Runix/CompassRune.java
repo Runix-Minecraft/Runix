@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix;
 
+import java.util.HashMap;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -20,8 +22,11 @@ public class CompassRune extends AbstractRune{
 				{{{ 0 ,ink, 0 }, //TODO: pass meta-data
 				  {ink, 0 ,ink},
 				  {ink, 0 ,ink}}};
-		stampBlockPattern(compassOutcome, player, coords);
-		accept(player);
+		WorldXYZ flatPoint = new WorldXYZ(coords);
+		flatPoint.face = 1;
+        HashMap<WorldXYZ, SigBlock> stamp = patternToShape(compassOutcome, flatPoint);
+		if(stampBlockPattern(stamp, player))
+		    accept(player);
 	}
 	
 	public String getRuneName()
