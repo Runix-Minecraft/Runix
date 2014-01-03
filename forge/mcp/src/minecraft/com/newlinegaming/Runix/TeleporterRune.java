@@ -17,6 +17,7 @@ public class TeleporterRune extends PersistentRune {
     }
 
 	public int[][][] runicTemplateOriginal(){
+	    flatRuneOnly = false;
 		return new int[][][]
 				{{{NONE,TIER,SIGR,TIER,NONE},
 				  {TIER,TIER,TIER,TIER,TIER},

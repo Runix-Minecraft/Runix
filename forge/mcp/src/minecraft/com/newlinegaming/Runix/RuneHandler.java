@@ -87,7 +87,7 @@ public class RuneHandler {
     private AbstractRune checkForAnyRunePattern(WorldXYZ coords) {
         boolean result = false;
         for (int i = 0; i < runeRegistry.size(); i++) {
-            result = runeRegistry.get(i).checkRunePattern(coords);
+            result = runeRegistry.get(i).checkRunePattern(new WorldXYZ(coords));
             if (result) {
                 return runeRegistry.get(i);
             }

@@ -45,8 +45,10 @@ public abstract class AbstractRune {
 	 * the runeTemplate for that block, which can be special values like TIER or KEY.
 	 */
 	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
-	    if(flatRuneOnly)
+	    if(flatRuneOnly){
+	        coords = new WorldXYZ(coords); //we need a new object so we don't side-effect other Runes
 	        coords.face = 1;//override the facing to make it only pointing up (normal template orientation)
+	    }
 	    return patternToShape(runicTemplateOriginal(), coords); 
 	}
 	
@@ -182,7 +184,7 @@ public abstract class AbstractRune {
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
                 case KEY:
-                    if( !target.equals(coords) || Tiers.isTier0(blockID) )//key block must be center block
+                    if( Tiers.isTier0(blockID) )//key block must be center block  !target.equals(coords) || 
                         return false;//can be ink, or SIGR but not T0
                     break;
                 default:
