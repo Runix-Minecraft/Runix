@@ -192,7 +192,8 @@ public abstract class AbstractRune {
             int patternID = shape.get(target).blockID;
             switch(patternID){// Handle special Template Values
                 case NONE: 
-                    if( !Tiers.isTier0(blockID) )
+                    if( !Tiers.isTier0(blockID)//Special cased torches as part of NONE so that Torch Bearer doesn't jack up your runes. 
+                            && (inkID == Block.torchWood.blockID || blockID != Block.torchWood.blockID))
                         return false; 
                     break;
                 case TIER:
