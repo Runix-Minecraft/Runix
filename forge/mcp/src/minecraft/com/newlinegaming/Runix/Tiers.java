@@ -31,8 +31,9 @@ public class Tiers {
         
         /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/
         Block[] extraNaturalBlocks = new Block[]{ //blocks that are natural, but not tier 0
-            Block.waterStill, Block.waterMoving, Block.lavaStill, Block.lavaMoving,  
-            Block.vine, Block.leaves, Block.cactus, Block.deadBush, Block.gravel,
+            //Block.waterStill, Block.waterMoving, 
+            Block.lavaStill, Block.lavaMoving,  
+            Block.vine, Block.leaves, Block.cactus, Block.deadBush, 
             Block.ice, Block.sapling, Block.wood};
         naturalBlocks = loadBlockIds(extraNaturalBlocks);
         naturalBlocks.addAll(Tier0);
@@ -42,9 +43,12 @@ public class Tiers {
             Block.potato, Block.portal, Block.endPortal, Block.brewingStand, 
             Block.cactus, Block.deadBush, Block.dragonEgg, Block.fire,
             Block.grass, Block.gravel, Block.lavaMoving, Block.lavaStill,
-            Block.ladder, Block.leaves, Block.melonStem,
+            Block.ladder, Block.leaves, Block.lever, Block.melonStem,
             Block.mushroomBrown, Block.mushroomRed, Block.netherStalk,
-            Block.pistonExtension, Block.plantRed, Block.plantYellow, Block.pressurePlateGold,
+            Block.pistonMoving, //these ones may be co-dependent :?  
+            Block.pistonBase, Block.pistonStickyBase,
+//            Block.pistonExtension, 
+            Block.plantRed, Block.plantYellow, Block.pressurePlateGold,
             Block.pressurePlateIron, Block.pressurePlateStone, Block.pressurePlatePlanks, Block.pumpkinStem,
             Block.rail, Block.railActivator, Block.railDetector, Block.railPowered,
             Block.redstoneComparatorActive, Block.redstoneComparatorIdle, 
@@ -53,7 +57,8 @@ public class Tiers {
             Block.signPost, Block.signWall, Block.skull, Block.stoneButton,
             Block.tallGrass, Block.tripWire, Block.tripWireSource,
             Block.torchWood, Block.torchRedstoneActive, Block.torchRedstoneIdle,
-            Block.vine, Block.waterlily, Block.waterMoving, Block.waterStill, 
+            Block.vine, Block.waterlily, 
+            Block.waterMoving, Block.waterStill, 
             Block.woodenButton};
         moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
         

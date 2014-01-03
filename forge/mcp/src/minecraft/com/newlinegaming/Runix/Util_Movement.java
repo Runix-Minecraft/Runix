@@ -42,8 +42,9 @@ public class Util_Movement {
         for(WorldXYZ destination : newStructure.keySet()) //place all the blocks at new location
             destination.setBlockId(newStructure.get(destination));//doesn't include sensitive blocks
 
-        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //Place all the sensitive blocks
-            specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone 
+        for(WorldXYZ specialPos : sensitiveBlocks.keySet()){ //Place all the sensitive blocks
+            specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone
+        }
         
         RuneHandler.getInstance().moveMagic(moveMapping);
 
