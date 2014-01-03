@@ -249,8 +249,10 @@ public abstract class AbstractRune {
 
     protected boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
-            if( !move.containsKey(newPos) && newPos.getBlockId() != 0 )//doesn't overlap with the old position
-                return true; //TODO: check for isCrushable
+            if( !move.containsKey(newPos) //doesn't overlap with the old position
+                    && newPos.getBlockId() != 0 //AIR
+                    && !Tiers.isCrushable(newPos.getBlockId()) ) //Something's there, but squish it anyways
+                return true;
         }
         return false;
     }

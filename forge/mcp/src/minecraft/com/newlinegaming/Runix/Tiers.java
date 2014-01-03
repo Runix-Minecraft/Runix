@@ -4,7 +4,6 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import net.minecraft.block.Block;
 
 
@@ -19,6 +18,7 @@ public class Tiers {
     private static ArrayList<Integer> Tier0;
     private static ArrayList<Integer> naturalBlocks;
     private static ArrayList<Integer> moveSensitiveBlocks;
+    private static ArrayList<Integer> crushableBlocks;
     private static int[] blockEnergy;
     
     public Tiers(){
@@ -56,6 +56,12 @@ public class Tiers {
             Block.vine, Block.waterlily, Block.waterMoving, Block.waterStill, 
             Block.woodenButton};
         moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
+        
+        Block[] crushTheseBlocks = new Block[]{
+            Block.deadBush, Block.snow, Block.fire, Block.gravel, Block.waterMoving,
+            Block.waterStill, Block.sapling, Block.tallGrass, Block.torchWood,//torches are debatable, since someone did place it there
+            Block.vine};
+        crushableBlocks = loadBlockIds(crushTheseBlocks);
         
         blockEnergy = new int[]{ //the blockID is the index for this array.  The value at blockEnergy[blockID] = runic energy
                 1,   //Air
@@ -296,6 +302,10 @@ public class Tiers {
      */
     public static boolean isMoveSensitive(int blockID){
         return moveSensitiveBlocks.contains(new Integer(blockID));
+    }
+
+    public static boolean isCrushable(int blockID) {
+        return crushableBlocks.contains(new Integer(blockID));
     }
 }
 

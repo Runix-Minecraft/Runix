@@ -36,11 +36,6 @@ public class WaypointRune extends PersistentRune{
     public String getRuneName() {
 		return "Waypoint";
 	}
-    
-    @Override
-    public void saveActiveRunes() {
-        //TODO output JSON file
-    }
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {

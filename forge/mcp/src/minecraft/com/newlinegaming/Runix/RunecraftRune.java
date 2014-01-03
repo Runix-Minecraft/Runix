@@ -158,11 +158,6 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @Override
-    public void saveActiveRunes() {
-        //TODO: actually do something here
-    }
-
-    @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;
     }
