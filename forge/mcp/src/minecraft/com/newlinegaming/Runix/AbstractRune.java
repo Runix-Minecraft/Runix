@@ -114,8 +114,16 @@ public abstract class AbstractRune {
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
     	                else if(coords.offset(0, -drop, 0).isSolid()){
-    	                    //TODO: distance should be calculated after the Nether -> Overworld transform has been done
-    	                    spendEnergy((int)( coords.getDistanceSquaredToChunkCoordinates(new WorldXYZ(subject)) * Tiers.movementPerMeterCost));
+    	                    //distance should be calculated uses the Nether -> Overworld transform
+    	                    WorldXYZ dCalc = new WorldXYZ(subject);
+    	                    if(subject.worldObj.provider.isHellWorld  && !coords.worldObj.provider.isHellWorld){ //leaving the Nether
+    	                        dCalc.posX *= 8;
+    	                        dCalc.posZ *= 8;
+    	                    }else if (!subject.worldObj.provider.isHellWorld  && coords.worldObj.provider.isHellWorld){// going to the Nether
+                                dCalc.posX /= 8;
+                                dCalc.posZ /= 8;
+    	                    }
+    	                    spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
     
     	                    if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
     	                        subject.travelToDimension(coords.worldObj.provider.dimensionId);
