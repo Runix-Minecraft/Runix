@@ -37,17 +37,17 @@ public abstract class PersistentRune extends AbstractRune{
     
     public void loadRunes(){
         String filename =  "TorcherBearerRune.json";
-        String className = filename.replaceFirst("\\.json", "");
+        String className = filename.replace(".json", "");//hopefully not a regular expression
         System.out.println("Class name: " + className);
         //TorcherBearerRune
         //        String json = open(filename).read()...
         Gson object = new Gson(); 
-        try {
-            Class<?> cls = Class.forName(className);
-//            PersistentRune rune= object.fromJson("JsonString", cls.class);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Class<?> cls = Class.forName(className);
+            PersistentRune rune= object.fromJson("JsonString", this.getClass());
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
     
     /**There's no way to have a static field in an abstract class so we use a getter instead
