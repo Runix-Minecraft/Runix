@@ -5,9 +5,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
+
 public class Signature {
     
     public ArrayList<SigBlock> blocks;
+    public ArrayList<Integer> metaWhiteList;
     
     public Signature()
     {
@@ -16,12 +19,26 @@ public class Signature {
 
     public Signature(AbstractRune rune, WorldXYZ coords) {
         blocks = new ArrayList<SigBlock>();
+        Block[] usableMetaData = new Block[]{//this list specifically lacks any block that uses meta for orientation
+                Block.carpet, Block.cloth, 
+                Block.crops, //added just in case you WANT an impossible waypoint
+                Block.hardenedClay, Block.music, //adjusting the notes would change your Signature :D
+                Block.planks, 
+                Block.pressurePlateGold, Block.pressurePlateIron, Block.pressurePlatePlanks, Block.pressurePlateStone, //may be some potential there
+                Block.stainedClay,
+                Block.wood, Block.woodDoubleSlab, Block.woodSingleSlab,
+        };
+        metaWhiteList = Tiers.loadBlockIds(usableMetaData);
 
         HashMap<WorldXYZ, SigBlock> shape = rune.runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == AbstractRune.SIGR) {
-                if (!Tiers.isTier0(target.getBlockId()))
-                    blocks.add(target.getSigBlock());
+                int blockID = target.getBlockId();
+                if (!Tiers.isTier0(blockID))
+                    if(metaWhiteList.contains(new Integer(blockID)))
+                        blocks.add(target.getSigBlock());
+                    else
+                        blocks.add(new SigBlock(blockID, 0));//just the blockID
                 else
                     blocks.add(new SigBlock(0, 0));
             }
