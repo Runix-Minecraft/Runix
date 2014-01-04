@@ -31,7 +31,7 @@ public class RuneHandler {
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
     
     private RuneHandler() {      
-       /* runeRegistry.add(new WaypointRune());
+        runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
         runeRegistry.add(new TeleporterRune());
@@ -40,7 +40,7 @@ public class RuneHandler {
         runeRegistry.add(new RubricRecallRune());
         runeRegistry.add(new TorchBearerRune());
         runeRegistry.add(new ZeerixChestRune());
-        runeRegistry.add(new FerrousWheelRune()); */
+        runeRegistry.add(new FerrousWheelRune());
     }
     
     public static RuneHandler getInstance(){
@@ -68,6 +68,8 @@ public class RuneHandler {
                 ((PersistentRune) r).saveActiveRunes();
     }
     
+    @ForgeSubscribe
+    public void loadServer(){}
     
     @ForgeSubscribe
     public void playerLogin(EntityJoinWorldEvent event){
