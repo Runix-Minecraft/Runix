@@ -68,6 +68,20 @@ public class RuneHandler {
                 ((PersistentRune) r).saveActiveRunes();
     }
     
+    @ForgeSubscribe
+    public void loadServer(){}
+    
+    @ForgeSubscribe
+    public void playerLogin(EntityJoinWorldEvent event){
+        if(event.entity instanceof EntityPlayer){ //fires once each for Client and Server side join event
+            for(AbstractRune r : runeRegistry)
+                if( r instanceof PersistentRune)
+                    ((PersistentRune) r).onPlayerLogin(((EntityPlayer)event.entity).username);
+        }
+            
+    }
+    
+    
     /**Detects a rune pattern, and executes it.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
