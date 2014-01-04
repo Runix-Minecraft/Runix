@@ -8,8 +8,8 @@ public abstract class AbstractTimedRune extends PersistentRune {
 
     public AbstractTimedRune(){}
     public AbstractTimedRune(WorldXYZ coords, EntityPlayer player2) {
-        super(coords, player2);
-        this.runeName = "abstract timed rune";
+        super(coords, player2,"abstract timed rune");
+        
     }
 
     /** This registers the rune as being actively updated.  Forge (thru RuneTimer) will call

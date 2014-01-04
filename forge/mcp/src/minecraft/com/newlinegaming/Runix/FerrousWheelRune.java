@@ -16,7 +16,7 @@ public class FerrousWheelRune extends PersistentRune {
     }
 
     public FerrousWheelRune(WorldXYZ coords, EntityPlayer activator) {
-        super(coords, activator);
+        super(coords, activator, "Ferrous Wheel");
     }
 
 

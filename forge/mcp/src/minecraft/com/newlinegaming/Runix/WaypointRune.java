@@ -9,13 +9,14 @@ public class WaypointRune extends PersistentRune{
 
     public WaypointRune(){
     	
-    	super();
+    	super(); 
+    	this.runeName = "Waypoint";
     }
     
     public WaypointRune(WorldXYZ coords, EntityPlayer player)
     {
-    	super(coords, player);
-        this.runeName = "waypoint";
+    	super(coords, player, "Waypoint");
+        
     }
 
     @Override

@@ -12,7 +12,7 @@ public class TeleporterRune extends PersistentRune {
     public TeleporterRune(){super();}
     
     public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
-        super(coords, activator);
+        super(coords, activator,"Teleporter");
         energy = 1;
     }
 

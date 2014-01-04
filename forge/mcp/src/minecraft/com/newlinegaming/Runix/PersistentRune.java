@@ -15,18 +15,20 @@ public abstract class PersistentRune extends AbstractRune{
     public WorldXYZ location = null;
     public boolean disabled = false;
     private String RuneName;
-    public PersistentRune(){}
+    public PersistentRune(){ this.runeName = "generic persistent rune";}
     
-    public PersistentRune(WorldXYZ coords, EntityPlayer activator) {
+    public PersistentRune(WorldXYZ coords, EntityPlayer activator, String runeName) {
         location = coords;
         setPlayer(activator);
+        this.runeName = runeName;
+        
     }
     
     /**Override this method to implement custom rune file saving rules*/
     public void saveActiveRunes(){
     	Gson object = new Gson(); 
     	String runeGson = object.toJson(this);
-    	System.out.println("[SAVE] "+runeGson);
+    	System.out.println("[SAVE]["+this.getClass()+"] " +runeGson);
     	
     }
     

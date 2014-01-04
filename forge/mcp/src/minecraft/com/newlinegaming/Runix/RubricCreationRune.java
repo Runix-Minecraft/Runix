@@ -40,12 +40,12 @@ public class RubricCreationRune extends PersistentRune {
 
     public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
-	    super(coords, player2);
+	    super(coords, player2,"Rubric Creator");
 		HashSet<WorldXYZ> shape = conductanceStep(coords, 50);;
 		structure = scanStructure(shape);
 		renderer = new RenderHelper();
 		MinecraftForge.EVENT_BUS.register(this);
-		this.runeName = "Rubric Creator";
+		
 	}
 
     private HashMap<WorldXYZ, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {

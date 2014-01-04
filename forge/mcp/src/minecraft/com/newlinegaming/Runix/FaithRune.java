@@ -10,7 +10,7 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 
 public class FaithRune extends PersistentRune{
-	public String runeName = "Faith";
+	
 	protected static List<PersistentRune> activeFaithList = new LinkedList<PersistentRune>();
 	public Integer radius;
 	

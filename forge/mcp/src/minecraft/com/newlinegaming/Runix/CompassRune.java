@@ -7,6 +7,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class CompassRune extends AbstractRune{
 
+
     CompassRune(){
     }
     
