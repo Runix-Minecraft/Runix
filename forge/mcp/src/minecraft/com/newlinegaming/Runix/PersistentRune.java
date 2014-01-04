@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import com.google.gson.*;
 public abstract class PersistentRune extends AbstractRune{
     
-    public EntityPlayer player = null;
+    private String player = null;
     public WorldXYZ location = null;
     public boolean disabled = false;
     private String RuneName;
@@ -18,7 +19,7 @@ public abstract class PersistentRune extends AbstractRune{
     
     public PersistentRune(WorldXYZ coords, EntityPlayer activator) {
         location = coords;
-        player = activator;
+        setPlayer(activator);
     }
     
     /**Override this method to implement custom rune file saving rules*/
@@ -67,7 +68,7 @@ public abstract class PersistentRune extends AbstractRune{
          /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */
     public PersistentRune getRuneByPlayer(EntityPlayer activator) {
         for(PersistentRune rune : getActiveMagic()){
-            if( rune.player != null && rune.player.equals(activator) )
+            if( rune.getPlayer() != null && rune.getPlayer().equals(activator) )
                 return rune;
         }
         return null;
@@ -145,6 +146,19 @@ public abstract class PersistentRune extends AbstractRune{
         disabled = true;
     }
     
+    public boolean onPlayerLogin(String username){
+//        System.out.println(username + " joined the server");
+        return false;
+    }
     
-    
+    public EntityPlayer getPlayer(){
+        return MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(player);
+    }
+
+    public void setPlayer(EntityPlayer playerObj) {
+        if(playerObj == null)
+            this.player = null;
+        else
+            this.player = playerObj.username;
+    }
 }

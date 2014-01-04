@@ -85,8 +85,8 @@ public class RubricCreationRune extends PersistentRune {
 	
 	@ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
-		if (player != null)
-			renderer.highlightBoxes(structure.keySet(), player, 221, 0, 0);
+		if (getPlayer() != null)
+			renderer.highlightBoxes(structure.keySet(), getPlayer(), 221, 0, 0);
 
 	}
 

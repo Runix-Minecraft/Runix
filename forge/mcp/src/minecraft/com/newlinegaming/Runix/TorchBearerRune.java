@@ -22,10 +22,10 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(player) && !subject.worldObj.isRemote)
+        if(subject.equals(getPlayer()) && !subject.worldObj.isRemote)
         {
             World world = subject.worldObj;//sphere can be optimized to donut
-            location = new WorldXYZ(player);
+            location = new WorldXYZ(getPlayer());
             LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
             for(WorldXYZ newPos : sphere)
             {
@@ -35,7 +35,7 @@ public class TorchBearerRune extends AbstractTimedRune {
                     try {
                         setBlockIdAndUpdate(newPos, Block.torchWood.blockID);//set torch
                     } catch (NotEnoughRunicEnergyException e) {
-                        reportOutOfGas(player);
+                        reportOutOfGas(getPlayer());
                     }
                     return; //Light levels don't update til the end of the tick, so we need to exit
                 }

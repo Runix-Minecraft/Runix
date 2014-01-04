@@ -2,12 +2,12 @@ package com.newlinegaming.Runix;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -67,6 +67,18 @@ public class RuneHandler {
             if( r instanceof PersistentRune)
                 ((PersistentRune) r).saveActiveRunes();
     }
+    
+    
+    @ForgeSubscribe
+    public void playerLogin(EntityJoinWorldEvent event){
+        if(event.entity instanceof EntityPlayer){ //fires once each for Client and Server side join event
+            for(AbstractRune r : runeRegistry)
+                if( r instanceof PersistentRune)
+                    ((PersistentRune) r).onPlayerLogin(((EntityPlayer)event.entity).username);
+        }
+            
+    }
+    
     
     /**Detects a rune pattern, and executes it.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
