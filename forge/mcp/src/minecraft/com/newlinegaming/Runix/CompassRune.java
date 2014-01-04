@@ -20,7 +20,7 @@ public class CompassRune extends AbstractRune{
 	public void execute(WorldXYZ coords, EntityPlayer player){
 	    int ink = getTierInkBlock(coords);
 		int[][][] compassOutcome = new int [][][]
-				{{{ 0 ,ink, 0 }, //TODO: pass meta-data
+				{{{ 0 ,ink, 0 },
 				  {ink, 0 ,ink},
 				  {ink, 0 ,ink}}};
 		coords.overrideFacing(1);

@@ -11,14 +11,12 @@ import net.minecraft.world.World;
 
 public class ZeerixChestRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
-    protected int tier = 1;
     
     public ZeerixChestRune() {
     }
 
     public ZeerixChestRune(WorldXYZ coords, EntityPlayer player2) {
         super(coords, player2);
-        tier = getTier(location);
         updateEveryXTicks(200);
     }
 
