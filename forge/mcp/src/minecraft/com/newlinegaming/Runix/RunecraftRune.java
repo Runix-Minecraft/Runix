@@ -19,7 +19,7 @@ public class RunecraftRune extends AbstractTimedRune {
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
     private RenderHelper renderer;
     
-    public RunecraftRune(){}
+    public RunecraftRune(){super();}
     
     /**Runecraft Runix Vehicle blocks track with a player while active.  
      * Toggle it by right clicking the center block.  You can jump up to travel up, sneak to go down.
@@ -33,6 +33,7 @@ public class RunecraftRune extends AbstractTimedRune {
         renderer = new RenderHelper();
         updateEveryXTicks(4);
         MinecraftForge.EVENT_BUS.register(this);
+        this.runeName = "Runecraft"; 
     }
 
     @Override
@@ -154,7 +155,7 @@ public class RunecraftRune extends AbstractTimedRune {
     }
     
     public String getRuneName() {
-        return "Runecraft";
+        return this.runeName;
     }
 
     @Override

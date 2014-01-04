@@ -13,6 +13,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     
     public ZeerixChestRune() {
+    	super();
     }
 
     public ZeerixChestRune(WorldXYZ coords, EntityPlayer player2) {

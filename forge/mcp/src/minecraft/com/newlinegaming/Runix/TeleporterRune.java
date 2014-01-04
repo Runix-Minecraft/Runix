@@ -9,7 +9,7 @@ public class TeleporterRune extends PersistentRune {
 
     private static ArrayList<PersistentRune> energizedTeleporters = new ArrayList<PersistentRune>();
     
-    public TeleporterRune(){}
+    public TeleporterRune(){super();}
     
     public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
         super(coords, activator);
@@ -57,7 +57,7 @@ public class TeleporterRune extends PersistentRune {
 	}
 	
     public String getRuneName() {
-        return "Teleporter";
+        return this.runeName;
 	}
 
     @Override

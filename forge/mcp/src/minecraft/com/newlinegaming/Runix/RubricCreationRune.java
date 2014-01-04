@@ -36,7 +36,7 @@ public class RubricCreationRune extends PersistentRune {
 	public HashMap<WorldXYZ, SigBlock> structure;
 	protected RenderHelper renderer;
 
-    public RubricCreationRune() {}
+    public RubricCreationRune() {super();}
 
     public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
@@ -45,6 +45,7 @@ public class RubricCreationRune extends PersistentRune {
 		structure = scanStructure(shape);
 		renderer = new RenderHelper();
 		MinecraftForge.EVENT_BUS.register(this);
+		this.runeName = "Rubric Creator";
 	}
 
     private HashMap<WorldXYZ, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
@@ -91,7 +92,7 @@ public class RubricCreationRune extends PersistentRune {
 
 	@Override
 	public String getRuneName() {
-		return "Rubric Creator";
+		return this.runeName;
 	}
 
     @Override

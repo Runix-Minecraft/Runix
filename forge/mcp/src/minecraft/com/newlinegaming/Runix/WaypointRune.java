@@ -7,11 +7,15 @@ import net.minecraft.entity.player.EntityPlayer;
 public class WaypointRune extends PersistentRune{
     private static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
 
-    public WaypointRune(){}
+    public WaypointRune(){
+    	
+    	super();
+    }
     
     public WaypointRune(WorldXYZ coords, EntityPlayer player)
     {
-        super(coords, player);
+    	super(coords, player);
+        this.runeName = "waypoint";
     }
 
     @Override
@@ -33,7 +37,7 @@ public class WaypointRune extends PersistentRune{
     }
 
     public String getRuneName() {
-		return "Waypoint";
+		return this.runeName;
 	}
 
     @Override

@@ -7,13 +7,13 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
-
+import com.google.gson.*;
 public abstract class PersistentRune extends AbstractRune{
     
     public EntityPlayer player = null;
     public WorldXYZ location = null;
     public boolean disabled = false;
-    
+    private String RuneName;
     public PersistentRune(){}
     
     public PersistentRune(WorldXYZ coords, EntityPlayer activator) {
@@ -22,7 +22,12 @@ public abstract class PersistentRune extends AbstractRune{
     }
     
     /**Override this method to implement custom rune file saving rules*/
-    public void saveActiveRunes(){}
+    public void saveActiveRunes(){
+    	Gson object = new Gson(); 
+    	String runeGson = object.toJson(this);
+    	System.out.println("[SAVE] "+runeGson);
+    	
+    }
     
     /**There's no way to have a static field in an abstract class so we use a getter instead
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>(); */ 
@@ -139,4 +144,7 @@ public abstract class PersistentRune extends AbstractRune{
         System.out.println(getRuneName() + ": We require more Vespene Gas; " + energy);
         disabled = true;
     }
+    
+    
+    
 }

@@ -29,7 +29,7 @@ public abstract class AbstractRune {
     public static final int KEY = -4; //required to be in the middle of the rune
     public static final int ENTY = -5; //Entity blocks with special data like heads, picture frames, ect... 
     //Josiah: I'm not sure what to do with ENTY? 
-	
+    public String runeName = null;
 	public AbstractRune(){}
 
 	/**Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
@@ -158,7 +158,11 @@ public abstract class AbstractRune {
 	
 	
 	/** returns the unique name of the rune */
-	public abstract String getRuneName();
+	public String getRuneName() 
+	{
+		return this.runeName;
+		
+	}
 	
 	public static void aetherSay(EntityPlayer recipient, String message)
 	{

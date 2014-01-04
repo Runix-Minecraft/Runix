@@ -44,15 +44,13 @@ public class FaithRune extends PersistentRune{
 				}
 			}
 		}
+		this.runeName = "Faith";
 		this.floatIsland(player, coords);
 		
 		
 	}
 	
-	public String getRuneName()
-	{
-		return "Faith";
-	}
+	
 	
 	public void floatIsland(EntityPlayer player,WorldXYZ islandCentre)
 	{
