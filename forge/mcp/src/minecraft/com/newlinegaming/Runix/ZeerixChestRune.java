@@ -22,10 +22,10 @@ public class ZeerixChestRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(player))
+        if(subject.equals(getPlayer()))
         {
             World world = subject.worldObj;//sphere can be optimized to donut
-            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(player), 4);
+            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(getPlayer()), 4);
             for(WorldXYZ newPos : sphere)
             {
                 if(newPos.getBlockId() == 0 
@@ -36,7 +36,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
                             setBlockIdAndUpdate(location, Block.enderChest.blockID);//charge for a replacement
                         moveBlock(location, newPos);
                     }catch( NotEnoughRunicEnergyException e){
-                        reportOutOfGas(player);
+                        reportOutOfGas(getPlayer());
                     }
                     
                     return; //we only need place the chest in one good position

@@ -29,7 +29,7 @@ public class RunecraftRune extends AbstractTimedRune {
     public RunecraftRune(WorldXYZ coords, EntityPlayer player2)
     {
         super(coords, player2);
-        player = null; //this is because poke() acts as if the Rune was activated a second time when it is first constructed
+        setPlayer(null); //this is because poke() acts as if the Rune was activated a second time when it is first constructed
         renderer = new RenderHelper();
         updateEveryXTicks(4);
         MinecraftForge.EVENT_BUS.register(this);
@@ -54,21 +54,21 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(player != null && !subject.equals(player) )
+        if(getPlayer() != null && !subject.equals(getPlayer()) )
             return;
-        if(player != null && energy < 100){
-            reportOutOfGas(player);
+        if(getPlayer() != null && energy < 100){
+            reportOutOfGas(getPlayer());
         }
-        if(player != null && !player.worldObj.isRemote){//Josiah: turns out running this on server and client side causes strange duplications
-            int dX = (int) (player.posX - location.posX - .5);
-            int dY = (int) (player.posY - location.posY - 1);
-            int dZ = (int) (player.posZ - location.posZ - .5);
-            if( 10.0 < location.getDistance(new WorldXYZ(player)) ){
-                player = null; //Vehicle has been abandoned
+        if(getPlayer() != null && !getPlayer().worldObj.isRemote){//Josiah: turns out running this on server and client side causes strange duplications
+            int dX = (int) (getPlayer().posX - location.posX - .5);
+            int dY = (int) (getPlayer().posY - location.posY - 1);
+            int dZ = (int) (getPlayer().posZ - location.posZ - .5);
+            if( 10.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
+                setPlayer(null); //Vehicle has been abandoned
                 System.out.println("Runecraft has been abandoned.");
                 return; //Vehicle should stop moving until someone is at the wheel again
             }
-            if(player.isSneaking())
+            if(getPlayer().isSneaking())
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
                 HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
@@ -76,12 +76,12 @@ public class RunecraftRune extends AbstractTimedRune {
                     try {
                         vehicleBlocks = moveShape(move);
                     } catch (NotEnoughRunicEnergyException e) {
-                        reportOutOfGas(player);
-                        player = null;
+                        reportOutOfGas(getPlayer());
+                        setPlayer(null);
                     }
                 }
                 else{
-                    aetherSay(player, "CRUNCH!");
+                    aetherSay(getPlayer(), "CRUNCH!");
                 }
             }
         }
@@ -89,19 +89,19 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @ForgeSubscribe
     public void renderWireframe(RenderWorldLastEvent evt){
-        if(player != null )
-            renderer.highlightBoxes(vehicleBlocks, player);
+        if(getPlayer() != null )
+            renderer.highlightBoxes(vehicleBlocks, getPlayer());
     }
     
     @ForgeSubscribe
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if (player != null && event.action == Action.LEFT_CLICK_BLOCK)
+        if (getPlayer() != null && event.action == Action.LEFT_CLICK_BLOCK)
             if( event.isCancelable() ){
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.contains( punchBlock ))
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
                         if(!location.worldObj.isRemote){  //server side only
-                            boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(player, location);
+                            boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
                             HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
                             if( !shapeCollides(move) )
                                 vehicleBlocks = Util_Movement.performMove(move);
@@ -117,12 +117,12 @@ public class RunecraftRune extends AbstractTimedRune {
         consumeKeyBlock(coords);
         if(poker.worldObj.isRemote)
             return;
-        if(player != null){
-            player = null;
+        if(getPlayer() != null){
+            setPlayer(null);
             aetherSay(poker, "You are now free from the Runecraft.");
             return;
         }
-        player = poker; // assign a player and start
+        setPlayer(poker); // assign a player and start
         aetherSay(poker, "The Runecraft is now locked to your body.");
         HashSet<WorldXYZ> oldVehicleShape = vehicleBlocks;
         if( scanForVehicleShape() )
@@ -144,11 +144,11 @@ public class RunecraftRune extends AbstractTimedRune {
         vehicleBlocks = conductanceStep(location, (int)Math.pow(2, tier));
         renderer.reset();
         if(vehicleBlocks.isEmpty()){
-            aetherSay(player, "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
+            aetherSay(getPlayer(), "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
             return false;   
         }
         else{
-            aetherSay(player, "Found " + vehicleBlocks.size() + " tier blocks");
+            aetherSay(getPlayer(), "Found " + vehicleBlocks.size() + " tier blocks");
             return true;
         }
     }
