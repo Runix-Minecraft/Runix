@@ -2,14 +2,15 @@ package com.newlinegaming.Runix;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
 /**
@@ -63,13 +64,16 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void saving(Save s){
-        for(AbstractRune r : runeRegistry)
-            if( r instanceof PersistentRune)
-                ((PersistentRune) r).saveActiveRunes();
+        if( s.world.provider.isHellWorld)//Josiah: I figure it's likely there's only one of these
+            for(AbstractRune r : runeRegistry)
+                if( r instanceof PersistentRune)
+                    ((PersistentRune) r).saveActiveRunes();
     }
     
     @ForgeSubscribe
-    public void loadServer(){}
+    public void loadServer(Load loadEvent){
+        System.out.println(loadEvent.world + " loaded");
+    }
     
     @ForgeSubscribe
     public void playerLogin(EntityJoinWorldEvent event){

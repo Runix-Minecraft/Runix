@@ -160,8 +160,8 @@ public abstract class AbstractRune {
 	/** returns the unique name of the rune */
 	public String getRuneName() 
 	{
-		return this.runeName;
-		
+//		return this.runeName;
+		return shortClassName();
 	}
 	
 	public static void aetherSay(EntityPlayer recipient, String message)
@@ -412,6 +412,10 @@ public abstract class AbstractRune {
         }
         spendEnergy( Tiers.blockMoveCost * blocksMovedToNewArea );
         return Util_Movement.performMove(moveMapping);
+    }
+
+    protected String shortClassName() {
+        return this.getClass().toString().replace("class com.newlinegaming.Runix.", "");
     }
 
 }

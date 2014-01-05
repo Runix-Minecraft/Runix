@@ -1,14 +1,15 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
-import com.google.gson.*;
+
+import com.google.gson.Gson;
 public abstract class PersistentRune extends AbstractRune{
     
     private String player = null;
@@ -28,23 +29,41 @@ public abstract class PersistentRune extends AbstractRune{
     
     /**Override this method to implement custom rune file saving rules*/
     public void saveActiveRunes(){
-    	Gson object = new Gson(); 
-    	String runeGson = object.toJson(this);
-    	System.out.println("[SAVE]["+this.getClass()+"] " +runeGson);
-    	//TODO: write to file
-    	//filename: String className = this.getClass().getName() + ".json";  ex:TorcherBearerRune.json
+        if(getActiveMagic().isEmpty())
+            return;
+        
+        String fileName = shortClassName() + ".json";//  ex:TorcherBearerRune.json
+        try {
+            PrintWriter file = new PrintWriter(fileName);
+            for(PersistentRune rune : getActiveMagic())
+            {
+                String runeGson = toJson();
+                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
+                file.println(runeGson);
+            }
+            file.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("RUNIX: Couldn't write to file: " + fileName);
+        } 
     }
-    
+
+
+    protected String toJson() {
+        Gson object = new Gson(); 
+    	String runeGson = object.toJson(this);
+        return runeGson;
+    }
+
     public void loadRunes(){
-        String filename =  "TorcherBearerRune.json";
-        String className = filename.replace(".json", "");//hopefully not a regular expression
+        String filename = shortClassName() + ".json";
+        String className = "com.newlinegaming.Runix." + filename.replace(".json", "");//hopefully not a regular expression
         System.out.println("Class name: " + className);
         //TorcherBearerRune
         //        String json = open(filename).read()...
         Gson object = new Gson(); 
 //        try {
 //            Class<?> cls = Class.forName(className);
-            PersistentRune rune= object.fromJson("JsonString", this.getClass());
+            AbstractRune rune= object.fromJson("JsonString", this.getClass());
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
 //        }
