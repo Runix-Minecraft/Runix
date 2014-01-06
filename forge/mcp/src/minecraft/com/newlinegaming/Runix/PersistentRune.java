@@ -1,12 +1,14 @@
 package com.newlinegaming.Runix;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -15,8 +17,6 @@ import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 public abstract class PersistentRune extends AbstractRune{
     
     private String player = null;
@@ -41,10 +41,12 @@ public abstract class PersistentRune extends AbstractRune{
         String fileName = shortClassName() + ".json";//  ex:TorcherBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
-            Gson converter = new GsonBuilder().setPrettyPrinting().create();
-            String runeGson = converter.toJson(getActiveMagic());
-            System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
-            file.println(runeGson);
+            Gson converter = new Gson();
+            for(PersistentRune rune : getActiveMagic()){
+                String runeGson = converter.toJson(rune);
+                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
+                file.println(runeGson);
+            }
             file.close();
         } catch (FileNotFoundException e) {
             System.err.println("RUNIX: Couldn't write to file: " + fileName);
@@ -54,19 +56,19 @@ public abstract class PersistentRune extends AbstractRune{
     public void loadRunes(){
         String fileName = shortClassName() + ".json";
         try {
-            String json = FileUtils.readFileToString(new File(fileName));
+            ArrayList<PersistentRune> newList = new ArrayList<PersistentRune>();
+            List<String> json = FileUtils.readLines(new File(fileName));
             Gson gson = new Gson(); 
-//            Type cls = this.getClass().getTypeParameters()[0];
-//            Type collectionType = new TypeToken<ArrayList<PersistentRune> >(){}.getType();
-//            ArrayList<PersistentRune> newList;// = gson.fromJson(json, collectionType);
-//            if( !newList.isEmpty() ){
-//                getActiveMagic().clear();
-//                getActiveMagic().addAll(newList);
-//            }
+            for(String line : json) {
+                newList.add(gson.fromJson(line, this.getClass()));
+            }
+            if( !newList.isEmpty() ){
+                getActiveMagic().clear();
+                getActiveMagic().addAll(newList);
+            }
             System.out.println("New State: " + getActiveMagic());
         } catch (IOException e) {
             System.err.println("RUNIX: Unable to open and parse " + fileName);
-            e.printStackTrace();
         }
     }
     
