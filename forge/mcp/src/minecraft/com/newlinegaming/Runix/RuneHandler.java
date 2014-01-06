@@ -27,7 +27,7 @@ import net.minecraftforge.event.world.WorldEvent.Save;
  */
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
-    int nClicks = 0;
+    int nLoaded = 0;
     
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
     
@@ -72,7 +72,10 @@ public class RuneHandler {
     
     @ForgeSubscribe
     public void loadServer(Load loadEvent){
-        System.out.println(loadEvent.world + " loaded");
+        if( loadEvent.world.provider.isHellWorld && !loadEvent.world.isRemote)
+            for(AbstractRune r : runeRegistry)
+                if( r instanceof PersistentRune)
+                    ((PersistentRune) r).loadRunes();
     }
     
     @ForgeSubscribe

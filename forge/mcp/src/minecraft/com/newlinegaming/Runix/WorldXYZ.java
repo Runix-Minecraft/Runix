@@ -58,6 +58,9 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public World getWorld() {
+        if(worldObj == null && dimensionID != -500000){
+            setWorld(dimensionID);
+        }
         return worldObj;
     }
 
