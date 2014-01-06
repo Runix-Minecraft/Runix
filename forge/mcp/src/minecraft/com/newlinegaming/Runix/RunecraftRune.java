@@ -59,6 +59,7 @@ public class RunecraftRune extends AbstractTimedRune {
             return;
         if(getPlayer() != null && energy < 100){
             reportOutOfGas(getPlayer());
+            setPlayer(null);
         }
         if(getPlayer() != null && !getPlayer().worldObj.isRemote){//Josiah: turns out running this on server and client side causes strange duplications
             int dX = (int) (getPlayer().posX - location.posX - .5);
