@@ -41,22 +41,12 @@ public abstract class PersistentRune extends AbstractRune{
         try {
             PrintWriter file = new PrintWriter(fileName);
             Gson converter = new Gson();
-
-//            List<PersistentRune> runes = new ArrayList<PersistentRune>(getActiveMagic());
-//            String completeList = converter.toJson(runes);
-//            System.out.println("[SAVE] " + completeList);
-//            file.println(completeList);
-//            List<PersistentRune> runes = new ArrayList<PersistentRune>(getActiveMagic());
-//            runes.add((PersistentRune)new TorchBearerRune());
-//            runes.add((PersistentRune)new WaypointRune(new WorldXYZ(null, 1, 2, 3), null));
-//            runes.add((PersistentRune)new WaypointRune(new WorldXYZ(null, 5, 6, 7), null));
-//            
-//            for(PersistentRune rune : runes)
-//            {
-////                String runeGson = converter.toJson(rune);
-////                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
-////                file.println(runeGson);
-//            }
+            for(PersistentRune rune : getActiveMagic())
+            {
+                String runeGson = converter.toJson(rune);
+                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
+                file.println(runeGson);
+            }
             file.close();
         } catch (FileNotFoundException e) {
             System.err.println("RUNIX: Couldn't write to file: " + fileName);
@@ -111,15 +101,7 @@ public abstract class PersistentRune extends AbstractRune{
         if( match == null ){//can't find anything: create a new one
             try {//this is a Java trick called reflection that grabs a constructor based on the parameters
                 match = this.getClass().getConstructor(WorldXYZ.class, EntityPlayer.class).newInstance(coords, activator);
-
-                //SAVE THE RUNE
-                Gson converter = new Gson();
-                String runeGson = converter.toJson(match);
-                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
-                
                 getActiveMagic().add(match);//add our new Rune to the list
-
-            
             } catch (Exception e) {
                 e.printStackTrace();
             }
