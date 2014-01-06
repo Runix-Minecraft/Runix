@@ -34,7 +34,7 @@ public class RuneHandler {
     private RuneHandler() {      
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
-        runeRegistry.add(new CompassRune());
+        runeRegistry.add(new RuneCompass());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune());
         runeRegistry.add(new RubricCreationRune());

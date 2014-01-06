@@ -5,10 +5,10 @@ import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
-public class CompassRune extends AbstractRune{
+public class RuneCompass extends AbstractRune{
 
 
-    CompassRune(){
+    RuneCompass(){
     }
     
 	public int[][][] runicTemplateOriginal(){
