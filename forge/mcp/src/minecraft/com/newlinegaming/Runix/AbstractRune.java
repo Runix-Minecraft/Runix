@@ -101,12 +101,12 @@ public abstract class AbstractRune {
 	    for(int tries = 0; tries < 100; ++tries)
 	    {
 	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
-	                && coords.worldObj.getBlockId(coords.posX, coords.posY, coords.posZ) == 0 
-	                && coords.worldObj.getBlockId(coords.posX, coords.posY+1, coords.posZ) == 0)//two AIR blocks
+	                && coords.getWorld().getBlockId(coords.posX, coords.posY, coords.posZ) == 0 
+	                && coords.getWorld().getBlockId(coords.posX, coords.posY+1, coords.posZ) == 0)//two AIR blocks
 	        {  
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
-	                int block = coords.worldObj.getBlockId(coords.posX, coords.posY-drop, coords.posZ);
+	                int block = coords.getWorld().getBlockId(coords.posX, coords.posY-drop, coords.posZ);
 	                if(block != 0)
 	                { //We found something not AIR
     	                if( block == Block.lavaStill.blockID || block == Block.lavaMoving.blockID//check for Lava, fire, and void  
@@ -116,17 +116,17 @@ public abstract class AbstractRune {
     	                else if(coords.offset(0, -drop, 0).isSolid()){
     	                    //distance should be calculated uses the Nether -> Overworld transform
     	                    WorldXYZ dCalc = new WorldXYZ(subject);
-    	                    if(subject.worldObj.provider.isHellWorld  && !coords.worldObj.provider.isHellWorld){ //leaving the Nether
+    	                    if(subject.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
     	                        dCalc.posX *= 8;
     	                        dCalc.posZ *= 8;
-    	                    }else if (!subject.worldObj.provider.isHellWorld  && coords.worldObj.provider.isHellWorld){// going to the Nether
+    	                    }else if (!subject.worldObj.provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
                                 dCalc.posX /= 8;
                                 dCalc.posZ /= 8;
     	                    }
     	                    spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
     
-    	                    if(!coords.worldObj.equals(subject.worldObj))// && !subject.worldObj.isRemote)
-    	                        subject.travelToDimension(coords.worldObj.provider.dimensionId);
+    	                    if(!coords.getWorld().equals(subject.worldObj))// && !subject.worldObj.isRemote)
+    	                        subject.travelToDimension(coords.getWorld().provider.dimensionId);
     	                    subject.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
     	                    System.out.println("Done Teleporting");
     	                    return;
@@ -216,7 +216,7 @@ public abstract class AbstractRune {
                     break;
                 default:
                     if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers
-                        aetherSay(coords.worldObj, "ERROR: This rune is using an unaccounted for number!");
+                        aetherSay(coords.getWorld(), "ERROR: This rune is using an unaccounted for number!");
                     if (blockID != patternID){//normal block
 //                                aetherSay(coords.worldObj, "Found " + blockID + " expected " + patternID);
                         return false;

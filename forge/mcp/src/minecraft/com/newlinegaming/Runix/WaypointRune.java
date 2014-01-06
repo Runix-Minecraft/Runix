@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class WaypointRune extends PersistentRune{
     private static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
+    public int tier = 5;
 
     public WaypointRune(){
     	

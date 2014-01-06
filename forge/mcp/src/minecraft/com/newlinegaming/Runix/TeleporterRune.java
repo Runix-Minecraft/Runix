@@ -1,7 +1,6 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -61,7 +60,7 @@ public class TeleporterRune extends PersistentRune {
 	}
 
     @Override
-    public List<PersistentRune> getActiveMagic() {
+    public ArrayList<PersistentRune> getActiveMagic() {
         return energizedTeleporters;
     }
 

@@ -43,7 +43,7 @@ public class Signature {
                     blocks.add(new SigBlock(0, 0));
             }
         }
-        rune.aetherSay(coords.worldObj, "Signature:" + blocks.toString());
+        rune.aetherSay(coords.getWorld(), "Signature:" + blocks.toString());
     }
     
     public boolean equals(Signature other){

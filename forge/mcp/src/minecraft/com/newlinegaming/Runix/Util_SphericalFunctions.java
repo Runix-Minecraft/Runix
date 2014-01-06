@@ -30,7 +30,7 @@ public class Util_SphericalFunctions {
     
 	public static LinkedList<WorldXYZ> getSphere (WorldXYZ coords, int radius) 
 	{
-		World world = coords.worldObj;
+		World world = coords.getWorld();
 		LinkedList<WorldXYZ> returnvalues = new LinkedList();
 		for (int z = -radius; z <= radius; z++)
 			for (int y = -radius; y < radius; y++)  //Josiah: perhaps you should put the y as the top loop so that it animates top to bottom instead of side to side

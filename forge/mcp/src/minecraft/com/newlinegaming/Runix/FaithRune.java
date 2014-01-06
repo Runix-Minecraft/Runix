@@ -1,9 +1,8 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import cpw.mods.fml.common.network.Player;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
@@ -11,7 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class FaithRune extends PersistentRune{
 	
-	protected static List<PersistentRune> activeFaithList = new LinkedList<PersistentRune>();
+	protected static ArrayList<PersistentRune> activeFaithList = new ArrayList<PersistentRune>();
 	public Integer radius;
 	
 //	public FaithRune(EntityPlayer creator, WorldXYZ loc, int radius)
@@ -61,7 +60,7 @@ public class FaithRune extends PersistentRune{
 	}
 
     @Override
-    public List<PersistentRune> getActiveMagic() {
+    public ArrayList<PersistentRune> getActiveMagic() {
         return activeFaithList;
     }
 

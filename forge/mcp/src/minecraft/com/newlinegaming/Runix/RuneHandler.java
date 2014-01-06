@@ -64,7 +64,7 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void saving(Save s){
-        if( s.world.provider.isHellWorld)//Josiah: I figure it's likely there's only one of these
+        if( s.world.provider.isHellWorld && !s.world.isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).saveActiveRunes();

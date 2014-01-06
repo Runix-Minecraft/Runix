@@ -15,58 +15,77 @@ import cpw.mods.fml.client.FMLClientHandler;
  * World and contains helper methods useful to Runix.*/
 public class WorldXYZ extends ChunkCoordinates {
 
-    public World worldObj = null;
+    private transient World worldObj = null;
+    private int dimensionID = -500000;
     public int face = 1;
     
     public WorldXYZ() {
         this.posX = 0;
         this.posY = 64;
         this.posZ = 0;
-        this.worldObj = defaultWorld();
+        this.setWorld(defaultWorld());
     }
 
     public WorldXYZ(int x, int y, int z) {
         super(x, y, z);
-        this.worldObj = defaultWorld();
+        this.setWorld(defaultWorld());
     }
 
     public WorldXYZ(World world, int x, int y, int z) {
         super(x, y, z);
-        this.worldObj = world;
+        this.setWorld(world);
     }
 
     public WorldXYZ(World world, int x, int y, int z, int face) {
         super(x,y,z);
-        this.worldObj = world;
+        this.setWorld(world);
         this.face  = face;
     }
 
     public WorldXYZ(EntityPlayer player){
         super((int)(player.posX+.5), (int)(player.posY-1), (int)(player.posZ+.5));
-        worldObj = player.worldObj;
+        setWorld(player.worldObj);
     }
     
     public WorldXYZ(ChunkCoordinates otherGuy) {
         super(otherGuy);
         if( otherGuy instanceof WorldXYZ){
-            this.worldObj = ((WorldXYZ) otherGuy).worldObj;
+            this.setWorld(((WorldXYZ) otherGuy).getWorld());
             face = ((WorldXYZ) otherGuy).face;
         }
         else
-            this.worldObj = defaultWorld();
+            this.setWorld(defaultWorld());
     }
 
+    public World getWorld() {
+        return worldObj;
+    }
+
+    public void setWorld(World worldObj) {
+        this.worldObj = worldObj;
+        dimensionID = getDimensionNumber();
+    }
+
+    /** This is for loadRunes() from JSON.  We need to set the WorldObj off 
+     * of the dimension number.
+     * @param dimension
+     */
+    public void setWorld(int dimension) {
+        worldObj = FMLClientHandler.instance().getServer().worldServerForDimension(dimension);
+        dimensionID = getDimensionNumber();
+    }
+    
     /**Creates a new WorldXYZ based off of a previous one and a relative vector*/
     public WorldXYZ offset(int dX, int dY, int dZ){
-        return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ, face);
+        return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, face);
     }
 
     public WorldXYZ offset(int dX, int dY, int dZ, int facing) {
-        return new WorldXYZ(this.worldObj, this.posX + dX, this.posY + dY, this.posZ + dZ, facing);
+        return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, facing);
     }
     
     public WorldXYZ offset(Vector3 delta){
-        return new WorldXYZ(this.worldObj, posX + delta.x, posY + delta.y, posZ + delta.z, face);
+        return new WorldXYZ(this.getWorld(), posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
 
     /**Like offset() but for facing instead.  Returning a new instance avoids side-effecting*/
@@ -95,6 +114,12 @@ public class WorldXYZ extends ChunkCoordinates {
         return referencePoint.offset(direction * -d.z, d.y, direction * d.x, face);
     }
 
+    public int getDimensionNumber(){
+        if( getWorld() == null)
+            setWorld(defaultWorld());
+        return getWorld().provider.dimensionId;
+    }
+    
     public World defaultWorld() {
         return FMLClientHandler.instance().getServer().worldServerForDimension(0);
     }
@@ -109,7 +134,7 @@ public class WorldXYZ extends ChunkCoordinates {
             ChunkCoordinates other = (ChunkCoordinates)otherObj;
             if( this.posX == other.posX && this.posY == other.posY && this.posZ == other.posZ){
                 if(other instanceof WorldXYZ)
-                    return ((WorldXYZ) other).worldObj == this.worldObj;
+                    return ((WorldXYZ) other).getWorld() == this.getWorld();
                 else //NOTE: This does not compare the face of each coordinate
                     return true;
             }
@@ -123,12 +148,12 @@ public class WorldXYZ extends ChunkCoordinates {
 
     /**Simple wrapper method for getBlockID()*/
     public int getBlockId(){
-        return this.worldObj.getBlockId(this.posX, this.posY, this.posZ);
+        return this.getWorld().getBlockId(this.posX, this.posY, this.posZ);
     }
     
     /** Sister function to getBlockID() for meta values. */
     public int getMetaId() {
-        return worldObj.getBlockMetadata(posX, posY, posZ);
+        return getWorld().getBlockMetadata(posX, posY, posZ);
     }
 
     /**Simple wrapper method for setBlockID()
@@ -138,13 +163,13 @@ public class WorldXYZ extends ChunkCoordinates {
     public boolean setBlockIdAndUpdate(int blockID){
         if(blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
             return false; //You cannot delete or place bedrock
-        return this.worldObj.setBlock(posX, posY, posZ, blockID);
+        return this.getWorld().setBlock(posX, posY, posZ, blockID);
     }
     
     public boolean setBlockId(SigBlock sig){
         if(sig.blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
             return false; //You cannot delete or place bedrock
-        return this.worldObj.setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
+        return this.getWorld().setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }
     
@@ -191,7 +216,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public boolean isSolid() {
-        Material base = worldObj.getBlockMaterial(posX, posY, posZ );
+        Material base = getWorld().getBlockMaterial(posX, posY, posZ );
         return base.isSolid();
     }
 

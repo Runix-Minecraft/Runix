@@ -101,7 +101,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.contains( punchBlock ))
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
-                        if(!location.worldObj.isRemote){  //server side only
+                        if(!location.getWorld().isRemote){  //server side only
                             boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
                             HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
                             if( !shapeCollides(move) )

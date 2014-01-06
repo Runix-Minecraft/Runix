@@ -2,22 +2,27 @@ package com.newlinegaming.Runix;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
 import com.google.gson.Gson;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 public abstract class PersistentRune extends AbstractRune{
     
     private String player = null;
     public WorldXYZ location = null;
     public boolean disabled = false;
-    private String RuneName;
 
-    public PersistentRune(){ this.runeName = "generic persistent rune";}
+    public PersistentRune(){}
     
 
     public PersistentRune(WorldXYZ coords, EntityPlayer activator, String runeName) {
@@ -31,16 +36,27 @@ public abstract class PersistentRune extends AbstractRune{
     public void saveActiveRunes(){
         if(getActiveMagic().isEmpty())
             return;
-        
+
         String fileName = shortClassName() + ".json";//  ex:TorcherBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
-            for(PersistentRune rune : getActiveMagic())
-            {
-                String runeGson = toJson();
-                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
-                file.println(runeGson);
-            }
+            Gson converter = new Gson();
+
+//            List<PersistentRune> runes = new ArrayList<PersistentRune>(getActiveMagic());
+//            String completeList = converter.toJson(runes);
+//            System.out.println("[SAVE] " + completeList);
+//            file.println(completeList);
+//            List<PersistentRune> runes = new ArrayList<PersistentRune>(getActiveMagic());
+//            runes.add((PersistentRune)new TorchBearerRune());
+//            runes.add((PersistentRune)new WaypointRune(new WorldXYZ(null, 1, 2, 3), null));
+//            runes.add((PersistentRune)new WaypointRune(new WorldXYZ(null, 5, 6, 7), null));
+//            
+//            for(PersistentRune rune : runes)
+//            {
+////                String runeGson = converter.toJson(rune);
+////                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
+////                file.println(runeGson);
+//            }
             file.close();
         } catch (FileNotFoundException e) {
             System.err.println("RUNIX: Couldn't write to file: " + fileName);
@@ -62,7 +78,7 @@ public abstract class PersistentRune extends AbstractRune{
         //        String json = open(filename).read()...
         Gson object = new Gson(); 
 //        try {
-//            Class<?> cls = Class.forName(className);
+//            Class cls = Class.forName(className);
             AbstractRune rune= object.fromJson("JsonString", this.getClass());
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
@@ -71,7 +87,7 @@ public abstract class PersistentRune extends AbstractRune{
     
     /**There's no way to have a static field in an abstract class so we use a getter instead
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>(); */ 
-    public abstract List<PersistentRune> getActiveMagic();
+    public abstract ArrayList<PersistentRune> getActiveMagic();
     
     @Override
     /**Consolidated all the PersistentRune execute functions into a single execute() that searches 
@@ -92,10 +108,18 @@ public abstract class PersistentRune extends AbstractRune{
         if(activator.worldObj.isRemote && match == null)
             System.out.println("Client was unable to find a match.");
         
-        if( match == null ){//can't find anything: creat a new one
+        if( match == null ){//can't find anything: create a new one
             try {//this is a Java trick called reflection that grabs a constructor based on the parameters
                 match = this.getClass().getConstructor(WorldXYZ.class, EntityPlayer.class).newInstance(coords, activator);
+
+                //SAVE THE RUNE
+                Gson converter = new Gson();
+                String runeGson = converter.toJson(match);
+                System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
+                
                 getActiveMagic().add(match);//add our new Rune to the list
+
+            
             } catch (Exception e) {
                 e.printStackTrace();
             }

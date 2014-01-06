@@ -1,7 +1,6 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,7 +64,7 @@ public class FerrousWheelRune extends PersistentRune {
     }
     
     @Override
-    public List<PersistentRune> getActiveMagic() {
+    public ArrayList<PersistentRune> getActiveMagic() {
         return globalWheel;
     }
 
