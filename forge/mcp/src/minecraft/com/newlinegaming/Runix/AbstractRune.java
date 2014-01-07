@@ -173,7 +173,7 @@ public abstract class AbstractRune {
 	}
 
     public void aetherSay(World worldObj, String message) {
-        if(!worldObj.isRemote)
+        if(!worldObj.isRemote) //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
             Minecraft.getMinecraft().thePlayer.addChatMessage(message); 
         else
             System.out.println(message);
