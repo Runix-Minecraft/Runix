@@ -166,14 +166,14 @@ public abstract class AbstractRune {
 	
 	public static void aetherSay(EntityPlayer recipient, String message)
 	{
-	    if(recipient.worldObj.isRemote && recipient != null)
+	    if(!recipient.worldObj.isRemote && recipient != null)
 	        recipient.sendChatToPlayer(ChatMessageComponent.createFromText(message));
 	    else
 	        System.out.println(message);
 	}
 
     public void aetherSay(World worldObj, String message) {
-        if(worldObj.isRemote)
+        if(!worldObj.isRemote)
             Minecraft.getMinecraft().thePlayer.addChatMessage(message); 
         else
             System.out.println(message);
