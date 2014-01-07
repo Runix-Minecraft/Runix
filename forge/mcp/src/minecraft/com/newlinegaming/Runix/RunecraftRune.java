@@ -19,7 +19,9 @@ public class RunecraftRune extends AbstractTimedRune {
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
     private RenderHelper renderer;
     
-    public RunecraftRune(){super();}
+    public RunecraftRune(){
+        runeName = "Runecraft";
+    }
     
     /**Runecraft Runix Vehicle blocks track with a player while active.  
      * Toggle it by right clicking the center block.  You can jump up to travel up, sneak to go down.
@@ -28,7 +30,7 @@ public class RunecraftRune extends AbstractTimedRune {
      */
     public RunecraftRune(WorldXYZ coords, EntityPlayer player2)
     {
-        super(coords, player2);
+        super(coords, player2, "Runecraft");
         setPlayer(null); //this is because poke() acts as if the Rune was activated a second time when it is first constructed
         renderer = new RenderHelper();
         updateEveryXTicks(4);

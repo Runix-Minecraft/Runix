@@ -11,7 +11,7 @@ public class FerrousWheelRune extends PersistentRune {
     public ArrayList<String> guestList = new ArrayList<String>();
     
     public FerrousWheelRune() {
-        super();
+        runeName = "Ferrous Wheel";
     }
 
     public FerrousWheelRune(WorldXYZ coords, EntityPlayer activator) {

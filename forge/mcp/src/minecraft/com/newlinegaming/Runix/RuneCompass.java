@@ -9,6 +9,7 @@ public class RuneCompass extends AbstractRune{
 
 
     RuneCompass(){
+        runeName = "Compass";
     }
     
 	public int[][][] runicTemplateOriginal(){

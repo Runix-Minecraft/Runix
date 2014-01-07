@@ -13,10 +13,12 @@ import net.minecraft.world.World;
 /**TorchBearer functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class TorchBearerRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
-    public TorchBearerRune() {super();}
+    public TorchBearerRune() {
+        runeName = "Torch Bearer";
+    }
 
     public TorchBearerRune( WorldXYZ coords, EntityPlayer activator ) {
-        super(coords, activator);
+        super(coords, activator, "Torch Bearer");
         updateEveryXTicks(10);
     }
 

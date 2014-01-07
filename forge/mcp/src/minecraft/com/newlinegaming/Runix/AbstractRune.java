@@ -27,8 +27,8 @@ public abstract class AbstractRune {
     public static final int NONE = -3; //Non-Tier, Tier 0
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
     public static final int KEY = -4; //required to be in the middle of the rune
-    public static final int ENTY = -5; //Entity blocks with special data like heads, picture frames, ect... 
-    //Josiah: I'm not sure what to do with ENTY? 
+    public static final int ANY = -5;
+    
     public String runeName = null;
 	public AbstractRune(){}
 

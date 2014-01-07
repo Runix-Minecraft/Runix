@@ -13,10 +13,13 @@ public class FaithRune extends PersistentRune{
 	protected static ArrayList<PersistentRune> activeFaithList = new ArrayList<PersistentRune>();
 	public Integer radius;
 	
-//	public FaithRune(EntityPlayer creator, WorldXYZ loc, int radius)
-//	{
-//	    super(loc, creator);
-//	}
+	public FaithRune(){
+	    runeName = "Faith";
+	}
+	public FaithRune(EntityPlayer creator, WorldXYZ loc, int radius)
+	{
+	    super(loc, creator, "Faith");
+	}
 	
 	public int[][][] runicTemplateOriginal(){
 		return new int [][][] 

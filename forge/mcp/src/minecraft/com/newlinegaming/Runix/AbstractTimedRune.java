@@ -7,8 +7,8 @@ import cpw.mods.fml.relauncher.Side;
 public abstract class AbstractTimedRune extends PersistentRune {
 
     public AbstractTimedRune(){}
-    public AbstractTimedRune(WorldXYZ coords, EntityPlayer player2) {
-        super(coords, player2,"abstract timed rune");
+    public AbstractTimedRune(WorldXYZ coords, EntityPlayer player2, String name) {
+        super(coords, player2, name);
         
     }
 

@@ -5,6 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 
 public class RubricRecallRune extends AbstractRune{
+    
+    public RubricRecallRune(){
+        runeName = "Rubric Recall";
+    }
 
 	@Override
 		public int[][][] runicTemplateOriginal() {

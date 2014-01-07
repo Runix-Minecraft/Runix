@@ -13,11 +13,11 @@ public class ZeerixChestRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     
     public ZeerixChestRune() {
-    	super();
+        runeName = "Zeerix Chest";
     }
 
     public ZeerixChestRune(WorldXYZ coords, EntityPlayer player2) {
-        super(coords, player2);
+        super(coords, player2, "Zeerix Chest");
         updateEveryXTicks(200);
     }
 

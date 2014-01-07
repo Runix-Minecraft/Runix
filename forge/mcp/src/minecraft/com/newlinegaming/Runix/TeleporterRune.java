@@ -8,7 +8,10 @@ public class TeleporterRune extends PersistentRune {
 
     private static ArrayList<PersistentRune> energizedTeleporters = new ArrayList<PersistentRune>();
     
-    public TeleporterRune(){super();}
+    public TeleporterRune(){
+        super();
+        runeName = "Teleporter";
+    }
     
     public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
         super(coords, activator,"Teleporter");

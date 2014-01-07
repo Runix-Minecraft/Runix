@@ -31,7 +31,7 @@ public class RuneHandler {
     
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
     
-    private RuneHandler() {      
+    private RuneHandler() {
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new RuneCompass());

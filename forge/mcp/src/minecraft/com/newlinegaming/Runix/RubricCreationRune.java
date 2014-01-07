@@ -36,7 +36,9 @@ public class RubricCreationRune extends PersistentRune {
 	public HashMap<WorldXYZ, SigBlock> structure;
 	protected RenderHelper renderer;
 
-    public RubricCreationRune() {super();}
+    public RubricCreationRune() {
+        runeName = "Rubric Creator";
+    }
 
     public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
