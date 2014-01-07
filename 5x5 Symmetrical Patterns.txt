@@ -1,0 +1,447 @@
+000000
+         
+         
+         
+         
+          
+
+000001
+         
+         
+    X    
+         
+          
+
+000010
+         
+    X    
+  X   X  
+    X    
+          
+
+000011
+         
+    X    
+  X X X  
+    X    
+          
+
+000100
+    X    
+         
+X       X
+         
+    X     
+
+000101
+    X    
+         
+X   X   X
+         
+    X     
+
+000110
+    X    
+    X    
+X X   X X
+    X    
+    X     
+
+000111
+    X    
+    X    
+X X X X X
+    X    
+    X     
+
+001000
+         
+  X   X  
+         
+  X   X  
+          
+
+001001
+         
+  X   X  
+    X    
+  X   X  
+          
+
+001010
+         
+  X X X  
+  X   X  
+  X X X  
+          
+
+001011
+         
+  X X X  
+  X X X  
+  X X X  
+          
+
+001100
+    X    
+  X   X  
+X       X
+  X   X  
+    X     
+
+001101
+    X    
+  X   X  
+X   X   X
+  X   X  
+    X     
+
+001110
+    X    
+  X X X  
+X X   X X
+  X X X  
+    X     
+
+001111
+    X    
+  X X X  
+X X X X X
+  X X X  
+    X     
+
+010000
+  X   X  
+X       X
+         
+X       X
+  X   X   
+
+010001
+  X   X  
+X       X
+    X    
+X       X
+  X   X   
+
+010010
+  X   X  
+X   X   X
+  X   X  
+X   X   X
+  X   X   
+
+010011
+  X   X  
+X   X   X
+  X X X  
+X   X   X
+  X   X   
+
+010100
+  X X X  
+X       X
+X       X
+X       X
+  X X X   
+
+010101
+  X X X  
+X       X
+X   X   X
+X       X
+  X X X   
+
+010110
+  X X X  
+X   X   X
+X X   X X
+X   X   X
+  X X X   
+
+010111
+  X X X  
+X   X   X
+X X X X X
+X   X   X
+  X X X   
+
+011000
+  X   X  
+X X   X X
+         
+X X   X X
+  X   X   
+
+011001
+  X   X  
+X X   X X
+    X    
+X X   X X
+  X   X   
+
+011010
+  X   X  
+X X X X X
+  X   X  
+X X X X X
+  X   X   
+
+011011
+  X   X  
+X X X X X
+  X X X  
+X X X X X
+  X   X   
+
+011100
+  X X X  
+X X   X X
+X       X
+X X   X X
+  X X X   
+
+011101
+  X X X  
+X X   X X
+X   X   X
+X X   X X
+  X X X   
+
+011110
+  X X X  
+X X X X X
+X X   X X
+X X X X X
+  X X X   
+
+011111
+  X X X  
+X X X X X
+X X X X X
+X X X X X
+  X X X   
+
+100000
+X       X
+         
+         
+         
+X       X 
+
+100001
+X       X
+         
+    X    
+         
+X       X 
+
+100010
+X       X
+    X    
+  X   X  
+    X    
+X       X 
+
+100011
+X       X
+    X    
+  X X X  
+    X    
+X       X 
+
+100100
+X   X   X
+         
+X       X
+         
+X   X   X 
+
+100101
+X   X   X
+         
+X   X   X
+         
+X   X   X 
+
+100110
+X   X   X
+    X    
+X X   X X
+    X    
+X   X   X 
+
+100111
+X   X   X
+    X    
+X X X X X
+    X    
+X   X   X 
+
+101000
+X       X
+  X   X  
+         
+  X   X  
+X       X 
+
+101001
+X       X
+  X   X  
+    X    
+  X   X  
+X       X 
+
+101010
+X       X
+  X X X  
+  X   X  
+  X X X  
+X       X 
+
+101011
+X       X
+  X X X  
+  X X X  
+  X X X  
+X       X 
+
+101100
+X   X   X
+  X   X  
+X       X
+  X   X  
+X   X   X 
+
+101101
+X   X   X
+  X   X  
+X   X   X
+  X   X  
+X   X   X 
+
+101110
+X   X   X
+  X X X  
+X X   X X
+  X X X  
+X   X   X 
+
+101111
+X   X   X
+  X X X  
+X X X X X
+  X X X  
+X   X   X 
+
+110000
+X X   X X
+X       X
+         
+X       X
+X X   X X 
+
+110001
+X X   X X
+X       X
+    X    
+X       X
+X X   X X 
+
+110010
+X X   X X
+X   X   X
+  X   X  
+X   X   X
+X X   X X 
+
+110011
+X X   X X
+X   X   X
+  X X X  
+X   X   X
+X X   X X 
+
+110100
+X X X X X
+X       X
+X       X
+X       X
+X X X X X 
+
+110101
+X X X X X
+X       X
+X   X   X
+X       X
+X X X X X 
+
+110110
+X X X X X
+X   X   X
+X X   X X
+X   X   X
+X X X X X 
+
+110111
+X X X X X
+X   X   X
+X X X X X
+X   X   X
+X X X X X 
+
+111000
+X X   X X
+X X   X X
+         
+X X   X X
+X X   X X 
+
+111001
+X X   X X
+X X   X X
+    X    
+X X   X X
+X X   X X 
+
+111010
+X X   X X
+X X X X X
+  X   X  
+X X X X X
+X X   X X 
+
+111011
+X X   X X
+X X X X X
+  X X X  
+X X X X X
+X X   X X 
+
+111100
+X X X X X
+X X   X X
+X       X
+X X   X X
+X X X X X 
+
+111101
+X X X X X
+X X   X X
+X   X   X
+X X   X X
+X X X X X 
+
+111110
+X X X X X
+X X X X X
+X X   X X
+X X X X X
+X X X X X 
+
+111111
+X X X X X
+X X X X X
+X X X X X
+X X X X X
+X X X X X 
