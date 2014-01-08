@@ -2,6 +2,7 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,8 +73,12 @@ public class RubricRecallRune extends PersistentRune{
         return true;
     }
 	
-    public void unpackStructure(EntityPlayer initiator, HashMap<WorldXYZ, SigBlock> structure){
-	    //try{
+    public void unpackStructure(EntityPlayer initiator, HashMap<WorldXYZ, SigBlock> structure, WorldXYZ origin){
+	    //convert old coordinets to vector3 based on offset from origin
+    	// create new worldXYZ by adding this.location to each vector3 
+    	Vector3 difference = Vector3.offset(origin, location);
+    	HashMap<WorldXYZ, WorldXYZ> mapping = Util_Movement.displaceShape(structure.keySet(),difference.x, difference.y, difference.z);
+    	//try{
 	    //for structure
     	// for(WorldXYZ point : structure.keySet()){}
     	stampBlockPattern(structure, initiator);
