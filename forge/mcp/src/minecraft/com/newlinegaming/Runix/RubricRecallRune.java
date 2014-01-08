@@ -42,4 +42,11 @@ public class RubricRecallRune extends AbstractRune{
         return false;
     }
 	
+    public void unpackStructure(EntityPlayer initiator, WorldXYZ unpackAnchor){
+	    //try{
+	    //for structure
+	        //setBlockID(
+	    //catch: need more energy
+	}
+    
 }

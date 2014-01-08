@@ -33,8 +33,9 @@ import net.minecraftforge.event.ForgeSubscribe;
 public class RubricCreationRune extends PersistentRune {
 
 	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<PersistentRune>();
-	public HashMap<WorldXYZ, SigBlock> structure;
-	protected RenderHelper renderer;
+	public Signature sig=null;
+	public HashMap<WorldXYZ, SigBlock> structure=new HashMap<WorldXYZ, SigBlock>();
+	protected transient RenderHelper renderer;
 
     public RubricCreationRune() {
         runeName = "Rubric Creator";
@@ -43,8 +44,6 @@ public class RubricCreationRune extends PersistentRune {
     public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
 	    super(coords, player2,"Rubric Creator");
-		HashSet<WorldXYZ> shape = conductanceStep(coords, 50);;
-		structure = scanStructure(shape);
 		renderer = new RenderHelper();
 		MinecraftForge.EVENT_BUS.register(this);
 		
@@ -72,18 +71,24 @@ public class RubricCreationRune extends PersistentRune {
 	@Override
 	protected void poke(EntityPlayer poker, WorldXYZ coords){
         renderer.reset();
-
+        HashSet<WorldXYZ> shape = conductanceStep(coords, 50);;
+        structure = scanStructure(shape);
+        sig = new Signature(this, coords);
+        //TODO check for signature collision
+        
         ItemStack toolused = poker.getCurrentEquippedItem();
-        if (toolused!=null && toolused.itemID == Item.book.itemID) 
-            consumeRune(structure.keySet());
+        if (toolused!=null && toolused.itemID == Item.book.itemID) {
+            
+        	consumeRune(structure.keySet());
+            //need to remove the rune itself 
+            //then capture everything else into the rubric file 
+            //rename the book to something we can identify the book with the recall
+            
+        }
+        
 	}
 
-	public void unpackStructure(EntityPlayer initiator, WorldXYZ unpackAnchor){
-	    //try{
-	    //for structure
-	        //setBlockID(
-	    //catch: need more energy
-	}
+
 	
 	@ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
