@@ -47,12 +47,11 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     public int[][][] runicTemplateOriginal() {
-        int REDW = Block.redstoneWire.blockID;
         int TRCH = Block.torchWood.blockID;
         return new int [][][] 
-                {{{REDW,TRCH,REDW},
-                  {TRCH,TIER,TRCH},
-                  {REDW,TRCH,REDW}}}; 
+                {{{TIER,TRCH,TIER},
+                  {TRCH,KEY ,TRCH},
+                  {TIER,TRCH,TIER}}}; 
     }
 
     @Override
