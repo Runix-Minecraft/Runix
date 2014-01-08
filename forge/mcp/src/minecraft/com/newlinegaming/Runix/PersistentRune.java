@@ -35,10 +35,10 @@ public abstract class PersistentRune extends AbstractRune{
     
     /**Override this method to implement custom rune file saving rules*/
     public void saveActiveRunes(){
+    	
         if(getActiveMagic().isEmpty())
-            return;
-
-        String fileName = shortClassName() + ".json";//  ex:TorcherBearerRune.json
+                    return;
+                String fileName = shortClassName() + ".json";//  ex:TorcherBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
             Gson converter = new Gson();
@@ -51,8 +51,8 @@ public abstract class PersistentRune extends AbstractRune{
         } catch (FileNotFoundException e) {
             System.err.println("RUNIX: Couldn't write to file: " + fileName);
         } 
+      
     }
-
     public void loadRunes(){
         String fileName = shortClassName() + ".json";
         try {
@@ -101,6 +101,7 @@ public abstract class PersistentRune extends AbstractRune{
                 getActiveMagic().add(match);//add our new Rune to the list
             } catch (Exception e) {
                 e.printStackTrace();
+                return;
             }
         }
         accept(activator);

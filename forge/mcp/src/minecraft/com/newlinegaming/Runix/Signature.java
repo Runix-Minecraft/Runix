@@ -51,7 +51,7 @@ public class Signature {
             if( Collections.frequency(other.blocks, b) != Collections.frequency(blocks, b))
                 return false;
         }
-        System.out.println("Match found");//"Comparing:" + this + " =? " + other + " = " + answer);
+//        System.out.println("Match found");//"Comparing:" + this + " =? " + other + " = " + answer);
         return true;
     }
     
