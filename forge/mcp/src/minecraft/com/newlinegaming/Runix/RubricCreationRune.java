@@ -98,6 +98,11 @@ public class RubricCreationRune extends PersistentRune {
 	}
 
 	@Override
+    public void saveActiveRunes() {
+        //Do nothing
+    }
+
+    @Override
 	public String getRuneName() {
 		return this.runeName;
 	}
