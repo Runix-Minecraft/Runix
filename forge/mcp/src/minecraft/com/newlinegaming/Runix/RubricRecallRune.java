@@ -1,10 +1,12 @@
 package com.newlinegaming.Runix;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 
 
-public class RubricRecallRune extends AbstractRune{
+public class RubricRecallRune extends PersistentRune{
     
     public RubricRecallRune(){
         runeName = "Rubric Recall";
@@ -15,16 +17,16 @@ public class RubricRecallRune extends AbstractRune{
 			int RT=Block.torchRedstoneActive.blockID;
 			int AIR=0;
 			return new int [][][] 
-			            {{{TIER,TIER, AIR,TIER,TIER},
+			            {{{TIER,TIER,SIGR,TIER,TIER},
 			              {TIER, AIR,  RT, AIR,TIER},
-			              { AIR , RT,TIER,  RT, AIR},
+			              {SIGR, RT, TIER,  RT,SIGR},
 			              {TIER, AIR,  RT, AIR,TIER},
-			              {TIER,TIER, AIR,TIER,TIER}
+			              {TIER,TIER,SIGR,TIER,TIER}
 			             }}; 
 	}
 
 	@Override
-	public void execute(WorldXYZ coords, EntityPlayer player) {
+	public void poke(EntityPlayer player, WorldXYZ coords) {
 		//find match signature in RubricCreationRune.getActiveMagic()
 	    //consume Rune for energy
 	    //transfer energy to Rubric rune
@@ -33,13 +35,9 @@ public class RubricRecallRune extends AbstractRune{
 	    //delete self
 	}
 
-	@Override
-	public String getRuneName() {  return "RubricRecallRune";
-		
-	}
 
     public boolean isFlatRuneOnly() {
-        return false;
+        return true;
     }
 	
     public void unpackStructure(EntityPlayer initiator, WorldXYZ unpackAnchor){
@@ -47,6 +45,18 @@ public class RubricRecallRune extends AbstractRune{
 	    //for structure
 	        //setBlockID(
 	    //catch: need more energy
+	}
+
+	@Override
+	public ArrayList<PersistentRune> getActiveMagic() {
+		// TODO get active magic;
+		return null;
+	}
+
+	@Override
+	public boolean oneRunePerPerson() {
+		// TODO Auto-generated method stub
+		return false;
 	}
     
 }
