@@ -54,10 +54,13 @@ public class RubricRecallRune extends PersistentRune{
 		    }
 		    HashMap<WorldXYZ, SigBlock> structure  = ((RubricCreationRune)rubrics).structure;
 //			try {
-	            WorldXYZ structor;
-				unpackStructure(poker, structure);
+	            
+	           	// absorb energy from recall rune         
+				unpackStructure(poker, structure, rubrics.location);
+			
 //	        } catch (NotEnoughRunicEnergyException e) {
 //	            reportOutOfGas(poker);
+				//ensure recall is placed back 
 //	        }
 		//TODO fix the energy requirements
 		//find match signature in RubricCreationRune.getActiveMagic()
@@ -78,10 +81,13 @@ public class RubricRecallRune extends PersistentRune{
     	// create new worldXYZ by adding this.location to each vector3 
     	Vector3 difference = Vector3.offset(origin, location);
     	HashMap<WorldXYZ, WorldXYZ> mapping = Util_Movement.displaceShape(structure.keySet(),difference.x, difference.y, difference.z);
+    	HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<WorldXYZ, SigBlock>();
+    	for(WorldXYZ oldlocation:mapping.keySet())
+    		NewStructure.put(mapping.get(oldlocation),structure.get(oldlocation));
     	//try{
 	    //for structure
     	// for(WorldXYZ point : structure.keySet()){}
-    	stampBlockPattern(structure, initiator);
+    	stampBlockPattern(NewStructure, initiator);
 	        //setBlockID(
     	//TODO validate area to stamp
 	    //catch: need more energy
