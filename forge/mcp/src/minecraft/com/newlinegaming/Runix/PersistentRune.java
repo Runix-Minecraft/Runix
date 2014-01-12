@@ -54,22 +54,22 @@ public abstract class PersistentRune extends AbstractRune{
       
     }
     public void loadRunes(){
-        String fileName = shortClassName() + ".json";
-        try {
-            ArrayList<PersistentRune> newList = new ArrayList<PersistentRune>();
-            List<String> json = FileUtils.readLines(new File(fileName));
-            Gson gson = new Gson(); 
-            for(String line : json) {
-                newList.add(gson.fromJson(line, this.getClass()));
-            }
-            if( !newList.isEmpty() ){
-                getActiveMagic().clear();
-                getActiveMagic().addAll(newList);
-            }
-            System.out.println("New State: " + getActiveMagic());
-        } catch (IOException e) {
-            System.err.println("RUNIX: Unable to open and parse " + fileName);
-        }
+//        String fileName = shortClassName() + ".json";
+//        try {
+//            ArrayList<PersistentRune> newList = new ArrayList<PersistentRune>();
+//            List<String> json = FileUtils.readLines(new File(fileName));
+//            Gson gson = new Gson(); 
+//            for(String line : json) {
+//                newList.add(gson.fromJson(line, this.getClass()));
+//            }
+//            if( !newList.isEmpty() ){
+//                getActiveMagic().clear();
+//                getActiveMagic().addAll(newList);
+//            }
+//            System.out.println("New State: " + getActiveMagic());
+//        } catch (IOException e) {
+//            System.err.println("RUNIX: Unable to open and parse " + fileName);
+//        }
     }
     
     /**There's no way to have a static field in an abstract class so we use a getter instead

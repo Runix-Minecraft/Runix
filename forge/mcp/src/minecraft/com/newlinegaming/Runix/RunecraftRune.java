@@ -63,7 +63,7 @@ public class RunecraftRune extends AbstractTimedRune {
             reportOutOfGas(getPlayer());
             setPlayer(null);
         }
-        if(getPlayer() != null && !getPlayer().worldObj.isRemote){//Josiah: turns out running this on server and client side causes strange duplications
+        if(getPlayer() != null){//Josiah: turns out running this on server and client side causes strange duplications
             int dX = (int) (getPlayer().posX - location.posX - .5);
             int dY = (int) (getPlayer().posY - location.posY - 1);
             int dZ = (int) (getPlayer().posZ - location.posZ - .5);
@@ -92,8 +92,8 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @ForgeSubscribe
-    public void renderWireframe(RenderWorldLastEvent evt){
-        if(getPlayer() != null )
+    public void renderWireframe(RenderWorldLastEvent evt) {
+        if(getPlayer() != null)
             renderer.highlightBoxes(vehicleBlocks, getPlayer());
     }
     
@@ -104,12 +104,10 @@ public class RunecraftRune extends AbstractTimedRune {
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.contains( punchBlock ))
                     if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
-                        if(!location.getWorld().isRemote){  //server side only
-                            boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
-                            HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
-                            if( !shapeCollides(move) )
-                                vehicleBlocks = Util_Movement.performMove(move);
-                        }
+                        boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
+                        HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
+                        if( !shapeCollides(move) )
+                            vehicleBlocks = Util_Movement.performMove(move);
                     }
                     event.setCanceled(true); //build protect
                     System.out.println("Runecraft protected");
@@ -119,8 +117,6 @@ public class RunecraftRune extends AbstractTimedRune {
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         consumeKeyBlock(coords);
-        if(poker.worldObj.isRemote)
-            return;
         if(getPlayer() != null){
             setPlayer(null);
             aetherSay(poker, "You are now free from the Runecraft.");
@@ -157,8 +153,9 @@ public class RunecraftRune extends AbstractTimedRune {
         }
     }
     
-    public String getRuneName() {
-        return this.runeName;
+    @Override
+    public void loadRunes() {
+        //don't load anything
     }
 
     @Override

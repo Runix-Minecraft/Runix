@@ -1,9 +1,7 @@
 package com.newlinegaming.Runix;
 
 import java.util.Collection;
-
 import net.minecraft.entity.player.EntityPlayer;
-
 import org.lwjgl.opengl.GL11;
 
 public class RenderHelper {
