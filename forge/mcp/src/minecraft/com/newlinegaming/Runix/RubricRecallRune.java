@@ -54,8 +54,7 @@ public class RubricRecallRune extends PersistentRune{
 		    }
 		    HashMap<WorldXYZ, SigBlock> structure  = ((RubricCreationRune)rubrics).structure;
 //			try {
-	            
-	           	// absorb energy from recall rune         
+		    consumeRune(location);// absorb energy from recall rune         
 				unpackStructure(poker, structure, rubrics.location);
 			
 //	        } catch (NotEnoughRunicEnergyException e) {
@@ -86,6 +85,7 @@ public class RubricRecallRune extends PersistentRune{
     		NewStructure.put(mapping.get(oldlocation),structure.get(oldlocation));
     	//try{
 	    //for structure
+    	
     	// for(WorldXYZ point : structure.keySet()){}
     	stampBlockPattern(NewStructure, initiator);
 	        //setBlockID(

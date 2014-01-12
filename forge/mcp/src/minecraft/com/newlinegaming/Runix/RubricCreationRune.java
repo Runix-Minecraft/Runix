@@ -3,6 +3,7 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,16 +72,20 @@ public class RubricCreationRune extends PersistentRune {
 	@Override
 	protected void poke(EntityPlayer poker, WorldXYZ coords){
         renderer.reset();
-        HashSet<WorldXYZ> shape = conductanceStep(coords, 50);;
-        structure = scanStructure(shape);
+           HashSet<WorldXYZ> shape = conductanceStep(coords, 50);
+           structure = scanStructure(shape);
         sig = new Signature(this, coords);
         //TODO check for signature collision
         
-        ItemStack toolused = poker.getCurrentEquippedItem();
+                ItemStack toolused = poker.getCurrentEquippedItem();
         if (toolused!=null && toolused.itemID == Item.book.itemID) {
             
+        	consumeRune(location);
+        	//add runic energy
+        	structure=scanStructure(shape);
         	consumeRune(structure.keySet());
-            //need to remove the rune itself 
+        	//need to remove the rune itself 
+        	
             //then capture everything else into the rubric file 
             //rename the book to something we can identify the book with the recall
             
