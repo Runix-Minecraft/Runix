@@ -97,10 +97,15 @@ public class RubricCreationRune extends PersistentRune {
 
 	}
 
-	@Override
-    public void saveActiveRunes() {
+//	@Override
+//    public void saveActiveRunes() {
+//        //Do nothing
+//    }
+	
+    @Override
+    public void loadRunes() {
         //Do nothing
-    }
+    }	
 
     @Override
 	public String getRuneName() {

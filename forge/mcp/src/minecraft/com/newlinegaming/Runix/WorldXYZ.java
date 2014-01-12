@@ -177,8 +177,9 @@ public class WorldXYZ extends ChunkCoordinates {
     }
     
     
-    public String toString(){
-        return "(" + posX + "," + posY +  "," + posZ + ")"; 
+    public String toString(){//this is designed to match the GSON output
+        return "{\"dimensionID\":"+dimensionID+",\"face\":"+face+",\"posX\":"+posX+",\"posY\":"+posY+",\"posZ\":"+posZ+"}";
+//        return "(" + posX + "," + posY +  "," + posZ + ")"; 
     }
 
     public ArrayList<WorldXYZ> getNeighbors() {
