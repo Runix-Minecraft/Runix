@@ -80,13 +80,12 @@ public class RubricCreationRune extends PersistentRune {
                 ItemStack toolused = poker.getCurrentEquippedItem();
         if (toolused!=null && toolused.itemID == Item.book.itemID) {
             
-        	consumeRune(location);
-        	//add runic energy
-        	structure=scanStructure(shape);
+        	consumeRune(location);//need to remove the rune itself add runic energy
+        	structure=scanStructure(shape);//then capture everything else into the rubric file 
         	consumeRune(structure.keySet());
-        	//need to remove the rune itself 
+        	aetherSay(poker, "the tool used is "+toolused);
         	
-            //then capture everything else into the rubric file 
+            
             //rename the book to something we can identify the book with the recall
             
         }
