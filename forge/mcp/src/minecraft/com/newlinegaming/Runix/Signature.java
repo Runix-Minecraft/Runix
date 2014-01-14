@@ -17,6 +17,10 @@ public class Signature {
         blocks = new ArrayList<SigBlock>();
     }
 
+    /**Legacy Note: Signatures now include "Tier 0" blocks as valid signature options.
+     * @param rune for fetching the runicFormulae()
+     * @param coords with facing
+     */
     public Signature(AbstractRune rune, WorldXYZ coords) {
         blocks = new ArrayList<SigBlock>();
         Block[] usableMetaData = new Block[]{//this list specifically lacks any block that uses meta for orientation
@@ -34,13 +38,10 @@ public class Signature {
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == AbstractRune.SIGR) {
                 int blockID = target.getBlockId();
-                if (!Tiers.isTier0(blockID))
-                    if(metaWhiteList.contains(new Integer(blockID)))
-                        blocks.add(target.getSigBlock());
-                    else
-                        blocks.add(new SigBlock(blockID, 0));//just the blockID
+                if(metaWhiteList.contains(new Integer(blockID)))
+                    blocks.add(target.getSigBlock());
                 else
-                    blocks.add(new SigBlock(0, 0));
+                    blocks.add(new SigBlock(blockID, 0));//just the blockID
             }
         }
         rune.aetherSay(coords.getWorld(), "Signature:" + blocks.toString());
