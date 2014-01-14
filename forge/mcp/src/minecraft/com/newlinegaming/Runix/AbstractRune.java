@@ -181,14 +181,12 @@ public abstract class AbstractRune {
 	
 	/**Checks to see if there is a block match for the Rune blockPattern center at 
 	 * WorldXYZ coords.  
+	 * Legacy Note: Runix changed rune pattern recognition to accept T0 ink blocks 
+	 * and T1+ None Corners.  So if there is a recognizable shape, it will be accepted.
 	 * @return true if there is a valid match
 	 */
     public boolean checkRunePattern(WorldXYZ coords) {
-        int tierID = 0;
         int inkID = getTierInkBlock(coords);
-        if( Tiers.isTier0(inkID) )
-            return false;
-
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {
@@ -196,8 +194,7 @@ public abstract class AbstractRune {
             int patternID = shape.get(target).blockID;
             switch(patternID){// Handle special Template Values
                 case NONE: 
-                    if( !Tiers.isTier0(blockID)//Special cased torches as part of NONE so that Torch Bearer doesn't jack up your runes. 
-                            && (inkID == Block.torchWood.blockID || blockID != Block.torchWood.blockID))
+                    if( blockID == inkID )
                         return false; 
                     break;
                 case TIER:
@@ -211,8 +208,8 @@ public abstract class AbstractRune {
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
                 case KEY:
-                    if( Tiers.isTier0(blockID) )//key block must be center block  !target.equals(coords) || 
-                        return false;//can be ink, or SIGR but not T0
+//                    if( Tiers.isTier0(blockID) )//key block must be center block  !target.equals(coords) || 
+//                        return false;//can be ink, or SIGR but not T0
                     break;
                 default:
                     if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers
