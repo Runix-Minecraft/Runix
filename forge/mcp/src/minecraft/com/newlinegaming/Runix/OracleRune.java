@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -44,7 +45,8 @@ public class OracleRune extends PersistentRune {
 		WorldXYZ OracleConsume = coords;
 
 		ItemStack toolused = poker.getCurrentEquippedItem();
-		aetherSay(poker, "The tier is " + Tiers.getTier(coords.getBlockId()) + " and energy is " + Tiers.getEnergy(coords.getBlockId()));
+		aetherSay(poker, "The tier of this block is "  + Tiers.getTier(coords.getBlockId()) + " and energy is " + Tiers.getEnergy(coords.getBlockId()) + ".");
+		aetherSay(poker, "The conductance of this block is " + Tiers.isNatural(TIER) + ".");
 	}
 
 	@Override
