@@ -42,6 +42,7 @@ public class RuneHandler {
         runeRegistry.add(new TorchBearerRune());
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
+        runeRegistry.add(new OracleRune());
     }
     
     public static RuneHandler getInstance(){
