@@ -22,7 +22,7 @@ public abstract class PersistentRune extends AbstractRune{
     private String player = null;
     public WorldXYZ location = null;
     public boolean disabled = false;
-
+    public String specialName = "";
     public PersistentRune(){}
     
 
@@ -106,6 +106,14 @@ public abstract class PersistentRune extends AbstractRune{
         }
         accept(activator);
         match.poke(activator, coords); //either way, we poke the relevant rune to let it know
+    }
+    
+    public PersistentRune getRuneBySpecialName(String name){
+    	 for(PersistentRune rune : getActiveMagic()){
+    		 if(rune.specialName .equals(name)) 
+    			 return rune;
+    	 }
+    	return null;
     }
     
          /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */
