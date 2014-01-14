@@ -63,7 +63,7 @@ public class RubricCreationRune extends PersistentRune {
 		return new int[][][] 
 		      {{{ NONE,TIER,SIGR,TIER,NONE },
 				{ TIER,TIER,RTCH,TIER,TIER },
-				{ SIGR,RTCH,TIER,RTCH,SIGR },
+				{ SIGR,RTCH,KEY ,RTCH,SIGR },
 				{ TIER,TIER,RTCH,TIER,TIER },
 				{ NONE,TIER,SIGR,TIER,NONE }}};
 	}
@@ -71,28 +71,31 @@ public class RubricCreationRune extends PersistentRune {
 
 	@Override
 	protected void poke(EntityPlayer poker, WorldXYZ coords){
-        renderer.reset();
-           HashSet<WorldXYZ> shape = conductanceStep(coords, 50);
-           structure = scanStructure(shape);
-        sig = new Signature(this, coords);
-        //TODO check for signature collision
-        
-                ItemStack toolused = poker.getCurrentEquippedItem();
-        if (toolused!=null && toolused.itemID == Item.book.itemID) {
-            
-        	consumeRune(location);//need to remove the rune itself add runic energy
-        	structure=scanStructure(shape);//then capture everything else into the rubric file 
-        	consumeRune(structure.keySet());
-        	aetherSay(poker, "the tool used is "+toolused);
-        	
-            
-            //rename the book to something we can identify the book with the recall
-            
+		renderer.reset();
+		HashSet<WorldXYZ> shape = conductanceStep(coords, 50);
+		structure = scanStructure(shape);
+		ItemStack toolused = poker.getCurrentEquippedItem();
+		specialName = toolused.getDisplayName();
+		sig = new Signature(this, coords);
+				//TODO check for signature collision
+
+
+		if (toolused!=null && toolused.itemID == Item.book.itemID) {
+
+			consumeRune(location);//need to remove the rune itself add runic energy
+			structure=scanStructure(shape);//then capture everything else into the rubric file 
+			consumeRune(structure.keySet());
+
+			
+			aetherSay(poker, "the tool used is "+ specialName);
+
+
+			//rename the book to something we can identify the book with the recall
+
         }
         
 	}
-
-
+	
 	
 	@ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
