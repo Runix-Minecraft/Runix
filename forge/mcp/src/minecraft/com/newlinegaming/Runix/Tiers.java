@@ -15,28 +15,22 @@ public class Tiers {
     public static final int blockBreakCost = 12;
     public static final float movementPerMeterCost = 0.22f;
     
-    private static ArrayList<Integer> Tier0;
     private static ArrayList<Integer> naturalBlocks;
     private static ArrayList<Integer> moveSensitiveBlocks;
     private static ArrayList<Integer> crushableBlocks;
     private static int[] blockEnergy;
     
     public Tiers(){
-        Block[] Tier0Blocks = new Block[]{
-            Block.sand, Block.stone, Block.dirt, Block.grass, Block.tallGrass, Block.snow, 
-            Block.mycelium, Block.netherrack, Block.signPost, Block.signWall};
-        
-        Tier0 = loadBlockIds(Tier0Blocks);
-        Tier0.add( 0 );//Josiah: for whatever reason, AIR is not defined... so we have to add it manually.
-        
         /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/
-        Block[] extraNaturalBlocks = new Block[]{ //blocks that are natural, but not tier 0
-            //Block.waterStill, Block.waterMoving, 
+        Block[] extraNaturalBlocks = new Block[]{
+            Block.waterStill, Block.waterMoving, 
+            Block.sand, Block.stone, Block.dirt, 
+            Block.grass, Block.tallGrass, Block.snow, 
+            Block.mycelium, Block.netherrack,
             Block.lavaStill, Block.lavaMoving,  
             Block.vine, Block.leaves, Block.cactus, Block.deadBush, 
             Block.ice, Block.sapling, Block.wood};
         naturalBlocks = loadBlockIds(extraNaturalBlocks);
-        naturalBlocks.addAll(Tier0);
         
         Block[] attachedOrFallingBlocks = new Block[]{
             Block.anvil, Block.cocoaPlant, Block.carrot, Block.carpet, Block.crops,
@@ -267,15 +261,9 @@ public class Tiers {
     }
 
     public static int getTier(int blockID){
-        if(isTier0(blockID))
-            return 0;
         int energy = blockEnergy[blockID];
         energy = energy < 1 ? 1 : energy; // log(0) = crash bad
         return getTierFromEnergy(energy);
-    }
-
-    public static boolean isTier0(int blockID){
-        return Tier0.contains(new Integer(blockID));
     }
 
     private static int getTierFromEnergy(int energy){
