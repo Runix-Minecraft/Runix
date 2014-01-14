@@ -153,10 +153,10 @@ public class RunecraftRune extends AbstractTimedRune {
         }
     }
     
-    @Override
-    public void loadRunes() {
-        //don't load anything
-    }
+//    @Override
+//    public void loadRunes() {
+//        //don't load anything
+//    }
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
