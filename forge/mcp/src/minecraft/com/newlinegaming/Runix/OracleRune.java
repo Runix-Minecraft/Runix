@@ -45,8 +45,11 @@ public class OracleRune extends PersistentRune {
 		WorldXYZ OracleConsume = coords;
 
 		ItemStack toolused = poker.getCurrentEquippedItem();
-		aetherSay(poker, "The tier of this block is "  + Tiers.getTier(coords.getBlockId()) + " and energy is " + Tiers.getEnergy(coords.getBlockId()) + ".");
-		aetherSay(poker, "The conductance of this block is " + Tiers.isNatural(TIER) + ".");
+		int id = coords.getBlockId();
+		aetherSay(poker, "Tier: "  + Tiers.getTier(id) + ".");
+		aetherSay(poker, "Energy: " + Tiers.getEnergy(id) + ".");
+		aetherSay(poker, "Properties: " + (Tiers.isNatural(id)? "Not Conductive" : "Conductive")
+				+ ", " + (Tiers.isCrushable(id)? "Crushable." : "Not Crushable."));
 	}
 
 	@Override
