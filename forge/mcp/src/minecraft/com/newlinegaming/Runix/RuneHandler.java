@@ -132,8 +132,9 @@ public class RuneHandler {
             if( r instanceof PersistentRune)
             {
                 //TODO change getRuneByPlayer to return list when oneRunePerPerson = false.
-                PersistentRune rune = ((PersistentRune) r).getRuneByPlayer(player);	
-                playerRunes.add(rune);
+                PersistentRune rune = ((PersistentRune) r).getRuneByPlayer(player);
+                if(rune != null)
+                    playerRunes.add(rune);
             }
         return playerRunes;
     }

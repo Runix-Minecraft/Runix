@@ -46,7 +46,9 @@ public class OracleRune extends PersistentRune {
 
         ItemStack toolused = poker.getCurrentEquippedItem();
         if (toolused!=null && toolused.itemID == Item.swordGold.itemID) {
-            aetherSay(poker, "" + RuneHandler.getInstance().getAllRunesByPlayer(poker));
+            ArrayList<PersistentRune> d = RuneHandler.getInstance().getAllRunesByPlayer(poker);
+            for (PersistentRune r : d)
+                aetherSay(poker, r.runeName +  " Energy: " + r.energy);
         }
         else {
             int id = coords.getBlockId();
