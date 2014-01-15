@@ -31,9 +31,9 @@ public class TorchBearerRune extends AbstractTimedRune {
             LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
             for(WorldXYZ newPos : sphere)
             {
-                if(newPos.getBlockId() == 0 && newPos.offset(Vector3.DOWN).isSolid() && 
-                        world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4 //adjustable
-                        && !world.isDaytime()){// don't place during the day time
+                if(newPos.getBlockId() == 0 && newPos.offset(Vector3.DOWN).isSolid() && (
+                        (world.isDaytime() && world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4) ||//day time checking == caves
+                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) )){ //adjustable
                     try {
                         setBlockIdAndUpdate(newPos, Block.torchWood.blockID);//set torch
                     } catch (NotEnoughRunicEnergyException e) {
