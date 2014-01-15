@@ -2,6 +2,7 @@ package com.newlinegaming.Runix;
 
 //Imports
 
+import com.newlinegaming.Runix.block.GreekFire;
 import com.newlinegaming.Runix.block.QixsilverFlowing;
 import com.newlinegaming.Runix.block.QixsilverStill;
 import com.newlinegaming.Runix.creativetabs.TabRunix;
@@ -43,6 +44,7 @@ public class Runix {
     //Block Names
     public static Block QixsilverFlowing = new QixsilverFlowing(2012).setUnlocalizedName("QixsilverFlowing");
     public static Block QixsilverStill = new QixsilverStill(2013).setUnlocalizedName("QixsilverStill");
+    public static Block GreekFire = new GreekFire(2014).setUnlocalizedName("GreekFire");
 
     //Render Information	
     @Init
@@ -56,11 +58,13 @@ public class Runix {
         //Game Registry
         GameRegistry.registerBlock(QixsilverFlowing, "QixsilverFlowing");
         GameRegistry.registerBlock(QixsilverStill, "QixsilverStill");
+        GameRegistry.registerBlock(GreekFire, "GreekFire");
 
         //Language Registry
         LanguageRegistry.addName(RunixPlaceHolder, "Runix");
         LanguageRegistry.addName(QixsilverFlowing, "Qixsilver");
         LanguageRegistry.addName(QixsilverStill, "Qixsilver");
+        LanguageRegistry.addName(GreekFire, "Greek Fire");
         Tiers tiers = new Tiers(); //load the list of block tiers
 
         //Event Registry

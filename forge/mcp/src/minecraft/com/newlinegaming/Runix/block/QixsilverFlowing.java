@@ -12,11 +12,12 @@ import net.minecraft.util.Icon;
 public class QixsilverFlowing extends BlockFlowing{
 
     public QixsilverFlowing(int par1) {
-        super(par1, Material.water);
+        super(par1, Material.lava);
         
         this.blockHardness = 100.0F;
-        this.setLightOpacity(1);
+        this.setLightOpacity(15);
         this.setCreativeTab(Runix.TabRunix);
+        this.setLightValue(15.0F);
     }
     
     @Override
