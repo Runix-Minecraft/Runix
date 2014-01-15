@@ -11,50 +11,55 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class OracleRune extends PersistentRune {
-	private static ArrayList<PersistentRune> activeOracles = new ArrayList<PersistentRune>();
-	public OracleRune() {
-		runeName = ("Oracle Rune");
-	}
+    private static ArrayList<PersistentRune> activeOracles = new ArrayList<PersistentRune>();
+    public OracleRune() {
+        runeName = ("Oracle Rune");
+    }
 
-	public OracleRune(WorldXYZ coords, EntityPlayer player2) 
-	{
-		super(coords, player2,"Oracle Rune");
-	}
+    public OracleRune(WorldXYZ coords, EntityPlayer player2) 
+    {
+        super(coords, player2,"Oracle Rune");
+    }
 
-	@Override
-	public ArrayList<PersistentRune> getActiveMagic() {
-		return activeOracles;
-	}
+    @Override
+    public ArrayList<PersistentRune> getActiveMagic() {
+        return activeOracles;
+    }
 
-	@Override
-	public boolean oneRunePerPerson() {
-		return false;
-	}
+    @Override
+    public boolean oneRunePerPerson() {
+        return false;
+    }
 
-	@Override
-	public int[][][] runicTemplateOriginal(){
-		int Red = Block.redstoneWire.blockID;
-		return new int [][][] 
-				{{{Red,Red,Red},
-					{Red,TIER,Red},
-					{Red,Red,Red}}};
-	}
+    @Override
+    public int[][][] runicTemplateOriginal(){
+        int Red = Block.redstoneWire.blockID;
+        return new int [][][] 
+                {{{Red,Red,Red},
+                    {Red,TIER,Red},
+                    {Red,Red,Red}}};
+    }
 
-	@Override
-	protected void poke(EntityPlayer poker, WorldXYZ coords){
-		WorldXYZ OracleConsume = coords;
+    @Override
+    protected void poke(EntityPlayer poker, WorldXYZ coords){
+        WorldXYZ OracleConsume = coords;
 
-		ItemStack toolused = poker.getCurrentEquippedItem();
-		int id = coords.getBlockId();
-		aetherSay(poker, "Tier: "  + Tiers.getTier(id) + ".");
-		aetherSay(poker, "Energy: " + Tiers.getEnergy(id) + ".");
-		aetherSay(poker, "Properties: " + (Tiers.isNatural(id)? "Not Conductive" : "Conductive")
-				+ ", " + (Tiers.isCrushable(id)? "Crushable." : "Not Crushable."));
-	}
+        ItemStack toolused = poker.getCurrentEquippedItem();
+        if (toolused!=null && toolused.itemID == Item.swordGold.itemID) {
+            aetherSay(poker, "" + RuneHandler.getInstance().getAllRunesByPlayer(poker));
+        }
+        else {
+            int id = coords.getBlockId();
+            aetherSay(poker, "Tier: "  + Tiers.getTier(id) + ".");
+            aetherSay(poker, "Energy: " + Tiers.getEnergy(id) + ".");
+            aetherSay(poker, "Properties: " + (Tiers.isNatural(id)? "Not Conductive" : "Conductive")
+                    + ", " + (Tiers.isCrushable(id)? "Crushable." : "Not Crushable."));
+        }
+    }
 
-	@Override
-	public boolean isFlatRuneOnly() {
-		return true;
-	}
+    @Override
+    public boolean isFlatRuneOnly() {
+        return true;
+    }
 
 }

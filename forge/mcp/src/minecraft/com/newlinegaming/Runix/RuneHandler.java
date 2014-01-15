@@ -28,10 +28,11 @@ import net.minecraftforge.event.world.WorldEvent.Save;
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
     int nLoaded = 0;
-    
+
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-    
+
     private RuneHandler() {
+        runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new RuneCompass());
@@ -44,7 +45,7 @@ public class RuneHandler {
         runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
     }
-    
+
     public static RuneHandler getInstance(){
         if(instance == null)
             instance = new RuneHandler();
@@ -55,9 +56,9 @@ public class RuneHandler {
     public void playerInteractEvent(PlayerInteractEvent event) {
         //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
         if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
-//            WorldXYZ pos = new WorldXYZ(event.x, event.y, event.z);
-//            System.out.println("Right Click event " + pos + "Facing" + event.face + " clicks: "+ ++nClicks);
-//            System.out.println("u: "+ event.useBlock + " I: " + event.useItem);
+            //            WorldXYZ pos = new WorldXYZ(event.x, event.y, event.z);
+            //            System.out.println("Right Click event " + pos + "Facing" + event.face + " clicks: "+ ++nClicks);
+            //            System.out.println("u: "+ event.useBlock + " I: " + event.useItem);
             possibleRuneActivationEvent(event.entityPlayer, 
                     new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z, event.face));
         }
@@ -65,20 +66,20 @@ public class RuneHandler {
 
     @ForgeSubscribe
     public void saving(Save s){
-        if( s.world.provider.isHellWorld && !s.world.isRemote)//Josiah: I figure it's likely there's only one of these
+        if( s.world.provider.dimensionId == 0 && !s.world.isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).saveActiveRunes();
     }
-    
+
     @ForgeSubscribe
     public void loadServer(Load loadEvent){
-        if( loadEvent.world.provider.isHellWorld && !loadEvent.world.isRemote)
+        if( loadEvent.world.provider.dimensionId == 0 && !loadEvent.world.isRemote)
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).loadRunes();
     }
-    
+
     @ForgeSubscribe
     public void playerLogin(EntityJoinWorldEvent event){
         if(event.entity instanceof EntityPlayer){ //fires once each for Client and Server side join event
@@ -86,10 +87,10 @@ public class RuneHandler {
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).onPlayerLogin(((EntityPlayer)event.entity).username);
         }
-            
+
     }
-    
-    
+
+
     /**Detects a rune pattern, and executes it.*/
     public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
@@ -117,12 +118,24 @@ public class RuneHandler {
         }
         return null;
     }
-    
+
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved){
         for(AbstractRune rune : runeRegistry){
             rune.moveMagic(positionsMoved);
         }
     }
-//    public JSON extractMagic(Collection<WorldXYZ> blocks)
-    
+    //    public JSON extractMagic(Collection<WorldXYZ> blocks)
+
+    public ArrayList<PersistentRune> getAllRunesByPlayer(EntityPlayer player){
+        ArrayList<PersistentRune> playerRunes = new ArrayList<PersistentRune>();
+        for(AbstractRune r : runeRegistry)
+            if( r instanceof PersistentRune)
+            {
+                //TODO change getRuneByPlayer to return list when oneRunePerPerson = false.
+                PersistentRune rune = ((PersistentRune) r).getRuneByPlayer(player);	
+                playerRunes.add(rune);
+            }
+        return playerRunes;
+    }
+
 }
