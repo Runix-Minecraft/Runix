@@ -12,9 +12,12 @@ import net.minecraft.util.Icon;
 
 public class GreekFire extends BlockFire {
 
-    public GreekFire(int par1) {
-	super(par1);
-
+    public static int blockIdBackup = 2014;
+    
+    public GreekFire(int blockId) {
+	super(blockId);
+	blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
+	
 	setCreativeTab(Runix.TabRunix);
 	this.setLightValue(1.0f);
 	this.setBurnProperties(Block.stone.blockID, 30, 60);

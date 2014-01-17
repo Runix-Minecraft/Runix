@@ -160,8 +160,10 @@ public abstract class AbstractRune {
 	/** returns the unique name of the rune */
 	public String getRuneName() 
 	{
-//		return this.runeName;
-		return shortClassName();
+	    if( !runeName.isEmpty() )
+	        return runeName;
+	    else
+	        return shortClassName();
 	}
 	
 	public static void aetherSay(EntityPlayer recipient, String message)

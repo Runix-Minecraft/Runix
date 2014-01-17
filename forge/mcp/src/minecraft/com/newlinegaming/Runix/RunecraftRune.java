@@ -33,7 +33,7 @@ public class RunecraftRune extends AbstractTimedRune {
         super(coords, player2, "Runecraft");
         setPlayer(null); //this is because poke() acts as if the Rune was activated a second time when it is first constructed
         renderer = new RenderHelper();
-        updateEveryXTicks(4);
+        updateEveryXTicks(4); //TODO this line and the next are crashing the Event Bus on loadRunes().
         MinecraftForge.EVENT_BUS.register(this);
         this.runeName = "Runecraft"; 
     }
