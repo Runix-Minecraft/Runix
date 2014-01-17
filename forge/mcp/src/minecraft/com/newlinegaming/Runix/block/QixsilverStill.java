@@ -17,7 +17,7 @@ public class QixsilverStill extends BlockStationary{
         this.blockHardness = 100.0F;
         this.setLightOpacity(15);
         this.setCreativeTab(Runix.TabRunix);
-        this.setLightValue(15.0f);
+        this.setLightValue(15.0F);
         this.disableStats();
     }
     
