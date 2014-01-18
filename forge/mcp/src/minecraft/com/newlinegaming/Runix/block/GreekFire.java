@@ -104,7 +104,7 @@ public class GreekFire extends BlockFire {
                 par1World.setBlockToAir(x, y, z);
             }
 
-            if (!flag && par1World.isRaining() && par1World.canLightningStrikeAt(x, y, z) )//what to do when raining
+            if (!flag && par1World.isRaining() && (par1World.canLightningStrikeAt(x, y, z) || par1World.canLightningStrikeAt(x - 1, y, z) || par1World.canLightningStrikeAt(x + 1, y, z) || par1World.canLightningStrikeAt(x, y, z - 1) || par1World.canLightningStrikeAt(x, y, z + 1)))
             {
                 par1World.setBlockToAir(x, y, z);
             }
@@ -123,7 +123,7 @@ public class GreekFire extends BlockFire {
                 {
                     if (!par1World.doesBlockHaveSolidTopSurface(x, y - 1, z) || l > 3)
                     {
-                        par1World.setBlockToAir(x, y, z);
+                        par1World.setBlockToAir(x, y, z);// remove fire because it has no base or it expired
                     }
                 }
                 else if (!flag && !this.canBlockCatchFire(par1World, x, y - 1, z, UP) && l == 15 && par5Random.nextInt(4) == 0)
@@ -238,11 +238,6 @@ public class GreekFire extends BlockFire {
             else
             {
                 par1World.setBlockToAir(par2, par3, par4);
-            }
-
-            if (flag)
-            {
-                Block.tnt.onBlockDestroyedByPlayer(par1World, par2, par3, par4, 1);
             }
         }
     }
