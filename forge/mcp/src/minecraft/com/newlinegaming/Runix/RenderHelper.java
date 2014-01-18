@@ -1,7 +1,9 @@
 package com.newlinegaming.Runix;
 
 import java.util.Collection;
+
 import net.minecraft.entity.player.EntityPlayer;
+
 import org.lwjgl.opengl.GL11;
 
 public class RenderHelper {
@@ -26,7 +28,9 @@ public class RenderHelper {
         double doubleX = player.posX - 0.5;
         double doubleY = player.posY + 0.1;
         double doubleZ = player.posZ - 0.5;
-    
+//        System.out.println(doubleX);
+//        System.out.println(doubleZ); //Note: it seems to be parsing to this point
+//        System.out.println(doubleY);
         GL11.glPushMatrix();
             GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
             GL11.glColor3ub((byte)R,(byte)G,(byte)B);
