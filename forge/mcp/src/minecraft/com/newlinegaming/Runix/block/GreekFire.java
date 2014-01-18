@@ -49,13 +49,13 @@ public class GreekFire extends BlockFire {
     
     public void initializeBlock()
     {
-	this.setLightValue(1.0f);
-	this.setBurn(Block.stone.blockID, 30, 60);
-	this.setBurn(Block.grass.blockID, 30, 60);
-	this.setBurn(Block.dirt.blockID, 30, 60);
-	this.setBurn(Block.gravel.blockID, 30, 60);
+        this.setLightValue(1.0f);
+        this.setBurn(Block.stone.blockID, 30, 60);
+        this.setBurn(Block.grass.blockID, 30, 60);
+        this.setBurn(Block.dirt.blockID, 30, 60);
+        this.setBurn(Block.gravel.blockID, 30, 60);
     }
-    
+
     private void setBurn(int id, int encouragement, int flammability)
     {
         greekFireSpreadSpeed[id] = encouragement;
@@ -92,47 +92,47 @@ public class GreekFire extends BlockFire {
         return 30;
     }
     
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void updateTick(World par1World, int x, int y, int z, Random par5Random)
     {
         if (par1World.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
-            Block base = Block.blocksList[par1World.getBlockId(par2, par3 - 1, par4)];
-            boolean flag = (base != null && base.isFireSource(par1World, par2, par3 - 1, par4, par1World.getBlockMetadata(par2, par3 - 1, par4), UP));
+            Block base = Block.blocksList[par1World.getBlockId(x, y - 1, z)];
+            boolean flag = (base != null && isGreekFireSource(base ));
 
-            if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
+            if (!this.canPlaceBlockAt(par1World, x, y, z))
             {
-                par1World.setBlockToAir(par2, par3, par4);
+                par1World.setBlockToAir(x, y, z);
             }
 
-            if (!flag && par1World.isRaining() && (par1World.canLightningStrikeAt(par2, par3, par4) || par1World.canLightningStrikeAt(par2 - 1, par3, par4) || par1World.canLightningStrikeAt(par2 + 1, par3, par4) || par1World.canLightningStrikeAt(par2, par3, par4 - 1) || par1World.canLightningStrikeAt(par2, par3, par4 + 1)))
+            if (!flag && par1World.isRaining() && par1World.canLightningStrikeAt(x, y, z) )//what to do when raining
             {
-                par1World.setBlockToAir(par2, par3, par4);
+                par1World.setBlockToAir(x, y, z);
             }
             else
             {
-                int l = par1World.getBlockMetadata(par2, par3, par4);
+                int l = par1World.getBlockMetadata(x, y, z);
 
                 if (l < 15)
                 {
-                    par1World.setBlockMetadataWithNotify(par2, par3, par4, l + par5Random.nextInt(3) / 2, 4);
+                    par1World.setBlockMetadataWithNotify(x, y, z, l + par5Random.nextInt(3) / 2, 4);
                 }
 
-                par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World) + par5Random.nextInt(10));
+                par1World.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(par1World) + par5Random.nextInt(10));
 
-                if (!flag && !this.canNeighborBurn(par1World, par2, par3, par4))
+                if (!flag && !this.canNeighborBurn(par1World, x, y, z))
                 {
-                    if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || l > 3)
+                    if (!par1World.doesBlockHaveSolidTopSurface(x, y - 1, z) || l > 3)
                     {
-                        par1World.setBlockToAir(par2, par3, par4);
+                        par1World.setBlockToAir(x, y, z);
                     }
                 }
-                else if (!flag && !this.canBlockCatchFire(par1World, par2, par3 - 1, par4, UP) && l == 15 && par5Random.nextInt(4) == 0)
+                else if (!flag && !this.canBlockCatchFire(par1World, x, y - 1, z, UP) && l == 15 && par5Random.nextInt(4) == 0)
                 {
-                    par1World.setBlockToAir(par2, par3, par4);
+                    par1World.setBlockToAir(x, y, z);
                 }
                 else
                 {
-                    boolean flag1 = par1World.isBlockHighHumidity(par2, par3, par4);
+                    boolean flag1 = par1World.isBlockHighHumidity(x, y, z);
                     byte b0 = 0;
 
                     if (flag1)
@@ -140,26 +140,26 @@ public class GreekFire extends BlockFire {
                         b0 = -50;
                     }
 
-                    this.tryToCatchBlockOnFire(par1World, par2 + 1, par3, par4, 300 + b0, par5Random, l, WEST );
-                    this.tryToCatchBlockOnFire(par1World, par2 - 1, par3, par4, 300 + b0, par5Random, l, EAST );
-                    this.tryToCatchBlockOnFire(par1World, par2, par3 - 1, par4, 250 + b0, par5Random, l, UP   );
-                    this.tryToCatchBlockOnFire(par1World, par2, par3 + 1, par4, 250 + b0, par5Random, l, DOWN );
-                    this.tryToCatchBlockOnFire(par1World, par2, par3, par4 - 1, 300 + b0, par5Random, l, SOUTH);
-                    this.tryToCatchBlockOnFire(par1World, par2, par3, par4 + 1, 300 + b0, par5Random, l, NORTH);
+                    this.tryToCatchBlockOnFire(par1World, x + 1, y, z, 300 + b0, par5Random, l, WEST );
+                    this.tryToCatchBlockOnFire(par1World, x - 1, y, z, 300 + b0, par5Random, l, EAST );
+                    this.tryToCatchBlockOnFire(par1World, x, y - 1, z, 250 + b0, par5Random, l, UP   );
+                    this.tryToCatchBlockOnFire(par1World, x, y + 1, z, 250 + b0, par5Random, l, DOWN );
+                    this.tryToCatchBlockOnFire(par1World, x, y, z - 1, 300 + b0, par5Random, l, SOUTH);
+                    this.tryToCatchBlockOnFire(par1World, x, y, z + 1, 300 + b0, par5Random, l, NORTH);
 
-                    for (int i1 = par2 - 1; i1 <= par2 + 1; ++i1)
+                    for (int i1 = x - 1; i1 <= x + 1; ++i1)
                     {
-                        for (int j1 = par4 - 1; j1 <= par4 + 1; ++j1)
+                        for (int j1 = z - 1; j1 <= z + 1; ++j1)
                         {
-                            for (int k1 = par3 - 1; k1 <= par3 + 4; ++k1)
+                            for (int k1 = y - 1; k1 <= y + 4; ++k1)
                             {
-                                if (i1 != par2 || k1 != par3 || j1 != par4)
+                                if (i1 != x || k1 != y || j1 != z)
                                 {
                                     int l1 = 100;
 
-                                    if (k1 > par3 + 1)
+                                    if (k1 > y + 1)
                                     {
-                                        l1 += (k1 - (par3 + 1)) * 100;
+                                        l1 += (k1 - (y + 1)) * 100;
                                     }
 
                                     int i2 = this.getChanceOfNeighborsEncouragingFire(par1World, i1, k1, j1);
@@ -173,7 +173,7 @@ public class GreekFire extends BlockFire {
                                             j2 /= 2;
                                         }
 
-                                        if (j2 > 0 && par5Random.nextInt(l1) <= j2 && (!par1World.isRaining() || !par1World.canLightningStrikeAt(i1, k1, j1)) && !par1World.canLightningStrikeAt(i1 - 1, k1, par4) && !par1World.canLightningStrikeAt(i1 + 1, k1, j1) && !par1World.canLightningStrikeAt(i1, k1, j1 - 1) && !par1World.canLightningStrikeAt(i1, k1, j1 + 1))
+                                        if (j2 > 0 && par5Random.nextInt(l1) <= j2 && (!par1World.isRaining() || !par1World.canLightningStrikeAt(i1, k1, j1)) && !par1World.canLightningStrikeAt(i1 - 1, k1, z) && !par1World.canLightningStrikeAt(i1 + 1, k1, j1) && !par1World.canLightningStrikeAt(i1, k1, j1 - 1) && !par1World.canLightningStrikeAt(i1, k1, j1 + 1))
                                         {
                                             int k2 = l + par5Random.nextInt(5) / 4;
 
@@ -192,6 +192,12 @@ public class GreekFire extends BlockFire {
                 }
             }
         }
+    }
+
+    private boolean isGreekFireSource(Block base) {
+        if(base.blockID == Block.blockLapis.blockID)
+            return true;
+        return false;
     }
 
     public boolean func_82506_l()
@@ -333,7 +339,7 @@ public class GreekFire extends BlockFire {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
         if (block != null)
         {
-            return block.isFlammable(world, x, y, z, world.getBlockMetadata(x, y, z), face);
+            return greekFlammability[block.blockID] > 0;
         }
         return false;
     }
