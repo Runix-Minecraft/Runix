@@ -8,14 +8,10 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Random;
+import java.util.concurrent.DelayQueue;
 
-import com.newlinegaming.Runix.Runix;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -23,10 +19,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
+import com.newlinegaming.Runix.Runix;
+import com.newlinegaming.Runix.WorldXYZ;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class GreekFire extends BlockFire {
     
     protected static int[] greekFireSpreadSpeed = new int[4096];
     protected static int[] greekFlammability = new int[4096];
+    protected static DelayQueue<BlockRecord> phasedBlocks = new DelayQueue<BlockRecord>();
     
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
@@ -50,10 +53,10 @@ public class GreekFire extends BlockFire {
     public void initializeBlock()
     {
         this.setLightValue(1.0f);
-        this.setBurn(Block.stone.blockID, 30, 60);
-        this.setBurn(Block.grass.blockID, 30, 60);
-        this.setBurn(Block.dirt.blockID, 30, 60);
-        this.setBurn(Block.gravel.blockID, 30, 60);
+        this.setBurn(Block.stone.blockID, 30, 100);
+        this.setBurn(Block.grass.blockID, 30, 100);
+        this.setBurn(Block.dirt.blockID, 30, 100);
+        this.setBurn(Block.gravel.blockID, 30, 100);
     }
 
     private void setBurn(int id, int encouragement, int flammability)
@@ -89,11 +92,12 @@ public class GreekFire extends BlockFire {
     
     public int tickRate(World par1World)
     {
-        return 30;
+        return 5;//30
     }
     
     public void updateTick(World par1World, int x, int y, int z, Random par5Random)
     {
+        unphaseExpiredBlocks();
         if (par1World.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
             Block base = Block.blocksList[par1World.getBlockId(x, y - 1, z)];
@@ -181,7 +185,7 @@ public class GreekFire extends BlockFire {
                                             {
                                                 k2 = 15;
                                             }
-
+                                            phaseBlockAt(new WorldXYZ(i1, k1, j1));
                                             par1World.setBlock(i1, k1, j1, this.blockID, k2, 3);
                                         }
                                     }
@@ -191,6 +195,24 @@ public class GreekFire extends BlockFire {
                     }
                 }
             }
+        }
+    }
+
+    private void phaseBlockAt(WorldXYZ coords) {
+        if(coords.getSigBlock().blockID == this.blockIdBackup){
+            System.err.println("You just tried to phase fire!");
+            return;
+        }
+        BlockRecord record = new BlockRecord(60, coords, coords.getSigBlock());
+        phasedBlocks.add(record);
+    }
+
+    private void unphaseExpiredBlocks() {
+        
+        for( BlockRecord expired = phasedBlocks.poll(); expired != null; expired = phasedBlocks.poll()){
+            //TODO drop block if non-air block
+            System.out.println(expired.loc.toString() + "  ==  " + expired.block.blockID);
+            expired.loc.setBlockIdAndUpdate(expired.block.blockID);
         }
     }
 
@@ -224,7 +246,7 @@ public class GreekFire extends BlockFire {
                 {
                     k1 = 15;
                 }
-
+//                phaseBlockAt(new WorldXYZ( par2, par3, par4));
                 par1World.setBlock(par2, par3, par4, this.blockID, k1, 3);
             }
             else
