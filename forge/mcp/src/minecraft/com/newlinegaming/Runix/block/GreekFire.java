@@ -32,13 +32,13 @@ public class GreekFire extends BlockFire {
     private Icon[] iconArray;
 
     public static int blockIdBackup = 2014;
-    
+
     public GreekFire(int blockId) {
         super(blockId);
         this.setTickRandomly(true);
-	setCreativeTab(Runix.TabRunix);
-	blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
-	initializeBlock();
+        setCreativeTab(Runix.TabRunix);
+        blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
+        initializeBlock();
     }
     
     @SideOnly(Side.CLIENT)
@@ -205,25 +205,17 @@ public class GreekFire extends BlockFire {
         return false;
     }
 
-    @Deprecated
-    private void tryToCatchBlockOnFire(World par1World, int par2, int par3, int par4, int par5, Random par6Random, int par7)
-    {
-        tryToCatchBlockOnFire(par1World, par2, par3, par4, par5, par6Random, par7, UP);
-    }
-
     private void tryToCatchBlockOnFire(World par1World, int par2, int par3, int par4, int par5, Random par6Random, int par7, ForgeDirection face)
     {
         int j1 = 0;
         Block block = Block.blocksList[par1World.getBlockId(par2, par3, par4)];
         if (block != null)
         {
-            j1 = getFlammability(block, par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), face);
+            j1 = getFlammability(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), face);
         }
 
         if (par6Random.nextInt(par5) < j1)
         {
-            boolean flag = par1World.getBlockId(par2, par3, par4) == Block.tnt.blockID;
-
             if (par6Random.nextInt(par7 + 10) < 5 && !par1World.canLightningStrikeAt(par2, par3, par4))
             {
                 int k1 = par7 + par6Random.nextInt(5) / 4;
@@ -242,9 +234,13 @@ public class GreekFire extends BlockFire {
         }
     }
 
-    private int getFlammability(Block block, World par1World, int par2,
-	    int par3, int par4, int blockMetadata, ForgeDirection face) {
-	return greekFlammability[block.blockID];
+    private int getFlammability(World par1World, int x, int y, int z, int blockMetadata, ForgeDirection face) {
+        x -= face.offsetX; 
+        y -= face.offsetY;
+        z -= face.offsetZ;
+        int block = par1World.getBlockId(x, y, z);
+        //TODO we're still ignoring blockMetadata and which side of a stair is solid.  Josiah: I think this can be ignored
+        return greekFlammability[block];
     }
 
     private boolean canNeighborBurn(World par1World, int par2, int par3, int par4)
@@ -256,6 +252,7 @@ public class GreekFire extends BlockFire {
                canBlockCatchFire(par1World, par2, par3, par4 - 1, SOUTH) ||
                canBlockCatchFire(par1World, par2, par3, par4 + 1, NORTH);
     }
+
     private int getChanceOfNeighborsEncouragingFire(World par1World, int par2, int par3, int par4)
     {
         byte b0 = 0;
@@ -276,13 +273,11 @@ public class GreekFire extends BlockFire {
         }
     }
     
-    @Deprecated
     public boolean canBlockCatchFire(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return canBlockCatchFire(par1IBlockAccess, par2, par3, par4, UP);
     }
 
-    @Deprecated
     public int getChanceToEncourageFire(World par1World, int par2, int par3, int par4, int par5)
     {
         return getChanceToEncourageFire(par1World, par2, par3, par4, par5, UP);
@@ -315,15 +310,8 @@ public class GreekFire extends BlockFire {
             }
         }
     }
-    
-    public boolean isCollidable()
-    {
-        return false;
-    }
-
-    
+        
     @SideOnly(Side.CLIENT)
-
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.iconArray = new Icon[] {par1IconRegister.registerIcon("Runix:GreekFire"), par1IconRegister.registerIcon("Runix:GreekFire1")};
@@ -331,12 +319,14 @@ public class GreekFire extends BlockFire {
     
     public boolean canBlockCatchFire(IBlockAccess world, int x, int y, int z, ForgeDirection face)
     {
-        Block block = Block.blocksList[world.getBlockId(x, y, z)];
-        if (block != null)
-        {
-            return greekFlammability[block.blockID] > 0;
-        }
-        return false;
+//        Block block = Block.blocksList[world.getBlockId(x, y, z)];
+//        if (block != null)
+//        {
+            return getFlammability((World) world, x, y, z, world.getBlockMetadata(x, y, z), face) > 0;
+            //return greekFlammability[block.blockID] > 0;
+            //return block.isFlammable(world, x, y, z, world.getBlockMetadata(x, y, z), face);
+//        }
+//        return false;
     }
     
     public int getChanceToEncourageFire(World world, int x, int y, int z, int oldChance, ForgeDirection face)
@@ -357,7 +347,6 @@ public class GreekFire extends BlockFire {
     }
 
     @SideOnly(Side.CLIENT)
-
     public Icon getIcon(int par1, int par2)
     {
         return this.iconArray[0];
