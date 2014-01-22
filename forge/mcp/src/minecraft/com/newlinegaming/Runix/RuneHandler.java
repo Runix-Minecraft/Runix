@@ -4,6 +4,20 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.newlinegaming.Runix.Runes.DomainRune;
+import com.newlinegaming.Runix.Runes.FaithRune;
+import com.newlinegaming.Runix.Runes.FerrousWheelRune;
+import com.newlinegaming.Runix.Runes.GreekFireRune;
+import com.newlinegaming.Runix.Runes.OracleRune;
+import com.newlinegaming.Runix.Runes.RubricCreationRune;
+import com.newlinegaming.Runix.Runes.RubricRecallRune;
+import com.newlinegaming.Runix.Runes.RuneCompass;
+import com.newlinegaming.Runix.Runes.RunecraftRune;
+import com.newlinegaming.Runix.Runes.TeleporterRune;
+import com.newlinegaming.Runix.Runes.TorchBearerRune;
+import com.newlinegaming.Runix.Runes.WaypointRune;
+import com.newlinegaming.Runix.Runes.ZeerixChestRune;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -45,6 +59,7 @@ public class RuneHandler {
         runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
         runeRegistry.add(new GreekFireRune());
+        runeRegistry.add(new DomainRune());
     }
 
     public static RuneHandler getInstance(){

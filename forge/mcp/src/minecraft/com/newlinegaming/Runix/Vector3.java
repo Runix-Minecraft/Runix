@@ -17,9 +17,9 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
 //    public static final ArrayList<Integer> xzRotationOrder = 
 //            (ArrayList<Integer>) Arrays.asList(new Integer(2), new Integer(5), new Integer(3), new Integer(4));  
     
-    int x;
-    int y;
-    int z;
+    public int x;
+    public int y;
+    public int z;
     
     public Vector3(int mx, int my, int mz){
         x = mx;
