@@ -92,12 +92,13 @@ public class GreekFire extends BlockFire {
     
     public int tickRate(World par1World)
     {
-        return 5;//30
+        return 30;
     }
     
     public void updateTick(World world, int x, int y, int z, Random random)
     {
-        unphaseExpiredBlocks();
+//        unphaseExpiredBlocks();
+//        System.out.print(".");
         if (world.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
             Block base = Block.blocksList[world.getBlockId(x, y - 1, z)];
@@ -110,6 +111,7 @@ public class GreekFire extends BlockFire {
 
             if (!infiniteBurn && world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
             {
+                phaseBlockAt(new WorldXYZ( x, y, z));
                 world.setBlockToAir(x, y, z);
             }
             else
@@ -127,6 +129,7 @@ public class GreekFire extends BlockFire {
                 {
                     if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || fireLifespan > 3)
                     {
+                        phaseBlockAt(new WorldXYZ( x, y, z));
                         world.setBlockToAir(x, y, z);// remove fire because it has no base or it expired
                     }
                 }
@@ -199,8 +202,9 @@ public class GreekFire extends BlockFire {
     }
 
     private void phaseBlockAt(WorldXYZ coords) {
-        if(coords.getSigBlock().blockID == this.blockIdBackup){
-            System.err.println("You just tried to phase fire!");
+        int blockID = coords.getSigBlock().blockID;
+        if(blockID == this.blockIdBackup || blockID == 0){
+//            System.err.println("You just tried to phase fire!");
             return;
         }
         BlockRecord record = new BlockRecord(60, coords, coords.getSigBlock());
@@ -246,11 +250,12 @@ public class GreekFire extends BlockFire {
                 {
                     k1 = 15;
                 }
-//                phaseBlockAt(new WorldXYZ( x, y, z));
+                phaseBlockAt(new WorldXYZ( x, y, z));
                 world.setBlock(x, y, z, this.blockID, k1, 3);
             }
             else
             {
+                phaseBlockAt(new WorldXYZ( x, y, z));
                 world.setBlockToAir(x, y, z);
             }
         }
