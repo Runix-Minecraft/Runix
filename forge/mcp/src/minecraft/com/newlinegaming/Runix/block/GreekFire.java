@@ -109,7 +109,7 @@ public class GreekFire extends BlockFire {
 
             if (!infiniteBurn && world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
             {
-                world.setBlockToAir(x, y, z);
+                world.setBlockToAir(x, y, z);// fire got rained on and put out
             }
             else
             {
@@ -117,7 +117,7 @@ public class GreekFire extends BlockFire {
 
                 if (fireLifespan < 15)
                 {
-                    world.setBlockMetadataWithNotify(x, y, z, fireLifespan + random.nextInt(3) / 2, 4);
+                    world.setBlockMetadataWithNotify(x, y, z, fireLifespan + random.nextInt(3) / 2, 4); //increments fireLifespan
                 }
 
                 world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world) + random.nextInt(10));
@@ -126,7 +126,7 @@ public class GreekFire extends BlockFire {
                 {
                     if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || fireLifespan > 3)
                     {
-                        world.setBlockToAir(x, y, z);// remove fire because it has no base or it expired
+                        world.setBlockToAir(x, y, z);// remove fire because it has no base or it expired with no fuel source
                     }
                 }
                 else if (!infiniteBurn && !this.canBlockCatchFire(world, x, y - 1, z, UP) && fireLifespan == 15 && random.nextInt(4) == 0)
@@ -135,56 +135,42 @@ public class GreekFire extends BlockFire {
                 }
                 else
                 {
-                    boolean flag1 = world.isBlockHighHumidity(x, y, z);
-                    byte b0 = 0;
+                    this.tryToCatchBlockOnFire(world, x + 1, y, z, 300, random, fireLifespan, WEST );//new fire spread (adjacent)
+                    this.tryToCatchBlockOnFire(world, x - 1, y, z, 300, random, fireLifespan, EAST );
+                    this.tryToCatchBlockOnFire(world, x, y - 1, z, 250, random, fireLifespan, UP   );
+                    this.tryToCatchBlockOnFire(world, x, y + 1, z, 250, random, fireLifespan, DOWN );
+                    this.tryToCatchBlockOnFire(world, x, y, z - 1, 300, random, fireLifespan, SOUTH);
+                    this.tryToCatchBlockOnFire(world, x, y, z + 1, 300, random, fireLifespan, NORTH);
 
-                    if (flag1)
+                    for (int fX = x - 1; fX <= x + 1; ++fX)
                     {
-                        b0 = -50;
-                    }
-
-                    this.tryToCatchBlockOnFire(world, x + 1, y, z, 300 + b0, random, fireLifespan, WEST );
-                    this.tryToCatchBlockOnFire(world, x - 1, y, z, 300 + b0, random, fireLifespan, EAST );
-                    this.tryToCatchBlockOnFire(world, x, y - 1, z, 250 + b0, random, fireLifespan, UP   );
-                    this.tryToCatchBlockOnFire(world, x, y + 1, z, 250 + b0, random, fireLifespan, DOWN );
-                    this.tryToCatchBlockOnFire(world, x, y, z - 1, 300 + b0, random, fireLifespan, SOUTH);
-                    this.tryToCatchBlockOnFire(world, x, y, z + 1, 300 + b0, random, fireLifespan, NORTH);
-
-                    for (int i1 = x - 1; i1 <= x + 1; ++i1)
-                    {
-                        for (int j1 = z - 1; j1 <= z + 1; ++j1)
+                        for (int fZ = z - 1; fZ <= z + 1; ++fZ)
                         {
-                            for (int k1 = y - 1; k1 <= y + 4; ++k1)
+                            for (int fY = y - 1; fY <= y + 4; ++fY)
                             {
-                                if (i1 != x || k1 != y || j1 != z)
+                                if (fX != x || fY != y || fZ != z) //not this location
                                 {
-                                    int l1 = 100;
+                                    int heatLoss = 100;
 
-                                    if (k1 > y + 1)
+                                    if (fY > y + 1)
                                     {
-                                        l1 += (k1 - (y + 1)) * 100;
+                                        heatLoss += (fY - (y + 1)) * 100;//decreasing chance further away
                                     }
 
-                                    int i2 = this.getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
+                                    int i2 = this.getChanceOfNeighborsEncouragingFire(world, fX, fY, fZ);
 
                                     if (i2 > 0)
                                     {
-                                        int j2 = (i2 + 40 + world.difficultySetting * 7) / (fireLifespan + 30);
+                                        int j2 = (i2 + 47) / (fireLifespan + 30);
 
-                                        if (flag1)
+                                        if (j2 > 0 && random.nextInt(heatLoss) <= j2 && (!world.isRaining() || !world.canLightningStrikeAt(fX, fY, fZ)) && !world.canLightningStrikeAt(fX - 1, fY, z) && !world.canLightningStrikeAt(fX + 1, fY, fZ) && !world.canLightningStrikeAt(fX, fY, fZ - 1) && !world.canLightningStrikeAt(fX, fY, fZ + 1))
                                         {
-                                            j2 /= 2;
-                                        }
+                                            int newLifespan = fireLifespan + random.nextInt(5) / 4;// increase age
 
-                                        if (j2 > 0 && random.nextInt(l1) <= j2 && (!world.isRaining() || !world.canLightningStrikeAt(i1, k1, j1)) && !world.canLightningStrikeAt(i1 - 1, k1, z) && !world.canLightningStrikeAt(i1 + 1, k1, j1) && !world.canLightningStrikeAt(i1, k1, j1 - 1) && !world.canLightningStrikeAt(i1, k1, j1 + 1))
-                                        {
-                                            int k2 = fireLifespan + random.nextInt(5) / 4;
+                                            if (newLifespan > 15) //cap age
+                                                newLifespan = 15;
 
-                                            if (k2 > 15)
-                                            {
-                                                k2 = 15;
-                                            }
-                                            world.setBlock(i1, k1, j1, this.blockID, k2, 3);
+                                            world.setBlock(fX, fY, fZ, this.blockID, newLifespan, 3); // new fire spread (distant)
                                         }
                                     }
                                 }
@@ -207,7 +193,7 @@ public class GreekFire extends BlockFire {
         return false;
     }
 
-    private void tryToCatchBlockOnFire(World world, int x, int y, int z, int par5, Random random, int par7, ForgeDirection face)
+    private void tryToCatchBlockOnFire(World world, int x, int y, int z, int heatLoss, Random random, int lifespan, ForgeDirection face)
     {
         int flammability = 0;
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
@@ -216,17 +202,17 @@ public class GreekFire extends BlockFire {
             flammability = getFlammability(world, x, y, z, world.getBlockMetadata(x, y, z), face);
         }
 
-        if (random.nextInt(par5) < flammability)
+        if (random.nextInt(heatLoss) < flammability)
         {
-            if (random.nextInt(par7 + 10) < 5 && !world.canLightningStrikeAt(x, y, z))
+            if (random.nextInt(lifespan + 10) < 5 && !world.canLightningStrikeAt(x, y, z))
             {
-                int k1 = par7 + random.nextInt(5) / 4;
+                int newLifespan = lifespan + random.nextInt(5) / 4;
 
-                if (k1 > 15)
+                if (newLifespan > 15)
                 {
-                    k1 = 15;
+                    newLifespan = 15;
                 }
-                world.setBlock(x, y, z, this.blockID, k1, 3);
+                world.setBlock(x, y, z, this.blockID, newLifespan, 3);//fire spreads to a new location
             }
             else
             {
@@ -236,9 +222,9 @@ public class GreekFire extends BlockFire {
     }
 
     private int getFlammability(World par1World, int x, int y, int z, int blockMetadata, ForgeDirection face) {
-        x -= face.offsetX; 
-        y -= face.offsetY;
-        z -= face.offsetZ;
+        //x -= face.offsetX;//face is only used for blocks like stairs that have a non-solid face 
+        //y -= face.offsetY;
+        //z -= face.offsetZ;
         int block = par1World.getBlockId(x, y, z);
         //TODO we're still ignoring blockMetadata and which side of a stair is solid.  Josiah: I think this can be ignored
         return greekFlammability[block];
@@ -254,22 +240,22 @@ public class GreekFire extends BlockFire {
                canBlockCatchFire(par1World, par2, par3, par4 + 1, NORTH);
     }
 
-    private int getChanceOfNeighborsEncouragingFire(World par1World, int par2, int par3, int par4)
+    private int getChanceOfNeighborsEncouragingFire(World par1World, int x, int y, int z)
     {
         byte b0 = 0;
 
-        if (!par1World.isAirBlock(par2, par3, par4))
+        if (!par1World.isAirBlock(x, y, z))
         {
             return 0;
         }
         else
         {
-            int l = this.getChanceToEncourageFire(par1World, par2 + 1, par3, par4, b0, WEST);
-            l = this.getChanceToEncourageFire(par1World, par2 - 1, par3, par4, l, EAST);
-            l = this.getChanceToEncourageFire(par1World, par2, par3 - 1, par4, l, UP);
-            l = this.getChanceToEncourageFire(par1World, par2, par3 + 1, par4, l, DOWN);
-            l = this.getChanceToEncourageFire(par1World, par2, par3, par4 - 1, l, SOUTH);
-            l = this.getChanceToEncourageFire(par1World, par2, par3, par4 + 1, l, NORTH);
+            int l = this.getChanceToEncourageFire(par1World, x + 1, y, z, b0, WEST);
+            l = this.getChanceToEncourageFire(par1World, x - 1, y, z, l, EAST);
+            l = this.getChanceToEncourageFire(par1World, x, y - 1, z, l, UP);
+            l = this.getChanceToEncourageFire(par1World, x, y + 1, z, l, DOWN);
+            l = this.getChanceToEncourageFire(par1World, x, y, z - 1, l, SOUTH);
+            l = this.getChanceToEncourageFire(par1World, x, y, z + 1, l, NORTH);
             return l;
         }
     }
