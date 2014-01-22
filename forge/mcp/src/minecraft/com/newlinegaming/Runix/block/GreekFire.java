@@ -19,6 +19,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
+import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.Runix;
 import com.newlinegaming.Runix.WorldXYZ;
 
@@ -29,7 +30,6 @@ public class GreekFire extends BlockFire {
     
     protected static int[] greekFireSpreadSpeed = new int[4096];
     protected static int[] greekFlammability = new int[4096];
-    protected static DelayQueue<BlockRecord> phasedBlocks = new DelayQueue<BlockRecord>();
     
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
@@ -97,8 +97,6 @@ public class GreekFire extends BlockFire {
     
     public void updateTick(World world, int x, int y, int z, Random random)
     {
-//        unphaseExpiredBlocks();
-//        System.out.print(".");
         if (world.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
             Block base = Block.blocksList[world.getBlockId(x, y - 1, z)];
@@ -111,7 +109,6 @@ public class GreekFire extends BlockFire {
 
             if (!infiniteBurn && world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
             {
-                phaseBlockAt(new WorldXYZ( x, y, z));
                 world.setBlockToAir(x, y, z);
             }
             else
@@ -129,7 +126,6 @@ public class GreekFire extends BlockFire {
                 {
                     if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || fireLifespan > 3)
                     {
-                        phaseBlockAt(new WorldXYZ( x, y, z));
                         world.setBlockToAir(x, y, z);// remove fire because it has no base or it expired
                     }
                 }
@@ -188,7 +184,6 @@ public class GreekFire extends BlockFire {
                                             {
                                                 k2 = 15;
                                             }
-                                            phaseBlockAt(new WorldXYZ(i1, k1, j1));
                                             world.setBlock(i1, k1, j1, this.blockID, k2, 3);
                                         }
                                     }
@@ -198,25 +193,6 @@ public class GreekFire extends BlockFire {
                     }
                 }
             }
-        }
-    }
-
-    private void phaseBlockAt(WorldXYZ coords) {
-        int blockID = coords.getSigBlock().blockID;
-        if(blockID == this.blockIdBackup || blockID == 0){
-//            System.err.println("You just tried to phase fire!");
-            return;
-        }
-        BlockRecord record = new BlockRecord(60, coords, coords.getSigBlock());
-        phasedBlocks.add(record);
-    }
-
-    private void unphaseExpiredBlocks() {
-        
-        for( BlockRecord expired = phasedBlocks.poll(); expired != null; expired = phasedBlocks.poll()){
-            //TODO drop block if non-air block
-            System.out.println(expired.loc.toString() + "  ==  " + expired.block.blockID);
-            expired.loc.setBlockIdAndUpdate(expired.block.blockID);
         }
     }
 
@@ -250,12 +226,10 @@ public class GreekFire extends BlockFire {
                 {
                     k1 = 15;
                 }
-                phaseBlockAt(new WorldXYZ( x, y, z));
                 world.setBlock(x, y, z, this.blockID, k1, 3);
             }
             else
             {
-                phaseBlockAt(new WorldXYZ( x, y, z));
                 world.setBlockToAir(x, y, z);
             }
         }
