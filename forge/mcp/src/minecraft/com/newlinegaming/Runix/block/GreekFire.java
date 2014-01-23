@@ -131,9 +131,10 @@ public class GreekFire extends BlockFire {
                 }
                 else if (!infiniteBurn  && fireLifespan == 15)
                 {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
-                    if(random.nextInt(4) == 0)
+                    if(random.nextInt(6) == 0)
                         new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Block.glass.blockID);// fire dies of old age
-                    //world.setBlockToAir(x, y, z);
+                    else
+                        world.setBlockToAir(x, y, z);
                     return;//even if the block is not removed, we need to not spread
                 }
                 else
@@ -146,27 +147,27 @@ public class GreekFire extends BlockFire {
                     this.tryToCatchBlockOnFire(world, x, y, z - 1, heatLoss, random, fireLifespan, SOUTH);
                     this.tryToCatchBlockOnFire(world, x, y, z + 1, heatLoss, random, fireLifespan, NORTH);
 
-//                    tryFireJump(world, x, y, z, random, fireLifespan);
+                    tryFireJump(world, x, y, z, random, fireLifespan);
                 }
             }
         }
     }
 
     private void tryFireJump(World world, int x, int y, int z, Random random, int fireLifespan) {
-        for (int fX = x - 2; fX <= x + 2; ++fX)
+        for (int fX = x - 1; fX <= x + 1; ++fX)
         {
-            for (int fZ = z - 2; fZ <= z + 2; ++fZ)
+            for (int fZ = z - 1; fZ <= z + 1; ++fZ)
             {
-                for (int fY = y - 2; fY <= y + 2; ++fY)
+                for (int fY = y - 1; fY <= y + 1; ++fY)
                 {
                     if (fX != x || fY != y || fZ != z) //not this location
                     {
                         int heatLoss = 100;
 
-                        if (fY > y + 1)
-                        {
-                            heatLoss += (fY - (y + 1)) * 100;//decreasing chance further away
-                        }
+//                        if (fY > y + 1)
+//                        {
+//                            heatLoss += (fY - (y + 1)) * 100;//decreasing chance further away
+//                        }
 
                         int i2 = this.getChanceOfNeighborsEncouragingFire(world, fX, fY, fZ);
 
@@ -174,9 +175,9 @@ public class GreekFire extends BlockFire {
                         {
                             int j2 = (i2 + 47) / (fireLifespan + 30);
 
-                            if (j2 > 0 && random.nextInt(heatLoss) <= j2 && (!world.isRaining() || !world.canLightningStrikeAt(fX, fY, fZ)) && !world.canLightningStrikeAt(fX - 1, fY, z) && !world.canLightningStrikeAt(fX + 1, fY, fZ) && !world.canLightningStrikeAt(fX, fY, fZ - 1) && !world.canLightningStrikeAt(fX, fY, fZ + 1))
+                            if (j2 > 0 && random.nextInt(heatLoss) <= j2 && !world.isRaining() )
                             {
-                                spreadAndAgeFire(world, x, y, z, random, fireLifespan); // new fire spread (distant)
+                                spreadAndAgeFire(world, fX, fY, fZ, random, fireLifespan); // new fire spread (distant)
                             }
                         }
                     }
@@ -219,7 +220,7 @@ public class GreekFire extends BlockFire {
     }
 
     private void spreadAndAgeFire(World world, int x, int y, int z, Random random, int lifespan) {
-        int newLifespan = lifespan + random.nextInt(4) / 2;
+        int newLifespan = lifespan + random.nextInt(6) / 2;
 
         if (newLifespan > 15)
             newLifespan = 15;
