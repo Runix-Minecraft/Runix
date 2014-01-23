@@ -8,7 +8,6 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Random;
-import java.util.concurrent.DelayQueue;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
@@ -19,8 +18,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.Runix;
+import com.newlinegaming.Runix.SigBlock;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
 import cpw.mods.fml.relauncher.Side;
@@ -110,14 +110,15 @@ public class GreekFire extends BlockFire {
             else
             {
                 int heatLoss = 1;
-                this.tryToCatchBlockOnFire(world, x + 1, y, z, heatLoss, random, fireLifespan, WEST );//new fire spread (adjacent)
-                this.tryToCatchBlockOnFire(world, x - 1, y, z, heatLoss, random, fireLifespan, EAST );
-                this.tryToCatchBlockOnFire(world, x, y - 1, z, heatLoss, random, fireLifespan, UP   );
-                this.tryToCatchBlockOnFire(world, x, y + 1, z, heatLoss, random, fireLifespan, DOWN );
-                this.tryToCatchBlockOnFire(world, x, y, z - 1, heatLoss, random, fireLifespan, SOUTH);
-                this.tryToCatchBlockOnFire(world, x, y, z + 1, heatLoss, random, fireLifespan, NORTH);
+                WorldXYZ parentLoc = new WorldXYZ(world, x,y,z);
+                this.tryToCatchBlockOnFire(parentLoc.offset(Vector3.WEST), heatLoss, random, fireLifespan, parentLoc);//new fire spread (adjacent)
+                this.tryToCatchBlockOnFire(parentLoc.offset(Vector3.EAST), heatLoss, random, fireLifespan, parentLoc);
+                this.tryToCatchBlockOnFire(parentLoc.offset(Vector3.UP  ), heatLoss, random, fireLifespan, parentLoc);
+                this.tryToCatchBlockOnFire(parentLoc.offset(Vector3.DOWN), heatLoss, random, fireLifespan, parentLoc );
+                this.tryToCatchBlockOnFire(parentLoc.offset(Vector3.SOUTH), heatLoss, random, fireLifespan, parentLoc);
+                this.tryToCatchBlockOnFire(parentLoc.offset(Vector3.NORTH), heatLoss, random, fireLifespan, parentLoc);
 
-                tryFireJump(world, x, y, z, random, fireLifespan);
+                tryFireJump(parentLoc, random, fireLifespan);
             }
         }
     }
@@ -153,22 +154,22 @@ public class GreekFire extends BlockFire {
         return false;
     }
 
-    private void tryFireJump(World world, int x, int y, int z, Random random, int fireLifespan) {
-        for (int fX = x - 1; fX <= x + 1; ++fX){
-            for (int fZ = z - 1; fZ <= z + 1; ++fZ){
-                for (int fY = y - 1; fY <= y + 1; ++fY){
-                    if (fX != x || fY != y || fZ != z) //not this location
+    private void tryFireJump(WorldXYZ start, Random random, int fireLifespan) {
+        for (int fX = start.posX - 1; fX <= start.posX + 1; ++fX){
+            for (int fZ = start.posZ - 1; fZ <= start.posZ + 1; ++fZ){
+                for (int fY = start.posY - 1; fY <= start.posY + 1; ++fY){
+                    if (fX != start.posX || fY != start.posY || fZ != start.posZ) //not this location
                     {
                         int heatLoss = 100;
-                        int i2 = this.getChanceOfNeighborsEncouragingFire(world, fX, fY, fZ);
+                        int i2 = this.getChanceOfNeighborsEncouragingFire(start.getWorld(), fX, fY, fZ);
 
                         if (i2 > 0)
                         {
                             int j2 = (i2 + 47) / (fireLifespan + 30);
 
-                            if (j2 > 0 && random.nextInt(heatLoss) <= j2 && !world.isRaining() )
+                            if (j2 > 0 && random.nextInt(heatLoss) <= j2)
                             {
-                                spreadAndAgeFire(world, fX, fY, fZ, random, fireLifespan); // new fire spread (distant)
+                                spreadAndAgeFire(new WorldXYZ(start.getWorld(), fX, fY, fZ), random, fireLifespan, start); // new fire spread (distant)
                             }
                         }
                     }
@@ -188,39 +189,37 @@ public class GreekFire extends BlockFire {
         return false;
     }
 
-    private void tryToCatchBlockOnFire(World world, int x, int y, int z, int heatLoss, Random random, int lifespan, ForgeDirection face)
+    private void tryToCatchBlockOnFire(WorldXYZ loc, int heatLoss, Random random, int lifespan, WorldXYZ parent)
     {
         int flammability = 0;
-        Block block = Block.blocksList[world.getBlockId(x, y, z)];
+        Block block = Block.blocksList[loc.getBlockId()];
         if (block != null)
         {
-            flammability = getFlammability(world, x, y, z, world.getBlockMetadata(x, y, z), face);
+            flammability = getFlammability(loc);
         }
 
         if (random.nextInt(heatLoss) < flammability)
         {
             if (random.nextInt(lifespan + 10) < 5)
             {
-                spreadAndAgeFire(world, x, y, z, random, lifespan);
+                spreadAndAgeFire(loc, random, lifespan, parent);
             }
 //            else
-//            {
 //                world.setBlockToAir(x, y, z);
-//            }
         }
     }
 
-    private void spreadAndAgeFire(World world, int x, int y, int z, Random random, int lifespan) {
+    private void spreadAndAgeFire(WorldXYZ child, Random random, int lifespan, WorldXYZ parent) {
         int newLifespan = lifespan + 1;//random.nextInt(6) / 2;
 
         if (newLifespan > 15)
             newLifespan = 15;
 
-        world.setBlock(x, y, z, this.blockID, newLifespan, 3);//fire spreads to a new location
+        child.setBlockId(new SigBlock(this.blockID, newLifespan));//fire spreads to a new location
     }
 
-    private int getFlammability(World par1World, int x, int y, int z, int blockMetadata, ForgeDirection face) {
-        int block = par1World.getBlockId(x, y, z);
+    private int getFlammability(WorldXYZ location) {
+        int block = location.getBlockId();
         return greekFlammability[block];
     }
 
