@@ -107,7 +107,7 @@ public class GreekFire extends BlockFire {
                 world.setBlockToAir(x, y, z);// correct invalid placement (probably neighbor changed)
             }
 
-            if (!infiniteBurn && world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
+            if (!infiniteBurn && world.isRaining())// && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
             {
                 world.setBlockToAir(x, y, z);// fire got rained on and put out
             }
@@ -129,18 +129,22 @@ public class GreekFire extends BlockFire {
                         world.setBlockToAir(x, y, z);// remove fire because it has no base or it expired with no fuel source
                     }
                 }
-                else if (!infiniteBurn  && fireLifespan == 15 && random.nextInt(4) == 0)
+                else if (!infiniteBurn  && fireLifespan == 15)
                 {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
-                    world.setBlockToAir(x, y, z);// fire dies of old age
+                    if(random.nextInt(4) == 0)
+                        new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Block.glass.blockID);// fire dies of old age
+                    //world.setBlockToAir(x, y, z);
+                    return;//even if the block is not removed, we need to not spread
                 }
                 else
                 {
-                    this.tryToCatchBlockOnFire(world, x + 1, y, z, 300, random, fireLifespan, WEST );//new fire spread (adjacent)
-                    this.tryToCatchBlockOnFire(world, x - 1, y, z, 300, random, fireLifespan, EAST );
-                    this.tryToCatchBlockOnFire(world, x, y - 1, z, 250, random, fireLifespan, UP   );
-                    this.tryToCatchBlockOnFire(world, x, y + 1, z, 250, random, fireLifespan, DOWN );
-                    this.tryToCatchBlockOnFire(world, x, y, z - 1, 300, random, fireLifespan, SOUTH);
-                    this.tryToCatchBlockOnFire(world, x, y, z + 1, 300, random, fireLifespan, NORTH);
+                    int heatLoss = 1;
+                    this.tryToCatchBlockOnFire(world, x + 1, y, z, heatLoss, random, fireLifespan, WEST );//new fire spread (adjacent)
+                    this.tryToCatchBlockOnFire(world, x - 1, y, z, heatLoss, random, fireLifespan, EAST );
+                    this.tryToCatchBlockOnFire(world, x, y - 1, z, heatLoss, random, fireLifespan, UP   );
+                    this.tryToCatchBlockOnFire(world, x, y + 1, z, heatLoss, random, fireLifespan, DOWN );
+                    this.tryToCatchBlockOnFire(world, x, y, z - 1, heatLoss, random, fireLifespan, SOUTH);
+                    this.tryToCatchBlockOnFire(world, x, y, z + 1, heatLoss, random, fireLifespan, NORTH);
 
 //                    tryFireJump(world, x, y, z, random, fireLifespan);
                 }
@@ -210,12 +214,11 @@ public class GreekFire extends BlockFire {
         {
             if (random.nextInt(lifespan + 10) < 5 && !world.canLightningStrikeAt(x, y, z))
             {
-                int newLifespan = lifespan + random.nextInt(5) / 4;
+                int newLifespan = lifespan + 1;//random.nextInt(5) / 4;
 
                 if (newLifespan > 15)
-                {
                     newLifespan = 15;
-                }
+
                 world.setBlock(x, y, z, this.blockID, newLifespan, 3);//fire spreads to a new location
             }
 //            else
