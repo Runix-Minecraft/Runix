@@ -92,7 +92,7 @@ public class GreekFire extends BlockFire {
     
     public int tickRate(World par1World)
     {
-        return 30;
+        return 30 + par1World.rand.nextInt(10);
     }
     
     public void updateTick(World world, int x, int y, int z, Random random)
@@ -100,8 +100,8 @@ public class GreekFire extends BlockFire {
         if (world.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
             int fireLifespan = world.getBlockMetadata(x, y, z);
-            if (fireLifespan < 15)
-                world.setBlockMetadataWithNotify(x, y, z, fireLifespan + random.nextInt(3) / 2, 4); //increments fireLifespan
+//            if (fireLifespan < 15)
+//                world.setBlockMetadataWithNotify(x, y, z, fireLifespan + random.nextInt(3) / 2, 4); //increments fireLifespan
 
             if(fireDiesOut(world, x, y, z, random, fireLifespan)){
                 if(world.getBlockId(x, y, z) != Block.glass.blockID) //sometimes it crystallizes instead
@@ -136,7 +136,7 @@ public class GreekFire extends BlockFire {
             return true;// fire got rained on and put out
         else
         {
-            world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world) + random.nextInt(10));
+            world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world));
 
             if (!this.canNeighborBurn(world, x, y, z)){
                 if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || fireLifespan > 3){
@@ -199,7 +199,7 @@ public class GreekFire extends BlockFire {
 
         if (random.nextInt(heatLoss) < flammability)
         {
-            if (random.nextInt(lifespan + 10) < 5 && !world.canLightningStrikeAt(x, y, z))
+            if (random.nextInt(lifespan + 10) < 5)
             {
                 spreadAndAgeFire(world, x, y, z, random, lifespan);
             }
@@ -211,7 +211,7 @@ public class GreekFire extends BlockFire {
     }
 
     private void spreadAndAgeFire(World world, int x, int y, int z, Random random, int lifespan) {
-        int newLifespan = lifespan + random.nextInt(6) / 2;
+        int newLifespan = lifespan + 1;//random.nextInt(6) / 2;
 
         if (newLifespan > 15)
             newLifespan = 15;
@@ -287,7 +287,7 @@ public class GreekFire extends BlockFire {
             }
             else
             {
-                par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World) + par1World.rand.nextInt(10));
+                par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
             }
         }
     }
