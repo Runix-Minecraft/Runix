@@ -118,9 +118,8 @@ public class GreekFire extends BlockFire {
 
     private boolean fireDiesOut(World world, int x, int y, int z, Random random, int fireLifespan) {
         Block base = Block.blocksList[world.getBlockId(x, y - 1, z)];
-        boolean infiniteBurn = (base != null && isGreekFireSource(base ));
-
-        if(infiniteBurn)
+        
+        if(isGreekFireSource(base ))
             return false;
         
         if (!this.canPlaceBlockAt(world, x, y, z))
@@ -172,7 +171,7 @@ public class GreekFire extends BlockFire {
     }
 
     private boolean isGreekFireSource(Block base) {
-        if(base.blockID == Block.blockLapis.blockID)
+        if(base != null && base.blockID == Block.blockLapis.blockID)
             return true;
         return false;
     }
@@ -265,18 +264,15 @@ public class GreekFire extends BlockFire {
         }
     }
     
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    public void onBlockAdded(World par1World, int x, int y, int z)
     {
-        if (par1World.provider.dimensionId > 0 || par1World.getBlockId(par2, par3 - 1, par4) != Block.obsidian.blockID || !Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
+        if (!par1World.doesBlockHaveSolidTopSurface(x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
         {
-            if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !this.canNeighborBurn(par1World, par2, par3, par4))
-            {
-                par1World.setBlockToAir(par2, par3, par4);
-            }
-            else
-            {
-                par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
-            }
+            par1World.setBlockToAir(x, y, z);
+        }
+        else
+        {
+            par1World.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(par1World));
         }
     }
         
@@ -288,14 +284,7 @@ public class GreekFire extends BlockFire {
     
     public boolean canBlockCatchFire(World world, int x, int y, int z)
     {
-//        Block block = Block.blocksList[world.getBlockId(x, y, z)];
-//        if (block != null)
-//        {
             return getFlammability(new WorldXYZ(world, x, y, z)) > 0;
-            //return greekFlammability[block.blockID] > 0;
-            //return block.isFlammable(world, x, y, z, world.getBlockMetadata(x, y, z), face);
-//        }
-//        return false;
     }
     
     public int getChanceToEncourageFire(World world, int x, int y, int z, int oldChance, ForgeDirection face)
@@ -304,15 +293,9 @@ public class GreekFire extends BlockFire {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
         if (block != null)
         {
-            newChance = getFireSpreadSpeed(block, world, x, y, z, world.getBlockMetadata(x, y, z), face);
+            newChance = greekFireSpreadSpeed[block.blockID];
         }
         return (newChance > oldChance ? newChance : oldChance);
-    }
-
-
-    private int getFireSpreadSpeed(Block block, World world, int x, int y,
-	    int z, int blockMetadata, ForgeDirection face) {
-	return greekFireSpreadSpeed[block.blockID];
     }
 
     @SideOnly(Side.CLIENT)
