@@ -9,6 +9,7 @@ import com.newlinegaming.Runix.Runes.FaithRune;
 import com.newlinegaming.Runix.Runes.FerrousWheelRune;
 import com.newlinegaming.Runix.Runes.GreekFireRune;
 import com.newlinegaming.Runix.Runes.OracleRune;
+import com.newlinegaming.Runix.Runes.PlayerHandler;
 import com.newlinegaming.Runix.Runes.RubricCreationRune;
 import com.newlinegaming.Runix.Runes.RubricRecallRune;
 import com.newlinegaming.Runix.Runes.RuneCompass;
@@ -46,6 +47,7 @@ public class RuneHandler {
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
 
     private RuneHandler() {
+        //TODO: Change this to scan a folder instead.
         runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());

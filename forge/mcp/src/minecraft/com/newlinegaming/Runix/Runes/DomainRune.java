@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import com.newlinegaming.Runix.PersistentRune;
 
 public class DomainRune extends PersistentRune {
-
+    
+//TODO Use BlockRecord.java for Creeper Heal
+    
     private static ArrayList<PersistentRune> activeDomains= new ArrayList<PersistentRune>();
     public DomainRune() {
 	runeName = ("Domain");
