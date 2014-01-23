@@ -99,76 +99,67 @@ public class GreekFire extends BlockFire {
     {
         if (world.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
-            Block base = Block.blocksList[world.getBlockId(x, y - 1, z)];
-            boolean infiniteBurn = (base != null && isGreekFireSource(base ));
+            int fireLifespan = world.getBlockMetadata(x, y, z);
+            if (fireLifespan < 15)
+                world.setBlockMetadataWithNotify(x, y, z, fireLifespan + random.nextInt(3) / 2, 4); //increments fireLifespan
 
-            if (!this.canPlaceBlockAt(world, x, y, z))
-            {
-                world.setBlockToAir(x, y, z);// correct invalid placement (probably neighbor changed)
-            }
-
-            if (!infiniteBurn && world.isRaining())// && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
-            {
-                world.setBlockToAir(x, y, z);// fire got rained on and put out
+            if(fireDiesOut(world, x, y, z, random, fireLifespan)){
+                if(world.getBlockId(x, y, z) != Block.glass.blockID) //sometimes it crystallizes instead
+                    world.setBlockToAir(x, y, z);    
             }
             else
             {
-                int fireLifespan = world.getBlockMetadata(x, y, z);
+                int heatLoss = 1;
+                this.tryToCatchBlockOnFire(world, x + 1, y, z, heatLoss, random, fireLifespan, WEST );//new fire spread (adjacent)
+                this.tryToCatchBlockOnFire(world, x - 1, y, z, heatLoss, random, fireLifespan, EAST );
+                this.tryToCatchBlockOnFire(world, x, y - 1, z, heatLoss, random, fireLifespan, UP   );
+                this.tryToCatchBlockOnFire(world, x, y + 1, z, heatLoss, random, fireLifespan, DOWN );
+                this.tryToCatchBlockOnFire(world, x, y, z - 1, heatLoss, random, fireLifespan, SOUTH);
+                this.tryToCatchBlockOnFire(world, x, y, z + 1, heatLoss, random, fireLifespan, NORTH);
 
-                if (fireLifespan < 15)
-                {
-                    world.setBlockMetadataWithNotify(x, y, z, fireLifespan + random.nextInt(3) / 2, 4); //increments fireLifespan
-                }
-
-                world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world) + random.nextInt(10));
-
-                if (!infiniteBurn && !this.canNeighborBurn(world, x, y, z))
-                {
-                    if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || fireLifespan > 3)
-                    {
-                        world.setBlockToAir(x, y, z);// remove fire because it has no base or it expired with no fuel source
-                    }
-                }
-                else if (!infiniteBurn  && fireLifespan == 15)
-                {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
-                    if(random.nextInt(6) == 0)
-                        new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Block.glass.blockID);// fire dies of old age
-                    else
-                        world.setBlockToAir(x, y, z);
-                    return;//even if the block is not removed, we need to not spread
-                }
-                else
-                {
-                    int heatLoss = 1;
-                    this.tryToCatchBlockOnFire(world, x + 1, y, z, heatLoss, random, fireLifespan, WEST );//new fire spread (adjacent)
-                    this.tryToCatchBlockOnFire(world, x - 1, y, z, heatLoss, random, fireLifespan, EAST );
-                    this.tryToCatchBlockOnFire(world, x, y - 1, z, heatLoss, random, fireLifespan, UP   );
-                    this.tryToCatchBlockOnFire(world, x, y + 1, z, heatLoss, random, fireLifespan, DOWN );
-                    this.tryToCatchBlockOnFire(world, x, y, z - 1, heatLoss, random, fireLifespan, SOUTH);
-                    this.tryToCatchBlockOnFire(world, x, y, z + 1, heatLoss, random, fireLifespan, NORTH);
-
-                    tryFireJump(world, x, y, z, random, fireLifespan);
-                }
+                tryFireJump(world, x, y, z, random, fireLifespan);
             }
         }
     }
 
-    private void tryFireJump(World world, int x, int y, int z, Random random, int fireLifespan) {
-        for (int fX = x - 1; fX <= x + 1; ++fX)
+    private boolean fireDiesOut(World world, int x, int y, int z, Random random, int fireLifespan) {
+        Block base = Block.blocksList[world.getBlockId(x, y - 1, z)];
+        boolean infiniteBurn = (base != null && isGreekFireSource(base ));
+
+        if(infiniteBurn)
+            return false;
+        
+        if (!this.canPlaceBlockAt(world, x, y, z))
+            return true;// correct invalid placement (probably neighbor changed)
+
+        if (world.isRaining())// && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
+            return true;// fire got rained on and put out
+        else
         {
-            for (int fZ = z - 1; fZ <= z + 1; ++fZ)
-            {
-                for (int fY = y - 1; fY <= y + 1; ++fY)
-                {
+            world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world) + random.nextInt(10));
+
+            if (!this.canNeighborBurn(world, x, y, z)){
+                if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || fireLifespan > 3){
+                    return true;// remove fire because it has no base or it expired with no fuel source
+                }
+            }
+            else if (fireLifespan == 15)
+            {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
+                if(random.nextInt(6) == 0)
+                    new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Block.glass.blockID);// fire dies of old age
+                return true;//even if the block is not removed, we need to not spread
+            }
+        }
+        return false;
+    }
+
+    private void tryFireJump(World world, int x, int y, int z, Random random, int fireLifespan) {
+        for (int fX = x - 1; fX <= x + 1; ++fX){
+            for (int fZ = z - 1; fZ <= z + 1; ++fZ){
+                for (int fY = y - 1; fY <= y + 1; ++fY){
                     if (fX != x || fY != y || fZ != z) //not this location
                     {
                         int heatLoss = 100;
-
-//                        if (fY > y + 1)
-//                        {
-//                            heatLoss += (fY - (y + 1)) * 100;//decreasing chance further away
-//                        }
-
                         int i2 = this.getChanceOfNeighborsEncouragingFire(world, fX, fY, fZ);
 
                         if (i2 > 0)
