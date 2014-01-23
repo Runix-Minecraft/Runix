@@ -176,12 +176,7 @@ public class GreekFire extends BlockFire {
 
                             if (j2 > 0 && random.nextInt(heatLoss) <= j2 && (!world.isRaining() || !world.canLightningStrikeAt(fX, fY, fZ)) && !world.canLightningStrikeAt(fX - 1, fY, z) && !world.canLightningStrikeAt(fX + 1, fY, fZ) && !world.canLightningStrikeAt(fX, fY, fZ - 1) && !world.canLightningStrikeAt(fX, fY, fZ + 1))
                             {
-                                int newLifespan = fireLifespan + 1;//random.nextInt(5) / 4;// increase age
-
-                                if (newLifespan > 15) //cap age
-                                    newLifespan = 15;
-
-                                world.setBlock(fX, fY, fZ, this.blockID, newLifespan, 3); // new fire spread (distant)
+                                spreadAndAgeFire(world, x, y, z, random, fireLifespan); // new fire spread (distant)
                             }
                         }
                     }
@@ -214,12 +209,7 @@ public class GreekFire extends BlockFire {
         {
             if (random.nextInt(lifespan + 10) < 5 && !world.canLightningStrikeAt(x, y, z))
             {
-                int newLifespan = lifespan + 1;//random.nextInt(5) / 4;
-
-                if (newLifespan > 15)
-                    newLifespan = 15;
-
-                world.setBlock(x, y, z, this.blockID, newLifespan, 3);//fire spreads to a new location
+                spreadAndAgeFire(world, x, y, z, random, lifespan);
             }
 //            else
 //            {
@@ -228,12 +218,17 @@ public class GreekFire extends BlockFire {
         }
     }
 
+    private void spreadAndAgeFire(World world, int x, int y, int z, Random random, int lifespan) {
+        int newLifespan = lifespan + random.nextInt(4) / 2;
+
+        if (newLifespan > 15)
+            newLifespan = 15;
+
+        world.setBlock(x, y, z, this.blockID, newLifespan, 3);//fire spreads to a new location
+    }
+
     private int getFlammability(World par1World, int x, int y, int z, int blockMetadata, ForgeDirection face) {
-        //x -= face.offsetX;//face is only used for blocks like stairs that have a non-solid face 
-        //y -= face.offsetY;
-        //z -= face.offsetZ;
         int block = par1World.getBlockId(x, y, z);
-        //TODO we're still ignoring blockMetadata and which side of a stair is solid.  Josiah: I think this can be ignored
         return greekFlammability[block];
     }
 
