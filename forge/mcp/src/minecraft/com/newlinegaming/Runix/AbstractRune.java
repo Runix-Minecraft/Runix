@@ -20,7 +20,7 @@ import net.minecraft.world.World;
  */
 public abstract class AbstractRune {
 	
-    protected int energy = 0;
+    public int energy = 0;
 	
     public static final int TIER = -1; //Tier
     public static final int SIGR = -2; //Signature block
@@ -81,7 +81,7 @@ public abstract class AbstractRune {
 	 * @param rune - the rune being cast
 	 * @return
 	 */
-	static boolean runeAllowed(EntityPlayer player, AbstractRune rune)
+	protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune)
 	{
 		// arbi
 		player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN+rune.getRuneName()+ " accepted"));
@@ -303,7 +303,7 @@ public abstract class AbstractRune {
      * @param centerPoint
      * @return
      */
-    HashMap<WorldXYZ, SigBlock> patternToShape(int[][][] pattern, WorldXYZ centerPoint){
+    protected HashMap<WorldXYZ, SigBlock> patternToShape(int[][][] pattern, WorldXYZ centerPoint){
         // World coordinates + relative offset + half the size of the rune (for middle)
         // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
         HashMap<WorldXYZ, SigBlock> shape = new HashMap<WorldXYZ, SigBlock>();

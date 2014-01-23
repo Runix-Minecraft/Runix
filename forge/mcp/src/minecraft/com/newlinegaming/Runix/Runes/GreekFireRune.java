@@ -1,5 +1,8 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.Runes;
 
+import com.newlinegaming.Runix.AbstractRune;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.block.GreekFire;
 
 import net.minecraft.block.Block;
