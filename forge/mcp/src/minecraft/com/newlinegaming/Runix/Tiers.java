@@ -265,7 +265,7 @@ public class Tiers {
     public static int getTier(int blockID){
         int energy = getEnergy(blockID);
         energy = energy < 1 ? 1 : energy; // log(0) = crash bad
-        return (int) (Math.log(energy) / Math.log(2));
+        return (int) Math.round(Math.log(energy) / Math.log(2));
     }
 
     /**The idea behind this method is to take a list of Blocks and pull all the ids. 

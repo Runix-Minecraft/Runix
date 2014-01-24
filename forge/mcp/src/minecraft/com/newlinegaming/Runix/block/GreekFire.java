@@ -125,7 +125,7 @@ public class GreekFire extends BlockFire {
                 for(WorldXYZ neighbor : loc.getNeighbors())
                     this.tryToCatchBlockOnFire(neighbor, heatLoss, random, fireLifespan );//new fire spread (adjacent)
 
-                tryFireJump(world, x, y, z, random, fireLifespan);
+//                tryFireJump(world, x, y, z, random, fireLifespan);
             }
         }
     }
@@ -154,7 +154,8 @@ public class GreekFire extends BlockFire {
             {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
 //                if(random.nextInt(4) == 0)
 //                    new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Block.glass.blockID);// fire dies of old age
-                return false;//even if the block is not removed, we need to not spread
+                if(random.nextInt(100) == 1)
+                    return true;// this is a very low probability of dying out
             }
         }
         return false;
@@ -202,12 +203,8 @@ public class GreekFire extends BlockFire {
 
         if (random.nextInt(heatLoss) < flammability)
         {
-            if (random.nextInt(lifespan + 10) < 5)
-            {
+            //if (random.nextInt(lifespan + 10) < 5)
                 spreadAndAgeFire(loc, random, lifespan, loc.posX, loc.posY, loc.posZ);
-            }
-//            else
-//                world.setBlockToAir(x, y, z);
         }
     }
 
@@ -281,6 +278,7 @@ public class GreekFire extends BlockFire {
     public static boolean consumeValuableForFuel(WorldXYZ coords, int fuelBlockID) {
         //consume energy from neighbor to lower meta data and allow spread
         int tier = Tiers.getTier(fuelBlockID);
+        System.out.println("Tier: " + tier);
         if(tier > 3){
             if(!coords.getWorld().isRemote){
                 int newLife = Math.min(Math.max(coords.getMetaId() - (tier-3), 0),15);
