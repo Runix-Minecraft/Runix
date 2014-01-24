@@ -23,6 +23,7 @@ import net.minecraftforge.common.ForgeDirection;
 
 import com.newlinegaming.Runix.Runix;
 import com.newlinegaming.Runix.SigBlock;
+import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.WorldXYZ;
 
 import cpw.mods.fml.relauncher.Side;
@@ -48,10 +49,14 @@ public class GreekFire extends BlockFire {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int block, CreativeTabs tab, List subItems) {
         subItems.add(new ItemStack(block, 1, 0));
-        subItems.add(new ItemStack(block, 1, 13));
         subItems.add(new ItemStack(block, 1, 14));
     }
-
+    
+    @Override
+    public int damageDropped (int metadata) {
+        return metadata;
+    }
+    
     @SideOnly(Side.CLIENT)
     public Icon getFireIcon(int par1)
     {
@@ -266,11 +271,24 @@ public class GreekFire extends BlockFire {
         return par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || this.canNeighborBurn(par1World, par2, par3, par4);
     }
     
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    public void onNeighborBlockChange(World par1World, int x, int y, int z, int par5)
     {
-        if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !this.canNeighborBurn(par1World, par2, par3, par4))
+        if (!par1World.doesBlockHaveSolidTopSurface(x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
         {
-            par1World.setBlockToAir(par2, par3, par4);
+            par1World.setBlockToAir(x, y, z);
+        }
+        consumeValuableForFuel(par1World, x, y, z);// this will consume natural ores
+            
+    }
+
+    private void consumeValuableForFuel(World par1World, int x, int y, int z) {
+        //consume energy from neighbor to lower meta data and allow spread
+        WorldXYZ valuable = new WorldXYZ(par1World, x, y, z).mostValuableNeighbor();
+        int tier = Tiers.getTier(valuable.getBlockId());
+        if(tier > 3){
+//            int newLife = Math.min(Math.max(par1World.getBlockMetadata(x, y, z) - (tier-3), 0),15);
+            par1World.setBlock(x, y, z, blockID, 14, 3);
+//            valuable.setBlockIdAndUpdate(0);//delete neighbor
         }
     }
     
