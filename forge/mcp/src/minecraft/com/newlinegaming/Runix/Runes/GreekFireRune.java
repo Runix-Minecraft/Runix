@@ -57,7 +57,7 @@ public class GreekFireRune extends AbstractRune {
         accept(player);
         consumeRune(coords);
         coords.setBlockIdAndUpdate(Block.blockLapis.blockID);
-        coords.offset(Vector3.UP).setBlockIdAndUpdate(GreekFire.blockIdBackup);//GreekFire.blockID
+        coords.offset(Vector3.UP).setBlock(GreekFire.blockIdBackup, 14);//GreekFire.blockID
         //TODO set meta on Fire block for remaining energy from the Rune
     }
 
