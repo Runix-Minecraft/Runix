@@ -19,9 +19,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeDirection;
 
-import com.newlinegaming.Runix.Runix;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.WorldXYZ;
@@ -216,7 +216,6 @@ public class GreekFire extends BlockFire {
 
         if (newLifespan > 15)
             return; // we don't allow old fires to propagate more
-            //newLifespan = 15;
 
         loc.setBlockId(new SigBlock(this.blockID, newLifespan));//fire spreads to a new location
     }
@@ -277,19 +276,21 @@ public class GreekFire extends BlockFire {
         {
             par1World.setBlockToAir(x, y, z);
         }
-        consumeValuableForFuel(par1World, x, y, z);// this will consume natural ores
-            
     }
 
-    private void consumeValuableForFuel(World par1World, int x, int y, int z) {
+    public static boolean consumeValuableForFuel(WorldXYZ coords, int fuelBlockID) {
         //consume energy from neighbor to lower meta data and allow spread
-        WorldXYZ valuable = new WorldXYZ(par1World, x, y, z).mostValuableNeighbor();
-        int tier = Tiers.getTier(valuable.getBlockId());
+        int tier = Tiers.getTier(fuelBlockID);
         if(tier > 3){
-//            int newLife = Math.min(Math.max(par1World.getBlockMetadata(x, y, z) - (tier-3), 0),15);
-            par1World.setBlock(x, y, z, blockID, 14, 3);
-//            valuable.setBlockIdAndUpdate(0);//delete neighbor
+            if(!coords.getWorld().isRemote){
+                int newLife = Math.min(Math.max(coords.getMetaId() - (tier-3), 0),15);
+                coords.setBlock( blockIdBackup, newLife);
+                ((WorldServer)coords.getWorld()).scheduleBlockUpdate(coords.posX, coords.posY, coords.posZ, blockIdBackup, 4);
+                
+            }
+            return true;
         }
+        return false;
     }
     
     public void onBlockAdded(World par1World, int x, int y, int z)

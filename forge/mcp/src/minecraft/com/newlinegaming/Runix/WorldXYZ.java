@@ -175,7 +175,12 @@ public class WorldXYZ extends ChunkCoordinates {
         return this.getWorld().setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }
-    
+
+    public boolean setBlock(int blockID, int meta){
+        if(blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+            return false; //You cannot delete or place bedrock
+        return this.getWorld().setBlock(posX, posY, posZ, blockID, meta, 3);
+    }
     
     public String toString(){//this is designed to match the GSON output
         return "{\"dimensionID\":"+dimensionID+",\"face\":"+face+",\"posX\":"+posX+",\"posY\":"+posY+",\"posZ\":"+posZ+"}";
