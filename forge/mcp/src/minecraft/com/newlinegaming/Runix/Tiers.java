@@ -257,19 +257,17 @@ public class Tiers {
     }
     
     public static int getEnergy(int blockID){
+        if(blockID > 255)
+            return 1;
         return blockEnergy[blockID];
     }
 
     public static int getTier(int blockID){
-        int energy = blockEnergy[blockID];
+        int energy = getEnergy(blockID);
         energy = energy < 1 ? 1 : energy; // log(0) = crash bad
-        return getTierFromEnergy(energy);
-    }
-
-    private static int getTierFromEnergy(int energy){
         return (int) (Math.log(energy) / Math.log(2));
     }
-    
+
     /**The idea behind this method is to take a list of Blocks and pull all the ids. 
      * It really only exists to cut down on the number of ".blockID" that is in this file given
      * how long it will be.  

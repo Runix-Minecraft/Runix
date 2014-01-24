@@ -224,6 +224,18 @@ public class WorldXYZ extends ChunkCoordinates {
         return base.isSolid();
     }
 
+    public WorldXYZ mostValuableNeighbor() {
+        WorldXYZ best = offset(Vector3.UP);
+        int bestEnergy = 0;
+        for(WorldXYZ c : getNeighbors()){
+            if( Tiers.getEnergy(c.getBlockId()) > bestEnergy){
+                bestEnergy = Tiers.getEnergy(c.getBlockId());
+                best = c;
+            }
+        }
+        return best;
+    }
+
 
 
 }
