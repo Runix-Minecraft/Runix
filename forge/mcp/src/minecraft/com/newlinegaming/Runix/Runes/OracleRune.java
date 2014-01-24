@@ -1,7 +1,12 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.RuneHandler;
+import com.newlinegaming.Runix.Tiers;
+import com.newlinegaming.Runix.WorldXYZ;
 
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.GameRegistry;

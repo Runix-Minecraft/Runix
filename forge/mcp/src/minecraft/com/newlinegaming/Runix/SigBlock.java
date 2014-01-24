@@ -4,8 +4,8 @@ package com.newlinegaming.Runix;
  * Meta is the additional information like orientation or color used in some blocks.
  * Doesn't currently do TileEntity or NBT.*/
 public class SigBlock{
-    int blockID;
-    int meta;
+    public int blockID;
+    public int meta;
     public SigBlock(int blockID, int meta){
         this.blockID = blockID;
         this.meta = meta;

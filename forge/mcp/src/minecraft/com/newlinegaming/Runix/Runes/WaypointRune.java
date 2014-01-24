@@ -1,6 +1,10 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
+
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
 

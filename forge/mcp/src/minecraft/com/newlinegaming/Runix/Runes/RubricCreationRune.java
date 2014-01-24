@@ -1,9 +1,15 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.RenderHelper;
+import com.newlinegaming.Runix.SigBlock;
+import com.newlinegaming.Runix.Signature;
+import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;

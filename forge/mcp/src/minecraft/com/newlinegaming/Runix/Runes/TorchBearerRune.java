@@ -1,8 +1,15 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+
+import com.newlinegaming.Runix.AbstractTimedRune;
+import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Util_SphericalFunctions;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

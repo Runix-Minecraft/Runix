@@ -1,6 +1,10 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.Runes;
 
 import java.util.HashMap;
+
+import com.newlinegaming.Runix.AbstractRune;
+import com.newlinegaming.Runix.SigBlock;
+import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -8,7 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class RuneCompass extends AbstractRune{
 
 
-    RuneCompass(){
+    public RuneCompass(){
         runeName = "Compass";
     }
     

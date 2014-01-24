@@ -10,6 +10,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.google.gson.Gson;
+import com.newlinegaming.Runix.Runes.TorchBearerRune;
+import com.newlinegaming.Runix.Runes.WaypointRune;
 
 /** This file exists in order to test out Java syntax and library function within our
  * build environment without the need to launch the main Minecraft client.  In order

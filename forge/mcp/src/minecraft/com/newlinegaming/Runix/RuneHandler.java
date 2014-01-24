@@ -4,6 +4,21 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.newlinegaming.Runix.Runes.DomainRune;
+import com.newlinegaming.Runix.Runes.FaithRune;
+import com.newlinegaming.Runix.Runes.FerrousWheelRune;
+import com.newlinegaming.Runix.Runes.GreekFireRune;
+import com.newlinegaming.Runix.Runes.OracleRune;
+import com.newlinegaming.Runix.Runes.PlayerHandler;
+import com.newlinegaming.Runix.Runes.RubricCreationRune;
+import com.newlinegaming.Runix.Runes.RubricRecallRune;
+import com.newlinegaming.Runix.Runes.RuneCompass;
+import com.newlinegaming.Runix.Runes.RunecraftRune;
+import com.newlinegaming.Runix.Runes.TeleporterRune;
+import com.newlinegaming.Runix.Runes.TorchBearerRune;
+import com.newlinegaming.Runix.Runes.WaypointRune;
+import com.newlinegaming.Runix.Runes.ZeerixChestRune;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -32,6 +47,7 @@ public class RuneHandler {
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
 
     private RuneHandler() {
+        //TODO: Change this to scan a folder instead.
         runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
@@ -45,6 +61,7 @@ public class RuneHandler {
         runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
         runeRegistry.add(new GreekFireRune());
+        runeRegistry.add(new DomainRune());
     }
 
     public static RuneHandler getInstance(){
@@ -57,9 +74,6 @@ public class RuneHandler {
     public void playerInteractEvent(PlayerInteractEvent event) {
         //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
         if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
-            //            WorldXYZ pos = new WorldXYZ(event.x, event.y, event.z);
-            //            System.out.println("Right Click event " + pos + "Facing" + event.face + " clicks: "+ ++nClicks);
-            //            System.out.println("u: "+ event.useBlock + " I: " + event.useItem);
             possibleRuneActivationEvent(event.entityPlayer, 
                     new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z, event.face));
         }
