@@ -7,11 +7,14 @@ import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -38,11 +41,17 @@ public class GreekFire extends BlockFire {
     public GreekFire(int blockId) {
         super(blockId);
         this.setTickRandomly(true);
-        setCreativeTab(Runix.TabRunix);
         blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
         initializeBlock();
     }
     
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(int block, CreativeTabs tab, List subItems) {
+        subItems.add(new ItemStack(block, 1, 0));
+        subItems.add(new ItemStack(block, 1, 13));
+        subItems.add(new ItemStack(block, 1, 14));
+    }
+
     @SideOnly(Side.CLIENT)
     public Icon getFireIcon(int par1)
     {
@@ -104,7 +113,7 @@ public class GreekFire extends BlockFire {
                 if(world.getBlockId(x, y, z) != Block.glass.blockID) //sometimes it crystallizes instead
                     world.setBlockToAir(x, y, z);    
             }
-            else
+            else if(fireLifespan < 15)
             {
                 int heatLoss = 1;
                 WorldXYZ loc = new WorldXYZ(world, x,y,z);
@@ -138,9 +147,9 @@ public class GreekFire extends BlockFire {
             }
             else if (fireLifespan == 15)
             {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
-                if(random.nextInt(4) == 0)
-                    new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Block.glass.blockID);// fire dies of old age
-                return true;//even if the block is not removed, we need to not spread
+//                if(random.nextInt(4) == 0)
+//                    new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Block.glass.blockID);// fire dies of old age
+                return false;//even if the block is not removed, we need to not spread
             }
         }
         return false;
@@ -201,7 +210,8 @@ public class GreekFire extends BlockFire {
         int newLifespan = lifespan + 1;//random.nextInt(6) / 2;
 
         if (newLifespan > 15)
-            newLifespan = 15;
+            return; // we don't allow old fires to propagate more
+            //newLifespan = 15;
 
         loc.setBlockId(new SigBlock(this.blockID, newLifespan));//fire spreads to a new location
     }

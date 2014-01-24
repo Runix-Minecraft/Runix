@@ -2,22 +2,18 @@ package com.newlinegaming.Runix;
 
 //Imports
 
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.newlinegaming.Runix.block.GreekFire;
 import com.newlinegaming.Runix.block.QixsilverFlowing;
 import com.newlinegaming.Runix.block.QixsilverStill;
 import com.newlinegaming.Runix.creativetabs.TabRunix;
 import com.newlinegaming.Runix.placeholder.RunixPlaceHolder;
 
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.network.packet.Packet3Chat;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.EnumHelper;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.SidedProxy;
@@ -59,14 +55,19 @@ public class Runix {
         GameRegistry.registerBlock(QixsilverFlowing, "QixsilverFlowing");
         GameRegistry.registerBlock(QixsilverStill, "QixsilverStill");
         GameRegistry.registerBlock(GreekFire, "GreekFire");
+        GreekFire.setCreativeTab(Runix.TabRunix);
+
 
         //Language Registry
         LanguageRegistry.addName(RunixPlaceHolder, "Runix");
         LanguageRegistry.addName(QixsilverFlowing, "Qixsilver");
         LanguageRegistry.addName(QixsilverStill, "Qixsilver");
         LanguageRegistry.addName(GreekFire, "Greek Fire");
+        LanguageRegistry.addName(new ItemStack(GreekFire, 1, 14), "Old Greek Fire");//metadata
         Tiers tiers = new Tiers(); //load the list of block tiers
 
+        
+        
         //Event Registry
         MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
     }
