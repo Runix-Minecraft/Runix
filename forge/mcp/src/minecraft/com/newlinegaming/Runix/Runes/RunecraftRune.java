@@ -93,7 +93,10 @@ public class RunecraftRune extends AbstractTimedRune {
     @ForgeSubscribe
     public void renderWireframe(RenderWorldLastEvent evt) {
         if(getPlayer() != null)
-            renderer.highlightBoxes(vehicleBlocks, getPlayer());
+            if(!renderer.highlightBoxes(vehicleBlocks, disabled, getPlayer())){
+                if(disabled)
+                    setPlayer(null); // done with closing animation
+            }
     }
     
     @ForgeSubscribe
@@ -120,7 +123,7 @@ public class RunecraftRune extends AbstractTimedRune {
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         consumeKeyBlock(coords);
         if(getPlayer() != null){
-            setPlayer(null);
+            disabled = true; //player will not be set to null until the closing animation completes
             aetherSay(poker, "You are now free from the Runecraft.");
             return;
         }
