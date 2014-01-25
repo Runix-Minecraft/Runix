@@ -12,7 +12,7 @@ import com.newlinegaming.Runix.Runes.OracleRune;
 import com.newlinegaming.Runix.Runes.PlayerHandler;
 import com.newlinegaming.Runix.Runes.RubricCreationRune;
 import com.newlinegaming.Runix.Runes.RubricRecallRune;
-import com.newlinegaming.Runix.Runes.RuneCompass;
+import com.newlinegaming.Runix.Runes.CompassRune;
 import com.newlinegaming.Runix.Runes.RunecraftRune;
 import com.newlinegaming.Runix.Runes.TeleporterRune;
 import com.newlinegaming.Runix.Runes.TorchBearerRune;
@@ -51,7 +51,7 @@ public class RuneHandler {
         runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
-        runeRegistry.add(new RuneCompass());
+        runeRegistry.add(new CompassRune());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune());
         runeRegistry.add(new RubricCreationRune());

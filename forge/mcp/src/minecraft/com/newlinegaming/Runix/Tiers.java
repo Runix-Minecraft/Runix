@@ -31,6 +31,7 @@ public class Tiers {
             Block.vine, Block.leaves, Block.cactus, Block.deadBush, 
             Block.ice, Block.sapling, Block.wood};
         naturalBlocks = loadBlockIds(extraNaturalBlocks);
+        naturalBlocks.add(0);// AIR 0 needs to be added manually
         
         Block[] attachedOrFallingBlocks = new Block[]{
             Block.anvil, Block.cocoaPlant, Block.carrot, Block.carpet, Block.crops,
