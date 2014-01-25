@@ -395,8 +395,7 @@ public abstract class AbstractRune {
 
     protected boolean consumeKeyBlock(WorldXYZ coords) {
         if(Tiers.getTier(coords.getBlockId()) > 1){
-            List<WorldXYZ> wrapper = Arrays.asList(coords);
-            consumeRune(wrapper);
+            energy += Tiers.getEnergy(coords.getBlockId());
             coords.setBlockIdAndUpdate(Block.cobblestone.blockID);//we don't want air sitting here
             return true;
         }

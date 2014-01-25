@@ -13,6 +13,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -110,14 +111,17 @@ public class RunecraftRune extends AbstractTimedRune {
             if( event.isCancelable() ){
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.contains( punchBlock ))
-                    if( location.getDistanceSquaredToChunkCoordinates(punchBlock) < 3 ){//distance may need adjusting
+                {
+                    if( location.getDistance(punchBlock) < 3 )
+                    {
                         boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
                         HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
                         if( !shapeCollides(move) )
                             vehicleBlocks = Util_Movement.performMove(move);
                     }
-                    event.setCanceled(true); //build protect
+                    event.setCanceled(true); //build protect anything in vehicleBlocks
                     System.out.println("Runecraft protected");
+                }
             }
     }
     
@@ -129,13 +133,15 @@ public class RunecraftRune extends AbstractTimedRune {
             aetherSay(poker, "You are now free from the Runecraft.");
             return;
         }
-        setPlayer(poker); // assign a player and start
-        aetherSay(poker, "The Runecraft is now locked to your body.");
-        HashSet<WorldXYZ> oldVehicleShape = vehicleBlocks;
-        if( scanForVehicleShape() )
-            return;
-        else
-            vehicleBlocks = rescanBlocks(oldVehicleShape);
+        else{
+            setPlayer(poker); // assign a player and start
+            aetherSay(poker, "The Runecraft is now locked to your body.");
+            HashSet<WorldXYZ> oldVehicleShape = vehicleBlocks;
+            if( scanForVehicleShape() )
+                return;
+            else
+                vehicleBlocks = rescanBlocks(oldVehicleShape);
+        }
     }
 
     private HashSet<WorldXYZ> rescanBlocks(HashSet<WorldXYZ> oldVehicleShape) {
@@ -151,19 +157,30 @@ public class RunecraftRune extends AbstractTimedRune {
         vehicleBlocks = conductanceStep(location, tier);
         renderer.reset();
         if(vehicleBlocks.isEmpty()){
-            aetherSay(getPlayer(), "You hear blocks rumble and crack as the Rune strains to pick up more than it can carry.");
+            aetherSay(getPlayer(), "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
             return false;   
         }
         else{
-            aetherSay(getPlayer(), "Found " + vehicleBlocks.size() + " tier blocks");
+            aetherSay(getPlayer(), "Found " + vehicleBlocks.size() + " conducting blocks");
             return true;
         }
     }
     
-//    @Override
-//    public void loadRunes() {
-//        //don't load anything
-//    }
+    /**Runecraft lives or dies by its player.  So the PersistentRune behavior needs to be augmented
+     * with a 'disabled' switch.
+     */
+    public void setPlayer(EntityPlayer playerObj) { 
+        super.setPlayer(playerObj);
+        if(getPlayer() != null)
+            disabled = false;
+        else
+            disabled = true; 
+    }
+    
+    @Override
+    public void loadRunes() {
+        //don't load anything
+    }
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
