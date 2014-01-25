@@ -3,6 +3,7 @@ package com.newlinegaming.Runix.Runes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
@@ -25,7 +26,7 @@ public class RunecraftRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     public int tier = 1;
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
-    private RenderHelper renderer;
+    private transient RenderHelper renderer = null;
     
     public RunecraftRune(){
         runeName = "Runecraft";
@@ -40,10 +41,16 @@ public class RunecraftRune extends AbstractTimedRune {
     {
         super(coords, player2, "Runecraft");
         setPlayer(null); //this is because poke() acts as if the Rune was activated a second time when it is first constructed
-        renderer = new RenderHelper();
-        updateEveryXTicks(4); //TODO this line and the next are crashing the Event Bus on loadRunes().
-        MinecraftForge.EVENT_BUS.register(this);
         this.runeName = "Runecraft"; 
+    }
+
+    /**initializeRune() is necessary because of a circular condition in the event registry
+     * that does not play well with the GSON object constructor loading from loadRunes()
+     */
+    protected void initializeRune() {
+        renderer = new RenderHelper();
+        updateEveryXTicks(4);
+        MinecraftForge.EVENT_BUS.register(this);        
     }
 
     @Override
@@ -121,6 +128,9 @@ public class RunecraftRune extends AbstractTimedRune {
     
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
+        if( renderer == null ) //initialization on the first time the rune is poked
+            initializeRune();
+        
         consumeKeyBlock(coords);
         if(getPlayer() != null){
             disabled = true; //player will not be set to null until the closing animation completes
@@ -138,12 +148,17 @@ public class RunecraftRune extends AbstractTimedRune {
         }
     }
 
-    private HashSet<WorldXYZ> rescanBlocks(HashSet<WorldXYZ> oldVehicleShape) {
-        for(WorldXYZ xyz : oldVehicleShape){
+    /**Removes the coordinates of any air blocks from the shape Set.  This can break contiguous structures
+     * and actually return a non-contiguous structure.  For Runecraft, this is desirable. */
+    private HashSet<WorldXYZ> rescanBlocks(HashSet<WorldXYZ> oldShapeCoords) {
+        for (Iterator<WorldXYZ> i = oldShapeCoords.iterator(); i.hasNext();) 
+        {
+            WorldXYZ xyz = i.next(); //an iterator is necessary here because of ConcurrentModificationException
             if(xyz.getBlockId() == 0) // We specifically want to exclude AIR to avoid confusing collisions
-                oldVehicleShape.remove(xyz);
+                i.remove();
         }
-        return oldVehicleShape;
+            
+        return oldShapeCoords;
     }
 
     protected boolean scanForVehicleShape() {
@@ -169,11 +184,6 @@ public class RunecraftRune extends AbstractTimedRune {
             disabled = false;
         else
             disabled = true; 
-    }
-    
-    @Override
-    public void loadRunes() {
-        //don't load anything
     }
 
     @Override
