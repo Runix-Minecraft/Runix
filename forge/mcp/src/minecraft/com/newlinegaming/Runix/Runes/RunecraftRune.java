@@ -67,11 +67,7 @@ public class RunecraftRune extends AbstractTimedRune {
     protected void onUpdateTick(EntityPlayer subject) {
         if(getPlayer() != null && !subject.equals(getPlayer()) )
             return;
-        if(getPlayer() != null && energy < 100){
-            reportOutOfGas(getPlayer());
-            setPlayer(null);
-        }
-        if(getPlayer() != null){//Josiah: turns out running this on server and client side causes strange duplications
+        if(getPlayer() != null){
             int dX = (int) (getPlayer().posX - location.posX - .5);
             int dY = (int) (getPlayer().posY - location.posY - 1);
             int dZ = (int) (getPlayer().posZ - location.posZ - .5);
@@ -85,12 +81,7 @@ public class RunecraftRune extends AbstractTimedRune {
             if(dX != 0 || dY != 0 || dZ != 0){
                 HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
                 if( !shapeCollides(move) ){
-                    try {
-                        vehicleBlocks = moveShape(move);
-                    } catch (NotEnoughRunicEnergyException e) {
-                        reportOutOfGas(getPlayer());
-                        setPlayer(null);
-                    }
+                    vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
                 }
                 else{
                     aetherSay(getPlayer(), "CRUNCH!");

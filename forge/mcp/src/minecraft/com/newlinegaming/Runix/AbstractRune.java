@@ -386,7 +386,7 @@ public abstract class AbstractRune {
     public void moveBlock(WorldXYZ coords, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
         newPos.setBlockId(coords.getSigBlock());
         coords.setBlockIdAndUpdate(0);
-        spendEnergy(Tiers.blockMoveCost);
+        spendEnergy((int) Tiers.blockMoveCost);
         
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
         moveMapping.put(coords, newPos);
@@ -408,7 +408,7 @@ public abstract class AbstractRune {
             if( !moveMapping.containsKey(point) )
                 ++blocksMovedToNewArea;
         }
-        spendEnergy( Tiers.blockMoveCost * blocksMovedToNewArea );
+        spendEnergy( (int) (Tiers.blockMoveCost * blocksMovedToNewArea) );
         return Util_Movement.performMove(moveMapping);
     }
 
