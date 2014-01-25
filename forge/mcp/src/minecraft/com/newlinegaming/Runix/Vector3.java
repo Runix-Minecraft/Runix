@@ -34,4 +34,7 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
                 destination.posZ - reference.posZ);
     }
     
+    public String toString(){
+        return "\"x\":"+x + ", \"y\":" + y + ", \"z\":" + z;
+    }
 }
