@@ -18,13 +18,16 @@ public class RenderHelper {
     public void reset(){
         progress = 0.0f;
     }
-    public void highlightBoxes(Collection<WorldXYZ> structureBlocks, EntityPlayer player){
-    	highlightBoxes(structureBlocks, player,0, 216, 216);
+    public boolean highlightBoxes(Collection<WorldXYZ> structureBlocks, boolean reverse, EntityPlayer player){
+    	return highlightBoxes(structureBlocks, reverse, player,0, 216, 216);
     }
-    public void highlightBoxes(Collection<WorldXYZ> structureBlocks, EntityPlayer player,int R,int G, int B){
-        if(progress > 1.0)
-            return;
-        progress += 0.04f;//animation timer
+    public boolean highlightBoxes(Collection<WorldXYZ> structureBlocks, boolean reverse, EntityPlayer player,int R,int G, int B){
+        if((!reverse && progress > 1.0) || (reverse && progress < 0.0))
+            return false;
+        if(!reverse)
+            progress += 0.02f;//animation timer
+        else
+            progress -= 0.04f;
         double doubleX = player.posX - 0.5;
         double doubleY = player.posY + 0.1;
         double doubleZ = player.posZ - 0.5;
@@ -39,6 +42,7 @@ public class RenderHelper {
                 renderWireCube(block.posX, block.posY, block.posZ, progress);
             }
         GL11.glPopMatrix();
+        return true;
     }
     
     /**Makes a wireframe Cube given an XYZ posiiton

@@ -95,8 +95,6 @@ public abstract class PersistentRune extends AbstractRune{
             match = getRuneByPlayer(activator);
         if(match == null)//didn't find anything through players
             match = getRuneByLocation(coords);//check if the Rune already exists
-        if(activator.worldObj.isRemote && match == null)
-            System.out.println("Client was unable to find a match.");
         
         if( match == null ){//can't find anything: create a new one
             try {//this is a Java trick called reflection that grabs a constructor based on the parameters

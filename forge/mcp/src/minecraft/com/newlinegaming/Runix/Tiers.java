@@ -3,15 +3,15 @@ package com.newlinegaming.Runix;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import net.minecraft.block.Block;
 
+import net.minecraft.block.Block;
+import com.newlinegaming.Runix.block.GreekFire;
 
 public class Tiers {
     
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
-    public static final int blockMoveCost = 1;
+    public static final float blockMoveCost = 0.5f;
     public static final int blockBreakCost = 12;
     public static final float movementPerMeterCost = 0.22f;
     
@@ -24,6 +24,7 @@ public class Tiers {
         /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/
         Block[] extraNaturalBlocks = new Block[]{
             Block.waterStill, Block.waterMoving, 
+            Block.bedrock,
             Block.sand, Block.stone, Block.dirt, 
             Block.grass, Block.tallGrass, Block.snow, 
             Block.mycelium, Block.netherrack,
@@ -31,6 +32,8 @@ public class Tiers {
             Block.vine, Block.leaves, Block.cactus, Block.deadBush, 
             Block.ice, Block.sapling, Block.wood};
         naturalBlocks = loadBlockIds(extraNaturalBlocks);
+        naturalBlocks.add(0);// AIR 0 needs to be added manually
+        naturalBlocks.add(GreekFire.blockIdBackup);
         
         Block[] attachedOrFallingBlocks = new Block[]{
             Block.anvil, Block.cocoaPlant, Block.carrot, Block.carpet, Block.crops,
@@ -61,6 +64,7 @@ public class Tiers {
             Block.waterStill, Block.sapling, Block.tallGrass, Block.torchWood,//torches are debatable, since someone did place it there
             Block.vine};
         crushableBlocks = loadBlockIds(crushTheseBlocks);
+        crushableBlocks.add(GreekFire.blockIdBackup);
         
         blockEnergy = new int[]{ //the blockID is the index for this array.  The value at blockEnergy[blockID] = runic energy
                 1,   //Air
