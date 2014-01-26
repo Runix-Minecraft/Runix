@@ -13,6 +13,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.WorldServerMulti;
 
 import org.apache.commons.io.FileUtils;
 
@@ -38,7 +39,7 @@ public abstract class PersistentRune extends AbstractRune{
     	
         if(getActiveMagic().isEmpty())
                     return;
-                String fileName = shortClassName() + ".json";//  ex:TorcherBearerRune.json
+                String fileName = getJsonFilePath();//  ex:TorcherBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
             Gson converter = new Gson();
@@ -53,8 +54,17 @@ public abstract class PersistentRune extends AbstractRune{
         } 
       
     }
+
+
+	String getJsonFilePath() {
+		location = new WorldXYZ(0,0,0);
+		String levelName = location.getWorld().getWorldInfo().getWorldName();
+		String subDirectory = (location.getWorld() instanceof WorldServerMulti )? "" : "saves/";
+				String fileName = subDirectory + levelName + "/stored_runes/" +  shortClassName() + ".json";
+		return fileName;
+	}
     public void loadRunes(){
-        String fileName = shortClassName() + ".json";
+        String fileName = getJsonFilePath();
         try {
             ArrayList<PersistentRune> newList = new ArrayList<PersistentRune>();
             List<String> json = FileUtils.readLines(new File(fileName));
