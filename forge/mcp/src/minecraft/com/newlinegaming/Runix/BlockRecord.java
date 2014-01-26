@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 public class BlockRecord implements Delayed{
     long expirationTimeInMillis = 0; //exact expiration time is set when the object is constructed
-    WorldXYZ loc;
-    SigBlock block;
+    public WorldXYZ loc;
+    public SigBlock block;
     
     public BlockRecord(WorldXYZ coords)
     {

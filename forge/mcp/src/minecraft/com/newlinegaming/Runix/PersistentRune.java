@@ -103,6 +103,7 @@ public abstract class PersistentRune extends AbstractRune{
                 match = this.getClass().getConstructor(WorldXYZ.class, EntityPlayer.class).newInstance(coords, activator);
                 getActiveMagic().add(match);//add our new Rune to the list
             } catch (Exception e) {
+        	System.out.println("This Rune needs you to add an entity activator.");
                 e.printStackTrace();
                 return;
             }
