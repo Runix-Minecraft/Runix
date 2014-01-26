@@ -9,6 +9,7 @@ import net.minecraftforge.common.MinecraftForge;
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
 public class DomainRune extends AbstractTimedRune {
@@ -31,7 +32,7 @@ public class DomainRune extends AbstractTimedRune {
     }
 
     private void phaseBlockAt(WorldXYZ coords) {
-        BlockRecord record = new BlockRecord(10, coords, coords.getSigBlock());
+        BlockRecord record = new BlockRecord(10, new Vector3(location, coords), coords.getSigBlock());
         phasedBlocks.add(record);   
     }
     
@@ -65,8 +66,8 @@ public class DomainRune extends AbstractTimedRune {
         
         for( BlockRecord expired = phasedBlocks.poll(); expired != null; expired = phasedBlocks.poll()){
             //TODO drop block if non-air block
-            System.out.println(expired.loc.toString() + "  ==  " + expired.block.blockID);
-            expired.loc.setBlockIdAndUpdate(expired.block.blockID);
+            System.out.println(expired.offset.toString() + "  ==  " + expired.block.blockID);
+            location.offset(expired.offset).setBlockIdAndUpdate(expired.block.blockID);
         }
     }
 
