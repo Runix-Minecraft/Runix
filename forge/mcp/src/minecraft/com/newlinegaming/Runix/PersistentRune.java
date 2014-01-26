@@ -60,7 +60,9 @@ public abstract class PersistentRune extends AbstractRune{
 		location = new WorldXYZ(0,0,0);
 		String levelName = location.getWorld().getWorldInfo().getWorldName();
 		String subDirectory = (location.getWorld() instanceof WorldServerMulti )? "" : "saves/";
-				String fileName = subDirectory + levelName + "/stored_runes/" +  shortClassName() + ".json";
+		String directory = subDirectory + levelName + "/stored_runes/";
+		new File(directory).mkdir();//ensure the folder exists
+		String fileName = directory + shortClassName() + ".json";
 		return fileName;
 	}
     public void loadRunes(){
