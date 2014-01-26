@@ -47,20 +47,23 @@ public class RubricRecallRune extends PersistentRune{
 	public void poke(EntityPlayer poker, WorldXYZ coords) {
 		consumeKeyBlock(coords);
 		ItemStack toolused = poker.getCurrentEquippedItem();
-		specialName = toolused.getDisplayName();
+		if(toolused != null)
+		    specialName = toolused.getDisplayName();
 		Signature signature = new Signature(this, coords);
 		//This is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
 		ArrayList<PersistentRune> rubricList = (new RubricCreationRune().getActiveMagic());
 		System.out.println("RubricList.size()" + rubricList.size());
 		PersistentRune rubrics = null;
-		if (toolused!=null && toolused.itemID == Item.book.itemID){
+		if (toolused!=null && toolused.itemID == Item.writtenBook.itemID){
 			rubrics = (new RubricCreationRune()).getRuneBySpecialName(specialName);
 		}
-		for( PersistentRune candidate : rubricList){
-			if( ((RubricCreationRune)candidate).sig.equals ( signature ) ){
-				rubrics = candidate;
-				break;
-			}
+		else{
+    		for( PersistentRune candidate : rubricList){
+    			if( signature.equals ( ((RubricCreationRune)candidate).sig ) ){
+    				rubrics = candidate;
+    				break;
+    			}
+    		}
 		}
 		if( rubrics == null){
 			aetherSay(poker, "A Rubric with that signature cannot be found.");
@@ -76,10 +79,8 @@ public class RubricRecallRune extends PersistentRune{
 		//ensure recall is placed back 
 		//	        }
 		//TODO fix the energy requirements
-		//find match signature in RubricCreationRune.getActiveMagic()
 	    //consume Rune for energy
 	    //transfer energy to Rubric rune
-	    //Rubric.unpackStructure
 	        //if not enough energy, Rubric can keep the energy, just ask for more
 	    //delete self
 	}

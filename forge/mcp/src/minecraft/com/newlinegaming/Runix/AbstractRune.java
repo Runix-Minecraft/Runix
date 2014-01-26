@@ -413,7 +413,7 @@ public abstract class AbstractRune {
     }
 
     protected String shortClassName() {
-        return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes", "");
+        return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes.", "");
     }
 
 }

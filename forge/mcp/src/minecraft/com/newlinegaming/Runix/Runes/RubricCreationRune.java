@@ -67,27 +67,21 @@ public class RubricCreationRune extends PersistentRune {
 	    if( renderer == null)
 	        initializeRune();
 		renderer.reset();
-		HashSet<WorldXYZ> shape = conductanceStep(coords, 50);
+		HashSet<WorldXYZ> shape = conductanceStep(coords, 50); //TODO the problem is that this will be saved and persisted even without a signature
 		structure = scanStructure(shape);
 		ItemStack toolused = poker.getCurrentEquippedItem();
-		sig = new Signature(this, coords);
-				//TODO check for signature collision
-
-
-		if (toolused != null && toolused.itemID == Item.book.itemID) {
-
+		if (toolused != null && (toolused.itemID == Item.writtenBook.itemID || toolused.itemID == Item.book.itemID)) 
+		{
 			consumeRune(location);//need to remove the rune itself add runic energy
 			structure = scanStructure(shape);//then capture everything else into the rubric file 
 			consumeRune(extractCoordinates(structure));
+		    sig = new Signature(this, coords); 
 
-	        specialName = toolused.getDisplayName();
-			aetherSay(poker, "the tool used is "+ specialName);
-
-
-			//rename the book to something we can identify the book with the recall
-
+            if(toolused.itemID == Item.writtenBook.itemID){
+    	        specialName = toolused.getDisplayName();
+                aetherSay(poker, "the tool used is "+ specialName);
+			}
         }
-        
 	}
 	
 	
