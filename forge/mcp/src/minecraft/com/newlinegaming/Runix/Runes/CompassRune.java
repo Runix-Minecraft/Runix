@@ -9,10 +9,10 @@ import com.newlinegaming.Runix.WorldXYZ;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
-public class RuneCompass extends AbstractRune{
+public class CompassRune extends AbstractRune{
 
 
-    public RuneCompass(){
+    public CompassRune(){
         runeName = "Compass";
     }
     
