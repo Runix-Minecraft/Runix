@@ -1,15 +1,8 @@
 package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
-
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.RenderHelper;
-import com.newlinegaming.Runix.SigBlock;
-import com.newlinegaming.Runix.Signature;
-import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,12 +12,19 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 
+import com.newlinegaming.Runix.BlockRecord;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.RenderHelper;
+import com.newlinegaming.Runix.Signature;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
+
 
 public class RubricCreationRune extends PersistentRune {
 
 	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<PersistentRune>();
 	public Signature sig = null;
-	public HashMap<WorldXYZ, SigBlock> structure = new HashMap<WorldXYZ, SigBlock>();
+	public ArrayList<BlockRecord> structure = new ArrayList<BlockRecord>();
 	protected transient RenderHelper renderer = null;
 
     public RubricCreationRune() {
@@ -41,10 +41,12 @@ public class RubricCreationRune extends PersistentRune {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private HashMap<WorldXYZ, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
-        HashMap<WorldXYZ, SigBlock> fullData = new HashMap<WorldXYZ, SigBlock>();
-        for(WorldXYZ point : shape)
-            fullData.put(point, point.getSigBlock());
+    private ArrayList<BlockRecord> scanStructure(HashSet<WorldXYZ> shape) {
+        ArrayList<BlockRecord> fullData = new ArrayList<BlockRecord>();
+        for(WorldXYZ point : shape){
+            Vector3 offset = new Vector3(location, point);
+            fullData.add(new BlockRecord(1, offset, point.getSigBlock()));
+        }
         return fullData;
     }
 
@@ -72,11 +74,11 @@ public class RubricCreationRune extends PersistentRune {
 				//TODO check for signature collision
 
 
-		if (toolused!=null && toolused.itemID == Item.book.itemID) {
+		if (toolused != null && toolused.itemID == Item.book.itemID) {
 
 			consumeRune(location);//need to remove the rune itself add runic energy
-			structure=scanStructure(shape);//then capture everything else into the rubric file 
-			consumeRune(structure.keySet());
+			structure = scanStructure(shape);//then capture everything else into the rubric file 
+			consumeRune(extractCoordinates(structure));
 
 	        specialName = toolused.getDisplayName();
 			aetherSay(poker, "the tool used is "+ specialName);
@@ -89,11 +91,17 @@ public class RubricCreationRune extends PersistentRune {
 	}
 	
 	
-	@ForgeSubscribe
+	private Collection<WorldXYZ> extractCoordinates(Collection<BlockRecord> structureRecord) {
+	    ArrayList<WorldXYZ> blocks = new ArrayList<WorldXYZ>();
+	    for( BlockRecord record : structureRecord )
+	        blocks.add(location.offset(record.offset));
+        return blocks;
+    }
+
+    @ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
 		if (getPlayer() != null)
-			renderer.highlightBoxes(structure.keySet(), false, getPlayer(), 221, 0, 0);
-
+			renderer.highlightBoxes(extractCoordinates(structure), false, getPlayer(), 221, 0, 0);//TODO this is really slow for every frame
 	}
 	
     @Override

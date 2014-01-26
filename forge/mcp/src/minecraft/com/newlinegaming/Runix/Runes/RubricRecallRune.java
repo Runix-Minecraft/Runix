@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Signature;
@@ -65,7 +66,7 @@ public class RubricRecallRune extends PersistentRune{
 			aetherSay(poker, "A Rubric with that signature cannot be found.");
 			return;
 		}
-		HashMap<WorldXYZ, SigBlock> structure  = ((RubricCreationRune)rubrics).structure;
+		ArrayList<BlockRecord> structure  = ((RubricCreationRune)rubrics).structure;
 		//			try {
 		consumeRune(location);// absorb energy from recall rune         
 		unpackStructure(poker, structure, rubrics.location);
@@ -88,14 +89,14 @@ public class RubricRecallRune extends PersistentRune{
         return true;
     }
 	
-    public void unpackStructure(EntityPlayer initiator, HashMap<WorldXYZ, SigBlock> structure, WorldXYZ origin){
+    public void unpackStructure(EntityPlayer initiator, ArrayList<BlockRecord> structure, WorldXYZ origin){
 	    //convert old coordinets to vector3 based on offset from origin
     	// create new worldXYZ by adding this.location to each vector3 
-    	Vector3 difference = Vector3.offset(origin, location);
-    	HashMap<WorldXYZ, WorldXYZ> mapping = Util_Movement.displaceShape(structure.keySet(),difference.x, difference.y, difference.z);
     	HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<WorldXYZ, SigBlock>();
-    	for(WorldXYZ oldlocation:mapping.keySet())
-    		NewStructure.put(mapping.get(oldlocation),structure.get(oldlocation));
+    	for(BlockRecord record : structure){
+    	    NewStructure.put(location.offset(record.offset), record.block);
+    	}
+    		
     	//try{
 	    //for structure
     	

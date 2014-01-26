@@ -31,8 +31,8 @@ public class TestingGrounds {
         structure.put(new Vector3(4,5,6), new SigBlock(15,20));
         
         HashSet<BlockRecord> coords = new HashSet<BlockRecord>();
-        coords.add(new BlockRecord(1, null, new SigBlock(5,10)));
-        coords.add(new BlockRecord(2, null, new SigBlock(15,20)));
+        coords.add(new BlockRecord(1, new Vector3(1,2,3), new SigBlock(5,10)));
+        coords.add(new BlockRecord(2, new Vector3(4,5,6), new SigBlock(15,20)));
         
         Gson converter = new Gson();
         String runeGson = converter.toJson(coords);
@@ -55,10 +55,7 @@ public class TestingGrounds {
         
         
         WorldXYZ p1 = new WorldXYZ(null, 1, 2, 3);
-        WorldXYZ p2 = new WorldXYZ(null, 5, 6, 7);
-        RubricCreationRune house = new RubricCreationRune(p1, null);
-        house.structure.put(p1, new SigBlock(5,0));
-        house.structure.put(p2, new SigBlock(15,10));
+        WorldXYZ p2 = new WorldXYZ(null, 5, 6, 7);;
         
         Gson converter = new Gson();
         for(PersistentRune rune : runes)

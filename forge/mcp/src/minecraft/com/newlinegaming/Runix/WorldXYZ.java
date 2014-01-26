@@ -107,7 +107,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
     
     public WorldXYZ rotate(WorldXYZ referencePoint, boolean counterClockwise){
-        Vector3 d = Vector3.offset(referencePoint, this);// determine quadrant relative to reference
+        Vector3 d = new Vector3(referencePoint, this);// determine quadrant relative to reference
         int direction = counterClockwise ? -1 : 1;
         //handle facing rotation:
 //        int index = Vector3.xzRotationOrder.indexOf(new Integer(referencePoint.face));

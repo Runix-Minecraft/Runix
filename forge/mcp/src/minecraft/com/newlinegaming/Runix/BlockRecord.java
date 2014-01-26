@@ -22,9 +22,9 @@ import java.util.concurrent.TimeUnit;
 
 
 public class BlockRecord implements Delayed{
-    long expirationInMillis = 0; //exact expiration time is set when the object is constructed
-    Vector3 offset;
-    SigBlock block;
+    public long expirationInMillis = 0; //exact expiration time is set when the object is constructed
+    public Vector3 offset;
+    public SigBlock block;
     
     public BlockRecord(int delayInSeconds, Vector3 displacement, SigBlock b){
         expirationInMillis = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(delayInSeconds, TimeUnit.SECONDS);
