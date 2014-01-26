@@ -57,9 +57,10 @@ public class RubricRecallRune extends PersistentRune{
 		if (toolused!=null && toolused.itemID == Item.writtenBook.itemID){
 			rubrics = (new RubricCreationRune()).getRuneBySpecialName(specialName);
 		}
-		else{
-    		for( PersistentRune candidate : rubricList){
-    			if( signature.equals ( ((RubricCreationRune)candidate).sig ) ){
+		else if( !signature.isEmpty() ){
+    		for( PersistentRune candidate : rubricList ){
+    		    Signature sig = ((RubricCreationRune)candidate).sig;
+    			if( signature.equals ( sig ) ){
     				rubrics = candidate;
     				break;
     			}

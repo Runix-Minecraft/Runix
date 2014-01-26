@@ -44,8 +44,10 @@ public class RubricCreationRune extends PersistentRune {
     private ArrayList<BlockRecord> scanStructure(HashSet<WorldXYZ> shape) {
         ArrayList<BlockRecord> fullData = new ArrayList<BlockRecord>();
         for(WorldXYZ point : shape){
-            Vector3 offset = new Vector3(location, point);
-            fullData.add(new BlockRecord(1, offset, point.getSigBlock()));
+            if(point.getBlockId() != 0){
+                Vector3 offset = new Vector3(location, point);
+                fullData.add(new BlockRecord(1, offset, point.getSigBlock()));
+            }
         }
         return fullData;
     }
@@ -72,10 +74,10 @@ public class RubricCreationRune extends PersistentRune {
 		ItemStack toolused = poker.getCurrentEquippedItem();
 		if (toolused != null && (toolused.itemID == Item.writtenBook.itemID || toolused.itemID == Item.book.itemID)) 
 		{
-			consumeRune(location);//need to remove the rune itself add runic energy
-			structure = scanStructure(shape);//then capture everything else into the rubric file 
-			consumeRune(extractCoordinates(structure));
-		    sig = new Signature(this, coords); 
+            sig = new Signature(this, coords); // check signature while the rune still exists
+			consumeRune(location);// remove the rune itself add runic energy
+			structure = scanStructure(shape);// then capture everything else into the rubric file 
+			consumeRune(extractCoordinates(structure));// delete the old structure
 
             if(toolused.itemID == Item.writtenBook.itemID){
     	        specialName = toolused.getDisplayName();
