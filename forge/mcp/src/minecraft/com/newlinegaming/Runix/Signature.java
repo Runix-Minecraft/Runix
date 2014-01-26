@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 public class Signature {
     
     public ArrayList<SigBlock> blocks;
-    public ArrayList<Integer> metaWhiteList;
+    public transient ArrayList<Integer> metaWhiteList;
     
     public Signature()
     {
@@ -38,10 +38,12 @@ public class Signature {
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == AbstractRune.SIGR) {
                 int blockID = target.getBlockId();
-                if(metaWhiteList.contains(new Integer(blockID)))
-                    blocks.add(target.getSigBlock());
-                else
-                    blocks.add(new SigBlock(blockID, 0));//just the blockID
+                if( blockID != 0 ){
+                    if(metaWhiteList.contains(new Integer(blockID)))
+                        blocks.add(target.getSigBlock());
+                    else
+                        blocks.add(new SigBlock(blockID, 0));//just the blockID
+                }
             }
         }
         rune.aetherSay(coords.getWorld(), "Signature:" + blocks.toString());
@@ -58,5 +60,9 @@ public class Signature {
     
     public String toString(){
         return blocks.toString();
+    }
+
+    public boolean isEmpty() {
+        return blocks.isEmpty();
     }
 }

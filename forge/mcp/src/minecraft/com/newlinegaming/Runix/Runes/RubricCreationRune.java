@@ -1,15 +1,8 @@
 package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
-
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.RenderHelper;
-import com.newlinegaming.Runix.SigBlock;
-import com.newlinegaming.Runix.Signature;
-import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,30 +12,20 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 
-//import java.io.InputStream;
-//import java.io.InputStreamReader;
-//import java.util.HashMap;
-//import java.util.Map;
-//import java.util.logging.Level;
-//
-//import argo.jdom.JdomParser;
-//import argo.jdom.JsonNode;
-//import argo.jdom.JsonRootNode;
-//import argo.saj.InvalidSyntaxException;
-//
-//import net.minecraft.block.Block;
-//import net.minecraft.entity.player.EntityPlayer;
-//import net.minecraft.nbt.NBTTagCompound;
-//import net.minecraft.nbt.NBTTagList;
-//import net.minecraft.nbt.NBTTagString;
-//import net.minecraft.world.World;
+import com.newlinegaming.Runix.BlockRecord;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.RenderHelper;
+import com.newlinegaming.Runix.Signature;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
+
 
 public class RubricCreationRune extends PersistentRune {
 
 	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<PersistentRune>();
-	public Signature sig=null;
-	public HashMap<WorldXYZ, SigBlock> structure=new HashMap<WorldXYZ, SigBlock>();
-	protected transient RenderHelper renderer;
+	public Signature sig = null;
+	public ArrayList<BlockRecord> structure = new ArrayList<BlockRecord>();
+	protected transient RenderHelper renderer = null;
 
     public RubricCreationRune() {
         runeName = "Rubric Creator";
@@ -51,15 +34,21 @@ public class RubricCreationRune extends PersistentRune {
     public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
 	    super(coords, player2,"Rubric Creator");
-		renderer = new RenderHelper();
-		MinecraftForge.EVENT_BUS.register(this);
-		
 	}
+    
+    protected void initializeRune(){
+        renderer = new RenderHelper();
+        MinecraftForge.EVENT_BUS.register(this);
+    }
 
-    private HashMap<WorldXYZ, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
-        HashMap<WorldXYZ, SigBlock> fullData = new HashMap<WorldXYZ, SigBlock>();
-        for(WorldXYZ point : shape)
-            fullData.put(point, point.getSigBlock());
+    private ArrayList<BlockRecord> scanStructure(HashSet<WorldXYZ> shape) {
+        ArrayList<BlockRecord> fullData = new ArrayList<BlockRecord>();
+        for(WorldXYZ point : shape){
+            if(point.getBlockId() != 0){
+                Vector3 offset = new Vector3(location, point);
+                fullData.add(new BlockRecord(1, offset, point.getSigBlock()));
+            }
+        }
         return fullData;
     }
 
@@ -77,53 +66,45 @@ public class RubricCreationRune extends PersistentRune {
 
 	@Override
 	protected void poke(EntityPlayer poker, WorldXYZ coords){
+	    if( renderer == null)
+	        initializeRune();
 		renderer.reset();
-		HashSet<WorldXYZ> shape = conductanceStep(coords, 50);
+		HashSet<WorldXYZ> shape = conductanceStep(coords, 50); //TODO the problem is that this will be saved and persisted even without a signature
 		structure = scanStructure(shape);
 		ItemStack toolused = poker.getCurrentEquippedItem();
-		specialName = toolused.getDisplayName();
-		sig = new Signature(this, coords);
-				//TODO check for signature collision
+		if (toolused != null && (toolused.itemID == Item.writtenBook.itemID || toolused.itemID == Item.book.itemID)) 
+		{
+            sig = new Signature(this, coords); // check signature while the rune still exists
+			consumeRune(location);// remove the rune itself add runic energy
+			structure = scanStructure(shape);// then capture everything else into the rubric file 
+			consumeRune(extractCoordinates(structure));// delete the old structure
 
-
-		if (toolused!=null && toolused.itemID == Item.book.itemID) {
-
-			consumeRune(location);//need to remove the rune itself add runic energy
-			structure=scanStructure(shape);//then capture everything else into the rubric file 
-			consumeRune(structure.keySet());
-
-			
-			aetherSay(poker, "the tool used is "+ specialName);
-
-
-			//rename the book to something we can identify the book with the recall
-
+            if(toolused.itemID == Item.writtenBook.itemID){
+    	        specialName = toolused.getDisplayName();
+                aetherSay(poker, "the tool used is "+ specialName);
+			}
         }
-        
 	}
 	
 	
-	@ForgeSubscribe
+	private Collection<WorldXYZ> extractCoordinates(Collection<BlockRecord> structureRecord) {
+	    ArrayList<WorldXYZ> blocks = new ArrayList<WorldXYZ>();
+	    for( BlockRecord record : structureRecord )
+	        blocks.add(location.offset(record.offset));
+        return blocks;
+    }
+
+    @ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
 		if (getPlayer() != null)
-			renderer.highlightBoxes(structure.keySet(), false, getPlayer(), 221, 0, 0);
-
+			renderer.highlightBoxes(extractCoordinates(structure), false, getPlayer(), 221, 0, 0);//TODO this is really slow for every frame
 	}
-
-//	@Override
-//    public void saveActiveRunes() {
-//        //Do nothing
-//    }
 	
     @Override
     public void loadRunes() {
-        //Do nothing
+        super.loadRunes();
+        System.out.println("Rubrics: " + getActiveMagic().size() + "\n    " + getActiveMagic());
     }	
-
-    @Override
-	public String getRuneName() {
-		return this.runeName;
-	}
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {

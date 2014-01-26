@@ -28,10 +28,13 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
     }
     
     /** Returns a difference vector such that reference + vector = destination */
-    public static Vector3 offset(WorldXYZ reference, WorldXYZ destination){
-        return new Vector3(destination.posX - reference.posX, 
-                destination.posY - reference.posY,
-                destination.posZ - reference.posZ);
+    public Vector3(WorldXYZ reference, WorldXYZ destination){
+        x = destination.posX - reference.posX; 
+        y = destination.posY - reference.posY;
+        z = destination.posZ - reference.posZ;
     }
     
+    public String toString(){
+        return "\"x\":"+x + ", \"y\":" + y + ", \"z\":" + z;
+    }
 }

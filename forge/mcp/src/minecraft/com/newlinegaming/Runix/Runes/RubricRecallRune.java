@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Signature;
@@ -46,26 +47,30 @@ public class RubricRecallRune extends PersistentRune{
 	public void poke(EntityPlayer poker, WorldXYZ coords) {
 		consumeKeyBlock(coords);
 		ItemStack toolused = poker.getCurrentEquippedItem();
-		specialName = toolused.getDisplayName();
+		if(toolused != null)
+		    specialName = toolused.getDisplayName();
 		Signature signature = new Signature(this, coords);
 		//This is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
 		ArrayList<PersistentRune> rubricList = (new RubricCreationRune().getActiveMagic());
 		System.out.println("RubricList.size()" + rubricList.size());
 		PersistentRune rubrics = null;
-		if (toolused!=null && toolused.itemID == Item.book.itemID){
+		if (toolused!=null && toolused.itemID == Item.writtenBook.itemID){
 			rubrics = (new RubricCreationRune()).getRuneBySpecialName(specialName);
 		}
-		for( PersistentRune candidate : rubricList){
-			if( ((RubricCreationRune)candidate).sig.equals ( signature ) ){
-				rubrics = candidate;
-				break;
-			}
+		else if( !signature.isEmpty() ){
+    		for( PersistentRune candidate : rubricList ){
+    		    Signature sig = ((RubricCreationRune)candidate).sig;
+    			if( signature.equals ( sig ) ){
+    				rubrics = candidate;
+    				break;
+    			}
+    		}
 		}
 		if( rubrics == null){
 			aetherSay(poker, "A Rubric with that signature cannot be found.");
 			return;
 		}
-		HashMap<WorldXYZ, SigBlock> structure  = ((RubricCreationRune)rubrics).structure;
+		ArrayList<BlockRecord> structure  = ((RubricCreationRune)rubrics).structure;
 		//			try {
 		consumeRune(location);// absorb energy from recall rune         
 		unpackStructure(poker, structure, rubrics.location);
@@ -75,10 +80,8 @@ public class RubricRecallRune extends PersistentRune{
 		//ensure recall is placed back 
 		//	        }
 		//TODO fix the energy requirements
-		//find match signature in RubricCreationRune.getActiveMagic()
 	    //consume Rune for energy
 	    //transfer energy to Rubric rune
-	    //Rubric.unpackStructure
 	        //if not enough energy, Rubric can keep the energy, just ask for more
 	    //delete self
 	}
@@ -88,14 +91,14 @@ public class RubricRecallRune extends PersistentRune{
         return true;
     }
 	
-    public void unpackStructure(EntityPlayer initiator, HashMap<WorldXYZ, SigBlock> structure, WorldXYZ origin){
+    public void unpackStructure(EntityPlayer initiator, ArrayList<BlockRecord> structure, WorldXYZ origin){
 	    //convert old coordinets to vector3 based on offset from origin
     	// create new worldXYZ by adding this.location to each vector3 
-    	Vector3 difference = Vector3.offset(origin, location);
-    	HashMap<WorldXYZ, WorldXYZ> mapping = Util_Movement.displaceShape(structure.keySet(),difference.x, difference.y, difference.z);
     	HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<WorldXYZ, SigBlock>();
-    	for(WorldXYZ oldlocation:mapping.keySet())
-    		NewStructure.put(mapping.get(oldlocation),structure.get(oldlocation));
+    	for(BlockRecord record : structure){
+    	    NewStructure.put(location.offset(record.offset), record.block);
+    	}
+    		
     	//try{
 	    //for structure
     	

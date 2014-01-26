@@ -10,32 +10,25 @@ import java.util.concurrent.TimeUnit;
  * Use it like this:
     protected static DelayQueue<BlockRecord> phasedBlocks = new DelayQueue<BlockRecord>();
  * 
-    private void phaseBlockAt(WorldXYZ coords) {
+    private void phaseBlockAt(Vector3 coords) {
         BlockRecord record = new BlockRecord(60, coords, coords.getSigBlock());
         phasedBlocks.add(record);
     }
  *
  *  //ON BLOCK DESTROY EVENT
-    phaseBlockAt(new WorldXYZ( x, y, z));
+    phaseBlockAt(new Vector3( x, y, z));
  *  
  */
 
 
 public class BlockRecord implements Delayed{
-    long expirationTimeInMillis = 0; //exact expiration time is set when the object is constructed
-    WorldXYZ loc;
-    SigBlock block;
+    public long expirationInMillis = 0; //exact expiration time is set when the object is constructed
+    public Vector3 offset;
+    public SigBlock block;
     
-    public BlockRecord(WorldXYZ coords)
-    {
-        expirationTimeInMillis = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(60, TimeUnit.SECONDS);
-        loc = coords;
-        block = coords.getSigBlock();
-    }
-    
-    public BlockRecord(int delayInSeconds, WorldXYZ coords, SigBlock b){
-        expirationTimeInMillis = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(delayInSeconds, TimeUnit.SECONDS);
-        loc = coords;
+    public BlockRecord(int delayInSeconds, Vector3 displacement, SigBlock b){
+        expirationInMillis = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(delayInSeconds, TimeUnit.SECONDS);
+        offset = displacement;
         block = b;
     }
     
@@ -46,6 +39,6 @@ public class BlockRecord implements Delayed{
     @Override
     public long getDelay(TimeUnit unit) {
         //the difference is simply figured from the current system time
-        return unit.convert(expirationTimeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+        return unit.convert(expirationInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
     }
 }
