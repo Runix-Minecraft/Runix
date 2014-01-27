@@ -80,11 +80,11 @@ public class RuneHandler {
     }
 
     @ForgeSubscribe
-    public void saving(Save s){
-        if( s.world.provider.dimensionId == 0 && !s.world.isRemote)//Josiah: I figure it's likely there's only one of these
+    public void saving(Save saveEvent){
+        if( saveEvent.world.provider.dimensionId == 0 && !saveEvent.world.isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
-                    ((PersistentRune) r).saveActiveRunes();
+                    ((PersistentRune) r).saveActiveRunes(saveEvent);
     }
 
     @ForgeSubscribe
@@ -92,7 +92,7 @@ public class RuneHandler {
         if( loadEvent.world.provider.dimensionId == 0 && !loadEvent.world.isRemote)
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
-                    ((PersistentRune) r).loadRunes();
+                    ((PersistentRune) r).loadRunes(loadEvent);
     }
 
     @ForgeSubscribe

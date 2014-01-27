@@ -13,7 +13,10 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServerMulti;
+import net.minecraftforge.event.world.WorldEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Save;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,12 +37,12 @@ public abstract class PersistentRune extends AbstractRune{
         
     }
     
-    /**Override this method to implement custom rune file saving rules*/
-    public void saveActiveRunes(){
-    	
+    /**Override this method to implement custom rune file saving rules */
+    public void saveActiveRunes(Save saveEvent)
+    {
         if(getActiveMagic().isEmpty())
                     return;
-                String fileName = getJsonFilePath();//  ex:TorcherBearerRune.json
+                String fileName = getJsonFilePath(saveEvent.world);//  ex:TorcherBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
             Gson converter = new Gson();
@@ -52,21 +55,11 @@ public abstract class PersistentRune extends AbstractRune{
         } catch (FileNotFoundException e) {
             System.err.println("RUNIX: Couldn't write to file: " + fileName);
         } 
-      
     }
 
-
-	String getJsonFilePath() {
-		location = new WorldXYZ(0,0,0);
-		String levelName = location.getWorld().getWorldInfo().getWorldName();
-		String subDirectory = (location.getWorld() instanceof WorldServerMulti )? "" : "saves/";
-		String directory = subDirectory + levelName + "/stored_runes/";
-		new File(directory).mkdir();//ensure the folder exists
-		String fileName = directory + shortClassName() + ".json";
-		return fileName;
-	}
-    public void loadRunes(){
-        String fileName = getJsonFilePath();
+	public void loadRunes(Load loadEvent)
+	{
+        String fileName = getJsonFilePath(loadEvent.world);
         try {
             ArrayList<PersistentRune> newList = new ArrayList<PersistentRune>();
             List<String> json = FileUtils.readLines(new File(fileName));
@@ -85,6 +78,16 @@ public abstract class PersistentRune extends AbstractRune{
             System.err.println("GSON failed to parse " + fileName);
             e.printStackTrace();
         }
+    }
+
+    String getJsonFilePath(World world) 
+    {
+        String levelName = world.getWorldInfo().getWorldName();
+        String subDirectory = (world instanceof WorldServerMulti )? "" : "saves/";
+        String directory = subDirectory + levelName + "/stored_runes/";
+        new File(directory).mkdir();//ensure the folder exists
+        String fileName = directory + shortClassName() + ".json";
+        return fileName;
     }
     
     /**There's no way to have a static field in an abstract class so we use a getter instead

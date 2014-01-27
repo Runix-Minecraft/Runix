@@ -12,6 +12,9 @@ import com.newlinegaming.Runix.RenderHelper;
 import com.newlinegaming.Runix.Util_Movement;
 import com.newlinegaming.Runix.WorldXYZ;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -97,6 +100,7 @@ public class RunecraftRune extends AbstractTimedRune {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void renderWireframe(RenderWorldLastEvent evt) {
         if(getPlayer() != null)

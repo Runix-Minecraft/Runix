@@ -19,6 +19,9 @@ import com.newlinegaming.Runix.Signature;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 
 public class RubricCreationRune extends PersistentRune {
 
@@ -94,17 +97,12 @@ public class RubricCreationRune extends PersistentRune {
         return blocks;
     }
 
+    @SideOnly(Side.CLIENT)
     @ForgeSubscribe
 	public void renderWireframe(RenderWorldLastEvent evt) {
 		if (getPlayer() != null)
 			renderer.highlightBoxes(extractCoordinates(structure), false, getPlayer(), 221, 0, 0);//TODO this is really slow for every frame
 	}
-	
-    @Override
-    public void loadRunes() {
-        super.loadRunes();
-        System.out.println("Rubrics: " + getActiveMagic().size() + "\n    " + getActiveMagic());
-    }	
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
@@ -117,6 +115,6 @@ public class RubricCreationRune extends PersistentRune {
     }
     
     public boolean isFlatRuneOnly() {
-        return false; //TODO: Consider this
+        return false;
     }
 }

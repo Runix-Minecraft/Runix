@@ -19,17 +19,17 @@ public class WorldXYZ extends ChunkCoordinates {
     private int dimensionID = -500000;
     public int face = 1;
     
-    public WorldXYZ() {
-        this.posX = 0;
-        this.posY = 64;
-        this.posZ = 0;
-        this.setWorld(defaultWorld());
-    }
-
-    public WorldXYZ(int x, int y, int z) {
-        super(x, y, z);
-        this.setWorld(defaultWorld());
-    }
+//    public WorldXYZ() { //default world is causing an issue with servers because defaultWorld() doesn't work correctly
+//        this.posX = 0;
+//        this.posY = 64;
+//        this.posZ = 0;
+//        this.setWorld(defaultWorld());
+//    }
+//
+//    public WorldXYZ(int x, int y, int z) {
+//        super(x, y, z);
+//        this.setWorld(defaultWorld());
+//    }
 
     public WorldXYZ(World world, int x, int y, int z) {
         super(x, y, z);
