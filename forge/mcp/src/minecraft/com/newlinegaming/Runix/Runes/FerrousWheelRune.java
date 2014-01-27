@@ -57,7 +57,7 @@ public class FerrousWheelRune extends PersistentRune {
         int start = globalWheel.indexOf(this);
         for(int i = (start + 1) % globalWheel.size(); i != start; i = (i+1) % globalWheel.size()){
             FerrousWheelRune fw = (FerrousWheelRune)globalWheel.get(i);
-            if( !fw.location.equals(location) ) //fw.guestList.contains(user.username) && 
+            if( !fw.location.equals(location) && fw.guestList.contains(user.username) ) 
                 return fw;
         }
         return null;
