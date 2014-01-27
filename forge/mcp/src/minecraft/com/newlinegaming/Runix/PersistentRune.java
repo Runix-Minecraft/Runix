@@ -86,6 +86,7 @@ public abstract class PersistentRune extends AbstractRune{
         String subDirectory = (world instanceof WorldServerMulti )? "" : "saves/";
         String directory = subDirectory + levelName + "/stored_runes/";
         new File(directory).mkdir();//ensure the folder exists
+        System.out.println("      Runix Looking in folder: " + directory);
         String fileName = directory + shortClassName() + ".json";
         return fileName;
     }
@@ -116,7 +117,7 @@ public abstract class PersistentRune extends AbstractRune{
                 match = this.getClass().getConstructor(WorldXYZ.class, EntityPlayer.class).newInstance(coords, activator);
                 getActiveMagic().add(match);//add our new Rune to the list
             } catch (Exception e) {
-        	System.out.println("This Rune needs you to add an entity activator.");
+        	System.out.println("This Persistent Runes require a constructor YourRune(WorldXYZ loc, EntityPlayer user) to be defined.");
                 e.printStackTrace();
                 return;
             }

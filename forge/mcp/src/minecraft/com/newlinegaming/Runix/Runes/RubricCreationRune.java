@@ -72,8 +72,14 @@ public class RubricCreationRune extends PersistentRune {
 	    if( renderer == null)
 	        initializeRune();
 		renderer.reset();
-		HashSet<WorldXYZ> shape = conductanceStep(coords, 50); //TODO the problem is that this will be saved and persisted even without a signature
+		int range = 50;
+		HashSet<WorldXYZ> shape = conductanceStep(coords, range); //TODO the problem is that this will be saved and persisted even without a signature
 		structure = scanStructure(shape);
+		if(structure.isEmpty()){
+		    aetherSay(poker, "The rune is touching something that is larger than "+range+" blocks across.");
+		    getActiveMagic().remove(this);// delete this failed rune attempt so it doesn't get saved
+		    return;
+		}
 		ItemStack toolused = poker.getCurrentEquippedItem();
 		if (toolused != null && (toolused.itemID == Item.writtenBook.itemID || toolused.itemID == Item.book.itemID)) 
 		{
