@@ -47,7 +47,7 @@ public abstract class AbstractRune {
 	 */
 	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
 	    if(isFlatRuneOnly())
-	        coords = coords.overrideFacing(1); //we need a new object so we don't side-effect other Runes
+	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other Runes
 	    return patternToShape(runicTemplateOriginal(), coords); 
 	}
 	
@@ -339,7 +339,7 @@ public abstract class AbstractRune {
     /**Removes the shape and adds its block energy to the rune*/
     protected void consumeRune(WorldXYZ coords) {
         if(isFlatRuneOnly())
-            coords = coords.overrideFacing(1);
+            coords = coords.copyWithNewFacing(1);
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID

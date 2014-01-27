@@ -29,7 +29,7 @@ public class CompassRune extends AbstractRune{
 				{{{ 0 ,ink, 0 },
 				  {ink, 0 ,ink},
 				  {ink, 0 ,ink}}};
-		coords.overrideFacing(1);
+		coords = coords.copyWithNewFacing(1);
         HashMap<WorldXYZ, SigBlock> stamp = patternToShape(compassOutcome, coords);
 		if(stampBlockPattern(stamp, player))
 		    accept(player);

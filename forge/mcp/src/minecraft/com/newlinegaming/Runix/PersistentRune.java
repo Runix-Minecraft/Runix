@@ -204,7 +204,7 @@ public abstract class PersistentRune extends AbstractRune{
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         for(PersistentRune rune : getActiveMagic()){
             if(positionsMoved.keySet().contains(rune.location) ){//grab the destination keyed by source position
-                rune.location = positionsMoved.get(rune.location).overrideFacing(rune.location.face); //preserve old facing for runes
+                rune.location = positionsMoved.get(rune.location).copyWithNewFacing(rune.location.face); //preserve old facing for runes
             }
         }
     }

@@ -92,7 +92,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     /**Like offset() but for facing instead.  Returning a new instance avoids side-effecting*/
-    public WorldXYZ overrideFacing(int face2) {
+    public WorldXYZ copyWithNewFacing(int face2) {
         WorldXYZ n = new WorldXYZ(this);
         n.face = face2;
         return n;
