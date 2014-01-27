@@ -1,9 +1,7 @@
 package com.newlinegaming.Runix;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -12,9 +10,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServerMulti;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
@@ -73,7 +71,7 @@ public abstract class PersistentRune extends AbstractRune{
             }
             System.out.println("New State: " + getActiveMagic());
         } catch (IOException e) {
-            System.err.println("RUNIX: Unable to open and parse " + fileName);
+            System.err.println("RUNIX: Can't access file or doesn't exist: " + fileName);
         } catch (Exception e){
             System.err.println("GSON failed to parse " + fileName);
             e.printStackTrace();
@@ -83,9 +81,9 @@ public abstract class PersistentRune extends AbstractRune{
     String getJsonFilePath(World world) 
     {
         String levelName = world.getWorldInfo().getWorldName();
-        String subDirectory = (world instanceof WorldServerMulti )? "" : "saves/";
+        String subDirectory = ( MinecraftServer.getServer() instanceof DedicatedServer )? "" : "saves/";
         String directory = subDirectory + levelName + "/stored_runes/";
-        new File(directory).mkdir();//ensure the folder exists
+        new File(directory).mkdirs();//ensure the folder exists
         System.out.println("      Runix Looking in folder: " + directory);
         String fileName = directory + shortClassName() + ".json";
         return fileName;
