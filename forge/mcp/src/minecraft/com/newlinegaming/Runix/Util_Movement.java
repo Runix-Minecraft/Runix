@@ -75,7 +75,7 @@ public class Util_Movement {
 
 
 
-    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Set<WorldXYZ> set, int dX, int dY, int dZ) {
+    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, int dX, int dY, int dZ) {
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>();
         Vector3 displacement = new Vector3(dX, dY, dZ);
         for(WorldXYZ point : set)

@@ -1,28 +1,36 @@
 package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.Util_SphericalFunctions;
-import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Util_Movement;
+import com.newlinegaming.Runix.Util_SphericalFunctions;
+import com.newlinegaming.Runix.WorldXYZ;
+
 public class FaithRune extends PersistentRune{
 	
 	protected static ArrayList<PersistentRune> activeFaithList = new ArrayList<PersistentRune>();
-	public Integer radius;
+	public Integer radius = 11;
+	public LinkedList<WorldXYZ> sphere = null;
 	
 	public FaithRune(){
 	    runeName = "Faith";
 	}
-	public FaithRune(EntityPlayer creator, WorldXYZ loc, int radius)
+	public FaithRune(WorldXYZ loc, EntityPlayer creator)
 	{
 	    super(loc, creator, "Faith");
+        //, int radius
+	    sphere = Util_SphericalFunctions.getSphere(loc, radius);
+	    energy += 100000; //TODO consume rune
 	}
 	
 	public int[][][] runicTemplateOriginal(){
@@ -43,27 +51,32 @@ public class FaithRune extends PersistentRune{
 		    FaithRune fr = (FaithRune)tmp;
 			if (fr.location != null && fr.radius != null)
 			{
-				if(Util_SphericalFunctions.radiusCheck(fr.location, fr.radius+8))
+				if(coords.getDistance(fr.location) < radius)// check for other Faith centers inside our radius
 				{
 					player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED+"ISLANDS TOO CLOSE"));
-					return;
+					return;//TODO Chain FTP
 				}
 			}
 		}
-		this.runeName = "Faith";
-		this.floatIsland(player, coords);
-		
-		
+		PersistentRune newIsland = this.getOrCreateRune(coords, player);
+		if(newIsland != null)
+		    ((FaithRune) newIsland).floatIsland();
 	}
 	
 	
 	
-	public void floatIsland(EntityPlayer player,WorldXYZ islandCentre)
+	public void floatIsland()
 	{
-		aetherSay(player,EnumChatFormatting.GREEN+"Floating an island");
-		List<WorldXYZ> points = Util_SphericalFunctions.getSphere(islandCentre, 8);
-		aetherSay(player,EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
+		aetherSay(getPlayer(),EnumChatFormatting.GREEN+"Floating an island");
+		List<WorldXYZ> points = Util_SphericalFunctions.getSphere(location, radius);
+		aetherSay(getPlayer(),EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
 		//use AbstractRune.moveShape() which will charge energy for the move
+		HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, 0, 50, 0);
+		try {
+            this.moveShape(moveMapping);
+        } catch (NotEnoughRunicEnergyException e) {
+            aetherSay(getPlayer(), "There not enough energy left to move this island.  Energy: " + energy);
+        }
 	}
 
     @Override
