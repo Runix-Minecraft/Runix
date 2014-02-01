@@ -104,6 +104,12 @@ public abstract class PersistentRune extends AbstractRune{
     public void execute(WorldXYZ coords, EntityPlayer activator) {
         if(activator.worldObj.isRemote)//runes server side only
             return;
+        PersistentRune match = getOrCreateRune(coords, activator);
+        match.poke(activator, coords); //either way, we poke the relevant rune to let it know
+    }
+
+
+    protected PersistentRune getOrCreateRune(WorldXYZ coords, EntityPlayer activator) {
         PersistentRune match = null;
         if(oneRunePerPerson())
             match = getRuneByPlayer(activator);
@@ -117,11 +123,11 @@ public abstract class PersistentRune extends AbstractRune{
             } catch (Exception e) {
         	System.out.println("This Persistent Runes require a constructor YourRune(WorldXYZ loc, EntityPlayer user) to be defined.");
                 e.printStackTrace();
-                return;
+                return null;
             }
         }
         accept(activator);
-        match.poke(activator, coords); //either way, we poke the relevant rune to let it know
+        return match;
     }
     
     public PersistentRune getRuneBySpecialName(String name){
