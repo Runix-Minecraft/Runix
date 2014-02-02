@@ -11,7 +11,7 @@ public class Tiers {
     
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
-    public static final float blockMoveCost = 0.5f;
+    public static final float blockMoveCost = 1.0f;
     public static final int blockBreakCost = 12;
     public static final float movementPerMeterCost = 0.22f;
     
@@ -260,18 +260,6 @@ public class Tiers {
         };
     }
     
-    public static int getEnergy(int blockID){
-        if(blockID > 255)
-            return 1;
-        return blockEnergy[blockID];
-    }
-
-    public static int getTier(int blockID){
-        int energy = getEnergy(blockID);
-        energy = energy < 1 ? 1 : energy; // log(0) = crash bad
-        return (int) Math.round(Math.log(energy) / Math.log(2));
-    }
-
     /**The idea behind this method is to take a list of Blocks and pull all the ids. 
      * It really only exists to cut down on the number of ".blockID" that is in this file given
      * how long it will be.  
@@ -284,6 +272,24 @@ public class Tiers {
         return IDs;
     }
     
+    public static int getEnergy(int blockID){
+        if(blockID > 255)
+            return 1;
+        return blockEnergy[blockID];
+    }
+
+    public static int getTier(int blockID){
+        int energy = getEnergy(blockID);
+        energy = energy < 1 ? 1 : energy; // log(0) = crash bad
+        return (int) Math.round(Math.log(energy) / Math.log(2));
+    }
+
+    public static int energyToRadiusConversion(int energy) {
+        int diameter = 1;
+        while( diameter * diameter * diameter * blockMoveCost < energy) //this is over generous intentionally
+            diameter += 2; // +2 so that we always have an odd number and have block centered shapes
+        return diameter/2; //integer math will round down the .5
+    }
     
     
     /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/

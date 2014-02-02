@@ -6,12 +6,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.Util_Movement;
 import com.newlinegaming.Runix.Util_SphericalFunctions;
 import com.newlinegaming.Runix.WorldXYZ;
@@ -28,9 +30,6 @@ public class FaithRune extends PersistentRune{
 	public FaithRune(WorldXYZ loc, EntityPlayer creator)
 	{
 	    super(loc, creator, "Faith");
-        //, int radius
-	    sphere = Util_SphericalFunctions.getSphere(loc, radius);
-	    energy += 100000; //TODO consume rune
 	}
 	
 	public int[][][] runicTemplateOriginal(){
@@ -43,40 +42,42 @@ public class FaithRune extends PersistentRune{
              {41,0,41}}};
 	}
 	
-	public void execute(WorldXYZ coords, EntityPlayer player)
+//	public void execute(WorldXYZ coords, EntityPlayer player) // TODO we need a way for runes to check more complex validation and delete themselves if they don't pass
+//	{
+//		if (!runeAllowed(player, this)) return;
+//		for (PersistentRune tmp : activeFaithList)
+//		{//Josiah: sorry, there's no way to get around type casting and still have an interface or abstract parent 
+//		    FaithRune fr = (FaithRune)tmp;
+//			if (fr.location != null && fr.radius != null)
+//			{
+//				if(coords.getDistance(fr.location) < radius)// check for other Faith centers inside our radius
+//				{
+//					player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED+"ISLANDS TOO CLOSE"));
+//					return;//TODO Chain FTP
+//				}
+//			}
+//		}
+//		PersistentRune newIsland = this.getOrCreateRune(coords, player);
+//		if(newIsland != null)
+//		    newIsland.poke(player, coords);
+//	}
+	
+    @Override
+    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+        consumeRune(coords);
+        try {
+            setBlockIdAndUpdate(coords, Block.blockGold.blockID); //Gold block is to be a permanent marker
+        } catch (NotEnoughRunicEnergyException e) {}
+        radius = Tiers.energyToRadiusConversion(energy);
+        sphere = Util_SphericalFunctions.getSphere(coords, radius);
+        energy -= sphere.size() * Tiers.blockMoveCost;
+        bounceIsland();
+    }
+    
+    public void bounceIsland()
 	{
-		if (!runeAllowed(player, this)) return;
-		for (PersistentRune tmp : activeFaithList)
-		{//Josiah: sorry, there's no way to get around type casting and still have an interface or abstract parent 
-		    FaithRune fr = (FaithRune)tmp;
-			if (fr.location != null && fr.radius != null)
-			{
-				if(coords.getDistance(fr.location) < radius)// check for other Faith centers inside our radius
-				{
-					player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED+"ISLANDS TOO CLOSE"));
-					return;//TODO Chain FTP
-				}
-			}
-		}
-		PersistentRune newIsland = this.getOrCreateRune(coords, player);
-		if(newIsland != null)
-		    ((FaithRune) newIsland).floatIsland();
-	}
-	
-	
-	
-	public void floatIsland()
-	{
-		aetherSay(getPlayer(),EnumChatFormatting.GREEN+"Floating an island");
-		List<WorldXYZ> points = Util_SphericalFunctions.getSphere(location, radius);
-		aetherSay(getPlayer(),EnumChatFormatting.GREEN+"Got "+points.size()+" points to raise");
-		//use AbstractRune.moveShape() which will charge energy for the move
-		HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, 0, 50, 0);
-		try {
-            this.moveShape(moveMapping);
-        } catch (NotEnoughRunicEnergyException e) {
-            aetherSay(getPlayer(), "There not enough energy left to move this island.  Energy: " + energy);
-        }
+		HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, 0, radius*2+1, 0);
+		Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
 	}
 
     @Override
@@ -88,7 +89,7 @@ public class FaithRune extends PersistentRune{
     public boolean oneRunePerPerson() {
         return false;
     }
-    
+    @Override
     public boolean isFlatRuneOnly(){
         return true;
     }
