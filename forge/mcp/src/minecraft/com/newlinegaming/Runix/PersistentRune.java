@@ -199,7 +199,7 @@ public abstract class PersistentRune extends AbstractRune{
     }
 
     @Override
-    /**as moveMagic() but the parameters allow any kind of transformation.  This is used by rotation to
+    /**moveMagic() parameters allow any kind of transformation.  This is used by rotation to
      * map the starting position as a key, and the end position as the value.   
      *  Ideally, runes should be coded so that moving the center block is
      * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.  */

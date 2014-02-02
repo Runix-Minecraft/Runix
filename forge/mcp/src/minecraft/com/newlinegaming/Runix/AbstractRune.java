@@ -212,8 +212,8 @@ public abstract class AbstractRune {
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
                 case KEY:
-//                    if( Tiers.isTier0(blockID) )//key block must be center block  !target.equals(coords) || 
-//                        return false;//can be ink, or SIGR but not T0
+                    if( !target.equals(coords) )//key block must be center block and not AIR 
+                        return false;
                     break;
                 default:
                     if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers

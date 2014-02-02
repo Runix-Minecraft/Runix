@@ -16,6 +16,7 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.Util_Movement;
 import com.newlinegaming.Runix.Util_SphericalFunctions;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
 public class FaithRune extends PersistentRune{
@@ -76,7 +77,7 @@ public class FaithRune extends PersistentRune{
             HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(coords, radius);
             energy -= sphere.size() * Tiers.blockMoveCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
-            bounceIsland(sphere);
+            bounceIsland();
         }
     }
     
@@ -85,13 +86,47 @@ public class FaithRune extends PersistentRune{
      * Josiah: I've tried to speed this up as much as possible with little effect.  Profiling is needed.
      * @param sphere coordinates passed in so they don't need to be recalculated
      */
-    public void bounceIsland(HashSet<WorldXYZ> sphere)
+    public void bounceIsland()
 	{
         int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
         height -= location.posY;
-		HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, 0, height, 0);
-		Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
+        try {
+            moveIsland(new Vector3(0, height - location.posY, 0));
+        } catch (NotEnoughRunicEnergyException e) {}
 	}
+    
+    /**The main movement teleportation function for Faith Islands. 
+     * @throws NotEnoughRunicEnergyException comes only from the teleport involved in moving people*/
+    public void moveIsland(Vector3 displacement) throws NotEnoughRunicEnergyException {
+        // TODO Handle inter-dimensional travel
+        HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(location, radius);
+        HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
+        Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
+        
+        WorldXYZ playerPosition = new WorldXYZ(getPlayer()); //TODO check for all users
+        if(Util_SphericalFunctions.radiusCheck(playerPosition.posX, playerPosition.posY, playerPosition.posZ, radius))
+            teleportPlayer(getPlayer(), playerPosition.offset(displacement)); //relative move from the players position
+    }
+    
+    @Override
+    /**moveMagic() On Faith Islands checks for a movement of the center block.  If that block (location) gets moved, then the move
+     * is amplified to all other blocks in the radius of the Faith Island.  This will be a little odd with rotation moves.*/
+    public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) 
+    {
+        for(PersistentRune rune : getActiveMagic())
+        {
+            if(positionsMoved.keySet().contains(rune.location) ) // we have a move that affects the center
+            {
+                try {
+                    ((FaithRune) rune).moveIsland(new Vector3(rune.location, positionsMoved.get(rune.location)));
+                } catch (NotEnoughRunicEnergyException e) {
+                    aetherSay(location.getWorld(), "The Faith sphere at " + location.toString() + " has run out of energy and the " +
+                    		"magic has become untethered from the center block.");
+                    rune.location = positionsMoved.get(rune.location).copyWithNewFacing(rune.location.face); //preserve old facing for runes
+                }
+            }
+        }
+    }
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
