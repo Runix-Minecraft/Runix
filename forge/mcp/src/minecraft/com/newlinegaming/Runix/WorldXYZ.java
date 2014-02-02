@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import cpw.mods.fml.server.FMLServerHandler;
 
 
 /**This class was created for Runix to ensure that when transferring between sets of coordinates,
@@ -74,7 +74,8 @@ public class WorldXYZ extends ChunkCoordinates {
      * @param dimension
      */
     public void setWorld(int dimension) {
-        worldObj = FMLServerHandler.instance().getServer().worldServerForDimension(dimension);
+        worldObj = MinecraftServer.getServer().worldServerForDimension(dimension);
+//        worldObj = FMLServerHandler.instance().getServer().worldServerForDimension(dimension);
         dimensionID = getDimensionNumber();
     }
     
@@ -124,7 +125,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
     
     public World defaultWorld() {
-        return FMLServerHandler.instance().getServer().worldServerForDimension(0);
+        return MinecraftServer.getServer().worldServerForDimension(0);
     }
 
     @Override
