@@ -189,6 +189,8 @@ public abstract class AbstractRune {
 	 */
     public boolean checkRunePattern(WorldXYZ coords) {
         int inkID = getTierInkBlock(coords);
+        if( inkID == 0 )
+            return false; //Tier blocks cannot be AIR
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {

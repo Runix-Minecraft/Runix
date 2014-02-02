@@ -69,7 +69,6 @@ public abstract class PersistentRune extends AbstractRune{
                 getActiveMagic().clear();
                 getActiveMagic().addAll(newList);
             }
-            System.out.println("New State: " + getActiveMagic());
         } catch (IOException e) {
             System.err.println("RUNIX: Can't access file or doesn't exist: " + fileName);
         } catch (Exception e){
@@ -84,7 +83,6 @@ public abstract class PersistentRune extends AbstractRune{
         String subDirectory = ( MinecraftServer.getServer() instanceof DedicatedServer )? "" : "saves/";
         String directory = subDirectory + levelName + "/stored_runes/";
         new File(directory).mkdirs();//ensure the folder exists
-        System.out.println("      Runix Looking in folder: " + directory);
         String fileName = directory + shortClassName() + ".json";
         return fileName;
     }

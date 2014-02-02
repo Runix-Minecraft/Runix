@@ -42,8 +42,6 @@ import net.minecraftforge.event.world.WorldEvent.Save;
  */
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
-    int nLoaded = 0;
-
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
 
     private RuneHandler() {
