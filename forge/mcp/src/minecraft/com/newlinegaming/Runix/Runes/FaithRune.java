@@ -35,12 +35,12 @@ public class FaithRune extends PersistentRune{
 	
 	public int[][][] runicTemplateOriginal(){
 		return new int [][][] 
-           {{{0,0,0},
-             {0,41,0},
-             {0,0,0}},
-            {{41,0,41},
-             {0,41,0},
-             {41,0,41}}};
+           {{{NONE,NONE,NONE},
+             {NONE, 41 ,NONE},
+             {NONE,NONE,NONE}},
+            {{41,TIER,41},
+             {TIER,41,TIER},
+             {41,TIER,41}}};
 	}
 	
 //	public void execute(WorldXYZ coords, EntityPlayer player) // TODO we need a way for runes to check more complex validation and delete themselves if they don't pass
@@ -65,25 +65,31 @@ public class FaithRune extends PersistentRune{
 	
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-        if(firstTime){
+        if(firstTime){// firstTime prevents players from injecting more energy by building a second rune on top of the first
             firstTime = false;
             consumeRune(coords);
             try {
                 setBlockIdAndUpdate(coords, Block.blockGold.blockID); //Gold block is to be a permanent marker
             } catch (NotEnoughRunicEnergyException e) {}
+            energy -= Tiers.getEnergy(Block.blockGold.blockID) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
-            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(coords, radius);
+            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(coords, radius);
             energy -= sphere.size() * Tiers.blockMoveCost;
-            aetherSay(poker, "Created a Faith Sphere with " + sphere.size() + " blocks.");
-            return;
+            aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
+            bounceIsland(sphere);
         }
-        bounceIsland();
     }
     
-    public void bounceIsland()
+    /**bouncIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
+     * Faith is activated. 
+     * Josiah: I've tried to speed this up as much as possible with little effect.  Profiling is needed.
+     * @param sphere coordinates passed in so they don't need to be recalculated
+     */
+    public void bounceIsland(HashSet<WorldXYZ> sphere)
 	{
-        LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(location, radius);
-		HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, 0, radius*2+1, 0);
+        int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
+        height -= location.posY;
+		HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, 0, height, 0);
 		Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
 	}
 

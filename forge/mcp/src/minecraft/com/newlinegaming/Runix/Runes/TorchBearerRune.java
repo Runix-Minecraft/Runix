@@ -1,8 +1,12 @@
 package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.HashSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
@@ -10,12 +14,6 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Util_SphericalFunctions;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
 
 /**TorchBearer functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class TorchBearerRune extends AbstractTimedRune {
@@ -35,7 +33,7 @@ public class TorchBearerRune extends AbstractTimedRune {
         {
             World world = subject.worldObj;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
-            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
+            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
             for(WorldXYZ newPos : sphere)
             {
                 if(newPos.getBlockId() == 0 && newPos.offset(Vector3.DOWN).isSolid() && (

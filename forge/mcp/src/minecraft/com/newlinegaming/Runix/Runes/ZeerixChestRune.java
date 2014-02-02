@@ -1,8 +1,11 @@
-    package com.newlinegaming.Runix.Runes;
+package com.newlinegaming.Runix.Runes;
 
-    import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
@@ -10,11 +13,6 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Util_SphericalFunctions;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
-
-    import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 public class ZeerixChestRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
@@ -33,7 +31,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
         if(subject.equals(getPlayer()))
         {
             World world = subject.worldObj;//sphere can be optimized to donut
-            LinkedList<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(getPlayer()), 4);
+            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(getPlayer()), 4);
             for(WorldXYZ newPos : sphere)
             {
                 if(newPos.getBlockId() == 0 
