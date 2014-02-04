@@ -90,16 +90,18 @@ public class FaithRune extends PersistentRune{
 	{
         int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
         try {
-            moveIsland(new Vector3(0, height - location.posY, 0));
+            moveBlock(location, location.offset(0, height - location.posY, 0));
+            //moveIsland(new Vector3(0, height - location.posY, 0));
         } catch (NotEnoughRunicEnergyException e) {}
 	}
     
     /**The main movement teleportation function for Faith Islands. 
+     * @param positionsMoved 
      * @throws NotEnoughRunicEnergyException comes only from the teleport involved in moving people*/
-    public void moveIsland(Vector3 displacement) throws NotEnoughRunicEnergyException {
+    public void moveIsland(Vector3 displacement, HashMap<WorldXYZ, WorldXYZ> positionsMoved) throws NotEnoughRunicEnergyException {
         // TODO Handle inter-dimensional travel
         HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(location, radius);
-        sphere.remove(location); //it's important that this does not become a recursive move.
+        sphere.removeAll(positionsMoved.keySet()); //don't move things that have already been moved, including the center block
         HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
         Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
         
@@ -109,9 +111,7 @@ public class FaithRune extends PersistentRune{
         
         /**Manual block move to avoid triggering moveMagic() which would create an infinite loop = BAD*/
         WorldXYZ destinationCenter = location.offset(displacement).copyWithNewFacing(location.face); //preserve old facing for runes
-        destinationCenter.setBlockId(location.getSigBlock());// move center block (prolly Gold)
-        location.setBlock(0, 0); //delete old block
-        location = destinationCenter;// TODO still not working with Runecraft
+        location = destinationCenter;
     }
     
     @Override
@@ -124,7 +124,7 @@ public class FaithRune extends PersistentRune{
             if(positionsMoved.keySet().contains(rune.location) ) // we have a move that affects the center
             {
                 try {
-                    ((FaithRune) rune).moveIsland(new Vector3(rune.location, positionsMoved.get(rune.location)));
+                    ((FaithRune) rune).moveIsland(new Vector3(rune.location, positionsMoved.get(rune.location)), positionsMoved);
                 } catch (NotEnoughRunicEnergyException e) {
                     aetherSay(location.getWorld(), "The Faith sphere at " + location.toString() + " has run out of energy and the " +
                     		"magic has become untethered from the center block.");
