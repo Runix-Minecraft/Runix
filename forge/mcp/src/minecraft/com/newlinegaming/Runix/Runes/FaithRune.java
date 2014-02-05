@@ -98,21 +98,34 @@ public class FaithRune extends PersistentRune{
     /**The main movement teleportation function for Faith Islands. 
      * @param positionsMoved 
      * @throws NotEnoughRunicEnergyException comes only from the teleport involved in moving people*/
-    public void moveIsland(Vector3 displacement, HashMap<WorldXYZ, WorldXYZ> positionsMoved) throws NotEnoughRunicEnergyException {
+    public void moveIsland(HashMap<WorldXYZ, WorldXYZ> positionsMoved) throws NotEnoughRunicEnergyException 
+    {
+        WorldXYZ destinationCenter = positionsMoved.get(location).copyWithNewFacing(location.face); //preserve old facing for runes
         // TODO Handle inter-dimensional travel
         HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(location, radius);
-        sphere.removeAll(positionsMoved.values()); //don't move things that have already been moved, including the center block
-        sphere.remove(location);
+        Vector3 displacement = new Vector3(location, destinationCenter);
         HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
-        Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
-        
+        for(WorldXYZ vehiclePart : positionsMoved.values())
+            moveMapping.put(vehiclePart, vehiclePart); // include the other attached vehicle as something that is not collided with
+        if(!shapeCollides(moveMapping))
+        {
+            sphere.removeAll(positionsMoved.values()); //don't move things that have already been moved, including the center block
+            sphere.remove(location);
+            moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);//moveMapping without the other vehicle
+            Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
+            
+            /**Manual block move to avoid triggering moveMagic() which would create an infinite loop = BAD*/
+            location = destinationCenter;
+        }
+        else{
+            aetherSay(location.getWorld(), "Island collision.");
+            //snatch back the Gold Block
+            location.setBlockId(destinationCenter.getSigBlock());
+            destinationCenter.setBlockIdAndUpdate(0);
+        }
 //        WorldXYZ playerPosition = new WorldXYZ(poker); //TODO check for all users
 //        if(Util_SphericalFunctions.radiusCheck(playerPosition.posX, playerPosition.posY, playerPosition.posZ, radius))
 //            teleportPlayer(getPlayer(), playerPosition.offset(displacement)); //relative move from the players position
-        
-        /**Manual block move to avoid triggering moveMagic() which would create an infinite loop = BAD*/
-        WorldXYZ destinationCenter = location.offset(displacement).copyWithNewFacing(location.face); //preserve old facing for runes
-        location = destinationCenter;
     }
     
     @Override
@@ -125,7 +138,7 @@ public class FaithRune extends PersistentRune{
             if(positionsMoved.keySet().contains(rune.location) ) // we have a move that affects the center
             {
                 try {
-                    ((FaithRune) rune).moveIsland(new Vector3(rune.location, positionsMoved.get(rune.location)), positionsMoved);
+                    ((FaithRune) rune).moveIsland(positionsMoved);
                 } catch (NotEnoughRunicEnergyException e) {
                     aetherSay(location.getWorld(), "The Faith sphere at " + location.toString() + " has run out of energy and the " +
                     		"magic has become untethered from the center block.");
