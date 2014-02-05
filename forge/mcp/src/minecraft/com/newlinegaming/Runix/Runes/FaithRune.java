@@ -101,7 +101,8 @@ public class FaithRune extends PersistentRune{
     public void moveIsland(Vector3 displacement, HashMap<WorldXYZ, WorldXYZ> positionsMoved) throws NotEnoughRunicEnergyException {
         // TODO Handle inter-dimensional travel
         HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(location, radius);
-        sphere.removeAll(positionsMoved.keySet()); //don't move things that have already been moved, including the center block
+        sphere.removeAll(positionsMoved.values()); //don't move things that have already been moved, including the center block
+        sphere.remove(location);
         HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
         Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
         

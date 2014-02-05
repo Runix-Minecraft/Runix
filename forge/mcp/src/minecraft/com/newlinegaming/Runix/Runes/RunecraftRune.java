@@ -30,6 +30,7 @@ public class RunecraftRune extends AbstractTimedRune {
     public int tier = 1;
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
     private transient RenderHelper renderer = null;
+    private boolean moveInProgress = false;
     
     public RunecraftRune(){
         runeName = "Runecraft";
@@ -75,7 +76,7 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(getPlayer() != null && !subject.equals(getPlayer()) )
+        if(moveInProgress ||(getPlayer() != null && !subject.equals(getPlayer())) )
             return;
         if(getPlayer() != null){
             int dX = (int) (getPlayer().posX - location.posX - .5);
@@ -89,6 +90,7 @@ public class RunecraftRune extends AbstractTimedRune {
             if(getPlayer().isSneaking())
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
+                moveInProgress = true;
                 HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
                 if( !shapeCollides(move) ){
                     vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
@@ -96,6 +98,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 else{
                     aetherSay(getPlayer(), "CRUNCH!");
                 }
+                moveInProgress  = false;
             }
         }
     }

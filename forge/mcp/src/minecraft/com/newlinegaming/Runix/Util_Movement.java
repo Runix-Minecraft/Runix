@@ -33,7 +33,8 @@ public class Util_Movement {
             if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
                 sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
                 point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
-            }else{
+            }
+            else if(block.blockID != 0){//don't write AIR blocks
                 newStructure.put(moveMapping.get(point), block);//record original at new location
             }
         }
@@ -44,9 +45,8 @@ public class Util_Movement {
         for(WorldXYZ destination : newStructure.keySet()) //place all the blocks at new location
             destination.setBlockId(newStructure.get(destination));//doesn't include sensitive blocks
 
-        for(WorldXYZ specialPos : sensitiveBlocks.keySet()){ //Place all the sensitive blocks
+        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //Place all the sensitive blocks
             specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone
-        }
         
         RuneHandler.getInstance().moveMagic(moveMapping);
 
