@@ -239,15 +239,18 @@ public abstract class PersistentRune extends AbstractRune{
             this.player = playerObj.username;
     }
 
+    public int getTier(){
+        return super.getTier(location);
+    }
 
-    protected HashSet<WorldXYZ> attachedStructureShape() {
-        int tier = getTier(location);
+    protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
+        int tier = getTier();
         HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier*2);
         if(scannedStructure.isEmpty()){
-            aetherSay(getPlayer(), "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
+            aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
         }
         else{
-            aetherSay(getPlayer(), "Found " + scannedStructure.size() + " conducting blocks");
+            aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
         }
         return scannedStructure;
     }

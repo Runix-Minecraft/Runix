@@ -1,11 +1,15 @@
 package com.newlinegaming.Runix.Runes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Util_Movement;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
 public class FtpRune extends TeleporterRune {
@@ -41,9 +45,18 @@ public class FtpRune extends TeleporterRune {
         WorldXYZ destination = findWaypointBySignature(poker, getSignature());
         if(destination == null)
             return; //failure
+        HashSet<WorldXYZ> structure = attachedStructureShape(poker);
+        if(structure.isEmpty())
+            return;
         
         try {
-            teleportPlayer(poker, destination);
+            Vector3 scanDirection = Vector3.facing[destination.face];
+            
+            WorldXYZ destinationCenter = destination.offset(scanDirection.multiply(getTier()));
+            //TODO collision
+            moveShape(structure, location, destinationCenter);
+            
+            teleportPlayer(poker, destinationCenter);
         } catch (NotEnoughRunicEnergyException e) {
             reportOutOfGas(poker);
         }

@@ -406,6 +406,13 @@ public abstract class AbstractRune {
         return false;
     }
 
+    protected HashSet<WorldXYZ> moveShape(HashSet<WorldXYZ> structure, WorldXYZ start, WorldXYZ finish) throws NotEnoughRunicEnergyException
+    {
+        Vector3 displacement = new Vector3(start, finish);
+        HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(structure, displacement.x, displacement.y, displacement.z);
+        return moveShape(moveMapping);
+    }
+    
     protected HashSet<WorldXYZ> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) throws NotEnoughRunicEnergyException {
         int blocksMovedToNewArea = 0;
         for(WorldXYZ point : moveMapping.values()){

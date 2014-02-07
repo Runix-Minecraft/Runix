@@ -140,7 +140,7 @@ public class RunecraftRune extends AbstractTimedRune {
         else{
             setPlayer(poker); // assign a player and start
             aetherSay(poker, "The Runecraft is now locked to your body.");
-            HashSet<WorldXYZ> newVehicleShape = attachedStructureShape();
+            HashSet<WorldXYZ> newVehicleShape = attachedStructureShape(poker);
             if( newVehicleShape.isEmpty() )
                 vehicleBlocks = removeAirXYZ(vehicleBlocks);
             else

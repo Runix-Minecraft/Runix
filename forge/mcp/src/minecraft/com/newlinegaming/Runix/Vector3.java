@@ -37,4 +37,8 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
     public String toString(){
         return "\"x\":"+x + ", \"y\":" + y + ", \"z\":" + z;
     }
+
+    public Vector3 multiply(int m) {
+        return new Vector3(x*m, y*m, z*m);
+    }
 }
