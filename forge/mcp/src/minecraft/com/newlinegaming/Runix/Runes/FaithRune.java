@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -24,6 +25,7 @@ public class FaithRune extends PersistentRune{
 	protected static ArrayList<PersistentRune> activeFaithList = new ArrayList<PersistentRune>();
 	public Integer radius = 11;
     private boolean firstTime;
+    protected boolean useCollisionDetection = true;
 	
 	public FaithRune(){
 	    runeName = "Faith";
@@ -95,7 +97,8 @@ public class FaithRune extends PersistentRune{
         } catch (NotEnoughRunicEnergyException e) {}
 	}
     
-    /**The main movement teleportation function for Faith Islands. 
+    /**The main movement teleportation function for Faith Islands.
+     * Added much more robust collision detection for Faith + Runecraft.  This ensures that there will always be a Gold Block at the Faith center. 
      * @param positionsMoved 
      * @throws NotEnoughRunicEnergyException comes only from the teleport involved in moving people*/
     public void moveIsland(HashMap<WorldXYZ, WorldXYZ> positionsMoved) throws NotEnoughRunicEnergyException 
@@ -107,7 +110,7 @@ public class FaithRune extends PersistentRune{
         HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
         for(WorldXYZ vehiclePart : positionsMoved.values())
             moveMapping.put(vehiclePart, vehiclePart); // include the other attached vehicle as something that is not collided with
-        if(!shapeCollides(moveMapping))
+        if(!useCollisionDetection  || !shapeCollides(moveMapping))
         {
             sphere.removeAll(positionsMoved.values()); //don't move things that have already been moved, including the center block
             sphere.remove(location);
@@ -120,9 +123,11 @@ public class FaithRune extends PersistentRune{
         else{
             aetherSay(location.getWorld(), "Island collision.");
             //snatch back the Gold Block
-            location.setBlockId(destinationCenter.getSigBlock());
+            location.setBlockId(destinationCenter.getSigBlock());//TODO this is far from ideal.  It'd be better to cancel to move that precipitated this
             destinationCenter.setBlockIdAndUpdate(0);
         }
+        
+//        MinecraftServer.getServer().
 //        WorldXYZ playerPosition = new WorldXYZ(poker); //TODO check for all users
 //        if(Util_SphericalFunctions.radiusCheck(playerPosition.posX, playerPosition.posY, playerPosition.posZ, radius))
 //            teleportPlayer(getPlayer(), playerPosition.offset(displacement)); //relative move from the players position
