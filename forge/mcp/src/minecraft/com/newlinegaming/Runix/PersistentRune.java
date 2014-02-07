@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -236,5 +237,18 @@ public abstract class PersistentRune extends AbstractRune{
             this.player = null;
         else
             this.player = playerObj.username;
+    }
+
+
+    protected HashSet<WorldXYZ> attachedStructureShape() {
+        int tier = getTier(location);
+        HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier*2);
+        if(scannedStructure.isEmpty()){
+            aetherSay(getPlayer(), "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
+        }
+        else{
+            aetherSay(getPlayer(), "Found " + scannedStructure.size() + " conducting blocks");
+        }
+        return scannedStructure;
     }
 }

@@ -27,7 +27,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 public class RunecraftRune extends AbstractTimedRune {
     
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
-    public int tier = 1;
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
     private transient RenderHelper renderer = null;
     private boolean moveInProgress = false;
@@ -66,12 +65,6 @@ public class RunecraftRune extends AbstractTimedRune {
                   {GOLD,KEY ,GOLD},
                   
                   {TIER,GOLD,TIER}}};
-    }
-
-    @Override
-    public void execute(WorldXYZ coords, EntityPlayer activator) {
-        if(!activator.worldObj.isRemote)//server only
-            super.execute(coords, activator);
     }
 
     @Override
@@ -147,17 +140,18 @@ public class RunecraftRune extends AbstractTimedRune {
         else{
             setPlayer(poker); // assign a player and start
             aetherSay(poker, "The Runecraft is now locked to your body.");
-            HashSet<WorldXYZ> oldVehicleShape = vehicleBlocks;
-            if( scanForVehicleShape() )
-                return;
+            HashSet<WorldXYZ> newVehicleShape = attachedStructureShape();
+            if( newVehicleShape.isEmpty() )
+                vehicleBlocks = removeAirXYZ(vehicleBlocks);
             else
-                vehicleBlocks = rescanBlocks(oldVehicleShape);
+                vehicleBlocks = newVehicleShape;
+            renderer.reset();
         }
     }
 
     /**Removes the coordinates of any air blocks from the shape Set.  This can break contiguous structures
      * and actually return a non-contiguous structure.  For Runecraft, this is desirable. */
-    private HashSet<WorldXYZ> rescanBlocks(HashSet<WorldXYZ> oldShapeCoords) {
+    private HashSet<WorldXYZ> removeAirXYZ(HashSet<WorldXYZ> oldShapeCoords) {
         for (Iterator<WorldXYZ> i = oldShapeCoords.iterator(); i.hasNext();) 
         {
             WorldXYZ xyz = i.next(); //an iterator is necessary here because of ConcurrentModificationException
@@ -168,20 +162,6 @@ public class RunecraftRune extends AbstractTimedRune {
         return oldShapeCoords;
     }
 
-    protected boolean scanForVehicleShape() {
-        tier = getTier(location) ;
-        vehicleBlocks = conductanceStep(location, tier);
-        renderer.reset();
-        if(vehicleBlocks.isEmpty()){
-            aetherSay(getPlayer(), "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
-            return false;   
-        }
-        else{
-            aetherSay(getPlayer(), "Found " + vehicleBlocks.size() + " conducting blocks");
-            return true;
-        }
-    }
-    
     /**Runecraft lives or dies by its player.  So the PersistentRune behavior needs to be augmented
      * with a 'disabled' switch.
      */
