@@ -4,21 +4,6 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.newlinegaming.Runix.Runes.DomainRune;
-import com.newlinegaming.Runix.Runes.FaithRune;
-import com.newlinegaming.Runix.Runes.FerrousWheelRune;
-import com.newlinegaming.Runix.Runes.GreekFireRune;
-import com.newlinegaming.Runix.Runes.OracleRune;
-import com.newlinegaming.Runix.Runes.PlayerHandler;
-import com.newlinegaming.Runix.Runes.RubricCreationRune;
-import com.newlinegaming.Runix.Runes.RubricRecallRune;
-import com.newlinegaming.Runix.Runes.CompassRune;
-import com.newlinegaming.Runix.Runes.RunecraftRune;
-import com.newlinegaming.Runix.Runes.TeleporterRune;
-import com.newlinegaming.Runix.Runes.TorchBearerRune;
-import com.newlinegaming.Runix.Runes.WaypointRune;
-import com.newlinegaming.Runix.Runes.ZeerixChestRune;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -27,6 +12,21 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
+
+import com.newlinegaming.Runix.Runes.DomainRune;
+import com.newlinegaming.Runix.Runes.FaithRune;
+import com.newlinegaming.Runix.Runes.FerrousWheelRune;
+import com.newlinegaming.Runix.Runes.FtpRune;
+import com.newlinegaming.Runix.Runes.GreekFireRune;
+import com.newlinegaming.Runix.Runes.OracleRune;
+import com.newlinegaming.Runix.Runes.PlayerHandler;
+import com.newlinegaming.Runix.Runes.RubricCreationRune;
+import com.newlinegaming.Runix.Runes.RubricRecallRune;
+import com.newlinegaming.Runix.Runes.RunecraftRune;
+import com.newlinegaming.Runix.Runes.TeleporterRune;
+import com.newlinegaming.Runix.Runes.TorchBearerRune;
+import com.newlinegaming.Runix.Runes.WaypointRune;
+import com.newlinegaming.Runix.Runes.ZeerixChestRune;
 
 /**
  * RuneHandler is the main switchboard between all Runes. It contains
@@ -50,6 +50,7 @@ public class RuneHandler {
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
         //runeRegistry.add(new CompassRune());
+        runeRegistry.add(new FtpRune());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune());
         runeRegistry.add(new RubricCreationRune());

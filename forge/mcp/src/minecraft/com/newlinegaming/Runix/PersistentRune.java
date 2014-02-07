@@ -179,6 +179,11 @@ public abstract class PersistentRune extends AbstractRune{
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName()+"_"+ getActiveMagic().size() + " Accepted.");
     }
 
+    @Override
+    public Signature getSignature() {
+        return new Signature(this, location);
+    }
+    
     /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */
     public PersistentRune getRuneByLocation(WorldXYZ coords) {
         for(PersistentRune rune : getActiveMagic()){

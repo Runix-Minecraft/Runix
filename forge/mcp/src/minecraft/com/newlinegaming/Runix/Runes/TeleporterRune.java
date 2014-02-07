@@ -38,33 +38,15 @@ public class TeleporterRune extends PersistentRune {
      */
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         consumeKeyBlock(coords);
-	    
-	    Signature signature = new Signature(this, coords);
-	    WorldXYZ destination;
-	    //This is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
-	    ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
-	    System.out.println("waypointList.size()" + waypointList.size());
-	    PersistentRune wp = null;
-	    for( PersistentRune candidate : waypointList){
-	        if( new Signature(candidate, candidate.location).equals( signature ) ){
-	            wp = candidate;
-	            break;
-	        }
+	    WorldXYZ destination = findWaypointBySignature(poker, getSignature());
+
+	    if(destination != null){
+    		try {
+                teleportPlayer(poker, destination);
+            } catch (NotEnoughRunicEnergyException e) {
+                reportOutOfGas(poker);
+            }
 	    }
-	    if( wp == null){
-	        aetherSay(poker, "A waypoint with that signature cannot be found.");
-	        return;
-	    }
-	    destination = new WorldXYZ(wp.location);
-		try {
-            teleportPlayer(poker, destination);
-        } catch (NotEnoughRunicEnergyException e) {
-            reportOutOfGas(poker);
-        }
-	}
-	
-    public String getRuneName() {
-        return this.runeName;
 	}
 
     @Override

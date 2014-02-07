@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import com.newlinegaming.Runix.Runes.WaypointRune;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -418,4 +420,26 @@ public abstract class AbstractRune {
         return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes.", "");
     }
 
+    public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
+        //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
+        ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
+        PersistentRune wp = null;
+        for( PersistentRune candidate : waypointList){
+            if( new Signature(candidate, candidate.location).equals( signature ) ){
+                wp = candidate;
+                break;
+            }
+        }
+        if( wp == null){
+            aetherSay(poker, "A waypoint with that signature cannot be found.");
+            return null;
+        }
+        WorldXYZ destination = new WorldXYZ(wp.location);
+        return destination;
+    }
+
+    /*Placeholder which returns an empty signature.  Ovverride this to add signatures to your rune.*/
+    public Signature getSignature() {
+        return new Signature();
+    }
 }
