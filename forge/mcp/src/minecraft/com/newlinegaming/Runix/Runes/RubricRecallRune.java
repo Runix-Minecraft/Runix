@@ -49,18 +49,16 @@ public class RubricRecallRune extends PersistentRune{
 		ItemStack toolused = poker.getCurrentEquippedItem();
 		if(toolused != null)
 		    specialName = toolused.getDisplayName();
-		Signature signature = new Signature(this, coords);
-		//This is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
 		ArrayList<PersistentRune> rubricList = (new RubricCreationRune().getActiveMagic());
-		System.out.println("RubricList.size()" + rubricList.size());
-		PersistentRune rubrics = null;
+        Signature signature = getSignature();
+		
+        PersistentRune rubrics = null;
 		if (toolused!=null && toolused.itemID == Item.writtenBook.itemID){
 			rubrics = (new RubricCreationRune()).getRuneBySpecialName(specialName);
 		}
 		else if( !signature.isEmpty() ){
     		for( PersistentRune candidate : rubricList ){
-    		    Signature sig = ((RubricCreationRune)candidate).sig;
-    			if( signature.equals ( sig ) ){
+    			if( signature.equals ( candidate.getSignature() ) ){
     				rubrics = candidate;
     				break;
     			}

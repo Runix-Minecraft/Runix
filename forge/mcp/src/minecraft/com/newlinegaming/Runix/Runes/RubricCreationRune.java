@@ -123,4 +123,9 @@ public class RubricCreationRune extends PersistentRune {
     public boolean isFlatRuneOnly() {
         return false;
     }
+    
+    @Override
+    public Signature getSignature(){
+        return sig;
+    }
 }
