@@ -242,6 +242,10 @@ public class WorldXYZ extends ChunkCoordinates {
         return best;
     }
 
+    public void bump(Vector3 d) {
+        bump(d.x, d.y, d.z);
+    }
+
 
 
 }

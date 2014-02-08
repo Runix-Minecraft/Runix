@@ -282,16 +282,6 @@ public abstract class AbstractRune {
         return workingSet;
     }
 
-    protected boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
-        for(WorldXYZ newPos : move.values()){
-            if( !move.containsKey(newPos) //doesn't overlap with the old position
-                    && newPos.getBlockId() != 0 //AIR
-                    && !Tiers.isCrushable(newPos.getBlockId()) ) //Something's there, but squish it anyways
-                return true;
-        }
-        return false;
-    }
-
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         // Default behavior is nothing. Override this for persistent runes
     }

@@ -85,7 +85,7 @@ public class RunecraftRune extends AbstractTimedRune {
             if(dX != 0 || dY != 0 || dZ != 0){
                 moveInProgress = true;
                 HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
-                if( !shapeCollides(move) ){
+                if( !Util_Movement.shapeCollides(move) ){
                     vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
                 }
                 else{
@@ -117,7 +117,7 @@ public class RunecraftRune extends AbstractTimedRune {
                     {
                         boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
                         HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
-                        if( !shapeCollides(move) )
+                        if( !Util_Movement.shapeCollides(move) )
                             vehicleBlocks = Util_Movement.performMove(move);
                     }
                     event.setCanceled(true); //build protect anything in vehicleBlocks

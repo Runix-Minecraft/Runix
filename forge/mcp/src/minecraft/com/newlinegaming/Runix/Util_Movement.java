@@ -83,7 +83,27 @@ public class Util_Movement {
         return moveMapping;
     }
 
-   
+    /**This function side effects the argument instead of making a new copy.*/
+    public static void bumpShape(Collection<WorldXYZ> set, Vector3 bumper)
+    {
+        for( WorldXYZ point : set)
+            point.bump(bumper.x, bumper.y, bumper.z);
+    }
 
+    public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
+        for(WorldXYZ newPos : move.values()){
+            if( !move.containsKey(newPos) //doesn't overlap with the old position
+                    && newPos.getBlockId() != 0 //AIR
+                    && !Tiers.isCrushable(newPos.getBlockId()) ) //Something's there, but squish it anyways
+                return true;
+        }
+        return false;
+    }
 
+    public static boolean teleportCollision(HashSet<WorldXYZ> structure) {
+        for(WorldXYZ point: structure)
+            if(point.getBlockId() != 0 && Tiers.isCrushable(point.getBlockId()))
+                return true;
+        return false;
+    }
 }

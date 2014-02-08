@@ -110,7 +110,7 @@ public class FaithRune extends PersistentRune{
         HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
         for(WorldXYZ vehiclePart : positionsMoved.values())
             moveMapping.put(vehiclePart, vehiclePart); // include the other attached vehicle as something that is not collided with
-        if(!useCollisionDetection  || !shapeCollides(moveMapping))
+        if(!useCollisionDetection  || !Util_Movement.shapeCollides(moveMapping))
         {
             sphere.removeAll(positionsMoved.values()); //don't move things that have already been moved, including the center block
             sphere.remove(location);
