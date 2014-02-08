@@ -246,13 +246,15 @@ public abstract class PersistentRune extends AbstractRune{
 
     protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
         HashSet<WorldXYZ> scannedStructure = directlyAttachedStructure();
-        if(scannedStructure.isEmpty()){
-            aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
+        if(activator != null){
+            if(scannedStructure.isEmpty()){
+                aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
+            }
+            else{
+                aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
+            }
         }
-        else{
-            aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
-        }
-        
+        //add indirect connections
         scannedStructure = RuneHandler.getInstance().chainAttachedStructures(scannedStructure);
         return scannedStructure;
     }
@@ -264,12 +266,20 @@ public abstract class PersistentRune extends AbstractRune{
         return scannedStructure;
     }
 
-    public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure) {
-        if(structure.contains(location)){
-            HashSet<WorldXYZ> additionalBlocks = directlyAttachedStructure();
-            additionalBlocks.removeAll(structure); //only return new blocks
-            return additionalBlocks;
+    /**Remember, this is called from the manager instance of each Rune, so you are acting on behalf
+     * of all runes of the same class.  DO NOT call your own functions except for getActiveMagic()
+     * @param structure
+     * @return
+     */
+    public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure) 
+    {
+        HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
+        for(PersistentRune rune : getActiveMagic())
+        {
+            if(structure.contains(rune.location))
+                additionalBlocks = rune.directlyAttachedStructure();
         }
-        return new HashSet<WorldXYZ>();
+        additionalBlocks.removeAll(structure); //only return new blocks
+        return additionalBlocks;
     }
 }

@@ -76,7 +76,7 @@ public class FaithRune extends PersistentRune{
             } catch (NotEnoughRunicEnergyException e) {}
             energy -= Tiers.getEnergy(Block.blockGold.blockID) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
-            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(coords, radius);
+            HashSet<WorldXYZ> sphere = directlyAttachedStructure();
             energy -= sphere.size() * Tiers.blockMoveCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
             bounceIsland();
@@ -97,6 +97,11 @@ public class FaithRune extends PersistentRune{
         } catch (NotEnoughRunicEnergyException e) {}
 	}
     
+    @Override
+    public HashSet<WorldXYZ> directlyAttachedStructure() {
+        return Util_SphericalFunctions.getSphere(location, radius);
+    }
+    
     /**The main movement teleportation function for Faith Islands.
      * Added much more robust collision detection for Faith + Runecraft.  This ensures that there will always be a Gold Block at the Faith center. 
      * @param positionsMoved 
@@ -105,8 +110,8 @@ public class FaithRune extends PersistentRune{
     {
         WorldXYZ destinationCenter = positionsMoved.get(location).copyWithNewFacing(location.face); //preserve old facing for runes
         // TODO Handle inter-dimensional travel
-        HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getSphere(location, radius);
         Vector3 displacement = new Vector3(location, destinationCenter);
+        HashSet<WorldXYZ> sphere = attachedStructureShape(null);
         HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
         for(WorldXYZ vehiclePart : positionsMoved.values())
             moveMapping.put(vehiclePart, vehiclePart); // include the other attached vehicle as something that is not collided with
@@ -133,9 +138,9 @@ public class FaithRune extends PersistentRune{
 //            teleportPlayer(getPlayer(), playerPosition.offset(displacement)); //relative move from the players position
     }
     
-    @Override
+    //@Override
     /**moveMagic() On Faith Islands checks for a movement of the center block.  If that block (location) gets moved, then the move
-     * is amplified to all other blocks in the radius of the Faith Island.  This will be a little odd with rotation moves.*/
+     * is amplified to all other blocks in the radius of the Faith Island.  This will be a little odd with rotation moves.*
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) 
     {
         for(PersistentRune rune : getActiveMagic())
@@ -150,7 +155,7 @@ public class FaithRune extends PersistentRune{
                 }
             }
         }
-    }
+    }*/
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
