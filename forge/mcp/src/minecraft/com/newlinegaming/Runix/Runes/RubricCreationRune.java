@@ -72,11 +72,10 @@ public class RubricCreationRune extends PersistentRune {
 	    if( renderer == null)
 	        initializeRune();
 		renderer.reset();
-		int range = 50;
-		HashSet<WorldXYZ> shape = conductanceStep(coords, range); //TODO the problem is that this will be saved and persisted even without a signature
+		HashSet<WorldXYZ> shape = attachedStructureShape(poker); //TODO the problem is that this will be saved and persisted even without a signature
 		structure = scanStructure(shape);
 		if(structure.isEmpty()){
-		    aetherSay(poker, "The rune is touching something that is larger than "+range+" blocks across.");
+		    aetherSay(poker, "The rune is touching something that is larger than "+getTier()+" blocks across.");
 		    getActiveMagic().remove(this);// delete this failed rune attempt so it doesn't get saved
 		    return;
 		}
@@ -95,8 +94,13 @@ public class RubricCreationRune extends PersistentRune {
         }
 	}
 	
-	
-	private Collection<WorldXYZ> extractCoordinates(Collection<BlockRecord> structureRecord) {
+	@Override
+	/**This is overridden to give Rubric increased range when picking up large structures*/
+    public int getTier() {
+        return super.getTier()*3;
+    }
+
+    private Collection<WorldXYZ> extractCoordinates(Collection<BlockRecord> structureRecord) {
 	    ArrayList<WorldXYZ> blocks = new ArrayList<WorldXYZ>();
 	    for( BlockRecord record : structureRecord )
 	        blocks.add(location.offset(record.offset));

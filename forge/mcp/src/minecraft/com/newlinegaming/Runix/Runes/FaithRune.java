@@ -101,42 +101,6 @@ public class FaithRune extends PersistentRune{
         return Util_SphericalFunctions.getSphere(location, radius);
     }
     
-    /**The main movement teleportation function for Faith Islands.
-     * Added much more robust collision detection for Faith + Runecraft.  This ensures that there will always be a Gold Block at the Faith center. 
-     * @param positionsMoved 
-     * @throws NotEnoughRunicEnergyException comes only from the teleport involved in moving people*/
-    public void moveIsland(HashMap<WorldXYZ, WorldXYZ> positionsMoved) throws NotEnoughRunicEnergyException 
-    {
-        WorldXYZ destinationCenter = positionsMoved.get(location).copyWithNewFacing(location.face); //preserve old facing for runes
-        // TODO Handle inter-dimensional travel
-        Vector3 displacement = new Vector3(location, destinationCenter);
-        HashSet<WorldXYZ> sphere = attachedStructureShape(null);
-        HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);
-        for(WorldXYZ vehiclePart : positionsMoved.values())
-            moveMapping.put(vehiclePart, vehiclePart); // include the other attached vehicle as something that is not collided with
-        if(!useCollisionDetection  || !Util_Movement.shapeCollides(moveMapping))
-        {
-            sphere.removeAll(positionsMoved.values()); //don't move things that have already been moved, including the center block
-            sphere.remove(location);
-            moveMapping = Util_Movement.displaceShape(sphere, displacement.x, displacement.y, displacement.z);//moveMapping without the other vehicle
-            Util_Movement.performMove(moveMapping);//this is the version that doesn't cost energy, Faith pays the cost up front
-            
-            /**Manual block move to avoid triggering moveMagic() which would create an infinite loop = BAD*/
-            location = destinationCenter;
-        }
-        else{
-            aetherSay(location.getWorld(), "Island collision.");
-            //snatch back the Gold Block
-            location.setBlockId(destinationCenter.getSigBlock());//TODO this is far from ideal.  It'd be better to cancel to move that precipitated this
-            destinationCenter.setBlockIdAndUpdate(0);
-        }
-        
-//        MinecraftServer.getServer().
-//        WorldXYZ playerPosition = new WorldXYZ(poker); //TODO check for all users
-//        if(Util_SphericalFunctions.radiusCheck(playerPosition.posX, playerPosition.posY, playerPosition.posZ, radius))
-//            teleportPlayer(getPlayer(), playerPosition.offset(displacement)); //relative move from the players position
-    }
-    
     //@Override
     /**moveMagic() On Faith Islands checks for a movement of the center block.  If that block (location) gets moved, then the move
      * is amplified to all other blocks in the radius of the Faith Island.  This will be a little odd with rotation moves.*
