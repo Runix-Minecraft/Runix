@@ -71,7 +71,9 @@ public class RunecraftRune extends AbstractTimedRune {
     protected void onUpdateTick(EntityPlayer subject) {
         if(moveInProgress ||(getPlayer() != null && !subject.equals(getPlayer())) )
             return;
-        if(getPlayer() != null){
+        if(getPlayer() != null)
+        {
+            moveInProgress = true;
             int dX = (int) (getPlayer().posX - location.posX - .5);
             int dY = (int) (getPlayer().posY - location.posY - 1);
             int dZ = (int) (getPlayer().posZ - location.posZ - .5);
@@ -83,7 +85,6 @@ public class RunecraftRune extends AbstractTimedRune {
             if(getPlayer().isSneaking())
                 dY -= 1;
             if(dX != 0 || dY != 0 || dZ != 0){
-                moveInProgress = true;
                 HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
                 if( !Util_Movement.shapeCollides(move) ){
                     vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
@@ -91,8 +92,8 @@ public class RunecraftRune extends AbstractTimedRune {
                 else{
                     aetherSay(getPlayer(), "CRUNCH!");
                 }
-                moveInProgress  = false;
             }
+            moveInProgress  = false;
         }
     }
 

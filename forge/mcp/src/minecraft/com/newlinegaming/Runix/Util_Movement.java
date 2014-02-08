@@ -73,11 +73,13 @@ public class Util_Movement {
             return false;
     }
 
+    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(HashSet<WorldXYZ> structure, int dX, int dY, int dZ) {
+        return displaceShape(structure, new Vector3(dX, dY, dZ));
+    }    
 
-
-    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, int dX, int dY, int dZ) {
+    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, Vector3 displacement) {
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>();
-        Vector3 displacement = new Vector3(dX, dY, dZ);
+        
         for(WorldXYZ point : set)
             moveMapping.put(point, point.offset(displacement));
         return moveMapping;
@@ -100,10 +102,31 @@ public class Util_Movement {
         return false;
     }
 
-    public static boolean teleportCollision(HashSet<WorldXYZ> structure) {
-        for(WorldXYZ point: structure)
-            if(point.getBlockId() != 0 && Tiers.isCrushable(point.getBlockId()))
-                return true;
-        return false;
+    /**Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction
+     * of destination.face.
+     * @param structure
+     * @param destination
+     * @return center of destination teleport or null if the teleport was unsuccessful
+     * @throws NotEnoughRunicEnergyException
+     */
+    public static WorldXYZ collideAndBounceStructureTeleport(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) 
+    {
+        Vector3 roomForShip = Vector3.facing[destination.face].multiply(radius);// TODO get width/height/depth of structure + 1
+        int collisionTries = 0;
+        HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
+        WorldXYZ destinationCenter = null;
+        do
+        {
+            Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
+            destinationCenter = destination.offset(roomForShip).offset( stepSize.multiply(collisionTries) ); //base roomForShip + collisionTries iterations
+            moveMapping = displaceShape(structure,  new Vector3(startPoint, destinationCenter));
+            collisionTries++;
+        } while( shapeCollides( moveMapping ) && collisionTries < 20);
+            
+        if(collisionTries >= 20)
+            return null; //the teleport did not work
+        performMove(moveMapping);
+        return destinationCenter;
     }
+
 }

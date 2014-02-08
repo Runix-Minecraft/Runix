@@ -51,39 +51,14 @@ public class FtpRune extends TeleporterRune {
             return;
         
         try {
-            WorldXYZ destinationCenter = collideAndBounceStructureTeleport(structure, location, destination);
+            WorldXYZ destinationCenter = Util_Movement.collideAndBounceStructureTeleport(structure, location, destination, getTier());
             if(destinationCenter != null)
                 teleportPlayer(poker, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
+            else
+                aetherSay(poker, "There are obstacles for over 100m in the direction of the destination waypoint.");
         } catch (NotEnoughRunicEnergyException e) {
             reportOutOfGas(poker);
         }
-    }
-
-    /**Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction
-     * of destination.face.
-     * @param structure
-     * @param destination
-     * @return center of destination teleport or null if the teleport was unsuccessful
-     * @throws NotEnoughRunicEnergyException
-     */
-    public WorldXYZ collideAndBounceStructureTeleport(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination) throws NotEnoughRunicEnergyException 
-    {
-        Vector3 roomForShip = Vector3.facing[destination.face].multiply(getTier());// TODO get width/height/depth of structure + 1
-        WorldXYZ destinationCenter = destination.offset(roomForShip);
-        //Landing placement if there is no collisions:
-        Util_Movement.bumpShape(structure, new Vector3(startPoint, destinationCenter));
-        int collisionTries = 0;
-        while( Util_Movement.teleportCollision( structure ) && collisionTries < 20)
-        {
-            Vector3 displacement = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
-            destinationCenter.bump(displacement);
-            Util_Movement.bumpShape(structure,  displacement);
-            collisionTries++;
-        }
-        if(collisionTries >= 20)
-            return null; //the teleport did not work
-        moveShape(structure, startPoint, destinationCenter);
-        return destinationCenter;
     }
 
     @Override

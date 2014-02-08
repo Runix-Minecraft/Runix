@@ -187,7 +187,8 @@ public abstract class PersistentRune extends AbstractRune{
     
     /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */
     public PersistentRune getRuneByLocation(WorldXYZ coords) {
-        for(PersistentRune rune : getActiveMagic()){
+        ArrayList<PersistentRune> list = getActiveMagic();
+        for(PersistentRune rune : list){
             if( rune.location.equals(coords) )
                 return rune;
         }
@@ -245,7 +246,7 @@ public abstract class PersistentRune extends AbstractRune{
 
     protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
         int tier = getTier();
-        HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier*2);
+        HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
         if(scannedStructure.isEmpty()){
             aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
         }
