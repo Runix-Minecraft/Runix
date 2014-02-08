@@ -3,6 +3,7 @@ package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -138,7 +139,35 @@ public class RuneHandler {
             rune.moveMagic(positionsMoved);
         }
     }
-    //    public JSON extractMagic(Collection<WorldXYZ> blocks)
+    
+    /**This is modeled after conductanceStep() but on a macro level */
+    public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure)
+    {
+        HashSet<WorldXYZ> activeEdge = new HashSet<WorldXYZ>();
+        HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>(structure);//starts off being a copy of structure
+
+        while(!nextEdge.isEmpty() && structure.size() < 50000) 
+        {
+            activeEdge = nextEdge;
+            nextEdge = new HashSet<WorldXYZ>();
+
+            for(AbstractRune rune : runeRegistry)
+            {
+                if(rune instanceof PersistentRune)
+                {
+                    HashSet<WorldXYZ> additionalStructure = ((PersistentRune)rune).addYourStructure(activeEdge);
+                    structure.addAll(additionalStructure);
+                    nextEdge.addAll(additionalStructure);
+                }
+            }
+        }
+        
+        if(activeEdge.size() != 0)//tear detection: this should be empty by the last step 
+            System.err.println("Runix exceeded maximum structure chaining size: " + structure.size() + " blocks.");
+        return structure;
+    }
+
+    // TODO   public JSON extractMagic(Collection<WorldXYZ> blocks)
 
     public ArrayList<PersistentRune> getAllRunesByPlayer(EntityPlayer player){
         ArrayList<PersistentRune> playerRunes = new ArrayList<PersistentRune>();

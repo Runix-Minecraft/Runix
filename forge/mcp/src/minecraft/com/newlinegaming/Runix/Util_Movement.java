@@ -20,7 +20,6 @@ public class Util_Movement {
     }
     
 
-
     /**Note: when designing moving runes, DO NOT update your PersistentRune.location variable.  
      * moveShape() calls moveMagic() which will update everything including yourself.*/
     public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
@@ -85,13 +84,6 @@ public class Util_Movement {
         return moveMapping;
     }
 
-    /**This function side effects the argument instead of making a new copy.*/
-    public static void bumpShape(Collection<WorldXYZ> set, Vector3 bumper)
-    {
-        for( WorldXYZ point : set)
-            point.bump(bumper.x, bumper.y, bumper.z);
-    }
-
     public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
             if( !move.containsKey(newPos) //doesn't overlap with the old position
@@ -109,7 +101,7 @@ public class Util_Movement {
      * @return center of destination teleport or null if the teleport was unsuccessful
      * @throws NotEnoughRunicEnergyException
      */
-    public static WorldXYZ collideAndBounceStructureTeleport(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) 
+    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) 
     {
         Vector3 roomForShip = Vector3.facing[destination.face].multiply(radius);// TODO get width/height/depth of structure + 1
         int collisionTries = 0;

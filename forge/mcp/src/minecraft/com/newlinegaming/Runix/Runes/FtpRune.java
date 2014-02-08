@@ -51,7 +51,7 @@ public class FtpRune extends TeleporterRune {
             return;
         
         try {
-            WorldXYZ destinationCenter = Util_Movement.collideAndBounceStructureTeleport(structure, location, destination, getTier());
+            WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, getTier());
             if(destinationCenter != null)
                 teleportPlayer(poker, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
             else

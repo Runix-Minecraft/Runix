@@ -132,7 +132,6 @@ public class RunecraftRune extends AbstractTimedRune {
         if( renderer == null ) //initialization on the first time the rune is poked
             initializeRune();
         
-        consumeKeyBlock(coords);
         if(getPlayer() != null){
             disabled = true; //player will not be set to null until the closing animation completes
             aetherSay(poker, "You are now free from the Runecraft.");

@@ -245,14 +245,31 @@ public abstract class PersistentRune extends AbstractRune{
     }
 
     protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
-        int tier = getTier();
-        HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
+        HashSet<WorldXYZ> scannedStructure = directlyAttachedStructure();
         if(scannedStructure.isEmpty()){
             aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
         }
         else{
             aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
         }
+        
+        scannedStructure = RuneHandler.getInstance().chainAttachedStructures(scannedStructure);
         return scannedStructure;
+    }
+
+
+    public HashSet<WorldXYZ> directlyAttachedStructure() {
+        int tier = getTier();
+        HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
+        return scannedStructure;
+    }
+
+    public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure) {
+        if(structure.contains(location)){
+            HashSet<WorldXYZ> additionalBlocks = directlyAttachedStructure();
+            additionalBlocks.removeAll(structure); //only return new blocks
+            return additionalBlocks;
+        }
+        return new HashSet<WorldXYZ>();
     }
 }
