@@ -91,10 +91,9 @@ public class FaithRune extends PersistentRune{
     public void bounceIsland()
 	{
         int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
-        try {
-            moveBlock(location, location.offset(0, height - location.posY, 0));
-            //moveIsland(new Vector3(0, height - location.posY, 0));
-        } catch (NotEnoughRunicEnergyException e) {}
+        HashSet<WorldXYZ> structure = attachedStructureShape(getPlayer());
+        WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, location.offset(0, height - location.posY, 0), 0);//scan UP, 0 buffer room
+        //moveIsland(new Vector3(0, height - location.posY, 0));
 	}
     
     @Override

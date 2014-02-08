@@ -140,7 +140,9 @@ public class RuneHandler {
         }
     }
     
-    /**This is modeled after conductanceStep() but on a macro level */
+    /**This is modeled after conductanceStep() but on a macro level.
+     * Recursive chaining of rune structures is now working.  You can FTP a 
+     * Runecraft that is touching a Faith block and the whole island will be treated and moved as one structure. */
     public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure)
     {
         HashSet<WorldXYZ> activeEdge = new HashSet<WorldXYZ>();
