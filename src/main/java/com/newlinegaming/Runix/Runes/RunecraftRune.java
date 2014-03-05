@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.Runes;
+package com.newlinegaming.Runix.runes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.RenderHelper;
 import com.newlinegaming.Runix.Util_Movement;
@@ -17,7 +16,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;

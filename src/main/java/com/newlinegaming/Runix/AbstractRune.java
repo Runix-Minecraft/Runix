@@ -1,13 +1,11 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
-import com.newlinegaming.Runix.Runes.WaypointRune;
+import com.newlinegaming.Runix.runes.WaypointRune;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -16,8 +14,8 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-/** This class contains the basic functions that Runes will use to execute their functions.  Any reusable code or concepts should go in
- * AbstractRune and not in the individual Runes.  This will make it easy to create new and custom runes as well as making the child classes
+/** This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
+ * AbstractRune and not in the individual runes.  This will make it easy to create new and custom runes as well as making the child classes
  * as thin as possible.
  */
 public abstract class AbstractRune {
@@ -49,7 +47,7 @@ public abstract class AbstractRune {
 	 */
 	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
 	    if(isFlatRuneOnly())
-	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other Runes
+	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
 	    return patternToShape(runicTemplateOriginal(), coords); 
 	}
 	
@@ -57,7 +55,7 @@ public abstract class AbstractRune {
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
 	 * a static class variable.
 	 * @param coords World and xyz that Rune was activated in.
-	 * @param player We pass the player instead of World so that Runes can later affect the Player
+	 * @param player We pass the player instead of World so that runes can later affect the Player
 	 */
 	public abstract void execute(WorldXYZ coords, EntityPlayer player);
 	
@@ -414,7 +412,7 @@ public abstract class AbstractRune {
     }
 
     protected String shortClassName() {
-        return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes.", "");
+        return this.getClass().toString().replace("class com.newlinegaming.Runix.runes.", "");
     }
 
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {

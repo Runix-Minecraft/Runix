@@ -14,9 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.newlinegaming.Runix.Runes.RubricCreationRune;
-import com.newlinegaming.Runix.Runes.TorchBearerRune;
-import com.newlinegaming.Runix.Runes.WaypointRune;
+import com.newlinegaming.Runix.runes.TorchBearerRune;
+import com.newlinegaming.Runix.runes.WaypointRune;
 
 /** This file exists in order to test out Java syntax and library function within our
  * build environment without the need to launch the main Minecraft client.  In order

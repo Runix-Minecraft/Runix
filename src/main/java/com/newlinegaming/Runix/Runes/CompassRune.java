@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.Runes;
+package com.newlinegaming.Runix.runes;
 
 import java.util.HashMap;
 
@@ -7,7 +7,6 @@ import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
 
 public class CompassRune extends AbstractRune{
 

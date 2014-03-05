@@ -1,15 +1,12 @@
-package com.newlinegaming.Runix.Runes;
+package com.newlinegaming.Runix.runes;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.RuneHandler;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.WorldXYZ;
 
-import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
