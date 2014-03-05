@@ -18,3 +18,5 @@ lib
 out
 *.iml
 *.ipr
+*.iws
+setupidea.bat
