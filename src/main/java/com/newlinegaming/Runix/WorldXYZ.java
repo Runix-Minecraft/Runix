@@ -247,5 +247,8 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
 
-
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
 }
