@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 import com.newlinegaming.Runix.runes.WaypointRune;
 
+import com.newlinegaming.Runix.utils.Util_Movement;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

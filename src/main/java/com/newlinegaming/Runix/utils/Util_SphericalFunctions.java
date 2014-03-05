@@ -1,8 +1,9 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.utils;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import com.newlinegaming.Runix.WorldXYZ;
 import net.minecraft.world.World;
 
 public class Util_SphericalFunctions {
@@ -11,7 +12,7 @@ public class Util_SphericalFunctions {
         return ((x * x) + (y * y) + (z * z) < ((rd + 0.5) * (rd + 0.5)));
     }
     
-	public static HashSet<WorldXYZ> getSphere (WorldXYZ coords, int radius) 
+	public static HashSet<WorldXYZ> getSphere (WorldXYZ coords, int radius)
 	{
 		World world = coords.getWorld();
 		HashSet<WorldXYZ> returnvalues = new HashSet<WorldXYZ>();

@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.Util_Movement;
+import com.newlinegaming.Runix.utils.Util_Movement;
 import com.newlinegaming.Runix.WorldXYZ;
 
 public class FtpRune extends TeleporterRune {

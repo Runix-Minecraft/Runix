@@ -1,7 +1,4 @@
-package com.newlinegaming.Runix;
-
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+package com.newlinegaming.Runix.proxys;
 
 public class ClientProxy extends CommonProxy {
 	

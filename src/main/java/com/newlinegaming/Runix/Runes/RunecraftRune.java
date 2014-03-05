@@ -8,7 +8,7 @@ import java.util.Iterator;
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.RenderHelper;
-import com.newlinegaming.Runix.Util_Movement;
+import com.newlinegaming.Runix.utils.Util_Movement;
 import com.newlinegaming.Runix.WorldXYZ;
 
 import cpw.mods.fml.relauncher.Side;

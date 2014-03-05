@@ -2,6 +2,8 @@ package com.newlinegaming.Runix;
 
 //Imports
 
+import com.newlinegaming.Runix.lib.LibRef;
+import com.newlinegaming.Runix.proxys.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -24,12 +26,12 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
 //Client and Server
-@Mod(modid = "runix", name = "Runix", version = "@VERSION@")
+@Mod(modid = LibRef.MOD_ID, name = LibRef.MOD_NAME, version = LibRef.MOD_VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 
 public class Runix {
 
-    @SidedProxy(clientSide = "com.newlinegaming.Runix.ClientProxy", serverSide = "com.newlinegaming.Runix.CommonProxy")
+    @SidedProxy(clientSide = "com.newlinegaming.Runix.proxys.ClientProxy", serverSide = "com.newlinegaming.Runix.proxys.CommonProxy")
     public static CommonProxy proxy;
 
     //Creative Tab Names

@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.utils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.newlinegaming.Runix.*;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class Util_Movement {
