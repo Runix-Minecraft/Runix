@@ -9,11 +9,9 @@ import com.newlinegaming.Runix.lib.LibRef;
 import com.newlinegaming.Runix.proxys.CommonProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.newlinegaming.Runix.creativetabs.TabRunix;
-import com.newlinegaming.Runix.item.RunixPlaceHolder;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
