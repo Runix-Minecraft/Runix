@@ -10,6 +10,7 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 import java.util.List;
 import java.util.Random;
 
+import com.newlinegaming.Runix.Runix;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -42,6 +43,7 @@ public class GreekFire extends BlockFire {
     public GreekFire(int blockId) {
         super(blockId);
         this.setTickRandomly(true);
+        this.setCreativeTab(Runix.TabRunix);
         blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
         initializeBlock();
     }

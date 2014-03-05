@@ -2,6 +2,7 @@ package com.newlinegaming.Runix.creativetabs;
 
 import com.newlinegaming.Runix.Runix;
 
+import com.newlinegaming.Runix.item.ModItem;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class TabRunix extends CreativeTabs {
@@ -11,7 +12,7 @@ public class TabRunix extends CreativeTabs {
 		
 	}
 	public int getTabIconItemIndex() {
-		return Runix.RunixPlaceHolder.itemID;
+		return ModItem.PlaceHolder.itemID;
 	}
 	
 	public String getTranslatedTabLabel() {

@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.placeholder;
+package com.newlinegaming.Runix.item;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
@@ -10,7 +10,7 @@ public class RunixPlaceHolder extends Item{
 
 	}
 public void registerIcons(IconRegister iconRegister) {
-	itemIcon = iconRegister.registerIcon("Runix:PlaceHolder1");
+	itemIcon = iconRegister.registerIcon("runix:PlaceHolder1");
 }
 
 }
