@@ -21,7 +21,6 @@ public class BlockQuickSilver extends BlockFluidClassic {
     public BlockQuickSilver(Fluid fluid, Material material) {
         super(fluid, material);
         this.setCreativeTab(Runix.TabRunix);
-//        this.setUnlocalizedName("Qiicksilver");
     }
 
     @Override
