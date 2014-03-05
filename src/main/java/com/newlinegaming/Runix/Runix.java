@@ -18,19 +18,15 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
-
 
 //Client and Server
 @Mod(modid = LibRef.MOD_ID, name = LibRef.MOD_NAME, version = LibRef.MOD_VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
-
 public class Runix {
 
     @Instance
     public static Runix instance;
 
-    @SidedProxy(clientSide = "com.newlinegaming.Runix.proxys.ClientProxy", serverSide = "com.newlinegaming.Runix.proxys.CommonProxy")
+    @SidedProxy(clientSide = LibRef.CLIENT_PROXY, serverSide = LibRef.COMMON_PROXY)
     public static CommonProxy proxy;
 
     //Creative Tab Names
@@ -47,15 +43,15 @@ public class Runix {
     //Render Information	
     @EventHandler
     public void load(FMLInitializationEvent event) {
-        proxy.registerRenderInformation();
+//        proxy.registerRenderInformation();
     }
 
     //Registry's
-    public Runix() {
-
-        Tiers tiers = new Tiers(); //load the list of block tiers
-
-        //Event Registry
-        MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
-    }
+//    public Runix() {
+//
+//        Tiers tiers = new Tiers(); //load the list of block tiers
+//
+//        //Event Registry
+//        MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
+//    }
 }

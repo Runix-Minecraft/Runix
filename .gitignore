@@ -11,7 +11,7 @@ bin
 
 # debug & lib folders
 debug
-lib
+lib/
 
 # intellij stuff
 .idea

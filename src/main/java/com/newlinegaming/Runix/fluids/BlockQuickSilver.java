@@ -5,31 +5,32 @@ import com.newlinegaming.Runix.lib.LibRef;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
 
 public class BlockQuickSilver extends BlockFluidClassic {
 
     @SideOnly(Side.CLIENT)
-    protected Icon FQS; //Still Icon for quicksilver
+    protected IIcon FQS; //Still Icon for quicksilver
 
     @SideOnly(Side.CLIENT)
-    protected Icon FQF; //Flowing Icon for quicksilver
+    protected IIcon FQF; //Flowing Icon for quicksilver
 
-    public BlockQuickSilver(int id) {
-        super(id, ModFluid.QuickSilver, Material.water);
+    public BlockQuickSilver(Fluid fluid, Material material) {
+        super(fluid, material);
         this.setCreativeTab(Runix.TabRunix);
-        this.setUnlocalizedName("Qiicksilver");
+//        this.setUnlocalizedName("Qiicksilver");
     }
 
     @Override
-    public Icon getIcon(int side, int meta) {
+    public IIcon getIcon(int side, int meta) {
         return (side == 0 || side == 1)? FQS : FQF;
     }
 
     @Override
-    public void registerIcons(IconRegister reg) {
+    public void registerBlockIcons(IIconRegister reg) {
         FQS = reg.registerIcon(LibRef.MOD_ID + ":QuicksilverStill");
         FQF = reg.registerIcon(LibRef.MOD_ID + ":QuicksilverFlowing");
     }

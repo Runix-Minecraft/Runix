@@ -10,7 +10,7 @@ public class ModBlock {
 
     public static void init() {
 
-        GreekFire = new GreekFire(2014).setUnlocalizedName("Greekfire");
+//        GreekFire = new GreekFire(2014).setUnlocalizedName("Greekfire");
 
         Gamereg();
 
@@ -18,7 +18,7 @@ public class ModBlock {
 
     private static void Gamereg() {
 
-        GameRegistry.registerBlock(GreekFire, "GreekFire");
-        GreekFire.setCreativeTab(Runix.TabRunix);
+//        GameRegistry.registerBlock(GreekFire, "GreekFire");
+//        GreekFire.setCreativeTab(Runix.TabRunix);
     }
 }
