@@ -1,4 +1,20 @@
-forge\mcp\eclipse\.metadata\*
-*.class
-forge\mcp\jars\
-.metadata
+# gradle stuff
+build
+.gradle
+eclipse
+
+# eclipse stuff
+.classpath
+.project
+.settings
+bin
+
+# debug & lib folders
+debug
+lib
+
+# intellij stuff
+.idea
+out
+*.iml
+*.ipr
