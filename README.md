@@ -1,4 +1,4 @@
-#Welcome to the Runix's Repository
+#Welcome to Runix's Repository
 =====
 
 ####This is the Official repository the Runix mod a forge mod inspired my the bukkit plugin, Runcraft
