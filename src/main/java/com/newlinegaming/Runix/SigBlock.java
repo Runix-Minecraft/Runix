@@ -1,12 +1,14 @@
 package com.newlinegaming.Runix;
 
-/** Plain old Data.  blockID and meta.  Use this to preserve all your block info. 
+import net.minecraft.init.Blocks;
+
+/** Plain old Data.  blockID and meta.  Use this to preserve all your block info.
  * Meta is the additional information like orientation or color used in some blocks.
  * Doesn't currently do TileEntity or NBT.*/
 public class SigBlock{
-    public int blockID;
+    public Blocks blockID;
     public int meta;
-    public SigBlock(int blockID, int meta){
+    public SigBlock(Blocks blockID, int meta){
         this.blockID = blockID;
         this.meta = meta;
     }

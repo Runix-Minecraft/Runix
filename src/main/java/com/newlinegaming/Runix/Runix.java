@@ -6,7 +6,9 @@ import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.fluids.ModFluid;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.lib.LibRef;
+import com.newlinegaming.Runix.network.PacketPipeline;
 import com.newlinegaming.Runix.proxys.CommonProxy;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,6 +34,9 @@ public class Runix {
     //Creative Tab Names
     public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
 
+    public static final PacketPipeline packetPipeline = new PacketPipeline();
+
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         ModBlock.init();
@@ -42,8 +47,14 @@ public class Runix {
 
     //Render Information	
     @EventHandler
-    public void load(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
+        packetPipeline.initialise();
 //        proxy.registerRenderInformation();
+    }
+
+    @EventHandler
+    public void postinit(FMLPostInitializationEvent event) {
+        packetPipeline.postInitialise();
     }
 
     //Registry's
