@@ -14,6 +14,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
+import com.newlinegaming.Runix.Runes.CompassRune;
 import com.newlinegaming.Runix.runes.DomainRune;
 import com.newlinegaming.Runix.runes.FaithRune;
 import com.newlinegaming.Runix.runes.FerrousWheelRune;
@@ -28,6 +29,8 @@ import com.newlinegaming.Runix.runes.TeleporterRune;
 import com.newlinegaming.Runix.runes.TorchBearerRune;
 import com.newlinegaming.Runix.runes.WaypointRune;
 import com.newlinegaming.Runix.runes.ZeerixChestRune;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * RuneHandler is the main switchboard between all runes. It contains
@@ -50,7 +53,7 @@ public class RuneHandler {
         runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
-        //runeRegistry.add(new CompassRune());
+        runeRegistry.add(new CompassRune());
         runeRegistry.add(new FtpRune());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune());
@@ -70,7 +73,7 @@ public class RuneHandler {
         return instance;
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent event) {
         //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
         if (!event.entityPlayer.worldObj.isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
@@ -79,7 +82,7 @@ public class RuneHandler {
         }
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void saving(Save saveEvent){
         if( saveEvent.world.provider.dimensionId == 0 && !saveEvent.world.isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
@@ -87,7 +90,7 @@ public class RuneHandler {
                     ((PersistentRune) r).saveActiveRunes(saveEvent);
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void loadServer(Load loadEvent){
         if( loadEvent.world.provider.dimensionId == 0 && !loadEvent.world.isRemote)
             for(AbstractRune r : runeRegistry)
@@ -95,12 +98,12 @@ public class RuneHandler {
                     ((PersistentRune) r).loadRunes(loadEvent);
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void playerLogin(EntityJoinWorldEvent event){
         if(event.entity instanceof EntityPlayer){ //fires once each for Client and Server side join event
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
-                    ((PersistentRune) r).onPlayerLogin(((EntityPlayer)event.entity).username);
+                    ((PersistentRune) r).onPlayerLogin(EntityPlayer.PERSISTED_NBT_TAG);
         }
 
     }
