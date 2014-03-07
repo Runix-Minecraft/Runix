@@ -1,8 +1,9 @@
 package com.newlinegaming.Runix.creativetabs;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+
+import com.newlinegaming.Runix.fluids.ModFluid;
 
 public class TabRunix extends CreativeTabs {
 	
@@ -13,7 +14,7 @@ public class TabRunix extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return Item.getItemFromBlock(Blocks.bookshelf);
+		return ModFluid.qsBucket;
 	}
 
 }
