@@ -1,0 +1,20 @@
+This is a document to show what needs to be done and what has been done for the update to 1.7.* 
+
+NOTE - This is a living document subject to change and should only be edited by Runix developers
+
+-------------------------------------
+Priority scale 10 is High, 1 is Low 
+-------------------------------------
+
+What needs to be done
+-----------------------------
+10 | Cleanup the repo - DONE
+10 | Update to ForgeGradle - DONE
+10 | Port to 1.7.* - NOT DONE
+10 | Kill those infernal blockids - NOT DONE
+6  | Kill the way fluids were handled and use the Forge fluid API- DONE
+2  | Get rid of the place holder Item - NOT DONE
+8  | Get rid of Unneccisary run class - DONE
+8  | Make all the Player read from a .lang file - NOT DONE
+1  | CAPEZZ!!111 - NOT DONE
+-----------------------------
