@@ -1,27 +1,19 @@
 package com.newlinegaming.Runix.block;
 
-import static net.minecraftforge.common.ForgeDirection.DOWN;
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.UP;
-import static net.minecraftforge.common.ForgeDirection.WEST;
-
 import java.util.List;
 import java.util.Random;
 
-import com.newlinegaming.Runix.Runix;
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Tiers;
@@ -43,7 +35,6 @@ public class GreekFire extends BlockFire {
     public GreekFire(int blockId) {
         super(blockId);
         this.setTickRandomly(true);
-        this.setCreativeTab(Runix.TabRunix);
         blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
         initializeBlock();
     }
