@@ -32,9 +32,9 @@ public class Runix {
     public static CommonProxy proxy;
 
     //Creative Tab Names
-    public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "Runix");
+    public static CreativeTabs TabRunix = new TabRunix(LibRef.MOD_ID + ":runix");
 
-    public static final PacketPipeline packetPipeline = new PacketPipeline();
+//    public static final PacketPipeline packetPipeline = new PacketPipeline();
 
 
     @EventHandler
@@ -48,13 +48,13 @@ public class Runix {
     //Render Information	
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        packetPipeline.initialise();
+//        packetPipeline.initialise();
 //        proxy.registerRenderInformation();
     }
 
     @EventHandler
     public void postinit(FMLPostInitializationEvent event) {
-        packetPipeline.postInitialise();
+//        packetPipeline.postInitialise();
     }
 
     //Registry's

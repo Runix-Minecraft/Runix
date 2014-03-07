@@ -15,7 +15,7 @@ public class ModFluid {
 
         QuickSilver = new FluidQuickSilver();
 
-        BlockQuickSilver = new BlockQuickSilver(QuickSilver, Material.lava).setBlockName("QuickSilver");
+        BlockQuickSilver = new BlockQuickSilver(QuickSilver, Material.lava);
 
         GameReg();
     }

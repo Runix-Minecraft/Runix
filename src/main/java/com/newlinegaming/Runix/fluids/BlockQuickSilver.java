@@ -21,6 +21,7 @@ public class BlockQuickSilver extends BlockFluidClassic {
     public BlockQuickSilver(Fluid fluid, Material material) {
         super(fluid, material);
         this.setCreativeTab(Runix.TabRunix);
+        this.setBlockName("QuickSilver");
     }
 
     @Override
@@ -30,7 +31,7 @@ public class BlockQuickSilver extends BlockFluidClassic {
 
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        FQS = reg.registerIcon(LibRef.MOD_ID + ":QuicksilverStill");
-        FQF = reg.registerIcon(LibRef.MOD_ID + ":QuicksilverFlowing");
+        FQS = reg.registerIcon(LibRef.MOD_ID + ":qixsilverstill");
+        FQF = reg.registerIcon(LibRef.MOD_ID + ":qixsilverflowing");
     }
 }

@@ -7,11 +7,13 @@ import net.minecraft.block.Block;
 public class ModBlock {
 
     public static Block GreekFire;
+    public static Block TestBlock;
 
     public static void init() {
 
 //        GreekFire = new GreekFire(2014).setUnlocalizedName("Greekfire");
-
+    	TestBlock = new TestBlock();
+    	
         Gamereg();
 
     }
@@ -19,6 +21,6 @@ public class ModBlock {
     private static void Gamereg() {
 
 //        GameRegistry.registerBlock(GreekFire, "GreekFire");
-//        GreekFire.setCreativeTab(Runix.TabRunix);
+    	GameRegistry.registerBlock(TestBlock, "testblock");
     }
 }
