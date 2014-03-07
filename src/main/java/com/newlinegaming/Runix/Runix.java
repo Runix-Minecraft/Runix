@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.creativetabs.TabRunix;
 import com.newlinegaming.Runix.fluids.ModFluid;
+import com.newlinegaming.Runix.handlers.RunixEventHandlers;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.lib.LibRef;
 import com.newlinegaming.Runix.proxys.CommonProxy;
@@ -40,6 +41,8 @@ public class Runix {
         ModBlock.init();
         ModFluid.init();
         ModItem.init();
+        
+        RunixEventHandlers.init();
 
     }
 

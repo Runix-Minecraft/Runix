@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.handlers;
+package com.newlinegaming.Runix.handlers.mics;
 
 import java.util.HashMap;
 import java.util.Map;
