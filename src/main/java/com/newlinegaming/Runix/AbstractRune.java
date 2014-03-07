@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.newlinegaming.Runix.runes.WaypointRune;
+import com.newlinegaming.Runix.Runes.WaypointRune;
 
 import com.newlinegaming.Runix.utils.Util_Movement;
 import net.minecraft.block.Block;
