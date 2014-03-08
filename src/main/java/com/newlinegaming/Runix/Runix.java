@@ -51,6 +51,8 @@ public class Runix {
     public void init(FMLInitializationEvent event) {
 //        packetPipeline.initialise();
 //        proxy.registerRenderInformation();
+    	
+    	proxy.RenderingAndTextures();
     }
 
     @EventHandler
