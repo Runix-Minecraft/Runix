@@ -8,6 +8,7 @@ import javax.swing.Icon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -32,15 +33,16 @@ public class GreekFire extends BlockFire {
 
     public static int blockIdBackup = 2014;
 
-    public GreekFire(int blockId) {
-        super(blockId);
+    public GreekFire() {
+        super();
         this.setTickRandomly(true);
-        blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
+//        blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla  
         initializeBlock();
     }
     
+    @SuppressWarnings("rawtypes")
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(int block, CreativeTabs tab, List subItems) {
+    public void getSubBlocks(String block, CreativeTabs tab,  List subItems) {
         subItems.add(new ItemStack(block, 1, 0));
         subItems.add(new ItemStack(block, 1, 14));
     }
@@ -58,14 +60,14 @@ public class GreekFire extends BlockFire {
     
     public void initializeBlock()
     {
-        this.setLightValue(1.0f);
-        this.setBurn(Block.stone.blockID, 30, 100);
-        this.setBurn(Block.grass.blockID, 30, 100);
-        this.setBurn(Block.dirt.blockID, 30, 100);
-        this.setBurn(Block.gravel.blockID, 30, 100);
+        this.setLightLevel(5f);
+        this.setBurn(Blocks.stone, 30, 100);
+        this.setBurn(Blocks.grass, 30, 100);
+        this.setBurn(Blocks.dirt, 30, 100);
+        this.setBurn(Blocks.gravel, 30, 100);
     }
 
-    private void setBurn(int id, int encouragement, int flammability)
+    private void setBurn(String id, int encouragement, int flammability)
     {
         greekFireSpreadSpeed[id] = encouragement;
         greekFlammability[id] = flammability;

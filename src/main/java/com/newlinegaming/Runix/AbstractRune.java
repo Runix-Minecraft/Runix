@@ -8,6 +8,7 @@ import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
@@ -70,8 +71,7 @@ public abstract class AbstractRune {
 	 * @param worldZ
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
-	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player)
-	{
+	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
 		for(WorldXYZ target : stamp.keySet())
 		    target.setBlockId( stamp.get(target) );
 		return true;//TODO: build permission checking
@@ -101,16 +101,16 @@ public abstract class AbstractRune {
 	    for(int tries = 0; tries < 100; ++tries)
 	    {
 	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
-	                && coords.getWorld().getBlockId(coords.posX, coords.posY, coords.posZ) == 0 
-	                && coords.getWorld().getBlockId(coords.posX, coords.posY+1, coords.posZ) == 0)//two AIR blocks
+	                && coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ) == Blocks.air 
+	                && coords.getWorld().getBlock(coords.posX, coords.posY+1, coords.posZ) == Blocks.air)//two AIR blocks
 	        {  
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
-	                int block = coords.getWorld().getBlockId(coords.posX, coords.posY-drop, coords.posZ);
-	                if(block != 0)
+	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY-drop, coords.posZ);
+	                if(block != Blocks.air)
 	                { //We found something not AIR
-    	                if( block == Block.lavaStill.blockID || block == Block.lavaMoving.blockID//check for Lava, fire, and void  
-    	                        || block == Block.fire.blockID){//if we teleport now, the player will land on an unsafe block
+    	                if( block == Blocks.lava//check for Lava, fire, and void  
+    	                        || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
     	                else if(coords.offset(0, -drop, 0).isSolid()){
@@ -158,25 +158,23 @@ public abstract class AbstractRune {
 	
 	
 	/** returns the unique name of the rune */
-	public String getRuneName() 
-	{
+	public String getRuneName() {
 	    if( !runeName.isEmpty() )
 	        return runeName;
 	    else
 	        return shortClassName();
 	}
 	
-	public static void aetherSay(EntityPlayer recipient, String message)
-	{
+	public static void aetherSay(EntityPlayer recipient, String message) {
 	    if(!recipient.worldObj.isRemote && recipient != null)
-	        recipient.sendChatToPlayer(ChatMessageComponent.createFromText(message));
+	    	ChatMessageHandler.sendChatToPlayer(recipient, message);
 	    else
 	        System.out.println(message);
 	}
 
     public void aetherSay(World worldObj, String message) {
         if(!worldObj.isRemote) //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
-            Minecraft.getMinecraft().thePlayer.addChatMessage(message); 
+        	ChatMessageHandler.createChatComponent(message);
         else
             System.out.println(message);
     }
@@ -388,7 +386,7 @@ public abstract class AbstractRune {
     protected boolean consumeKeyBlock(WorldXYZ coords) {
         if(Tiers.getTier(coords.getBlockId()) > 1){
             energy += Tiers.getEnergy(coords.getBlockId());
-            coords.setBlockIdAndUpdate(Block.cobblestone.blockID);//we don't want air sitting here
+            coords.setBlockIdAndUpdate(Blocks.cobblestone);//we don't want air sitting here
             return true;
         }
         return false;

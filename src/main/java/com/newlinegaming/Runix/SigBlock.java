@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix;
 
+import net.minecraft.block.Block;
+
 
 /** Plain old Data.  blockID and meta.  Use this to preserve all your block info.
  * Meta is the additional information like orientation or color used in some blocks.
@@ -12,7 +14,11 @@ public class SigBlock{
         this.meta = meta;
     }
     
-    @Override
+    public SigBlock(Block blockId2, int metaId) {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
     public boolean equals(Object other){
         if(other instanceof SigBlock)
             return blockID == ((SigBlock)other).blockID && meta == ((SigBlock)other).meta;

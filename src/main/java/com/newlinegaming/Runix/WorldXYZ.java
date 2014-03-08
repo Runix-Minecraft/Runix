@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
@@ -151,8 +152,8 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     /**Simple wrapper method for getBlockID()*/
-    public int getBlockId(){
-        return this.getWorld().getBlockId(this.posX, this.posY, this.posZ);
+    public String getBlockId(){
+        return this.getWorld().getBlock(posX, posY, posZ);
     }
     
     /** Sister function to getBlockID() for meta values. */
@@ -164,8 +165,8 @@ public class WorldXYZ extends ChunkCoordinates {
      * @param blockID
      * @return true if successful
      */
-    public boolean setBlockIdAndUpdate(int blockID){
-        if(blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+    public boolean setBlockIdAndUpdate(Block blockID) {
+        if(blockID = Blocks.bedrock || getBlockId() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, blockID);
     }
