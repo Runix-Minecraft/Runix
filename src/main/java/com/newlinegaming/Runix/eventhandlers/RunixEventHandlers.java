@@ -1,10 +1,10 @@
-package com.newlinegaming.Runix.handlers;
+package com.newlinegaming.Runix.eventhandlers;
 
 import net.minecraftforge.common.MinecraftForge;
 
 import com.newlinegaming.Runix.RuneHandler;
+import com.newlinegaming.Runix.eventhandlers.mics.BucketEventHandler;
 import com.newlinegaming.Runix.fluids.ModFluid;
-import com.newlinegaming.Runix.handlers.mics.BucketHandler;
 
 public class RunixEventHandlers {
 
@@ -22,8 +22,8 @@ public class RunixEventHandlers {
 
 	private static void registerMicsHandlers() {
 		
-		BucketHandler.INSTANCE.buckets.put(ModFluid.BlockQuickSilver, ModFluid.qsBucket);
-		MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
+		BucketEventHandler.INSTANCE.buckets.put(ModFluid.BlockQuickSilver, ModFluid.qsBucket);
+		MinecraftForge.EVENT_BUS.register(BucketEventHandler.INSTANCE);
 	}
 
 }

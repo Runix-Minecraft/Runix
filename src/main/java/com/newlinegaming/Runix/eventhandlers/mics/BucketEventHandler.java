@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.handlers.mics;
+package com.newlinegaming.Runix.eventhandlers.mics;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,12 +11,12 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 
-public class BucketHandler {
+public class BucketEventHandler {
 	
-	public static BucketHandler INSTANCE = new BucketHandler();
+	public static BucketEventHandler INSTANCE = new BucketEventHandler();
 	public Map<Block, Item> buckets = new HashMap<Block, Item>();
 	
-	private BucketHandler() {
+	private BucketEventHandler() {
 	}
 	
 	@SubscribeEvent
