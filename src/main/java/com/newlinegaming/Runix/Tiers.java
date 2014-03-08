@@ -271,8 +271,8 @@ public class Tiers {
      * how long it will be.  
      * @param blockList
      */
-    public static ArrayList<Integer> loadBlockIds(Block[] blockList) {
-        ArrayList<Integer> IDs = new ArrayList<Integer>();
+    public static ArrayList<String> loadBlockIds(Block[] blockList) {
+        ArrayList<String> IDs = new ArrayList<String>();
         for(Block block : blockList)
             IDs.add(block.blockID);
         return IDs;

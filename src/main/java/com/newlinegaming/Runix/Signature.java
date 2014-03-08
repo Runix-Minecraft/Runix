@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
 public class Signature {
     
@@ -24,13 +25,14 @@ public class Signature {
     public Signature(AbstractRune rune, WorldXYZ coords) {
         blocks = new ArrayList<SigBlock>();
         Block[] usableMetaData = new Block[]{//this list specifically lacks any block that uses meta for orientation
-                Block.carpet, Block.cloth, 
-                Block.crops, //added just in case you WANT an impossible waypoint
-                Block.hardenedClay, Block.music, //adjusting the notes would change your Signature :D
-                Block.planks, 
-                Block.pressurePlateGold, Block.pressurePlateIron, Block.pressurePlatePlanks, Block.pressurePlateStone, //may be some potential there
-                Block.stainedClay,
-                Block.wood, Block.woodDoubleSlab, Block.woodSingleSlab,
+                Blocks.carpet,
+//                Block.cloth, 
+                Blocks.wheat, //added just in case you WANT an impossible waypoint
+                Blocks.hardened_clay, Blocks.jukebox, //adjusting the notes would change your Signature :D
+                Blocks.planks, 
+                Blocks.heavy_weighted_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, //may be some potential there
+                Blocks.stained_hardened_clay,
+                Blocks.log, Blocks.log2, Blocks.double_wooden_slab, Blocks.wooden_slab,
         };
         metaWhiteList = Tiers.loadBlockIds(usableMetaData);
 

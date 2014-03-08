@@ -25,7 +25,7 @@ public class Util_Movement {
      * moveShape() calls moveMagic() which will update everything including yourself.*/
     public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
     {
-        SigBlock AIR = new SigBlock(0,0);
+        SigBlock AIR = new SigBlock("air",0);
         HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ point : moveMapping.keySet()){
