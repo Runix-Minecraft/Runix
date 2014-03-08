@@ -7,7 +7,7 @@
   "mcversion": "@MCVERSION@",
   "url": "http://www.minecraftforum.net/topic/2259223-wip-runix-the-block-based-magic-mod-inspired-by-runecraft/",
   "updateUrl": "",
-  "authors": ["Bloodstone, C'tri, Josiah, Rivikiin, LordIllyohs"],
+  "authorList": ["Bloodstone, C'tri, Josiah, Rivikiin, LordIllyohs"],
   "credits": "TBD",
   "logoFile": "",
   "screenshots": [],
