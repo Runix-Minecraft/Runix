@@ -17,9 +17,9 @@ public class ItemTransmutaionRod extends Item {
 		
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister reg) {
-		this.itemIcon = reg.registerIcon(LibRef.MOD_ID + ":boop");
-	}
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public void registerIcons(IIconRegister reg) {
+//		this.itemIcon = reg.registerIcon(LibRef.MOD_ID + ":boop");
+//	}
 }
