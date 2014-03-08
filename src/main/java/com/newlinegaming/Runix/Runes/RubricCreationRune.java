@@ -14,10 +14,10 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.RenderHelper;
 import com.newlinegaming.Runix.Signature;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.helpers.RenderHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

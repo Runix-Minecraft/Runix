@@ -7,13 +7,12 @@ import java.util.Iterator;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.RenderHelper;
+import com.newlinegaming.Runix.helpers.RenderHelper;
 import com.newlinegaming.Runix.utils.Util_Movement;
 import com.newlinegaming.Runix.WorldXYZ;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
