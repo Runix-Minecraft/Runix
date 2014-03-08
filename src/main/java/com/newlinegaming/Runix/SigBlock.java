@@ -14,9 +14,6 @@ public class SigBlock{
         this.meta = meta;
     }
     
-    public SigBlock(Block blockId2, int metaId) {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
     public boolean equals(Object other){
