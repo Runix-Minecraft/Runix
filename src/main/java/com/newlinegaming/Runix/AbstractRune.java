@@ -5,15 +5,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.newlinegaming.Runix.Runes.WaypointRune;
-
-import com.newlinegaming.Runix.utils.Util_Movement;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import com.newlinegaming.Runix.Runes.WaypointRune;
+import com.newlinegaming.Runix.handlers.ChatMessageHandler;
+import com.newlinegaming.Runix.utils.Util_Movement;
 
 /** This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
  * AbstractRune and not in the individual runes.  This will make it easy to create new and custom runes as well as making the child classes
@@ -46,7 +46,7 @@ public abstract class AbstractRune {
 	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
 	 * the runeTemplate for that block, which can be special values like TIER or KEY.
 	 */
-	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
+	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords) {
 	    if(isFlatRuneOnly())
 	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
 	    return patternToShape(runicTemplateOriginal(), coords); 
@@ -82,10 +82,9 @@ public abstract class AbstractRune {
 	 * @param rune - the rune being cast
 	 * @return
 	 */
-	protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune)
-	{
+	protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune) {
 		// arbi
-		player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN+rune.getRuneName()+ " accepted"));
+		ChatMessageHandler.sendChatToPlayer(player, rune.getRuneName() + " accepted");
 		return true;
 	}
 	
