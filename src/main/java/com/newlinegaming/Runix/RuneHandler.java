@@ -14,20 +14,20 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
-import com.newlinegaming.Runix.runes.DomainRune;
-import com.newlinegaming.Runix.runes.FaithRune;
-import com.newlinegaming.Runix.runes.FerrousWheelRune;
-import com.newlinegaming.Runix.runes.FtpRune;
-import com.newlinegaming.Runix.runes.GreekFireRune;
-import com.newlinegaming.Runix.runes.OracleRune;
-import com.newlinegaming.Runix.runes.PlayerHandler;
-import com.newlinegaming.Runix.runes.RubricCreationRune;
-import com.newlinegaming.Runix.runes.RubricRecallRune;
-import com.newlinegaming.Runix.runes.RunecraftRune;
-import com.newlinegaming.Runix.runes.TeleporterRune;
-import com.newlinegaming.Runix.runes.TorchBearerRune;
-import com.newlinegaming.Runix.runes.WaypointRune;
-import com.newlinegaming.Runix.runes.ZeerixChestRune;
+import com.newlinegaming.Runix.Runes.DomainRune;
+import com.newlinegaming.Runix.Runes.FaithRune;
+import com.newlinegaming.Runix.Runes.FerrousWheelRune;
+import com.newlinegaming.Runix.Runes.FtpRune;
+import com.newlinegaming.Runix.Runes.GreekFireRune;
+import com.newlinegaming.Runix.Runes.OracleRune;
+import com.newlinegaming.Runix.Runes.PlayerHandler;
+import com.newlinegaming.Runix.Runes.RubricCreationRune;
+import com.newlinegaming.Runix.Runes.RubricRecallRune;
+import com.newlinegaming.Runix.Runes.RunecraftRune;
+import com.newlinegaming.Runix.Runes.TeleporterRune;
+import com.newlinegaming.Runix.Runes.TorchBearerRune;
+import com.newlinegaming.Runix.Runes.WaypointRune;
+import com.newlinegaming.Runix.Runes.ZeerixChestRune;
 
 /**
  * RuneHandler is the main switchboard between all runes. It contains

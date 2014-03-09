@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.runes;
+package com.newlinegaming.Runix.Runes;
 
 import java.util.HashMap;
 

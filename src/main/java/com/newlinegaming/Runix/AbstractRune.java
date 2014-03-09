@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.newlinegaming.Runix.runes.WaypointRune;
+import com.newlinegaming.Runix.Runes.WaypointRune;
 
 import com.newlinegaming.Runix.utils.Util_Movement;
 import net.minecraft.block.Block;
@@ -413,7 +413,7 @@ public abstract class AbstractRune {
     }
 
     protected String shortClassName() {
-        return this.getClass().toString().replace("class com.newlinegaming.Runix.runes.", "");
+        return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes.", "");
     }
 
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
