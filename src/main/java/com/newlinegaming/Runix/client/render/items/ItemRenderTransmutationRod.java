@@ -46,8 +46,8 @@ public class ItemRenderTransmutationRod implements IItemRenderer {
 				GL11.glPushMatrix();
 
 				GL11.glRotatef(20F, 0.0F, 0.0F, 20.0F);
-//				GL11.glRotatef(6F, 5.0F, 0.0F, 0.0F);
-//				GL11.glTranslatef(1.0F, 1.5F, 1.0F);
+				GL11.glRotatef(29F, 5.0F, 0.0F, 0.0F);
+				GL11.glTranslatef(0.5F, 0.2F, -0.1F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
 				FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE);
 				model.render(.0625F);
@@ -57,9 +57,9 @@ public class ItemRenderTransmutationRod implements IItemRenderer {
 			case EQUIPPED_FIRST_PERSON: {
 				GL11.glPushMatrix();
 
-				GL11.glRotatef(20F, 0.0F, 0.0F, 20.0F);
-//				GL11.glRotatef(6F, 5.0F, 0.0F, 0.0F);
-//				GL11.glTranslatef(1.0F, 1.5F, 1.0F);
+				GL11.glRotatef(5F, 0.0F, 0.0F, 20.0F);
+				GL11.glRotatef(60F, 5.0F, 0.0F, 0.0F);
+				GL11.glTranslatef(0.5F, 0.2F, -0.1F);
 				GL11.glScalef(1.5F, 1.5F, 1.5F);
 				FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE);
 				model.render(.0625F);
@@ -69,10 +69,10 @@ public class ItemRenderTransmutationRod implements IItemRenderer {
 			case ENTITY: {
 				GL11.glPushMatrix();
 
-				GL11.glRotatef(10, 0.0F, 0.0F, 20.0F);
-//				GL11.glRotatef(6F, 5.0F, 0.0F, 0.0F);
-//				GL11.glTranslatef(1.0F, 1.5F, 1.0F);
-				GL11.glScalef(0.5F, 0.5F, 0.5F);
+				GL11.glRotatef(5F, 0.0F, 0.0F, 20.0F);
+				GL11.glRotatef(57F, 5.0F, 0.0F, 0.0F);
+				GL11.glTranslatef(0.5F, 0.2F, -0.1F);
+				GL11.glScalef(0.9F, 0.9F, 0.9F);
 				FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE);
 				model.render(.0625F);
 				GL11.glPopMatrix();
@@ -81,15 +81,14 @@ public class ItemRenderTransmutationRod implements IItemRenderer {
 			case INVENTORY: {
 				GL11.glPushMatrix();
 
-				GL11.glRotatef(10, 0.0F, 0.0F, 20.0F);
-//				GL11.glRotatef(6F, 5.0F, 0.0F, 0.0F);
-//				GL11.glTranslatef(1.0F, 1.5F, 1.0F);
-				GL11.glScalef(0.5F, 0.5F, 0.5F);
+				GL11.glRotatef(5F, 0.0F, 0.0F, 20.0F);
+				GL11.glRotatef(57F, 5.0F, 0.0F, 0.0F);
+				GL11.glTranslatef(0.5F, 0.2F, -0.1F);
+				GL11.glScalef(0.5F, 0.9F, 0.9F);
 				FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE);
 				model.render(.0625F);
 				GL11.glPopMatrix();
-				break;
-				
+				break;				
 			}
 			default: break;
 		
