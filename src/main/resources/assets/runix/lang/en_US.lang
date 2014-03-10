@@ -1,0 +1,12 @@
+# -- Blocks
+tile.testblock:testblock.name=Test Block
+
+# -- Fluids
+tile.runix:quicksilver.name=[WIP] Quicksilver
+
+# -- Item
+item.runix:transmutationrod.name=[WIP] Transmutation rod
+item.runix:qwicksilverbucket.name= Qwicksilver bucket
+
+# -- Mics
+itemGroup.runix:runix=Runix

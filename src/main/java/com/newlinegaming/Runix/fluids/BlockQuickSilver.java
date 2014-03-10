@@ -1,14 +1,16 @@
 package com.newlinegaming.Runix.fluids;
 
-import com.newlinegaming.Runix.Runix;
-import com.newlinegaming.Runix.lib.LibRef;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+
+import com.newlinegaming.Runix.Runix;
+import com.newlinegaming.Runix.lib.LibRef;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockQuickSilver extends BlockFluidClassic {
 
@@ -21,7 +23,7 @@ public class BlockQuickSilver extends BlockFluidClassic {
     public BlockQuickSilver(Fluid fluid, Material material) {
         super(fluid, material);
         this.setCreativeTab(Runix.TabRunix);
-        this.setBlockName("QuickSilver");
+        this.setBlockName("runix:quicksilver");
     }
 
     @Override

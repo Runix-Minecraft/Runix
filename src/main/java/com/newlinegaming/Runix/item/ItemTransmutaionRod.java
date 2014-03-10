@@ -1,19 +1,15 @@
 package com.newlinegaming.Runix.item;
 
-import com.newlinegaming.Runix.Runix;
-import com.newlinegaming.Runix.lib.LibRef;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
+
+import com.newlinegaming.Runix.Runix;
 
 public class ItemTransmutaionRod extends Item {
 	
 	public ItemTransmutaionRod(){
 		super();
 		this.setCreativeTab(Runix.TabRunix);
-		this.setUnlocalizedName("transmutaionrod");
+		this.setUnlocalizedName("runix:transmutationrod");//odd different than blocks
 		
 	}
 	
