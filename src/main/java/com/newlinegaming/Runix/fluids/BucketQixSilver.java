@@ -10,13 +10,13 @@ import com.newlinegaming.Runix.lib.LibRef;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BucketQuickSilver extends ItemBucket {
+public class BucketQixSilver extends ItemBucket {
 
-	public BucketQuickSilver(Block block) {
+	public BucketQixSilver(Block block) {
 		super(block);
 		this.setCreativeTab(Runix.TabRunix);
 //		this.setUnlocalizedName("runix:qwicksilverbucket");
-		this.setUnlocalizedName("runix:qwicksilverbucket");
+		this.setUnlocalizedName("runix:qixsilverbucket");
 	}
 	
 	@Override

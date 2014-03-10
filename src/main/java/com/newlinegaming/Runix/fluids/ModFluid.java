@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix.fluids;
 
+import com.newlinegaming.Runix.eventhandlers.mics.BucketEventHandler;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -12,7 +14,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class ModFluid {
 
-    public static Fluid QuickSilver;
+    public static Fluid QixSilver;
 
     public static Block BlockQuickSilver;
     
@@ -21,13 +23,13 @@ public class ModFluid {
     public static void init() {
 
     	//Fluids
-        QuickSilver = new FluidQuickSilver();
+    	QixSilver = new FluidQixSilver();
 
         //Fluid Blocks
-        BlockQuickSilver = new BlockQuickSilver(QuickSilver, Material.lava);
+        BlockQuickSilver = new BlockQixSilver(QixSilver, Material.lava);
         
         //Buckets
-        qsBucket = new BucketQuickSilver(BlockQuickSilver).setContainerItem(Items.bucket);
+        qsBucket = new BucketQixSilver(BlockQuickSilver).setContainerItem(Items.bucket);
         
 
         GameReg();
@@ -36,13 +38,13 @@ public class ModFluid {
     private static void GameReg() {
 
     	//Fluid blocks
-        GameRegistry.registerBlock(BlockQuickSilver, "runixqiicksilver");
+        GameRegistry.registerBlock(BlockQuickSilver, "runixqsixsilver");
         
         //Buckets
         GameRegistry.registerItem(qsBucket, "qsbucket");
         
         //Fluid Container Registry
-        FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("quicksilver", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(qsBucket), new ItemStack(Items.bucket));
+       BucketEventHandler.INSTANCE.buckets.put(BlockQuickSilver, qsBucket);
         
         
     }

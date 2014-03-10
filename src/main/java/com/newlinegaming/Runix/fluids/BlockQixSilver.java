@@ -12,7 +12,7 @@ import com.newlinegaming.Runix.lib.LibRef;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockQuickSilver extends BlockFluidClassic {
+public class BlockQixSilver extends BlockFluidClassic {
 
     @SideOnly(Side.CLIENT)
     protected IIcon FQS; //Still Icon for quicksilver
@@ -20,10 +20,10 @@ public class BlockQuickSilver extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     protected IIcon FQF; //Flowing Icon for quicksilver
 
-    public BlockQuickSilver(Fluid fluid, Material material) {
+    public BlockQixSilver(Fluid fluid, Material material) {
         super(fluid, material);
         this.setCreativeTab(Runix.TabRunix);
-        this.setBlockName("runix:quicksilver");
+        this.setBlockName("runix:qixsilver");
     }
 
     @Override
