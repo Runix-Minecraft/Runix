@@ -7,14 +7,13 @@ import net.minecraft.block.Block;
  * Meta is the additional information like orientation or color used in some blocks.
  * Doesn't currently do TileEntity or NBT.*/
 public class SigBlock{
-    public String blockID;
+    public Block blockID;
     public int meta;
-    public SigBlock(String blockID, int meta){
+    public SigBlock(Block blockID, int meta){
         this.blockID = blockID;
         this.meta = meta;
     }
     
-
 	@Override
     public boolean equals(Object other){
         if(other instanceof SigBlock)
