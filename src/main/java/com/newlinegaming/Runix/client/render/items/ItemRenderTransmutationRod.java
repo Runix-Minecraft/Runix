@@ -1,6 +1,5 @@
 package com.newlinegaming.Runix.client.render.items;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -78,7 +77,7 @@ public class ItemRenderTransmutationRod implements IItemRenderer {
 				GL11.glPopMatrix();
 				break;
 			}
-			case INVENTORY: {
+			case INVENTORY: {//LordIllyohs: I was a little lazy when modeling this while either fix in the renderer or remodel the rod not sure yet
 				GL11.glPushMatrix();
 
 				GL11.glRotatef(5F, 0.0F, 0.0F, 20.0F);
