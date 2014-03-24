@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelTransmutationRod extends ModelBase {
-  //fields
+  
     ModelRenderer Rod;
   
   public ModelTransmutationRod() {
