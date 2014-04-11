@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -23,7 +23,7 @@ group= "com.newlinegaming.Runix" // http://maven.apache.org/guides/mini/guide-na
 archivesBaseName = "Runix"
 
 minecraft {
-    version = "1.7.2-10.12.0.1024"
+    version = "1.7.2-10.12.0.1048"
     assetDir = "eclipse/assets"
 }
 
