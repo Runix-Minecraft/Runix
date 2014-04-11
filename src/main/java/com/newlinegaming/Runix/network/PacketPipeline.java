@@ -11,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,9 +25,9 @@ import java.util.*;
  */
 
 @ChannelHandler.Sharable
-public class PacketPipeline {
+public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, AbstractPacket> {
 
-    private EnumMap<Side, FMLEmbeddedChannel> channels;
+    private EnumMap<Side, FMLEmbeddedChannel>           channels;
     private LinkedList<Class<? extends AbstractPacket>> packets           = new LinkedList<Class<? extends AbstractPacket>>();
     private boolean                                     isPostInitialised = false;
 
@@ -58,6 +59,7 @@ public class PacketPipeline {
     }
 
     // In line encoding of the packet, including discriminator setting
+    @Override
     protected void encode(ChannelHandlerContext ctx, AbstractPacket msg, List<Object> out) throws Exception {
         ByteBuf buffer = Unpooled.buffer();
         Class<? extends AbstractPacket> clazz = msg.getClass();
@@ -73,6 +75,7 @@ public class PacketPipeline {
     }
 
     // In line decoding and handling of the packet
+    @Override
     protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception {
         ByteBuf payload = msg.payload();
         byte discriminator = payload.readByte();
@@ -105,7 +108,12 @@ public class PacketPipeline {
 
     // Method to call from FMLInitializationEvent
     public void initialise() {
-        this.channels = NetworkRegistry.INSTANCE.newChannel("RUNIX");
+        this.channels = NetworkRegistry.INSTANCE.newChannel("RUNIX", this);
+        regpacket();
+    }
+    
+    public void regpacket() {
+    	
     }
 
     // Method to call from FMLPostInitializationEvent
@@ -201,4 +209,3 @@ public class PacketPipeline {
         this.channels.get(Side.CLIENT).writeAndFlush(message);
     }
 }
-
