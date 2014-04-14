@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
@@ -65,7 +66,7 @@ public class FaithRune extends PersistentRune{
             firstTime = false;
             consumeRune(coords);
             try {
-                setBlockIdAndUpdate(coords, Block.blockGold.blockID); //Gold block is to be a permanent marker
+                setBlockIdAndUpdate(coords, Blocks.gold_block); //Gold block is to be a permanent marker
             } catch (NotEnoughRunicEnergyException e) {}
             energy -= Tiers.getEnergy(Block.blockGold.blockID) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
