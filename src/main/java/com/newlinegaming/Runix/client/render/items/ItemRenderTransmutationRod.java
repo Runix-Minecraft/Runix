@@ -7,7 +7,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import com.newlinegaming.Runix.client.models.items.ModelTransmutationRod;
-import com.newlinegaming.Runix.lib.LibRef;
+import com.newlinegaming.Runix.common.lib.LibRef;
 
 import cpw.mods.fml.client.FMLClientHandler;
 

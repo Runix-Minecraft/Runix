@@ -2,14 +2,14 @@ package com.newlinegaming.Runix;
 
 import net.minecraft.creativetab.CreativeTabs;
 
-import com.newlinegaming.Runix.block.ModBlock;
-import com.newlinegaming.Runix.creativetabs.TabRunix;
-import com.newlinegaming.Runix.eventhandlers.RunixEventHandlers;
-import com.newlinegaming.Runix.fluids.ModFluid;
-import com.newlinegaming.Runix.item.ModItem;
-import com.newlinegaming.Runix.lib.LibRef;
-import com.newlinegaming.Runix.network.PacketPipeline;
-import com.newlinegaming.Runix.proxys.CommonProxy;
+import com.newlinegaming.Runix.common.CommonProxy;
+import com.newlinegaming.Runix.common.block.ModBlock;
+import com.newlinegaming.Runix.common.creativetabs.TabRunix;
+import com.newlinegaming.Runix.common.fluids.ModFluid;
+import com.newlinegaming.Runix.common.handlers.RunixEventHandlers;
+import com.newlinegaming.Runix.common.item.ModItem;
+import com.newlinegaming.Runix.common.lib.LibRef;
+import com.newlinegaming.Runix.common.network.PacketPipeline;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
