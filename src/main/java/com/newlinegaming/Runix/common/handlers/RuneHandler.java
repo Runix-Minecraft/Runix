@@ -1,9 +1,14 @@
-package com.newlinegaming.Runix.common.runes;
+package com.newlinegaming.Runix.common.handlers;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import com.newlinegaming.Runix.common.runes.AbstractRune;
+import com.newlinegaming.Runix.common.runes.PersistentRune;
+import com.newlinegaming.Runix.common.utils.Vector3;
+import com.newlinegaming.Runix.common.utils.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -13,23 +18,21 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
-import com.newlinegaming.Runix.Runes.CompassRune;
-import com.newlinegaming.Runix.Runes.DomainRune;
-import com.newlinegaming.Runix.Runes.FaithRune;
-import com.newlinegaming.Runix.Runes.FerrousWheelRune;
-import com.newlinegaming.Runix.Runes.FtpRune;
-import com.newlinegaming.Runix.Runes.GreekFireRune;
-import com.newlinegaming.Runix.Runes.OracleRune;
-import com.newlinegaming.Runix.Runes.PlayerHandler;
-import com.newlinegaming.Runix.Runes.RubricCreationRune;
-import com.newlinegaming.Runix.Runes.RubricRecallRune;
-import com.newlinegaming.Runix.Runes.RunecraftRune;
-import com.newlinegaming.Runix.Runes.TeleporterRune;
-import com.newlinegaming.Runix.Runes.TorchBearerRune;
-import com.newlinegaming.Runix.Runes.WaypointRune;
-import com.newlinegaming.Runix.Runes.ZeerixChestRune;
-import com.newlinegaming.Runix.common.utils.Vector3;
-import com.newlinegaming.Runix.common.utils.WorldXYZ;
+//import com.newlinegaming.Runix.Runes.CompassRune;
+//import com.newlinegaming.Runix.Runes.DomainRune;
+//import com.newlinegaming.Runix.Runes.FaithRune;
+//import com.newlinegaming.Runix.Runes.FerrousWheelRune;
+//import com.newlinegaming.Runix.Runes.FtpRune;
+//import com.newlinegaming.Runix.Runes.GreekFireRune;
+//import com.newlinegaming.Runix.Runes.OracleRune;
+//import com.newlinegaming.Runix.Runes.PlayerHandler;
+//import com.newlinegaming.Runix.Runes.RubricCreationRune;
+//import com.newlinegaming.Runix.Runes.RubricRecallRune;
+//import com.newlinegaming.Runix.Runes.RunecraftRune;
+//import com.newlinegaming.Runix.Runes.TeleporterRune;
+//import com.newlinegaming.Runix.Runes.TorchBearerRune;
+//import com.newlinegaming.Runix.Runes.WaypointRune;
+//import com.newlinegaming.Runix.Runes.ZeerixChestRune;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -51,21 +54,21 @@ public class RuneHandler {
 
     private RuneHandler() {
         //TODO: Change this to scan a folder instead.
-        runeRegistry.add(new PlayerHandler());
-        runeRegistry.add(new WaypointRune());
-        runeRegistry.add(new FaithRune());
-        runeRegistry.add(new CompassRune());
-        runeRegistry.add(new FtpRune());
-        runeRegistry.add(new TeleporterRune());
-        runeRegistry.add(new RunecraftRune());
-        runeRegistry.add(new RubricCreationRune());
-        runeRegistry.add(new RubricRecallRune());
-        runeRegistry.add(new TorchBearerRune());
-        runeRegistry.add(new ZeerixChestRune());
-        runeRegistry.add(new FerrousWheelRune());
-        runeRegistry.add(new OracleRune());
-        runeRegistry.add(new GreekFireRune());
-        runeRegistry.add(new DomainRune());
+//        runeRegistry.add(new PlayerHandler());
+//        runeRegistry.add(new WaypointRune());
+//        runeRegistry.add(new FaithRune());
+//        runeRegistry.add(new CompassRune());
+//        runeRegistry.add(new FtpRune());
+//        runeRegistry.add(new TeleporterRune());
+//        runeRegistry.add(new RunecraftRune());
+//        runeRegistry.add(new RubricCreationRune());
+//        runeRegistry.add(new RubricRecallRune());
+//        runeRegistry.add(new TorchBearerRune());
+//        runeRegistry.add(new ZeerixChestRune());
+//        runeRegistry.add(new FerrousWheelRune());
+//        runeRegistry.add(new OracleRune());
+//        runeRegistry.add(new GreekFireRune());
+//        runeRegistry.add(new DomainRune());
     }
 
     public static RuneHandler getInstance(){
