@@ -3,6 +3,8 @@ package com.newlinegaming.Runix.common.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.newlinegaming.Runix.api.lib.WorldXYZ;
+
 public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final Vector3 UP =    new Vector3(0, 1,0);
     public static final Vector3 DOWN =  new Vector3(0,-1,0);

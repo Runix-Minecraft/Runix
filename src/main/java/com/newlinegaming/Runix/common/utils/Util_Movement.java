@@ -6,8 +6,10 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.newlinegaming.Runix.*;
 //import com.newlinegaming.Runix.common.handlers.RuneHandler;
+
+
+import com.newlinegaming.Runix.api.lib.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

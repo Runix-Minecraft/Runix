@@ -1,6 +1,9 @@
-package com.newlinegaming.Runix.common.utils;
+package com.newlinegaming.Runix.api.lib;
 
 import java.util.ArrayList;
+
+import com.newlinegaming.Runix.common.utils.SigBlock;
+import com.newlinegaming.Runix.common.utils.Vector3;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

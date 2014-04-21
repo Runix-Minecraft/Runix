@@ -3,7 +3,8 @@ package com.newlinegaming.Runix.common.utils;
 import net.minecraft.block.Block;
 
 
-/** Plain old Data.  blockID and meta.  Use this to preserve all your block info.
+/** 
+ * Plain old Data.  blockID and meta.  Use this to preserve all your block info.
  * Meta is the additional information like orientation or color used in some blocks.
  * Doesn't currently do TileEntity or NBT.*/
 public class SigBlock{
