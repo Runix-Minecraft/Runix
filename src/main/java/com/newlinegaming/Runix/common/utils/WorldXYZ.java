@@ -152,7 +152,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     /**Simple wrapper method for getBlockID()*/
-    public String getBlockId(){
+    public Block getBlockId(){
         return this.getWorld().getBlock(posX, posY, posZ);
     }
     
@@ -161,25 +161,26 @@ public class WorldXYZ extends ChunkCoordinates {
         return getWorld().getBlockMetadata(posX, posY, posZ);
     }
 
-    /**Simple wrapper method for setBlockID()
-     * @param blockID
+    /**
+     * Simple wrapper method for setBlockID()
+     * @param i
      * @return true if successful
      */
-    public boolean setBlockIdAndUpdate(Block blockID) {
-        if(blockID = Blocks.bedrock || getBlockId() == Blocks.bedrock)
+    public boolean setBlockIdAndUpdate(Block i) {
+        if(i == Blocks.bedrock || getBlockId() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
-        return this.getWorld().setBlock(posX, posY, posZ, blockID);
+        return this.getWorld().setBlock(posX, posY, posZ, i);
     }
     
     public boolean setBlockId(SigBlock sig){
-        if(sig.blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+        if(sig.blockID == Blocks.bedrock || getBlockId() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }
 
-    public boolean setBlock(int blockID, int meta){
-        if(blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+    public boolean setBlock(Block blockID, int meta){
+        if(blockID == Blocks.bedrock || getBlockId() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, blockID, meta, 3);
     }
@@ -226,22 +227,22 @@ public class WorldXYZ extends ChunkCoordinates {
         return Math.sqrt( xzDist_2 + (posY - other.posY)*(posY - other.posY));
     }
 
-    public boolean isSolid() {
-        Material base = getWorld().getBlockMaterial(posX, posY, posZ );
-        return base.isSolid();
-    }
+//    public boolean isSolid() {
+//        Block base = getWorld().getBlock(posX, posY, posZ );
+//        return base.isSolid();
+//    }
 
-    public WorldXYZ mostValuableNeighbor() {
-        WorldXYZ best = offset(Vector3.UP);
-        int bestEnergy = 0;
-        for(WorldXYZ c : getNeighbors()){
-            if( Tiers.getEnergy(c.getBlockId()) > bestEnergy){
-                bestEnergy = Tiers.getEnergy(c.getBlockId());
-                best = c;
-            }
-        }
-        return best;
-    }
+//    public WorldXYZ mostValuableNeighbor() {
+//        WorldXYZ best = offset(Vector3.UP);
+//        int bestEnergy = 0;
+//        for(WorldXYZ c : getNeighbors()){
+//            if( Tiers.getEnergy(c.getBlockId()) > bestEnergy){
+//                bestEnergy = Tiers.getEnergy(c.getBlockId());
+//                best = c;
+//            }
+//        }
+//        return best;
+//    }
 
     public void bump(Vector3 d) {
         bump(d.x, d.y, d.z);

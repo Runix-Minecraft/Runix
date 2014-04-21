@@ -7,9 +7,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.newlinegaming.Runix.*;
-import com.newlinegaming.Runix.common.runes.RuneHandler;
+import com.newlinegaming.Runix.common.handlers.RuneHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 
 public class Util_Movement {
 
@@ -23,11 +24,13 @@ public class Util_Movement {
     }
     
 
-    /**Note: when designing moving runes, DO NOT update your PersistentRune.location variable.  
-     * moveShape() calls moveMagic() which will update everything including yourself.*/
+    /**
+     * Note: when designing moving runes, DO NOT update your PersistentRune.location variable.  
+     * moveShape() calls moveMagic() which will update everything including yourself.
+     */
     public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
     {
-        SigBlock AIR = new SigBlock("air",0);
+        SigBlock AIR = new SigBlock(Blocks.air,0);
         HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ point : moveMapping.keySet()){
@@ -36,7 +39,7 @@ public class Util_Movement {
                 sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
                 point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
             }
-            else if(block.blockID != 0){//don't write AIR blocks
+            else if(block.blockID != Blocks.air){//don't write AIR blocks
                 newStructure.put(moveMapping.get(point), block);//record original at new location
             }
         }
@@ -57,7 +60,8 @@ public class Util_Movement {
         return newPositions;
     }
 
-    /**Geometry: figure out if we're on the left or right side of the rune relative to the player
+    /**
+     * Geometry: figure out if we're on the left or right side of the rune relative to the player
      */
     public static boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
         float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
@@ -90,14 +94,15 @@ public class Util_Movement {
     public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
             if( !move.containsKey(newPos) //doesn't overlap with the old position
-                    && newPos.getBlockId() != 0 //AIR
+                    && newPos.getBlockId() != Blocks.air //AIR
                     && !Tiers.isCrushable(newPos.getBlockId()) ) //Something's there, but squish it anyways
                 return true;
         }
         return false;
     }
 
-    /**Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction
+    /**
+     * Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction
      * of destination.face.
      * @param structure
      * @param destination

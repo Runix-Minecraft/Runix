@@ -7,16 +7,18 @@ import javax.swing.Icon;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
+import net.minecraft.block.BlockGrass;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection.*;
 
-import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.common.utils.SigBlock;
 import com.newlinegaming.Runix.common.utils.WorldXYZ;
 
@@ -29,7 +31,8 @@ public class GreekFire extends BlockFire {
     protected static int[] greekFlammability = new int[4096];
     
     @SideOnly(Side.CLIENT)
-    private Icon[] iconArray;
+    private IIcon[] iconArray;
+	private Block blockID;
 
     public static int blockIdBackup = 2014;
 
@@ -40,9 +43,9 @@ public class GreekFire extends BlockFire {
         initializeBlock();
     }
     
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(String block, CreativeTabs tab,  List subItems) {
+    public void getSubBlocks(Block block, CreativeTabs tab,  List subItems) {
         subItems.add(new ItemStack(block, 1, 0));
         subItems.add(new ItemStack(block, 1, 14));
     }
@@ -53,8 +56,7 @@ public class GreekFire extends BlockFire {
     }
     
     @SideOnly(Side.CLIENT)
-    public Icon getFireIcon(int par1)
-    {
+    public IIcon getFireIcon(int par1) {
         return this.iconArray[par1];
     }
     
@@ -67,10 +69,10 @@ public class GreekFire extends BlockFire {
         this.setBurn(Blocks.gravel, 30, 100);
     }
 
-    private void setBurn(String id, int encouragement, int flammability)
+    private void setBurn(int dirt, int encouragement, int flammability)
     {
-        greekFireSpreadSpeed[id] = encouragement;
-        greekFlammability[id] = flammability;
+        greekFireSpreadSpeed[dirt] = encouragement;
+        greekFlammability[dirt] = flammability;
     }
         
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
@@ -110,7 +112,7 @@ public class GreekFire extends BlockFire {
             int fireLifespan = world.getBlockMetadata(x, y, z);
 
             if(fireDiesOut(world, x, y, z, random, fireLifespan)){
-                if(world.getBlockId(x, y, z) != Block.glass.blockID) //sometimes it crystallizes instead
+                if(world.getBlock(x, y, z) != Blocks.glass) //sometimes it crystallizes instead
                     world.setBlockToAir(x, y, z);    
             }
             else if(fireLifespan < 15)
@@ -126,7 +128,7 @@ public class GreekFire extends BlockFire {
     }
 
     private boolean fireDiesOut(World world, int x, int y, int z, Random random, int fireLifespan) {
-        Block base = Block.blocksList[world.getBlockId(x, y - 1, z)];
+        Block base = Block.blocksList[world.getBlockMetadata(x, y-1, z)];
         
         if(isGreekFireSource(base ))
             return false;
@@ -141,7 +143,7 @@ public class GreekFire extends BlockFire {
             world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world));
 
             if (!this.canNeighborBurn(world, x, y, z)){
-                if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || fireLifespan > 3){
+                if (!world.doesBlockHaveSolidTopSurface(world, x, y - 1, z) || fireLifespan > 3){
                     return true;// remove fire because it has no base or it expired with no fuel source
                 }
             }
@@ -181,7 +183,7 @@ public class GreekFire extends BlockFire {
     }
 
     private boolean isGreekFireSource(Block base) {
-        if(base != null && base.blockID == Block.blockLapis.blockID)
+        if(base != null && base.blockID == Blocks.blockLapis)
             return true;
         return false;
     }
@@ -213,8 +215,8 @@ public class GreekFire extends BlockFire {
     }
 
     private int getFlammability(WorldXYZ loc) {
-        int block = loc.getBlockId();
-        return greekFlammability[block];
+        Block block = loc.getBlockId();
+        return greekFlammability[];
     }
 
     private boolean canNeighborBurn(World par1World, int par2, int par3, int par4)
@@ -259,12 +261,12 @@ public class GreekFire extends BlockFire {
     
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
-        return par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || this.canNeighborBurn(par1World, par2, par3, par4);
+        return par1World.doesBlockHaveSolidTopSurface(par1World, par2, par3 - 1, par4) || this.canNeighborBurn(par1World, par2, par3, par4);
     }
     
     public void onNeighborBlockChange(World par1World, int x, int y, int z, int par5)
     {
-        if (!par1World.doesBlockHaveSolidTopSurface(x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
+        if (!par1World.doesBlockHaveSolidTopSurface(par1World, x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
         {
             par1World.setBlockToAir(x, y, z);
         }
@@ -288,7 +290,7 @@ public class GreekFire extends BlockFire {
     
     public void onBlockAdded(World par1World, int x, int y, int z)
     {
-        if (!par1World.doesBlockHaveSolidTopSurface(x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
+        if (!par1World.doesBlockHaveSolidTopSurface(par1World, x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
         {
             par1World.setBlockToAir(x, y, z);
         }
@@ -299,9 +301,9 @@ public class GreekFire extends BlockFire {
     }
         
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
+    public void registerIcons(IIconRegister par1IconRegister)
     {
-        this.iconArray = new Icon[] {par1IconRegister.registerIcon("Runix:GreekFire"), par1IconRegister.registerIcon("Runix:GreekFire1")};
+        this.iconArray = new IIcon[] {par1IconRegister.registerIcon("Runix:GreekFire"), par1IconRegister.registerIcon("Runix:GreekFire1")};
     }
     
     public boolean canBlockCatchFire(World world, int x, int y, int z)
@@ -312,7 +314,7 @@ public class GreekFire extends BlockFire {
     public int getChanceToEncourageFire(World world, int x, int y, int z, int oldChance, ForgeDirection face)
     {
         int newChance = 0;
-        Block block = Block.blocksList[world.getBlockId(x, y, z)];
+        Block block = Block.blocksList[world.getBlock(x, y, z)];
         if (block != null)
         {
             newChance = greekFireSpreadSpeed[block.blockID];

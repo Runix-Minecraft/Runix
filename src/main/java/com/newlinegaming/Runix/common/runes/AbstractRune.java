@@ -12,8 +12,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import com.newlinegaming.Runix.Runes.WaypointRune;
 import com.newlinegaming.Runix.common.handlers.ChatMessageHandler;
+import com.newlinegaming.Runix.common.handlers.RuneHandler;
 import com.newlinegaming.Runix.common.utils.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.common.utils.SigBlock;
 import com.newlinegaming.Runix.common.utils.Signature;
@@ -46,19 +46,21 @@ public abstract class AbstractRune {
 
 	public abstract boolean isFlatRuneOnly();
 
-    /** Use this method to check Rune template compliance, not runicTemplateOriginal().
+    /**
+     * Use this method to check Rune template compliance, not runicTemplateOriginal().
 	 * This method will take the facing of coords and use it to match orientation for vertical runes.
 	 * @param coords world coordinates and facing to check against the rune
 	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
 	 * the runeTemplate for that block, which can be special values like TIER or KEY.
 	 */
-	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords) {
+	public HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords) {
 	    if(isFlatRuneOnly())
 	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
 	    return patternToShape(runicTemplateOriginal(), coords); 
 	}
 	
-	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
+	/**
+	 * Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
 	 * a static class variable.
 	 * @param coords World and xyz that Rune was activated in.
@@ -66,7 +68,8 @@ public abstract class AbstractRune {
 	 */
 	public abstract void execute(WorldXYZ coords, EntityPlayer player);
 	
-	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
+	/**
+	 * This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
 	 * calls for 0 (AIR).
 	 * @param pattern The blockPattern to be stamped.
@@ -82,7 +85,8 @@ public abstract class AbstractRune {
 		return true;//TODO: build permission checking
 	}
 	
-	/** This method takes the player and the rune, and verifies that a rune can be used. to go with perms/disabled runes.txt or whatever
+	/**
+	 * This method takes the player and the rune, and verifies that a rune can be used. to go with perms/disabled runes.txt or whatever
 	 * @param player - the caster
 	 * @param rune - the rune being cast
 	 * @return
@@ -93,7 +97,8 @@ public abstract class AbstractRune {
 		return true;
 	}
 	
-	/**This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
+	/**
+	 * This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
 	 * less than 20 meters onto something that's not fire or lava.
 	 * This method should be used for any teleport or similar move that may land the player in some blocks.
 	 * @param player
@@ -162,7 +167,9 @@ public abstract class AbstractRune {
     }*/	
 	
 	
-	/** returns the unique name of the rune */
+	/** 
+	 * returns the unique name of the rune 
+	 */
 	public String getRuneName() {
 	    if( !runeName.isEmpty() )
 	        return runeName;
@@ -184,21 +191,22 @@ public abstract class AbstractRune {
             System.out.println(message);
     }
 	
-	/**Checks to see if there is a block match for the Rune blockPattern center at 
+	/**
+	 * Checks to see if there is a block match for the Rune blockPattern center at 
 	 * WorldXYZ coords.  
 	 * Legacy Note: Runix changed rune pattern recognition to accept T0 ink blocks 
 	 * and T1+ None Corners.  So if there is a recognizable shape, it will be accepted.
 	 * @return true if there is a valid match
 	 */
     public boolean checkRunePattern(WorldXYZ coords) {
-        int inkID = getTierInkBlock(coords);
+        Block inkID = getTierInkBlock(coords);
         if( inkID == 0 )
             return false; //Tier blocks cannot be AIR
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {
-            int blockID = target.getBlockId();
-            int patternID = shape.get(target).blockID;
+            Block blockID = target.getBlockId();
+            Block patternID = shape.get(target).blockID;
             switch(patternID){// Handle special Template Values
                 case NONE: 
                     if( blockID == inkID )
@@ -233,11 +241,11 @@ public abstract class AbstractRune {
     }
 
     protected int getTier(WorldXYZ coords){
-        int blockID = getTierInkBlock(coords);
+        Block blockID = getTierInkBlock(coords);
         return blockID != -1 ? Tiers.getTier(blockID) : 1;
     }
     
-    protected int getTierInkBlock(WorldXYZ coords) {
+    protected Block getTierInkBlock(WorldXYZ coords) {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == TIER) {
@@ -247,13 +255,16 @@ public abstract class AbstractRune {
         return -1; // There was no TIER mentioned in the pattern
     }
 
-    /** Call accept() once you are sure the rune will be executed to tell the player it was successful.
+    /** 
+     * Call accept() once you are sure the rune will be executed to tell the player it was successful.
      */
     protected void accept(EntityPlayer player) {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
     }
 
-    /**This will return an empty list if the activation would tear a structure in two. */
+    /**
+     * This will return an empty list if the activation would tear a structure in two.
+     */
     public HashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
         HashSet<WorldXYZ> workingSet = new HashSet<WorldXYZ>();
         HashSet<WorldXYZ> activeEdge;
@@ -331,34 +342,38 @@ public abstract class AbstractRune {
         return shape;
     }
     
-    /**Removes the shape and adds its block energy to the rune*/
+    /**
+     * Removes the shape and adds its block energy to the rune
+     */
     protected void consumeRune(WorldXYZ coords) {
         if(isFlatRuneOnly())
             coords = coords.copyWithNewFacing(1);
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID
-            int blockID = target.getBlockId();
+            Block blockID = target.getBlockId();
             if(shape.get(target).blockID == NONE)
                 continue; // we don't consume these
             energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockIdAndUpdate(0);// delete the block
+            target.setBlockIdAndUpdate(Blocks.air);// delete the block
         }
         System.out.println(getRuneName() + " energy: " + energy);
     }
 
-    /**Removes the shape and adds its block energy to the rune*/
+    /**
+     * Removes the shape and adds its block energy to the rune
+     */
     protected void consumeRune(Collection<WorldXYZ> shape) {
         for(WorldXYZ target : shape){
-            int blockID = target.getBlockId();
+            Block blockID = target.getBlockId();
             energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockIdAndUpdate(0);// delete the block
+            target.setBlockIdAndUpdate(Blocks.air);// delete the block
         }
         System.out.println(getRuneName() + " energy: " + energy);
     }
     
-    public void setBlockIdAndUpdate(WorldXYZ coords, int blockID) throws NotEnoughRunicEnergyException {
-        if( blockID == 0 )//this is actually breaking, not paying for air
+    public void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
+        if( blockID == Blocks.air )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
         else
             spendEnergy(Tiers.getEnergy(blockID));        
@@ -376,11 +391,13 @@ public abstract class AbstractRune {
         energy -= energyCost;
     }
 
-    /**This is a minature convenience version of moveShape(moveMapping) for single blocks
-     * @throws NotEnoughRunicEnergyException */
+    /**
+     * This is a minature convenience version of moveShape(moveMapping) for single blocks
+     * @throws NotEnoughRunicEnergyException 
+     */
     public void moveBlock(WorldXYZ coords, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
         newPos.setBlockId(coords.getSigBlock());
-        coords.setBlockIdAndUpdate(0);
+        coords.setBlockIdAndUpdate(Blocks.air);
         spendEnergy((int) Tiers.blockMoveCost);
         
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
@@ -436,7 +453,9 @@ public abstract class AbstractRune {
         return destination;
     }
 
-    /*Placeholder which returns an empty signature.  Ovverride this to add signatures to your rune.*/
+    /**
+     * Placeholder which returns an empty signature.  Ovverride this to add signatures to your rune.
+     */
     public Signature getSignature() {
         return new Signature();
     }
