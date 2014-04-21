@@ -1,5 +1,6 @@
 package com.newlinegaming.Runix.api;
 
+import com.newlinegaming.Runix.api.energy.EnergyType;
 import com.newlinegaming.Runix.api.rune.BaseRune;
 
 import net.minecraft.block.Block;
@@ -23,6 +24,7 @@ public class RunixAPI {
 	 * @param blocks The Block
 	 * @param meta The meta data value for the block
 	 * @param energyValue 1 to 320,940
+	 * @param Sets the energy type
 	 */
 	public static void setBlockEnergy(Block block, int meta, int energyValue) {
 		
@@ -35,6 +37,7 @@ public class RunixAPI {
 	 * @param item The Item
 	 * @param meta The meta data value for the item
 	 * @param energyValue
+	 * @param sets the energy type
 	 */
 	public static void setItemEnergy(Item item, int meta, int energyValue) {
 		

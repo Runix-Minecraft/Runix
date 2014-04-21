@@ -4,7 +4,7 @@ import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.api.RunixAPI;
 
-public class SetBlockEnergy {
+public class SetEnergy {
 	
 	public static void init() {
 		

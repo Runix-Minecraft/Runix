@@ -10,11 +10,21 @@ What needs to be done
 -----------------------------
 10 | Cleanup the repo - DONE
 10 | Update to ForgeGradle - DONE
-10 | Port to 1.7.* - NOT DONE
 10 | Kill those infernal blockids - DONE
 6  | Kill the way fluids were handled and use the Forge fluid API- DONE
 2  | Get rid of the place holder Item - DONE
-8  | Get rid of Unneccisary run class - DONE
+8  | Get rid of unnecessary run class - DONE
 8  | Make all the Player read strings from a .lang file - NOT DONE
 1  | CAPEZZ!!111 - NOT DONE
+10 | Move toward a RunixAPI instead of extending everything from AbstractRune and extend BaseRune and move as much from
+     AbstractRune as possible to BaseRune and only use AbstractRune internally. - Currently being worked on
+10 | Kill the current way energy is being handled to a new RuneRegistry system - Currently being working
+-----------------------------
+
+More details
+-----------------------------
+The move toward BaseRune: BaseRune will handle the most basic functions and logic of all runes (i.e. rune activation and teleportation) and all runes MUST extend rune
+						  to be registered as a rune within Runix.
+
+The Killing of the Tiers class and the move to RunixAPI: This is simply to make it easier for addon developers as well as Runix developers to energy values to blocks
 -----------------------------
