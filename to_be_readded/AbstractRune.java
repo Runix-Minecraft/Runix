@@ -21,7 +21,8 @@ import com.newlinegaming.Runix.common.utils.Util_Movement;
 import com.newlinegaming.Runix.common.utils.Vector3;
 import com.newlinegaming.Runix.common.utils.WorldXYZ;
 
-/** This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
+/** 
+ * This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
  * AbstractRune and not in the individual runes.  This will make it easy to create new and custom runes as well as making the child classes
  * as thin as possible.
  */
@@ -39,7 +40,8 @@ public abstract class AbstractRune {
     public String runeName = null;
 	public AbstractRune(){}
 
-	/**Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
+	/**
+	 * Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
 	 * defined in your class, never use it.  Use runicFormulae() instead.
 	 */
 	protected abstract int[][][] runicTemplateOriginal();

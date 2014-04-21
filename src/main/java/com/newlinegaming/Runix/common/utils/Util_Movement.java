@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.newlinegaming.Runix.*;
-import com.newlinegaming.Runix.common.handlers.RuneHandler;
+//import com.newlinegaming.Runix.common.handlers.RuneHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -28,37 +28,36 @@ public class Util_Movement {
      * Note: when designing moving runes, DO NOT update your PersistentRune.location variable.  
      * moveShape() calls moveMagic() which will update everything including yourself.
      */
-    public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
-    {
-        SigBlock AIR = new SigBlock(Blocks.air,0);
-        HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
-        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
-        for(WorldXYZ point : moveMapping.keySet()){
-            SigBlock block = point.getSigBlock();
-            if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
-                sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
-                point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
-            }
-            else if(block.blockID != Blocks.air){//don't write AIR blocks
-                newStructure.put(moveMapping.get(point), block);//record original at new location
-            }
-        }
-        
-        for(WorldXYZ loc : moveMapping.keySet()) //Delete everything
-            loc.setBlockId(AIR); // delete old block in a separate loop to avoid collisions with the new positioning
-
-        for(WorldXYZ destination : newStructure.keySet()) //place all the blocks at new location
-            destination.setBlockId(newStructure.get(destination));//doesn't include sensitive blocks
-
-        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //Place all the sensitive blocks
-            specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone
-        
-        RuneHandler.getInstance().moveMagic(moveMapping);
-
-        HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>(newStructure.keySet());
-        newPositions.addAll(sensitiveBlocks.keySet());//merge sensitive locations back in with normal
-        return newPositions;
-    }
+//    public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) {
+//        SigBlock AIR = new SigBlock(Blocks.air,0);
+//        HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
+//        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
+//        for(WorldXYZ point : moveMapping.keySet()){
+//            SigBlock block = point.getSigBlock();
+//            if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
+//                sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
+//                point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
+//            }
+//            else if(block.blockID != Blocks.air){//don't write AIR blocks
+//                newStructure.put(moveMapping.get(point), block);//record original at new location
+//            }
+//        }
+//        
+//        for(WorldXYZ loc : moveMapping.keySet()) //Delete everything
+//            loc.setBlockId(AIR); // delete old block in a separate loop to avoid collisions with the new positioning
+//
+//        for(WorldXYZ destination : newStructure.keySet()) //place all the blocks at new location
+//            destination.setBlockId(newStructure.get(destination));//doesn't include sensitive blocks
+//
+//        for(WorldXYZ specialPos : sensitiveBlocks.keySet()) //Place all the sensitive blocks
+//            specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone
+//        
+//        RuneHandler.getInstance().moveMagic(moveMapping);
+//
+//        HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>(newStructure.keySet());
+//        newPositions.addAll(sensitiveBlocks.keySet());//merge sensitive locations back in with normal
+//        return newPositions;
+//    }
 
     /**
      * Geometry: figure out if we're on the left or right side of the rune relative to the player
@@ -91,15 +90,15 @@ public class Util_Movement {
         return moveMapping;
     }
 
-    public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
-        for(WorldXYZ newPos : move.values()){
-            if( !move.containsKey(newPos) //doesn't overlap with the old position
-                    && newPos.getBlockId() != Blocks.air //AIR
-                    && !Tiers.isCrushable(newPos.getBlockId()) ) //Something's there, but squish it anyways
-                return true;
-        }
-        return false;
-    }
+//    public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
+//        for(WorldXYZ newPos : move.values()){
+//            if( !move.containsKey(newPos) //doesn't overlap with the old position
+//                    && newPos.getBlockId() != Blocks.air //AIR
+//                    && !Tiers.isCrushable(newPos.getBlockId()) ) //Something's there, but squish it anyways
+//                return true;
+//        }
+//        return false;
+//    }
 
     /**
      * Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction
@@ -109,24 +108,23 @@ public class Util_Movement {
      * @return center of destination teleport or null if the teleport was unsuccessful
      * @throws NotEnoughRunicEnergyException
      */
-    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) 
-    {
-        Vector3 roomForShip = Vector3.facing[destination.face].multiply(radius);// TODO get width/height/depth of structure + 1
-        int collisionTries = 0;
-        HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
-        WorldXYZ destinationCenter = null;
-        do
-        {
-            Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
-            destinationCenter = destination.offset(roomForShip).offset( stepSize.multiply(collisionTries) ); //base roomForShip + collisionTries iterations
-            moveMapping = displaceShape(structure,  new Vector3(startPoint, destinationCenter));
-            collisionTries++;
-        } while( shapeCollides( moveMapping ) && collisionTries < 20);
-            
-        if(collisionTries >= 20)
-            return null; //the teleport did not work
-        performMove(moveMapping);
-        return destinationCenter;
-    }
+//    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) {
+//        Vector3 roomForShip = Vector3.facing[destination.face].multiply(radius);// TODO get width/height/depth of structure + 1
+//        int collisionTries = 0;
+//        HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
+//        WorldXYZ destinationCenter = null;
+//        do
+//        {
+//            Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
+//            destinationCenter = destination.offset(roomForShip).offset( stepSize.multiply(collisionTries) ); //base roomForShip + collisionTries iterations
+//            moveMapping = displaceShape(structure,  new Vector3(startPoint, destinationCenter));
+//            collisionTries++;
+//        } while( shapeCollides( moveMapping ) && collisionTries < 20);
+//            
+//        if(collisionTries >= 20)
+//            return null; //the teleport did not work
+//        performMove(moveMapping);
+//        return destinationCenter;
+//    }
 
 }

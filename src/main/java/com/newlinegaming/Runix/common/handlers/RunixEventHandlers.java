@@ -4,7 +4,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.newlinegaming.Runix.common.fluids.ModFluid;
 import com.newlinegaming.Runix.common.handlers.mics.BucketEventHandler;
-import com.newlinegaming.Runix.common.runes.RuneHandler;
+//import com.newlinegaming.Runix.common.runes.RuneHandler;
 
 public class RunixEventHandlers {
 
