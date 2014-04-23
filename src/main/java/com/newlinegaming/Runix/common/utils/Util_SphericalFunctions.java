@@ -3,8 +3,6 @@ package com.newlinegaming.Runix.common.utils;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import com.newlinegaming.Runix.api.lib.WorldXYZ;
-
 import net.minecraft.world.World;
 
 public class Util_SphericalFunctions {

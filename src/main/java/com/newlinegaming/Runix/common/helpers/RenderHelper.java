@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.newlinegaming.Runix.api.lib.WorldXYZ;
+import com.newlinegaming.Runix.common.utils.WorldXYZ;
 
 public class RenderHelper {
 

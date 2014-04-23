@@ -2,8 +2,8 @@ package com.newlinegaming.Runix.common.runes;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.newlinegaming.Runix.api.lib.WorldXYZ;
 import com.newlinegaming.Runix.api.rune.BaseRune;
+import com.newlinegaming.Runix.common.utils.WorldXYZ;
 
 public class RunixRune extends BaseRune {
 
