@@ -1,12 +1,12 @@
 package com.newlinegaming.Runix.common.helpers;
 
+import illyohs.mods.yssgaroth.common.world.WorldXYZ;
+
 import java.util.Collection;
 
 import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.opengl.GL11;
-
-import com.newlinegaming.Runix.common.utils.WorldXYZ;
 
 public class RenderHelper {
 

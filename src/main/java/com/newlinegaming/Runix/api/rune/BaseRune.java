@@ -1,7 +1,6 @@
 package com.newlinegaming.Runix.api.rune;
 
-//import com.newlinegaming.Runix.common.utils.WorldXYZ;
-
+import illyohs.mods.yssgaroth.common.world.WorldXYZ;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -17,6 +16,6 @@ public abstract class BaseRune {
 	
 	public abstract int EnergyReqired();
 	
-//	public abstract void execute(WorldXYZ coords, EntityPlayer player);
+	public abstract void execute(WorldXYZ coords, EntityPlayer player);
 	
 }

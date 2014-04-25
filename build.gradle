@@ -16,14 +16,14 @@ buildscript {
 }
 
 apply plugin: 'forge'
-apply plugin: 'maven'
+//apply plugin: 'maven'
 
 version = "0.1 Alpha"
 group= "com.newlinegaming.Runix" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Runix"
 
 minecraft {
-    version = "1.7.2-10.12.0.1061"
+    version = "1.7.2-10.12.1.1061"
     assetDir = "eclipse/assets"
 }
 
@@ -35,6 +35,10 @@ processResources {
                 // replace version and mcversion
                 expand '@VERSION@':project.version, '@MCVERSION@':project.minecraft.version
             }
+			
+			dependencies {
+				compile files("lib/Yssgaroth-0.1-deobf.jar")
+			}
 
             // copy everything else, thats not the mcmod.info
             from(sourceSets.main.resources.srcDirs) {

@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix.common.utils;
 
+import illyohs.mods.yssgaroth.common.world.WorldXYZ;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 
