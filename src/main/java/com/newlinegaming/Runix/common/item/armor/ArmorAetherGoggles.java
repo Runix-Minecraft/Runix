@@ -91,9 +91,16 @@ public class ArmorAetherGoggles extends ItemArmor {
 			}
 		}
 		
-		
-//		
-
 	}
+	
+//	public boolean onDroppedByPlayer(ItemStack is, EntityPlayer player) {
+//		if (is.stackTagCompound != null) {
+//			boolean activated = is.stackTagCompound.getBoolean("activated");
+//			if (activated == false) {
+//				is.stackTagCompound.setBoolean("activated", false);
+//			}
+//		}
+//		return false;
+//	}
 
 }
