@@ -23,7 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ArmorAetherGoggles extends ItemArmor {
 
-	
 	public ArmorAetherGoggles() {
 		super(RunixAPI.armorRunix, 0 ,0);
 		this.setUnlocalizedName("runix:aethergoggles");
@@ -45,12 +44,12 @@ public class ArmorAetherGoggles extends ItemArmor {
 			boolean activated = is.stackTagCompound.getBoolean("activated");
 			if (master == player.getDisplayName() && activated == false) {
 				is.stackTagCompound.setBoolean("activated", true);
-				player.addChatComponentMessage(new ChatComponentText( "tooltip.runix:ismaster"));
+				player.addChatComponentMessage(new ChatComponentText("The Aether grants your request"));
 			} else if (master == player.getDisplayName() && activated == true) {
 				is.stackTagCompound.setBoolean("activated", false);
-				player.addChatComponentMessage(new ChatComponentText( "tooltip.runix:ismaster"));
+				player.addChatComponentMessage(new ChatComponentText( "The Aether grants your request"));
 			} else {
-				player.addChatComponentMessage(new ChatComponentText( "tooltip.runix:notmaster" + " " + master));
+				player.addChatComponentMessage(new ChatComponentText( "The Aether rejects your greedy attempt to activate these goggles. Please return to the rightful owner" + " " + master));
 			}
 		}
 		return is;
@@ -82,13 +81,13 @@ public class ArmorAetherGoggles extends ItemArmor {
 		if (is.stackTagCompound !=null) {
 			String master = is.stackTagCompound.getString("master");
 			boolean activated = is.stackTagCompound.getBoolean("activated");
-			list.add(StatCollector.translateToLocal(EnumChatFormatting.GREEN + "tooltip.runix:boundto" + " " + master));
+			list.add(StatCollector.translateToLocal(EnumChatFormatting.DARK_PURPLE + "This tool is Bound to: " + EnumChatFormatting.DARK_AQUA + master));
 			if (activated == true) {
-				list.add(StatCollector.translateToLocal(EnumChatFormatting.GREEN + "tooltip.runix:true"));
+				list.add(StatCollector.translateToLocal(EnumChatFormatting.DARK_PURPLE + "Is attuned: " + EnumChatFormatting.DARK_AQUA + "True"));
 			} else if (master == null) {
 				list.add(StatCollector.translateToLocal(EnumChatFormatting.RED + "Not attuned"));
 			} else {
-				list.add(StatCollector.translateToLocal(EnumChatFormatting.GREEN + "tooltip.runix:false"));
+				list.add(StatCollector.translateToLocal(EnumChatFormatting.DARK_PURPLE + "Is attuned: " + EnumChatFormatting.DARK_AQUA + "False"));
 			}
 		}
 		
