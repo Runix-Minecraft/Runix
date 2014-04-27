@@ -47,7 +47,7 @@ public class ArmorAetherGoggles extends ItemArmor {
 				is.stackTagCompound.setBoolean("activated", true);
 				player.addChatComponentMessage(new ChatComponentText( "tooltip.runix:ismaster"));
 			} else if (master == player.getDisplayName() && activated == true) {
-				is.stackTagCompound.setBoolean("activated", true);
+				is.stackTagCompound.setBoolean("activated", false);
 				player.addChatComponentMessage(new ChatComponentText( "tooltip.runix:ismaster"));
 			} else {
 				player.addChatComponentMessage(new ChatComponentText( "tooltip.runix:notmaster" + " " + master));
