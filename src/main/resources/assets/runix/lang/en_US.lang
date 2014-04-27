@@ -8,5 +8,16 @@ tile.runix:qixsilver.name=[WIP] QixSilver
 item.runix:transmutationrod.name=[WIP] Transmutation rod
 item.runix:qixsilverbucket.name= QixSilver bucket
 
+# -- Armor
+item.runix:aethergoggles.name=[WIP] Goggles of the Aether
+
 # -- Mics
 itemGroup.runix:runix=Runix
+
+# -- ToolTips
+tooltip.runix:boundto=These goggles are bound to:
+tooltip.runix:ison=Is Activated:
+tooltip.runix:true=True
+tooltip.runix:false=False
+tooltip.runix:ismaster=The Aether grants your request
+tooltip.runix:notmaster=The Aether rejects your greedy attempt to activate these goggles. Please return to the rightful owner:
