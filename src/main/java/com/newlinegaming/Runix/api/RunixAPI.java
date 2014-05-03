@@ -16,7 +16,7 @@ public class RunixAPI {
 	public static ToolMaterial toolRunix = EnumHelper.addToolMaterial("RUNEIUMTOOL", 4, 650, 5, 4, 25);
 	public static ToolMaterial toolArcadian = EnumHelper.addToolMaterial("ARCADIANARMOR", 4, 800, 5, 6, 25);
 	
-
+	//Names are in Latin(I think): Lord Illyohs(Anthony Anderson)
 	public enum EnergyType {
 		Mechanicus, //mechanical
 		Naturalis, //Natural
@@ -25,7 +25,7 @@ public class RunixAPI {
 		Haud, //All Energy
 		Ignotus //Unknown
 		
-		//TODO: Rework energy types(possibly without enums) or add more
+		//TODO: Rework energy types(possibly without enums) or possibly add more energy types
 	}
 	
 	/**
