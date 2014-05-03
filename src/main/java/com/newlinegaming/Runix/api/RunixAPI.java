@@ -1,13 +1,12 @@
 package com.newlinegaming.Runix.api;
 
-import com.newlinegaming.Runix.api.energy.EnergyType;
-import com.newlinegaming.Runix.api.rune.BaseRune;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
+
+import com.newlinegaming.Runix.api.rune.BaseRune;
 
 public class RunixAPI {
 	
@@ -16,6 +15,18 @@ public class RunixAPI {
 	public static ArmorMaterial armorArcadian = EnumHelper.addArmorMaterial("ARCADIANARMOR", 50, new int[]{4, 6, 6, 4}, 25);
 	public static ToolMaterial toolRunix = EnumHelper.addToolMaterial("RUNEIUMTOOL", 4, 650, 5, 4, 25);
 	public static ToolMaterial toolArcadian = EnumHelper.addToolMaterial("ARCADIANARMOR", 4, 800, 5, 6, 25);
+	
+
+	public enum EnergyType {
+		Mechanicus, //mechanical
+		Naturalis, //Natural
+		Deciduus, //Falling
+		Magus, //Magic
+		Haud, //All Energy
+		Ignotus //Unknown
+		
+		//TODO: Rework energy types(possibly without enums) or add more
+	}
 	
 	/**
 	 * Sets the amount of energy that each block will have.
@@ -26,7 +37,7 @@ public class RunixAPI {
 	 * @param energyValue 1 to 320,940
 	 * @param Sets the energy type
 	 */
-	public static void setBlockEnergy(Block block, int meta, int energyValue) {
+	public static void setBlockEnergy(Block block, EnergyType type, int meta, int energyValue) {
 		
 	}
 	
@@ -39,7 +50,7 @@ public class RunixAPI {
 	 * @param energyValue
 	 * @param sets the energy type
 	 */
-	public static void setItemEnergy(Item item, int meta, int energyValue) {
+	public static void setItemEnergy(Item item, EnergyType typr, int meta, int energyValue) {
 		
 	}
 	
