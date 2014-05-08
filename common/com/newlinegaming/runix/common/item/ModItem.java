@@ -11,6 +11,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class ModItem {
 	
 	public static Item TransRod;
+	public static Item Accumulator;
+	
 	public static Item MystTome;
 	
 	public static Item AetherGoggles;
@@ -18,6 +20,7 @@ public class ModItem {
     public static void init() {
     	
     	TransRod = new ItemTransmutaionRod();
+    	Accumulator = new ItemAccumulator();
 //    	MystTome = new ItemMystTome();
     	AetherGoggles = new ArmorAetherGoggles();
     	
