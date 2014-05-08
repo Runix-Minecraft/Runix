@@ -44,7 +44,7 @@ public class RunixAPI {
 	/**
 	 * Sets the energy value for each Item
 	 * Make sure to load your energy values after Runix's
-	 * 	example: RunixAPI.setItemEnergy(Items.apple, EnergyType.Ignotus, 0, 64);
+	 * 	example: RunixAPI.setItemEnergy(Items.apple, 0, EnergyType.Ignotus, 64);
 	 * @param item The Item
 	 * @param meta The meta data value for the item
 	 * @param type sets the EnergyType for each item @see EnergyType
