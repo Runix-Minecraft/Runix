@@ -75,12 +75,12 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-	
+    
 	task deobfJar(type: Jar) {
 		from (sourceSets.main.output)
-			classifier = 'deobf'	
+			classifier = 'deobf'
     }
-            	
+
     artifacts {
 		archives deobfJar	
     }   
