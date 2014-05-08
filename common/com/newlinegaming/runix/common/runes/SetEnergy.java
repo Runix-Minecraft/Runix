@@ -1,12 +1,14 @@
 package com.newlinegaming.runix.common.runes;
 
+import net.minecraft.init.Blocks;
+
+import com.newlinegaming.runix.api.RunixAPI;
+
 public class SetEnergy {
 	
 	public static void initBlocks() {
 		
 		//vanilla Blocks
-		
-//		RunixEnergy.regisetrBlockEnrgy(Blocks.air, EnergyTypes.Haud, 0, 1);
 		
 		//1
 //		RunixAPI.setBlockEnergy(Blocks.air, EnergyTypes.Naturalis, 0, 1);

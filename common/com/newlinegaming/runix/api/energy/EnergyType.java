@@ -1,5 +1,8 @@
 package com.newlinegaming.runix.api.energy;
 
+/**
+ * Different energy types for each Block/Item as well as runes
+ */
 public enum EnergyType {
 	Mechanicus, //Mechanical
 	Naturalis, //Natural
@@ -8,6 +11,6 @@ public enum EnergyType {
 	Haud, //All Energy
 	Ignotus //Unknown
 	
-	//TODO: Rework energy types(possibly without enums) or possibly add more energy types
+	//TODO: Move away from legacy energy types and give more meaningful types depending on the type of rune.
 	
 }
