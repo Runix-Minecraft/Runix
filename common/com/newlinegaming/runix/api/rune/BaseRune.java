@@ -21,6 +21,7 @@ public abstract class BaseRune {
 	
 	public abstract EnergyType EnergyTypeReqired(EnergyType type);
 	
-	public abstract void execute(WorldXYZ coords, EntityPlayer player);
-	
+	//Make a imprint class in the base code and reflect that?
+	public abstract void execute(int CordX, int CordY, int CordZ, EntityPlayer player);
+	//TODO: Rune Imprinting 
 }
