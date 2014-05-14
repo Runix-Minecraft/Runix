@@ -1,7 +1,6 @@
 package com.newlinegaming.runix.api.rune;
 
 import net.minecraft.entity.player.EntityPlayer;
-import us.illyohs.yssgaroth.common.world.WorldXYZ;
 
 import com.newlinegaming.runix.api.energy.EnergyType;
 
@@ -21,7 +20,9 @@ public abstract class BaseRune {
 	
 	public abstract EnergyType EnergyTypeReqired(EnergyType type);
 	
-	//Make a imprint class in the base code and reflect that?
+	public abstract boolean dropEnergyItem();
+	
+	//Make a imprint class in the base code and reflect this?
 	public abstract void execute(int CordX, int CordY, int CordZ, EntityPlayer player);
 	//TODO: Rune Imprinting 
 }
