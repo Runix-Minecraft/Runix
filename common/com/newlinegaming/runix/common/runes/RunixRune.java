@@ -43,4 +43,10 @@ public class RunixRune extends BaseRune {
 		
 	}
 
+	@Override
+	public boolean dropEnergyItem() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
