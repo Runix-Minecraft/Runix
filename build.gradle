@@ -56,6 +56,11 @@ sourceSets {
 			srcDir 'resources'
 		}
 	}
+	api {
+		java {
+			srcDir'api'
+		}
+	}
 }
 
 processResources {
@@ -71,10 +76,6 @@ processResources {
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
     
-    dependencies {
-    	compile files("lib/Yssgaroth-0.1b-deobf.jar") //TODO: Convert to maven
-    }
-    
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
@@ -86,13 +87,12 @@ processResources {
     }
     
     task apiJar(type: Jar) {
-    	from (sourceSets.main.output) {
-    		include "com/newlinegaming/runix/api/"
-    	}
-    	
+    	from (sourceSets.api.allSource) {
     	classifier = 'api'
-    }
-
+    	
+    	}
+	}
+	
     artifacts {
 		archives deobfJar
 		archives apiJar
