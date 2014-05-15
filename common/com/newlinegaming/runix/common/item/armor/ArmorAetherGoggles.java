@@ -4,15 +4,18 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor;
 
 import com.newlinegaming.runix.Runix;
 import com.newlinegaming.runix.api.RunixAPI;
@@ -21,7 +24,7 @@ import com.newlinegaming.runix.common.lib.RunixAsset;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ArmorAetherGoggles extends ItemArmor {
+public class ArmorAetherGoggles extends ItemArmor implements ISpecialArmor {
 
 	public ArmorAetherGoggles() {
 		super(RunixAPI.armorRunix, 0 ,0);
@@ -90,6 +93,26 @@ public class ArmorAetherGoggles extends ItemArmor {
 				list.add(StatCollector.translateToLocal(EnumChatFormatting.DARK_PURPLE + "Is attuned: " + EnumChatFormatting.DARK_AQUA + "False"));
 			}
 		}
+		
+	}
+
+	@Override
+	public ArmorProperties getProperties(EntityLivingBase player,
+			ItemStack armor, DamageSource source, double damage, int slot) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void damageArmor(EntityLivingBase entity, ItemStack stack,
+			DamageSource source, int damage, int slot) {
+		// TODO Auto-generated method stub
 		
 	}
 	

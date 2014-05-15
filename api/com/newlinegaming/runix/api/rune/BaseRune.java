@@ -16,6 +16,8 @@ public abstract class BaseRune {
 	
 	public abstract boolean isBlockSpecific();
 	
+	public abstract boolean isEnergyReqired();
+	
 	public abstract int EnergyReqired();
 	
 	public abstract EnergyType EnergyTypeReqired(EnergyType type);
@@ -23,6 +25,6 @@ public abstract class BaseRune {
 	public abstract boolean dropEnergyItem();
 	
 	//Make a imprint class in the base code and reflect this?
-	public abstract void execute(int CordX, int CordY, int CordZ, EntityPlayer player);
+	public abstract void onExecution(int CordX, int CordY, int CordZ, EntityPlayer player);
 	//TODO: Rune Imprinting 
 }

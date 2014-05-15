@@ -26,6 +26,12 @@ public class RunixRune extends BaseRune {
 	}
 
 	@Override
+	public boolean isEnergyReqired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public int EnergyReqired() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -38,15 +44,15 @@ public class RunixRune extends BaseRune {
 	}
 
 	@Override
-	public void execute(int CordX, int CordY, int CordZ, EntityPlayer player) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public boolean dropEnergyItem() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void onExecution(int CordX, int CordY, int CordZ, EntityPlayer player) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

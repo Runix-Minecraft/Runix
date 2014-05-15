@@ -60,10 +60,11 @@ public class RunixAPI {
 	/**
 	 * Registers your your runes in Runix
 	 * Make sure your runes are called after Runix's
-	 * 	example: RunixAPI.addRune(new foorune());
-	 * @param rune points to the rune class that you added
+	 * 	example: RunixAPI.registerRune(fooRune, "fooRune");
+	 * @param Object points to the rune class that you added
+	 * @param String the name of your rune
 	 */
-	public static void addRune(BaseRune rune) {
+	public static void registerRune(Object rune, String runename) {
 		
 	}
  
