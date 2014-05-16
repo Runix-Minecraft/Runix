@@ -115,6 +115,8 @@ public class SetEnergy {
 		//32
 		RunixAPI.setBlockEnergy(Blocks.crafting_table, 0, EnergyType.MECHANICUS, 32);
 		
+		RunixAPI.setBlockEnergy(Blocks.redstone_wire, 0, EnergyType.HAUD, 12); //Dummy value for now will change later
+		
 		//Non vanilla blocks
 		
 	}

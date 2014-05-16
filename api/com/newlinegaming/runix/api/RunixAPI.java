@@ -12,12 +12,11 @@ import net.minecraftforge.common.util.EnumHelper;
 import com.newlinegaming.runix.api.energy.EnergyType;
 import com.newlinegaming.runix.api.energy.RunixBlockRegistry;
 import com.newlinegaming.runix.api.energy.RunixItemRegistry;
-import com.newlinegaming.runix.api.rune.BaseRune;
 
 public class RunixAPI {
 	
-	private static List<RunixBlockRegistry> setBlockEnergy = new ArrayList<RunixBlockRegistry>();
-	private static List<RunixItemRegistry> setItemEnergy = new ArrayList<RunixItemRegistry>();
+	public static List<RunixBlockRegistry> setBlockEnergy = new ArrayList<RunixBlockRegistry>();
+	public static List<RunixItemRegistry> setItemEnergy = new ArrayList<RunixItemRegistry>();
 	
 	//Tool and armor Materials 
 	public static ArmorMaterial armorRunix = EnumHelper.addArmorMaterial("RUNEIUMARMOR", 30, new int[] { 4, 6, 6, 4 }, 25);

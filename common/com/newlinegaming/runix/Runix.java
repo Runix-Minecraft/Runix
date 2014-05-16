@@ -1,9 +1,16 @@
 package com.newlinegaming.runix;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import us.illyohs.yssgaroth.common.helper.LogHelper;
+
+import com.newlinegaming.runix.api.energy.RunixBlockRegistry;
 import com.newlinegaming.runix.common.CommonProxy;
 import com.newlinegaming.runix.common.block.ModBlock;
 import com.newlinegaming.runix.common.creativetabs.TabRunix;
 import com.newlinegaming.runix.common.fluids.ModFluid;
+import com.newlinegaming.runix.common.handlers.EnergyHandler;
 import com.newlinegaming.runix.common.handlers.RunixEventHandlers;
 import com.newlinegaming.runix.common.item.ModItem;
 import com.newlinegaming.runix.common.lib.LibRef;
@@ -27,7 +34,6 @@ public class Runix {
     @SidedProxy(clientSide = LibRef.CLIENT_PROXY, serverSide = LibRef.COMMON_PROXY)
     public static CommonProxy proxy;
 
-    //Creative Tab Names
     public static CreativeTabs TabRunix = new TabRunix(LibRef.MOD_ID + ":runix");
 
     public static final PacketPipeline packetPipeline = new PacketPipeline();
@@ -41,17 +47,19 @@ public class Runix {
         
         RunixEventHandlers.init();
         
-//        EnergyManager.init();
+        EnergyHandler.init();
+        
+        
 
     }
 
-    //Render Information	
     @EventHandler
     public void init(FMLInitializationEvent event) {
         packetPipeline.initialise();
         proxy.registerRenderInformation();
     	
     	proxy.RenderingAndTextures();
+    	
     }
 
     @EventHandler
