@@ -1,6 +1,7 @@
 package com.newlinegaming.runix.common.block;
 
 import com.newlinegaming.runix.common.block.decorative.VoidPlank;
+import com.newlinegaming.runix.common.block.trees.VoidLeaves;
 import com.newlinegaming.runix.common.block.trees.VoidLog;
 
 import net.minecraft.block.Block;
@@ -11,6 +12,7 @@ public class ModBlock {
     public static Block GreekFire;
     public static Block TestBlock;
     public static Block VoidLog;
+    public static Block VoidLeaves;
     public static Block VoidPlank;
 
     public static void init() {
@@ -19,6 +21,7 @@ public class ModBlock {
 //    	TestBlock = new TestBlock();
     	
     	VoidLog = new VoidLog();
+    	VoidLeaves = new VoidLeaves();
     	VoidPlank = new VoidPlank();
     	
         Gamereg();
@@ -30,5 +33,6 @@ public class ModBlock {
 //        GameRegistry.registerBlock(GreekFire, "GreekFire");
 //    	GameRegistry.registerBlock(TestBlock, "testblock");
     	GameRegistry.registerBlock(VoidLog, "voidlog");
+    	GameRegistry.registerBlock(VoidLeaves, "voidleaves");
     }
 }
