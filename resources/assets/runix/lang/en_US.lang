@@ -1,5 +1,7 @@
 # -- Blocks
-tile.testblock:testblock.name=Test Block
+tile.runix:testblock.name=Test Block
+tile.runix:voidlog.name=[WIP] Void Log
+tile.runix:voidplanks.name=[WIP] Void Planks
 
 # -- Fluids
 tile.runix:qixsilver.name=[WIP] QixSilver
