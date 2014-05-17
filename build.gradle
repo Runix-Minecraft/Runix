@@ -13,12 +13,23 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "0.1 Alpha"
-group= "com.newlinegaming.Runix" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Runix"
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.mod_version}"
+group= "${config.group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "${config.name}"
 
 minecraft {
 	version = "1.6.4-9.11.1.964"
+
+    replace '@VERSION@', project.version
+    replace '@MCVERSION@', version
 }
 
 processResources
@@ -28,7 +39,7 @@ processResources
         include 'mcmod/info'
                 
         // replace version and mcversion
-        expand '@VERSION@':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info

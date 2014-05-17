@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
+  "modid": "runix",
+  "name": "Runix",
+  "description": "Bend the power of the Aether to your will with the power of Runes.",
+  "version": "0.1",
+  "mcversion": "0.1",
+  "url": "http://www.minecraftforum.net/topic/2259223-wip-runix-the-block-based-magic-mod-inspired-by-runecraft/",
   "updateUrl": "",
-  "authors": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Bloodstone, C'tri, Josiah, Rivikiin, LordIllyohs"],
+  "credits": "TBD",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
