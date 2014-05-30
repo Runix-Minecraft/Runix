@@ -1,5 +1,15 @@
 package com.newlinegaming.Runix;
 
+import com.google.gson.Gson;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.WorldEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Save;
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,17 +19,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.event.world.WorldEvent.Load;
-import net.minecraftforge.event.world.WorldEvent.Save;
-
-import org.apache.commons.io.FileUtils;
-
-import com.google.gson.Gson;
 public abstract class PersistentRune extends AbstractRune{
     
     private String player = null;
@@ -36,16 +35,17 @@ public abstract class PersistentRune extends AbstractRune{
         
     }
     
-    /**Override this method to implement custom rune file saving rules */
-    public void saveActiveRunes(Save saveEvent)
-    {
+    /**
+     * Override this method to implement custom rune file saving rules
+     */
+    public void saveActiveRunes(Save saveEvent) {
         if(getActiveMagic().isEmpty())
-                    return;
-                String fileName = getJsonFilePath(saveEvent.world);//  ex:TorcherBearerRune.json
+            return;
+            String fileName = getJsonFilePath(saveEvent.world);//  ex:TorcherBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
             Gson converter = new Gson();
-            for(PersistentRune rune : getActiveMagic()){
+            for(PersistentRune rune : getActiveMagic()) {
                 String runeGson = converter.toJson(rune);
                 System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
                 file.println(runeGson);
@@ -56,8 +56,7 @@ public abstract class PersistentRune extends AbstractRune{
         } 
     }
 
-	public void loadRunes(Load loadEvent)
-	{
+	public void loadRunes(Load loadEvent) {
         String fileName = getJsonFilePath(loadEvent.world);
         try {
             ArrayList<PersistentRune> newList = new ArrayList<PersistentRune>();
@@ -66,7 +65,7 @@ public abstract class PersistentRune extends AbstractRune{
             for(String line : json) {
                 newList.add(gson.fromJson(line, this.getClass()));
             }
-            if( !newList.isEmpty() ){
+            if( !newList.isEmpty() ) {
                 getActiveMagic().clear();
                 getActiveMagic().addAll(newList);
             }
@@ -78,8 +77,7 @@ public abstract class PersistentRune extends AbstractRune{
         }
     }
 
-    String getJsonFilePath(World world) 
-    {
+    String getJsonFilePath(World world) {
         String levelName = world.getWorldInfo().getWorldName();
         String subDirectory = ( MinecraftServer.getServer() instanceof DedicatedServer )? "" : "saves/";
         String directory = subDirectory + levelName + "/stored_runes/";
@@ -88,12 +86,15 @@ public abstract class PersistentRune extends AbstractRune{
         return fileName;
     }
     
-    /**There's no way to have a static field in an abstract class so we use a getter instead
-     * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>(); */ 
+    /**
+     * There's no way to have a static field in an abstract class so we use a getter instead
+     * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>();
+     */
     public abstract ArrayList<PersistentRune> getActiveMagic();
     
     @Override
-    /**Consolidated all the PersistentRune execute functions into a single execute() that searches 
+    /**
+     * Consolidated all the PersistentRune execute functions into a single execute() that searches
      * for duplicates based on location, builds a new rune if necessary, then notifies the 
      * rune it has been poked.
      * 
@@ -129,15 +130,17 @@ public abstract class PersistentRune extends AbstractRune{
         return match;
     }
     
-    public PersistentRune getRuneBySpecialName(String name){
-    	 for(PersistentRune rune : getActiveMagic()){
+    public PersistentRune getRuneBySpecialName(String name) {
+    	 for(PersistentRune rune : getActiveMagic()) {
     		 if(rune.specialName .equals(name)) 
     			 return rune;
     	 }
     	return null;
     }
     
-         /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */
+    /**
+     * Return the rune in getActiveMagic() that matches the given coordinates or null if there is none
+     */
     public PersistentRune getRuneByPlayer(EntityPlayer activator) {
         for(PersistentRune rune : getActiveMagic()){
             if( rune.getPlayer() != null && rune.getPlayer().equals(activator) )
@@ -146,7 +149,8 @@ public abstract class PersistentRune extends AbstractRune{
         return null;
     }
 
-    /**poke() is called every time the rune's center block is right clicked.  This means it gets called when
+    /**
+     * poke() is called every time the rune's center block is right clicked.  This means it gets called when
      * the rune is first created and every time after that as well.  Functionality that you want to call when the
      * rune is built and also later whenever it is poked should be placed in this method, not in the constructor.
      * Remember, poke will always be called after a rune is created through PersistentRune.execute()
@@ -160,22 +164,28 @@ public abstract class PersistentRune extends AbstractRune{
             consumeRune(coords);
         }
     }
-    
+
+    /**
+     * This has the additional feature of re-enabling dead runes and allowing you to pick up the left over energy.
+     */
     @Override
-    /**This has the additional feature of re-enabling dead runes and allowing you to pick up the left over energy. */
     protected void consumeRune(WorldXYZ coords) {
         super.consumeRune(coords);
         disabled = false;//runes are usually disabled because they ran out of energy
     }
 
-    /**Return false if this Rune is more like a persistent world feature. Return
+    /**
+     * Return false if this Rune is more like a persistent world feature. Return
      * true if this is something like a player enchantment that should only have
      * one per person.  If true, energy from consuming the second rune will be added
-     * to the player's original rune.*/
+     * to the player's original rune.
+     */
     public abstract boolean oneRunePerPerson();
-    
+
+    /**
+     * Prints a verification message to the user
+     */
     @Override
-    /**Prints a verification message to the user */
     protected void accept(EntityPlayer player) {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName()+"_"+ getActiveMagic().size() + " Accepted.");
     }
@@ -185,7 +195,9 @@ public abstract class PersistentRune extends AbstractRune{
         return new Signature(this, location);
     }
     
-    /**Return the rune in getActiveMagic() that matches the given coordinates or null if there is none */
+    /**
+     * Return the rune in getActiveMagic() that matches the given coordinates or null if there is none
+     */
     public PersistentRune getRuneByLocation(WorldXYZ coords) {
         ArrayList<PersistentRune> list = getActiveMagic();
         for(PersistentRune rune : list){
@@ -196,7 +208,9 @@ public abstract class PersistentRune extends AbstractRune{
     }
 
     @Override
-    /**Adds re-enabling runes to consumeKeyBlock*/
+    /**
+     * Adds re-enabling runes to consumeKeyBlock
+     */
     protected boolean consumeKeyBlock(WorldXYZ coords) {
         if(super.consumeKeyBlock(coords)){
             disabled = false;
@@ -205,11 +219,13 @@ public abstract class PersistentRune extends AbstractRune{
         return false;
     }
 
-    @Override
-    /**moveMagic() parameters allow any kind of transformation.  This is used by rotation to
+    /**
+     * moveMagic() parameters allow any kind of transformation.  This is used by rotation to
      * map the starting position as a key, and the end position as the value.   
      *  Ideally, runes should be coded so that moving the center block is
-     * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.  */
+     * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.
+     */
+    @Override
     public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         for(PersistentRune rune : getActiveMagic()){
             if(positionsMoved.keySet().contains(rune.location) ){//grab the destination keyed by source position
@@ -224,12 +240,12 @@ public abstract class PersistentRune extends AbstractRune{
         disabled = true;
     }
     
-    public boolean onPlayerLogin(String username){
+    public boolean onPlayerLogin(String username) {
 //        System.out.println(username + " joined the server");
         return false;
     }
     
-    public EntityPlayer getPlayer(){
+    public EntityPlayer getPlayer() {
         return MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(player);
     }
 
@@ -237,17 +253,17 @@ public abstract class PersistentRune extends AbstractRune{
         if(playerObj == null)
             this.player = null;
         else
-            this.player = playerObj.username;
+            this.player = playerObj.getDisplayName();
     }
 
-    public int getTier(){
+    public int getTier() {
         return super.getTier(location);
     }
 
     protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
         HashSet<WorldXYZ> scannedStructure = directlyAttachedStructure();
-        if(activator != null){
-            if(scannedStructure.isEmpty()){
+        if(activator != null) {
+            if(scannedStructure.isEmpty()) {
                 aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
             }
             else{
@@ -266,16 +282,15 @@ public abstract class PersistentRune extends AbstractRune{
         return scannedStructure;
     }
 
-    /**Remember, this is called from the manager instance of each Rune, so you are acting on behalf
+    /**
+     * Remember, this is called from the manager instance of each Rune, so you are acting on behalf
      * of all runes of the same class.  DO NOT call your own functions except for getActiveMagic()
      * @param structure
      * @return
      */
-    public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure) 
-    {
+    public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure) {
         HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
-        for(PersistentRune rune : getActiveMagic())
-        {
+        for(PersistentRune rune : getActiveMagic()) {
             if(structure.contains(rune.location))
                 additionalBlocks = rune.directlyAttachedStructure();
         }
