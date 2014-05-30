@@ -32,8 +32,7 @@ minecraft {
     replace '@MCVERSION@', version
 }
 
-processResources
-{
+processResources {
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod/info'
