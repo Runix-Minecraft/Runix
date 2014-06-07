@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import com.google.gson.Gson;
+import com.newlinegaming.Runix.handlers.RuneHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -91,8 +92,7 @@ public abstract class PersistentRune extends AbstractRune{
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>();
      */
     public abstract ArrayList<PersistentRune> getActiveMagic();
-    
-    @Override
+
     /**
      * Consolidated all the PersistentRune execute functions into a single execute() that searches
      * for duplicates based on location, builds a new rune if necessary, then notifies the 
@@ -101,6 +101,7 @@ public abstract class PersistentRune extends AbstractRune{
      * NOTE: It is important that you implement constructor YourRune(WorldXYZ coords, EntityPlayer activator)
      * even if it is only to call super(coords, activator) in order for persistence to work correctly.
      */
+    @Override
     public void execute(WorldXYZ coords, EntityPlayer activator) {
         if(activator.worldObj.isRemote)//runes server side only
             return;
