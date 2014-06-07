@@ -23,10 +23,10 @@ public class RunixMain {
     @Instance
     public static RunixMain instance;
 
-    @SidedProxy(clientSide = "com.newlinegaming.RunixMain.proxys.ClientProxy", serverSide = "com.newlinegaming.RunixMain.proxys.CommonProxy")
+    @SidedProxy(clientSide = LibRef.CLIENT_PROXY, serverSide = LibRef.COMMON_PROXY)
     public static CommonProxy proxy;
 
-    public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), "RunixMain");
+    public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), LibRef.MOD_NAME);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
