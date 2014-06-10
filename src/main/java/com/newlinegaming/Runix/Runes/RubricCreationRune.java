@@ -14,7 +14,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.RenderHelper;
+import com.newlinegaming.Runix.helper.RenderHelper;
 import com.newlinegaming.Runix.Signature;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;

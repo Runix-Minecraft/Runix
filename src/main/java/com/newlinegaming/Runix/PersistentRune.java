@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public abstract class PersistentRune extends AbstractRune{
+public abstract class PersistentRune extends AbstractRune {
     
     private String player = null;
     public WorldXYZ location = null;
@@ -266,8 +266,7 @@ public abstract class PersistentRune extends AbstractRune{
         if(activator != null) {
             if(scannedStructure.isEmpty()) {
                 aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
-            }
-            else{
+            }else{
                 aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
             }
         }

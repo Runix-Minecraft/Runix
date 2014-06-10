@@ -1,13 +1,14 @@
 package com.newlinegaming.Runix;
 
-
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import com.newlinegaming.Runix.block.GreekFire;
+import net.minecraft.init.Blocks;
 
 public class Tiers {
+
+    //Note from LordIllyohs: Don't like this class I feel it would be better to add energy by doing something like RunicEnergy.addBlockEnergy(fooBlock, 56) maybe add it to a Runix
+    //library mod?
     
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
@@ -15,56 +16,58 @@ public class Tiers {
     public static final int blockBreakCost = 12;
     public static final float movementPerMeterCost = 0.22f;
     
-    private static ArrayList<Integer> naturalBlocks;
-    private static ArrayList<Integer> moveSensitiveBlocks;
-    private static ArrayList<Integer> crushableBlocks;
+    private static ArrayList<String> naturalBlocks;
+    private static ArrayList<String> moveSensitiveBlocks;
+    private static ArrayList<String> crushableBlocks;
     private static int[] blockEnergy;
     
     public Tiers(){
-        /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/
-        Block[] extraNaturalBlocks = new Block[]{
-            Block.waterStill, Block.waterMoving, 
-            Block.bedrock,
-            Block.sand, Block.stone, Block.dirt, 
-            Block.grass, Block.tallGrass, Block.snow, 
-            Block.mycelium, Block.netherrack,
-            Block.lavaStill, Block.lavaMoving,  
-            Block.vine, Block.leaves, Block.cactus, Block.deadBush, 
-            Block.ice, Block.sapling, Block.wood};
+        /**
+         * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
+         */
+        Block[] extraNaturalBlocks = new Block[] {
+                Blocks.water, Blocks.flowing_water, Blocks.bedrock,
+                Blocks.sand, Blocks.stone, Blocks.dirt,
+                Blocks.grass, Blocks.tallgrass, Blocks.snow,
+                Blocks.mycelium, Blocks.netherrack,
+                Blocks.lava, Blocks.flowing_lava, Blocks.vine, Blocks.leaves,
+                Blocks.cactus, Blocks.deadbush,
+                Blocks.ice, Blocks.sapling, Blocks.log};
+
         naturalBlocks = loadBlockIds(extraNaturalBlocks);
-        naturalBlocks.add(0);// AIR 0 needs to be added manually
-        naturalBlocks.add(GreekFire.blockIdBackup);
+        naturalBlocks.add("air");// AIR 0 needs to be added manually
+//        naturalBlocks.add(GreekFire.blockIdBackup);
         
-        Block[] attachedOrFallingBlocks = new Block[]{
-            Block.anvil, Block.cocoaPlant, Block.carrot, Block.carpet, Block.crops,
-            Block.potato, Block.portal, Block.endPortal, Block.brewingStand, 
-            Block.cactus, Block.deadBush, Block.dragonEgg, Block.fire,
-            Block.grass, Block.gravel, Block.lavaMoving, Block.lavaStill,
-            Block.ladder, Block.leaves, Block.lever, Block.melonStem,
-            Block.mushroomBrown, Block.mushroomRed, Block.netherStalk,
-            Block.pistonMoving, //these ones may be co-dependent :?  
-            Block.pistonBase, Block.pistonStickyBase,
-//            Block.pistonExtension, 
-            Block.plantRed, Block.plantYellow, Block.pressurePlateGold,
-            Block.pressurePlateIron, Block.pressurePlateStone, Block.pressurePlatePlanks, Block.pumpkinStem,
-            Block.rail, Block.railActivator, Block.railDetector, Block.railPowered,
-            Block.redstoneComparatorActive, Block.redstoneComparatorIdle, 
-            Block.redstoneRepeaterActive, Block.redstoneRepeaterIdle,
-            Block.redstoneWire, Block.reed, Block.sand, Block.sapling, 
-            Block.signPost, Block.signWall, Block.skull, Block.stoneButton,
-            Block.tallGrass, Block.tripWire, Block.tripWireSource,
-            Block.torchWood, Block.torchRedstoneActive, Block.torchRedstoneIdle,
-            Block.vine, Block.waterlily, 
-            Block.waterMoving, Block.waterStill, 
-            Block.woodenButton};
+        Block[] attachedOrFallingBlocks = new Block[] {
+                Blocks.anvil, Blocks.cocoa, Blocks.carrots, Blocks.carpet, Blocks.wheat,
+                Blocks.potatoes, Blocks.portal, Blocks.end_portal, Blocks.brewing_stand,
+                Blocks.cactus, Blocks.deadbush, Blocks.dragon_egg, Blocks.fire,
+                Blocks.grass, Blocks.gravel, Blocks.lava, Blocks.flowing_lava,
+                Blocks.ladder, Blocks.leaves, Blocks.lever, Blocks.melon_stem,
+                Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.nether_wart,
+                Blocks.piston, //these ones may be co-dependent :?
+                Blocks.piston_extension, Blocks.piston_head,
+                Blocks.sticky_piston,
+                Blocks.red_flower, Blocks.yellow_flower, Blocks.heavy_weighted_pressure_plate,
+                Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.pumpkin,
+                Blocks.rail, Blocks.activator_rail, Blocks.detector_rail, Blocks.golden_rail,
+                Blocks.powered_comparator, Blocks.unpowered_comparator,
+                Blocks.unpowered_repeater, Blocks.powered_repeater,
+                Blocks.redstone_wire, Blocks.reeds, Blocks.sand, Blocks.sapling,
+                Blocks.standing_sign, Blocks.wall_sign, Blocks.skull, Blocks.stone_button,
+                Blocks.tallgrass, Blocks.tripwire, Blocks.tripwire_hook,
+                Blocks.torch, Blocks.redstone_torch, Blocks.unlit_redstone_torch,
+                Blocks.vine, Blocks.waterlily,
+                Blocks.water, Blocks.flowing_water,
+                Blocks.wooden_button};
         moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
         
         Block[] crushTheseBlocks = new Block[]{
-            Block.deadBush, Block.snow, Block.fire, Block.gravel, Block.waterMoving,
-            Block.waterStill, Block.sapling, Block.tallGrass, Block.torchWood,//torches are debatable, since someone did place it there
-            Block.vine};
+                Blocks.deadbush, Blocks.snow, Blocks.fire, Blocks.gravel, Blocks.water,
+                Blocks.flowing_water, Blocks.sapling, Blocks.tallgrass, Blocks.torch,//torches are debatable, since someone did place it there
+                Blocks.vine};
         crushableBlocks = loadBlockIds(crushTheseBlocks);
-        crushableBlocks.add(GreekFire.blockIdBackup);
+//        crushableBlocks.add(GreekFire.blockIdBackup);
         
         blockEnergy = new int[]{ //the blockID is the index for this array.  The value at blockEnergy[blockID] = runic energy
                 1,   //Air
@@ -260,15 +263,16 @@ public class Tiers {
         };
     }
     
-    /**The idea behind this method is to take a list of Blocks and pull all the ids. 
+    /**
+     * The idea behind this method is to take a list of Blocks and pull all the ids.
      * It really only exists to cut down on the number of ".blockID" that is in this file given
      * how long it will be.  
      * @param blockList
      */
-    public static ArrayList<Integer> loadBlockIds(Block[] blockList) {
-        ArrayList<Integer> IDs = new ArrayList<Integer>();
+    public static ArrayList<String> loadBlockIds(Block[] blockList) {
+        ArrayList<String> IDs = new ArrayList<String>();
         for(Block block : blockList)
-            IDs.add(block.blockID);
+            IDs.add(block.getblock);
         return IDs;
     }
     
@@ -292,21 +296,25 @@ public class Tiers {
     }
     
     
-    /**naturalBlocks is an important list because it lists all blocks that will not conduct runic energy*/
-    public static boolean isNatural(int blockID){
-        return naturalBlocks.contains(new Integer(blockID));
+    /**
+     * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
+     */
+    public static boolean isNatural(String blockID){
+        return naturalBlocks.contains(new String(blockID));
     }
     
-    /**This is a list of all the blocks that need special treatment when moving groups of blocks
+    /**
+     * This is a list of all the blocks that need special treatment when moving groups of blocks
      * like FTP or Runecraft.  All independent blocks need to be placed first because all of these
      * blocks attach to other blocks or (in the case of liquids) need to be held in by solid blocks.
+     * @param blockID
      */
-    public static boolean isMoveSensitive(int blockID){
-        return moveSensitiveBlocks.contains(new Integer(blockID));
+    public static boolean isMoveSensitive(String blockID){
+        return moveSensitiveBlocks.contains(new String(blockID));
     }
 
-    public static boolean isCrushable(int blockID) {
-        return crushableBlocks.contains(new Integer(blockID));
+    public static boolean isCrushable(String blockID) {
+        return crushableBlocks.contains(new String(blockID));
     }
 }
 

@@ -2,14 +2,19 @@ package com.newlinegaming.Runix;
 
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.fluids.ModFluid;
+import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.lib.LibRef;
 import com.newlinegaming.Runix.proxys.CommonProxy;
+import com.newlinegaming.Runix.creativetabs.TabRunix;
+
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemArmor;
 import net.minecraftforge.common.MinecraftForge;
-
-import com.newlinegaming.Runix.creativetabs.TabRunix;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraftforge.common.util.EnumHelper;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -20,13 +25,22 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 @Mod(modid = LibRef.MOD_ID, name = LibRef.MOD_NAME, version = LibRef.MOD_VERSION)
 public class RunixMain {
 
+
+
+
+    //Tool and armor Materials
+    public static ArmorMaterial armorRunix = EnumHelper.addArmorMaterial("RUNEIUMARMOR", 30, new int[] { 4, 6, 6, 4 }, 25);
+    public static ArmorMaterial armorArcadian = EnumHelper.addArmorMaterial("ARCADIANARMOR", 50, new int[]{4, 6, 6, 4}, 25);
+    public static ToolMaterial toolRunix = EnumHelper.addToolMaterial("RUNEIUMTOOL", 4, 650, 5, 4, 25);
+    public static ToolMaterial toolArcadian = EnumHelper.addToolMaterial("ARCADIANARMOR", 4, 800, 5, 6, 25);
+
     @Instance
     public static RunixMain instance;
 
     @SidedProxy(clientSide = LibRef.CLIENT_PROXY, serverSide = LibRef.COMMON_PROXY)
     public static CommonProxy proxy;
 
-    public static CreativeTabs TabRunix = new TabRunix(CreativeTabs.getNextID(), LibRef.MOD_NAME);
+    public static CreativeTabs TabRunix = new TabRunix(LibRef.MOD_ID + ":runix");
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -44,8 +58,8 @@ public class RunixMain {
     //Registry's
     public RunixMain() {
 
-        Tiers tiers = new Tiers(); //load the list of block tiers
+//        Tiers tiers = new Tiers(); //load the list of block tiers
 
-        MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
+//        MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
     }
 }

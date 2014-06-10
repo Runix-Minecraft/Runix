@@ -1,19 +1,24 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.handlers;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.newlinegaming.Runix.AbstractRune;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
+import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.Runes.DomainRune;
 import com.newlinegaming.Runix.Runes.FaithRune;
 import com.newlinegaming.Runix.Runes.FerrousWheelRune;
@@ -46,7 +51,7 @@ public class RuneHandler {
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
 
     private RuneHandler() {
-        //TODO: Change this to scan a folder instead.
+        //TODO: Make a wrappper class for adding runes something alone the lines of RunicLin.addRune(RuneFooRune);
         runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
@@ -70,7 +75,7 @@ public class RuneHandler {
         return instance;
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent event) {
         //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
         if (!event.entityPlayer.worldObj.isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
@@ -79,7 +84,7 @@ public class RuneHandler {
         }
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void saving(Save saveEvent){
         if( saveEvent.world.provider.dimensionId == 0 && !saveEvent.world.isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
@@ -87,7 +92,7 @@ public class RuneHandler {
                     ((PersistentRune) r).saveActiveRunes(saveEvent);
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void loadServer(Load loadEvent){
         if( loadEvent.world.provider.dimensionId == 0 && !loadEvent.world.isRemote)
             for(AbstractRune r : runeRegistry)
@@ -95,18 +100,20 @@ public class RuneHandler {
                     ((PersistentRune) r).loadRunes(loadEvent);
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void playerLogin(EntityJoinWorldEvent event){
         if(event.entity instanceof EntityPlayer){ //fires once each for Client and Server side join event
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
-                    ((PersistentRune) r).onPlayerLogin(((EntityPlayer)event.entity).username);
+                    ((PersistentRune) r).onPlayerLogin(((EntityPlayer)event.entity).getDisplayName());
         }
 
     }
 
 
-    /**Detects a rune pattern, and executes it.*/
+    /**
+     * Detects a rune pattern, and executes it.
+     */
     public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         //TODO: check for Activator Rail in hand and subscribe the rune to minecart events
@@ -114,11 +121,13 @@ public class RuneHandler {
             createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
                     createdRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
                     Vector3.faceString[coords.face] + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+            LogHelper.info(player.getDisplayName() + " Has activated a " + createdRune.getRuneName() + "" );
             createdRune.execute(coords, player);
         }
     }
 
-    /**This is the main switch board between all of the runes.  It iterates through all runes in the order that
+    /**
+     * This is the main switch board between all of the runes.  It iterates through all runes in the order that
      * they are registered and asks if each one matches the pattern of blocks at the coordinates.
      * @param coords
      * @return AbstractRune class if there is a match, null otherwise
@@ -140,31 +149,29 @@ public class RuneHandler {
         }
     }
     
-    /**This is modeled after conductanceStep() but on a macro level.
+    /**
+     * This is modeled after conductanceStep() but on a macro level.
      * Recursive chaining of rune structures is now working.  You can FTP a 
-     * Runecraft that is touching a Faith block and the whole island will be treated and moved as one structure. */
-    public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure)
-    {
+     * Runecraft that is touching a Faith block and the whole island will be treated and moved as one structure.
+     */
+    public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure) {
         HashSet<WorldXYZ> activeEdge = new HashSet<WorldXYZ>();
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>(structure);//starts off being a copy of structure
 
-        while(!nextEdge.isEmpty() && structure.size() < 50000) 
-        {
+        while(!nextEdge.isEmpty() && structure.size() < 50000) {
             activeEdge = nextEdge;
             nextEdge = new HashSet<WorldXYZ>();
 
-            for(AbstractRune rune : runeRegistry)
-            {
-                if(rune instanceof PersistentRune)
-                {
+            for(AbstractRune rune : runeRegistry) {
+                if(rune instanceof PersistentRune) {
                     HashSet<WorldXYZ> additionalStructure = ((PersistentRune)rune).addYourStructure(activeEdge);
                     structure.addAll(additionalStructure);
                     nextEdge.addAll(additionalStructure);
                 }
             }
         }
-        
-        if(activeEdge.size() != 0)//tear detection: this should be empty by the last step 
+
+        if(activeEdge.size() != 0)//tear detection: this should be empty by the last step
             System.err.println("RunixMain exceeded maximum structure chaining size: " + structure.size() + " blocks.");
         return structure;
     }
@@ -174,8 +181,7 @@ public class RuneHandler {
     public ArrayList<PersistentRune> getAllRunesByPlayer(EntityPlayer player){
         ArrayList<PersistentRune> playerRunes = new ArrayList<PersistentRune>();
         for(AbstractRune r : runeRegistry)
-            if( r instanceof PersistentRune)
-            {
+            if( r instanceof PersistentRune) {
                 //TODO change getRuneByPlayer to return list when oneRunePerPerson = false.
                 PersistentRune rune = ((PersistentRune) r).getRuneByPlayer(player);
                 if(rune != null)

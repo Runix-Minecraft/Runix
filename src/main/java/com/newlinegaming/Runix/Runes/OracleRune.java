@@ -3,7 +3,7 @@ package com.newlinegaming.Runix.Runes;
 import java.util.ArrayList;
 
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.RuneHandler;
+import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.WorldXYZ;
 

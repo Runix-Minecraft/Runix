@@ -3,11 +3,11 @@ package com.newlinegaming.Runix.utils;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import com.newlinegaming.Runix.*;
+import com.newlinegaming.Runix.handlers.RuneHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 
 public class Util_Movement {
 
@@ -21,11 +21,13 @@ public class Util_Movement {
     }
     
 
-    /**Note: when designing moving runes, DO NOT update your PersistentRune.location variable.  
-     * moveShape() calls moveMagic() which will update everything including yourself.*/
+    /**
+     * Note: when designing moving runes, DO NOT update your PersistentRune.location variable.
+     * moveShape() calls moveMagic() which will update everything including yourself.
+     */
     public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
     {
-        SigBlock AIR = new SigBlock(0,0);
+        SigBlock AIR = new SigBlock(Blocks.air, 0);
         HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
         for(WorldXYZ point : moveMapping.keySet()){
@@ -34,7 +36,7 @@ public class Util_Movement {
                 sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
                 point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
             }
-            else if(block.blockID != 0){//don't write AIR blocks
+            else if(block.blockID != Blocks.air){//don't write AIR blocks
                 newStructure.put(moveMapping.get(point), block);//record original at new location
             }
         }
@@ -87,23 +89,20 @@ public class Util_Movement {
 
     public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
-            if( !move.containsKey(newPos) //doesn't overlap with the old position
-                    && newPos.getBlockId() != 0 //AIR
-                    && !Tiers.isCrushable(newPos.getBlockId()) ) //Something's there, but squish it anyways
+            if( !move.containsKey(newPos) && newPos.getBlockId() != Blocks.air && !Tiers.isCrushable(newPos.getBlockId()))
                 return true;
         }
         return false;
     }
 
-    /**Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction
-     * of destination.face.
+    /**
+     * Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction of destination.face.
      * @param structure
      * @param destination
      * @return center of destination teleport or null if the teleport was unsuccessful
      * @throws NotEnoughRunicEnergyException
      */
-    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) 
-    {
+    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) {
         Vector3 roomForShip = Vector3.facing[destination.face].multiply(radius);// TODO get width/height/depth of structure + 1
         int collisionTries = 0;
         HashMap<WorldXYZ, WorldXYZ> moveMapping = null;

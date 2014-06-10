@@ -7,15 +7,17 @@ import java.util.HashSet;
 
 import com.newlinegaming.Runix.Runes.WaypointRune;
 
+import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.utils.Util_Movement;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-/** This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
+/**
+ * This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
  * AbstractRune and not in the individual runes.  This will make it easy to create new and custom runes as well as making the child classes
  * as thin as possible.
  */
@@ -31,16 +33,19 @@ public abstract class AbstractRune {
     public static final int ANY = -5;
     
     public String runeName = null;
+    public String runeLocalizedName = null;
 	public AbstractRune(){}
 
-	/**Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
+	/**
+     * Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
 	 * defined in your class, never use it.  Use runicFormulae() instead.
 	 */
 	protected abstract int[][][] runicTemplateOriginal();
 
 	public abstract boolean isFlatRuneOnly();
 
-    /** Use this method to check Rune template compliance, not runicTemplateOriginal().
+    /**
+     * Use this method to check Rune template compliance, not runicTemplateOriginal().
 	 * This method will take the facing of coords and use it to match orientation for vertical runes.
 	 * @param coords world coordinates and facing to check against the rune
 	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
@@ -52,7 +57,8 @@ public abstract class AbstractRune {
 	    return patternToShape(runicTemplateOriginal(), coords); 
 	}
 	
-	/** Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
+	/**
+     * Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
 	 * a static class variable.
 	 * @param coords World and xyz that Rune was activated in.
@@ -60,7 +66,8 @@ public abstract class AbstractRune {
 	 */
 	public abstract void execute(WorldXYZ coords, EntityPlayer player);
 	
-	/**This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.  
+	/**
+     * This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
 	 * calls for 0 (AIR).
 	 * @param pattern The blockPattern to be stamped.
@@ -77,19 +84,21 @@ public abstract class AbstractRune {
 		return true;//TODO: build permission checking
 	}
 	
-	/** This method takes the player and the rune, and verifies that a rune can be used. to go with perms/disabled runes.txt or whatever
+	/**
+     * This method takes the player and the rune, and verifies that a rune can be used. to go with perms/disabled runes.txt or whatever
 	 * @param player - the caster
 	 * @param rune - the rune being cast
 	 * @return
 	 */
-	protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune)
-	{
+	protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune) {
 		// arbi
-		player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN+rune.getRuneName()+ " accepted"));
+//		player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN+rune.getRuneName()+ " accepted"));
+//        player.addChatComponentMessage(IChatComponent);
 		return true;
 	}
 	
-	/**This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
+	/**
+     * This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
 	 * less than 20 meters onto something that's not fire or lava.
 	 * This method should be used for any teleport or similar move that may land the player in some blocks.
 	 * @param player
@@ -97,27 +106,26 @@ public abstract class AbstractRune {
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
-	protected void teleportPlayer(EntityPlayer subject, WorldXYZ coords) throws NotEnoughRunicEnergyException {
+	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
 	    Vector3 direction = Vector3.facing[coords.face];
-	    for(int tries = 0; tries < 100; ++tries)
-	    {
+	    for(int tries = 0; tries < 100; ++tries) {
 	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
-	                && coords.getWorld().getBlockId(coords.posX, coords.posY, coords.posZ) == 0 
+	                && coords.getWorld().getBlockId(coords.posX, coords.posY, coords.posZ) == 0
 	                && coords.getWorld().getBlockId(coords.posX, coords.posY+1, coords.posZ) == 0)//two AIR blocks
 	        {  
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
-	                int block = coords.getWorld().getBlockId(coords.posX, coords.posY-drop, coords.posZ);
-	                if(block != 0)
+	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ);
+	                if(block != Blocks.air)
 	                { //We found something not AIR
-    	                if( block == Block.lavaStill.blockID || block == Block.lavaMoving.blockID//check for Lava, fire, and void  
+    	                if (block = Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
     	                        || block == Block.fire.blockID){//if we teleport now, the player will land on an unsafe block
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
     	                else if(coords.offset(0, -drop, 0).isSolid()){
     	                    //distance should be calculated uses the Nether -> Overworld transform
-    	                    WorldXYZ dCalc = new WorldXYZ(subject);
-    	                    if(subject.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
+    	                    WorldXYZ dCalc = new WorldXYZ(player);
+    	                    if(player.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
     	                        dCalc.posX *= 8;
     	                        dCalc.posZ *= 8;
     	                    }else if (!subject.worldObj.provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
@@ -158,16 +166,24 @@ public abstract class AbstractRune {
     }*/	
 	
 	
-	/** returns the unique name of the rune */
-	public String getRuneName() 
-	{
+	/**
+     * returns the unique name of the rune
+     */
+	public String getRuneName() {
 	    if( !runeName.isEmpty() )
 	        return runeName;
 	    else
 	        return shortClassName();
 	}
-	
-	public static void aetherSay(EntityPlayer recipient, String message)
+
+    /**
+     * Used to get rune names from the .lang file
+     */
+    public String getLocalizedRuneName(){
+        return runeLocalizedName;
+    }
+
+    public static void aetherSay(EntityPlayer recipient, String message)
 	{
 	    if(!recipient.worldObj.isRemote && recipient != null)
 	        recipient.sendChatToPlayer(ChatMessageComponent.createFromText(message));
@@ -182,9 +198,10 @@ public abstract class AbstractRune {
             System.out.println(message);
     }
 	
-	/**Checks to see if there is a block match for the Rune blockPattern center at 
+	/**
+     * Checks to see if there is a block match for the Rune blockPattern center at
 	 * WorldXYZ coords.  
-	 * Legacy Note: Runix changed rune pattern recognition to accept T0 ink blocks 
+	 * Legacy Note: RunixMain changed rune pattern recognition to accept T0 ink blocks
 	 * and T1+ None Corners.  So if there is a recognizable shape, it will be accepted.
 	 * @return true if there is a valid match
 	 */
@@ -245,7 +262,8 @@ public abstract class AbstractRune {
         return -1; // There was no TIER mentioned in the pattern
     }
 
-    /** Call accept() once you are sure the rune will be executed to tell the player it was successful.
+    /**
+     * Call accept() once you are sure the rune will be executed to tell the player it was successful.
      */
     protected void accept(EntityPlayer player) {
         aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
@@ -413,7 +431,7 @@ public abstract class AbstractRune {
     }
 
     protected String shortClassName() {
-        return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes.", "");
+        return this.getClass().toString().replace("class com.newlinegaming.RunixMain.Runes.", "");
     }
 
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {

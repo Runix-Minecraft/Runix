@@ -31,10 +31,11 @@ public class TeleporterRune extends PersistentRune {
 				  {NONE,TIER,SIGR,TIER,NONE}}};
 	}
 	
-	
-    @Override
-    /**Teleport the player to the WaypointRune with a matching signature
+
+    /**
+     * Teleport the player to the WaypointRune with a matching signature
      */
+    @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         consumeKeyBlock(coords);
 	    WorldXYZ destination = findWaypointBySignature(poker, getSignature());

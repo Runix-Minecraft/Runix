@@ -1,6 +1,8 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.helper;
 
 import java.util.Collection;
+
+import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -45,17 +47,19 @@ public class RenderHelper {
         return true;
     }
     
-    /**Makes a wireframe Cube given an XYZ posiiton
+    /**
+     * Makes a wireframe Cube given an XYZ posiiton
      */
     protected void renderWireCube(float mx, float my, float mz, float sideLength) {
+
         my -= 0.4f;
         sideLength /= 2.0f; //half because +.5 and -.5 = distance 1.0 
         GL11.glBegin(GL11.GL_LINE_STRIP);
-            GL11.glVertex3f(mx+sideLength, my, mz+sideLength);
-            GL11.glVertex3f(mx+sideLength, my, mz-sideLength);
-            GL11.glVertex3f(mx-sideLength, my, mz-sideLength);
-            GL11.glVertex3f(mx-sideLength, my, mz+sideLength);
-            GL11.glVertex3f(mx+sideLength, my, mz+sideLength);
+        GL11.glVertex3f(mx+sideLength, my, mz+sideLength);
+        GL11.glVertex3f(mx+sideLength, my, mz-sideLength);
+        GL11.glVertex3f(mx-sideLength, my, mz-sideLength);
+        GL11.glVertex3f(mx-sideLength, my, mz+sideLength);
+        GL11.glVertex3f(mx+sideLength, my, mz+sideLength);
         GL11.glEnd();
     }
 
