@@ -19,20 +19,8 @@ import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
 import com.newlinegaming.Runix.helper.LogHelper;
-import com.newlinegaming.Runix.Runes.DomainRune;
-import com.newlinegaming.Runix.Runes.FaithRune;
-import com.newlinegaming.Runix.Runes.FerrousWheelRune;
-import com.newlinegaming.Runix.Runes.FtpRune;
-import com.newlinegaming.Runix.Runes.GreekFireRune;
-import com.newlinegaming.Runix.Runes.OracleRune;
-import com.newlinegaming.Runix.Runes.PlayerHandler;
-import com.newlinegaming.Runix.Runes.RubricCreationRune;
-import com.newlinegaming.Runix.Runes.RubricRecallRune;
-import com.newlinegaming.Runix.Runes.RunecraftRune;
-import com.newlinegaming.Runix.Runes.TeleporterRune;
-import com.newlinegaming.Runix.Runes.TorchBearerRune;
-import com.newlinegaming.Runix.Runes.WaypointRune;
-import com.newlinegaming.Runix.Runes.ZeerixChestRune;
+//import com.newlinegaming.Runix.Runes.*;
+
 
 /**
  * RuneHandler is the main switchboard between all runes. It contains
@@ -51,22 +39,24 @@ public class RuneHandler {
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
 
     private RuneHandler() {
-        //TODO: Make a wrappper class for adding runes something alone the lines of RunicLin.addRune(RuneFooRune);
-        runeRegistry.add(new PlayerHandler());
-        runeRegistry.add(new WaypointRune());
-        runeRegistry.add(new FaithRune());
-        //runeRegistry.add(new CompassRune());
-        runeRegistry.add(new FtpRune());
-        runeRegistry.add(new TeleporterRune());
-        runeRegistry.add(new RunecraftRune());
-        runeRegistry.add(new RubricCreationRune());
-        runeRegistry.add(new RubricRecallRune());
-        runeRegistry.add(new TorchBearerRune());
-        runeRegistry.add(new ZeerixChestRune());
-        runeRegistry.add(new FerrousWheelRune());
-        runeRegistry.add(new OracleRune());
-        runeRegistry.add(new GreekFireRune());
-        runeRegistry.add(new DomainRune());
+        //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  
+    	
+    	
+//        runeRegistry.add(new PlayerHandler());
+//        runeRegistry.add(new WaypointRune());
+//        runeRegistry.add(new FaithRune());
+//        //runeRegistry.add(new CompassRune());
+//        runeRegistry.add(new FtpRune());
+//        runeRegistry.add(new TeleporterRune());
+//        runeRegistry.add(new RunecraftRune());
+//        runeRegistry.add(new RubricCreationRune());
+//        runeRegistry.add(new RubricRecallRune());
+//        runeRegistry.add(new TorchBearerRune());
+//        runeRegistry.add(new ZeerixChestRune());
+//        runeRegistry.add(new FerrousWheelRune());
+//        runeRegistry.add(new OracleRune());
+//        runeRegistry.add(new GreekFireRune());
+//        runeRegistry.add(new DomainRune());
     }
 
     public static RuneHandler getInstance(){

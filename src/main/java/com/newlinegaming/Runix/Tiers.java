@@ -272,7 +272,7 @@ public class Tiers {
     public static ArrayList<String> loadBlockIds(Block[] blockList) {
         ArrayList<String> IDs = new ArrayList<String>();
         for(Block block : blockList)
-            IDs.add(block.getblock);
+            IDs.add(block.getBlockById());
         return IDs;
     }
     
@@ -299,8 +299,8 @@ public class Tiers {
     /**
      * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
      */
-    public static boolean isNatural(String blockID){
-        return naturalBlocks.contains(new String(blockID));
+    public static boolean isNatural(Block blockID){
+        return naturalBlocks.contains(new Block(blockID));
     }
     
     /**
@@ -309,12 +309,12 @@ public class Tiers {
      * blocks attach to other blocks or (in the case of liquids) need to be held in by solid blocks.
      * @param blockID
      */
-    public static boolean isMoveSensitive(String blockID){
-        return moveSensitiveBlocks.contains(new String(blockID));
+    public static boolean isMoveSensitive(Block blockID){
+        return moveSensitiveBlocks.contains(new Block(blockID));
     }
 
-    public static boolean isCrushable(String blockID) {
-        return crushableBlocks.contains(new String(blockID));
+    public static boolean isCrushable(Block blockID) {
+        return crushableBlocks.contains(new Blocks(blockID));
     }
 }
 
