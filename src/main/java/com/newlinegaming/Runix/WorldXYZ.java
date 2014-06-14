@@ -256,8 +256,8 @@ public class WorldXYZ extends ChunkCoordinates {
         return best;
     }
 
-    public void bump(Vector3 d) {
-        bump(d.x, d.y, d.z);
+    public void bump(Vector3 vec) {
+        bump(vec.x, vec.y, vec.z);
     }
 
 

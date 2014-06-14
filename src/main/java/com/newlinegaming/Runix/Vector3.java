@@ -1,7 +1,5 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final Vector3 UP =    new Vector3(0, 1,0);

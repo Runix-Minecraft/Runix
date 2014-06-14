@@ -1,7 +1,7 @@
 package com.newlinegaming.Runix.fluids;
 
 import com.newlinegaming.Runix.RunixMain;
-import com.newlinegaming.Runix.lib.LibRef;
+import com.newlinegaming.Runix.lib.LibInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -31,7 +31,7 @@ public class BlockQixSilver extends BlockFluidClassic {
 
     @Override
     public void registerBlockIcons(IIconRegister reg) {
-        FQS = reg.registerIcon(LibRef.MOD_ID + ":qixsilverstill");
-        FQF = reg.registerIcon(LibRef.MOD_ID + ":qixsilverflowing");
+        FQS = reg.registerIcon(LibInfo.MOD_ID + ":qixsilverstill");
+        FQF = reg.registerIcon(LibInfo.MOD_ID + ":qixsilverflowing");
     }
 }

@@ -8,6 +8,7 @@ package com.newlinegaming.Runix;
  */
 
 //Note LordIllyohs: Might move to a Library mod
+@SuppressWarnings("serial")
 public class NotEnoughRunicEnergyException extends Exception {
 
 }

@@ -5,16 +5,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.newlinegaming.Runix.Runes.WaypointRune;
-
-import com.newlinegaming.Runix.handlers.RuneHandler;
-import com.newlinegaming.Runix.utils.Util_Movement;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.utils.Util_Movement;
 
 /**
  * This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
@@ -40,7 +39,7 @@ public abstract class AbstractRune {
      * Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
 	 * defined in your class, never use it.  Use runicFormulae() instead.
 	 */
-	protected abstract int[][][] runicTemplateOriginal();
+	protected abstract Block[][][] runicTemplateOriginal();
 
 	public abstract boolean isFlatRuneOnly();
 
@@ -110,16 +109,16 @@ public abstract class AbstractRune {
 	    Vector3 direction = Vector3.facing[coords.face];
 	    for(int tries = 0; tries < 100; ++tries) {
 	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
-	                && coords.getWorld().getBlockId(coords.posX, coords.posY, coords.posZ) == 0
-	                && coords.getWorld().getBlockId(coords.posX, coords.posY+1, coords.posZ) == 0)//two AIR blocks
+	                && coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ) == Blocks.air
+	                && coords.getWorld().getBlock(coords.posX, coords.posY+1, coords.posZ) == Blocks.air)//two AIR blocks
 	        {  
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
 	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ);
 	                if(block != Blocks.air)
 	                { //We found something not AIR
-    	                if (block = Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
-    	                        || block == Block.fire.blockID){//if we teleport now, the player will land on an unsafe block
+    	                if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
+    	                        || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
     	                else if(coords.offset(0, -drop, 0).isSolid()){
@@ -128,15 +127,15 @@ public abstract class AbstractRune {
     	                    if(player.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
     	                        dCalc.posX *= 8;
     	                        dCalc.posZ *= 8;
-    	                    }else if (!subject.worldObj.provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
+    	                    }else if (!player.worldObj.provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
                                 dCalc.posX /= 8;
                                 dCalc.posZ /= 8;
     	                    }
     	                    spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
     
-    	                    if(!coords.getWorld().equals(subject.worldObj))// && !subject.worldObj.isRemote)
-    	                        subject.travelToDimension(coords.getWorld().provider.dimensionId);
-    	                    subject.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
+    	                    if(!coords.getWorld().equals(player.worldObj))// && !subject.worldObj.isRemote)
+    	                        player.travelToDimension(coords.getWorld().provider.dimensionId);
+    	                    player.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
     	                    System.out.println("Done Teleporting");
     	                    return;
     	                }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
@@ -193,7 +192,7 @@ public abstract class AbstractRune {
 
     public void aetherSay(World worldObj, String message) {
         if(!worldObj.isRemote) //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
-            Minecraft.getMinecraft().thePlayer.addChatMessage(message); 
+            Minecraft.getMinecraft().thePlayer.sendChatMessage(message); 
         else
             System.out.println(message);
     }
@@ -207,13 +206,13 @@ public abstract class AbstractRune {
 	 */
     public boolean checkRunePattern(WorldXYZ coords) {
         int inkID = getTierInkBlock(coords);
-        if( inkID == 0 )
+        if( inkID == Blocks.air )
             return false; //Tier blocks cannot be AIR
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {
-            int blockID = target.getBlockId();
-            int patternID = shape.get(target).blockID;
+            Block blockID = target.getBlockId();
+            Block patternID = shape.get(target).blockID;
             switch(patternID){// Handle special Template Values
                 case NONE: 
                     if( blockID == inkID )
@@ -287,7 +286,7 @@ public abstract class AbstractRune {
             for(WorldXYZ block : activeEdge) {
                 ArrayList<WorldXYZ> neighbors = block.getNeighbors();
                 for(WorldXYZ n : neighbors) {
-                    int blockID = n.getBlockId();
+                    Block blockID = n.getBlockId();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
                     if( !workingSet.contains(n) && !Tiers.isNatural(blockID) ) {
                         workingSet.add(n);
@@ -314,7 +313,7 @@ public abstract class AbstractRune {
      * @param centerPoint
      * @return
      */
-    protected HashMap<WorldXYZ, SigBlock> patternToShape(int[][][] pattern, WorldXYZ centerPoint){
+    protected HashMap<WorldXYZ, SigBlock> patternToShape(Block[][][] pattern, WorldXYZ centerPoint){
         // World coordinates + relative offset + half the size of the rune (for middle)
         // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
         HashMap<WorldXYZ, SigBlock> shape = new HashMap<WorldXYZ, SigBlock>();
@@ -407,7 +406,7 @@ public abstract class AbstractRune {
     protected boolean consumeKeyBlock(WorldXYZ coords) {
         if(Tiers.getTier(coords.getBlockId()) > 1){
             energy += Tiers.getEnergy(coords.getBlockId());
-            coords.setBlockIdAndUpdate(Block.cobblestone.blockID);//we don't want air sitting here
+            coords.setBlockIdAndUpdate(Blocks.cobblestone);//we don't want air sitting here
             return true;
         }
         return false;
@@ -431,7 +430,7 @@ public abstract class AbstractRune {
     }
 
     protected String shortClassName() {
-        return this.getClass().toString().replace("class com.newlinegaming.RunixMain.Runes.", "");
+        return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes.", "");
     }
 
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {

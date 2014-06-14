@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.newlinegaming.Runix.AbstractRune;
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.Vector3;
-import com.newlinegaming.Runix.WorldXYZ;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -18,8 +13,15 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
+import com.newlinegaming.Runix.AbstractRune;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 //import com.newlinegaming.Runix.Runes.*;
+
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 
 /**
@@ -104,7 +106,8 @@ public class RuneHandler {
     /**
      * Detects a rune pattern, and executes it.
      */
-    public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
+    @SuppressWarnings("static-access")
+	public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         AbstractRune createdRune = checkForAnyRunePattern(coords);
         //TODO: check for Activator Rail in hand and subscribe the rune to minecart events
         if (createdRune != null) {

@@ -1,10 +1,8 @@
 package com.newlinegaming.Runix;
 
-import java.util.EnumSet;
-
 import com.newlinegaming.Runix.handlers.ITickHandler;
+
 import cpw.mods.fml.common.gameevent.TickEvent;
-import net.minecraft.entity.player.EntityPlayer;
 
 
 public class RuneTimer implements ITickHandler {

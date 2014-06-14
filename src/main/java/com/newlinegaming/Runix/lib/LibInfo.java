@@ -1,6 +1,6 @@
 package com.newlinegaming.Runix.lib;
 
-public class LibRef {
+public class LibInfo {
 
     public static final String MOD_ID = "runix";
     public static final String MOD_NAME = "Runix";

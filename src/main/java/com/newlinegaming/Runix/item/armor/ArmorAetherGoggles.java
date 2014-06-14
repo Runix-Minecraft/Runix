@@ -1,9 +1,5 @@
 package com.newlinegaming.Runix.item.armor;
 
-import com.newlinegaming.Runix.RunixMain;
-import com.newlinegaming.Runix.lib.RunixAsset;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,11 +8,13 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
 
-import java.util.List;
+import com.newlinegaming.Runix.RunixMain;
+import com.newlinegaming.Runix.lib.RunixAsset;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ArmorAetherGoggles extends ItemArmor implements ISpecialArmor {
 

@@ -6,7 +6,7 @@ package com.newlinegaming.Runix.lib;
  */
 public class RunixAsset {
 
-    private static final String ASSETS = LibRef.MOD_ID + ":"; //Base for all assets
+    private static final String ASSETS = LibInfo.MOD_ID + ":"; //Base for all assets
     private static final String ARMOR = ASSETS + "textures/items/armor/"; //For armor
     private static final String ARMORICON = ASSETS + "armor/icons/"; //For armor icons
 //	private static final String TOOL =

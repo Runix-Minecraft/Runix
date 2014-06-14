@@ -1,7 +1,5 @@
 package com.newlinegaming.Runix.block;
 
-import com.newlinegaming.Runix.RunixMain;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 
 public class ModBlock {
