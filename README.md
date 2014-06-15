@@ -16,9 +16,9 @@ To contribute Runix you must:
 A PR MUST meet these standards befor being merged:
 
     1: The PR MUST be singed off by the author
-    2: The coding style MUST be uniform with Runix's(LordIllyohs HATES that)
-    3: The PR MUST pass a Travis-ci build if it fails odds are we will not pull it
-        -if you think its should still be merged please give us a GOOD reason to do so.
+    2: The coding style MUST be uniform with Runix's(LordIllyohs HATES none uniform styles)
+    3: The PR MUST pass a Travis-ci build, if it fails odds are it won't be merged.
+        -If you think it should still be merged please give us a GOOD reason to do so.
 
 
 =====
