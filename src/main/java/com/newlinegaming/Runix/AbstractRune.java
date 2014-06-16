@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
@@ -169,32 +170,37 @@ public abstract class AbstractRune {
      * returns the unique name of the rune
      */
 	public String getRuneName() {
-	    if( !runeName.isEmpty() )
-	        return runeName;
-	    else
-	        return shortClassName();
+		
+		if(!runeName.isEmpty()) {
+	    	return runeName;
+	    }else{
+	    	return shortClassName();
+	    }
 	}
 
     /**
      * Used to get rune names from the .lang file
      */
-    public String getLocalizedRuneName(){
+    public String getLocalizedRuneName() {
         return runeLocalizedName;
     }
 
-    public static void aetherSay(EntityPlayer recipient, String message)
-	{
-	    if(!recipient.worldObj.isRemote && recipient != null)
-	        recipient.sendChatToPlayer(ChatMessageComponent.createFromText(message));
-	    else
-	        System.out.println(message);
+    public static void aetherSay(EntityPlayer player, String message) {
+    	
+	    if(!player.worldObj.isRemote && player != null) {
+	    	player.addChatMessage(new ChatComponentText(message));
+	    }else{
+	    	System.out.println(message);
+	    }
 	}
 
     public void aetherSay(World worldObj, String message) {
-        if(!worldObj.isRemote) //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
+    	
+        if(!worldObj.isRemote) { //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
             Minecraft.getMinecraft().thePlayer.sendChatMessage(message); 
-        else
+        }else{
             System.out.println(message);
+        }
     }
 	
 	/**
