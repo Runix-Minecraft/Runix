@@ -43,6 +43,7 @@ public class RuneTimer implements ITickHandler {
             currentTimer = 0;
             if (rune.disabled == false) {
 //                rune.onUpdateTick((EntityPlayer) event[0]);
+            	//TODO: Fix the tick handler don't know Why I though a interface was a good idea(LordIlllyohs)
             }
         }
     }

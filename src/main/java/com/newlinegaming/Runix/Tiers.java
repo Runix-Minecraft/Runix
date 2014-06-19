@@ -7,8 +7,8 @@ import net.minecraft.init.Blocks;
 
 public class Tiers {
 
-    //Note from LordIllyohs: Don't like this class I feel it would be better to add energy by doing something like RunicEnergy.addBlockEnergy(fooBlock, 56) maybe add it to a Runix
-    //library mod?
+    //Note from LordIllyohs: Don't like this class I feel it would be better to add energy by doing something like RunicEnergy.addBlockEnergy(fooBlockobject, 56) Maybe add a 
+	//option for IMC?
     
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0

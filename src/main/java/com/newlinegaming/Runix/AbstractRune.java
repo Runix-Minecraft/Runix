@@ -21,7 +21,10 @@ import com.newlinegaming.Runix.utils.Util_Movement;
  * AbstractRune and not in the individual runes.  This will make it easy to create new and custom runes as well as making the child classes
  * as thin as possible.
  */
+//TODO: Rename to BaseRune as this is thee base of all runes
 public abstract class AbstractRune {
+	
+	//TODO: Get rid of  unneccsisary comments all comments that interrupt the code style
 	
     public int energy = 0;
 	
@@ -77,11 +80,11 @@ public abstract class AbstractRune {
 	 * @param worldZ
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
-	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player)
-	{
+	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
 		for(WorldXYZ target : stamp.keySet())
 		    target.setBlockId( stamp.get(target) );
-		return true;//TODO: build permission checking
+		return true;
+		//TODO: build permission checking
 	}
 	
 	/**
@@ -106,7 +109,10 @@ public abstract class AbstractRune {
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
+	//TODO: Make move this to TPRune and extend that instead of this calls
 	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
+		
+		//TODO: Kill non javadoc comments this method is mostly self documenting and it breaks coding style
 	    Vector3 direction = Vector3.facing[coords.face];
 	    for(int tries = 0; tries < 100; ++tries) {
 	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
@@ -212,7 +218,7 @@ public abstract class AbstractRune {
 	 */
     public boolean checkRunePattern(WorldXYZ coords) {
         int inkID = getTierInkBlock(coords);
-        if( inkID == Blocks.air )
+        if(inkID == Blocks.air)
             return false; //Tier blocks cannot be AIR
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
@@ -352,7 +358,9 @@ public abstract class AbstractRune {
         return shape;
     }
     
-    /**Removes the shape and adds its block energy to the rune*/
+    /**
+     * Removes the shape and adds its block energy to the rune
+     */
     protected void consumeRune(WorldXYZ coords) {
         if(isFlatRuneOnly())
             coords = coords.copyWithNewFacing(1);
@@ -418,8 +426,7 @@ public abstract class AbstractRune {
         return false;
     }
 
-    protected HashSet<WorldXYZ> moveShape(HashSet<WorldXYZ> structure, WorldXYZ start, WorldXYZ finish) throws NotEnoughRunicEnergyException
-    {
+    protected HashSet<WorldXYZ> moveShape(HashSet<WorldXYZ> structure, WorldXYZ start, WorldXYZ finish) throws NotEnoughRunicEnergyException {
         Vector3 displacement = new Vector3(start, finish);
         HashMap<WorldXYZ, WorldXYZ> moveMapping = Util_Movement.displaceShape(structure, displacement.x, displacement.y, displacement.z);
         return moveShape(moveMapping);
@@ -427,7 +434,7 @@ public abstract class AbstractRune {
     
     protected HashSet<WorldXYZ> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) throws NotEnoughRunicEnergyException {
         int blocksMovedToNewArea = 0;
-        for(WorldXYZ point : moveMapping.values()){
+        for(WorldXYZ point : moveMapping.values()) {
             if( !moveMapping.containsKey(point) )
                 ++blocksMovedToNewArea;
         }
@@ -457,7 +464,9 @@ public abstract class AbstractRune {
         return destination;
     }
 
-    /*Placeholder which returns an empty signature.  Ovverride this to add signatures to your rune.*/
+    /*
+     * Placeholder which returns an empty signature.  Ovverride this to add signatures to your rune.
+     */
     public Signature getSignature() {
         return new Signature();
     }
