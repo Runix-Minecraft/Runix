@@ -6,8 +6,8 @@ Runix is a mod that is is heavely influence and based on [Runecraft] (http://dev
 ###Contributing
 To contribute Runix you must:
 
-    1: Have a basic to working knowledge of Java and the Forge api
-    2: Have a working of how git works
+    1: Have a basic to working knowledge of Java and the Forge api.
+    2: Have a basic to working knowledge of how git works.
     3: A GitHub account
     4: Fork the project
 ====    
