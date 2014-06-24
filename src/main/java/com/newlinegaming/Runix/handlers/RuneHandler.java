@@ -20,9 +20,6 @@ import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 //import com.newlinegaming.Runix.Runes.*;
 
-
-import com.newlinegaming.Runix.rune.foorune;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 
