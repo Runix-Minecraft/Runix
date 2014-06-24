@@ -21,6 +21,8 @@ import com.newlinegaming.Runix.helper.LogHelper;
 //import com.newlinegaming.Runix.Runes.*;
 
 
+import com.newlinegaming.Runix.rune.foorune;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 
@@ -39,7 +41,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
     private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
-
+    
     private RuneHandler() {
         //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  
     	
@@ -59,6 +61,10 @@ public class RuneHandler {
 //        runeRegistry.add(new OracleRune());
 //        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());
+    }
+    
+    public void addRune(AbstractRune rune) {
+    	runeRegistry.add(rune);
     }
 
     public static RuneHandler getInstance(){
