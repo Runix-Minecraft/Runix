@@ -6,9 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
 public class Tiers {
-
-    //Note from LordIllyohs: Don't like this class I feel it would be better to add energy by doing something like RunicEnergy.addBlockEnergy(fooBlockobject, 56) Maybe add a 
-	//option for IMC?
+	
+    //Yea... this class is going to be overhauld will make my life as well as mod-addon developers a bit easier-
+    // I will be adding a TierRegistery that will look singthing like this-
+    // TierRegistery.registerTierBlock(Blocks.cobbleston, TierType.natural, 1) TierType will be a enum class contaning-
+    // naturalBlocks moveSensitiveBlocks crushableBlocks
+    
     
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
