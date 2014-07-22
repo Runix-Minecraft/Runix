@@ -341,14 +341,14 @@ public class Tiers {
         return IDs;
     }
     
-    public static int getEnergy(int blockID){
+    public static int getEnergy(Block blockID){
         return 1;
 //        if(blockID > 255)
 //            return 1;
 //        return blockEnergy[blockID];
     }
 
-    public static int getTier(int blockID){
+    public static int getTier(Block blockID){
         int energy = getEnergy(blockID);
         energy = energy < 1 ? 1 : energy; // log(0) = crash bad
         return (int) Math.round(Math.log(energy) / Math.log(2));
