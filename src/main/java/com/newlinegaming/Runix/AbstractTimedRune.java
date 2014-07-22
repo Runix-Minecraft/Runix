@@ -1,7 +1,7 @@
 package com.newlinegaming.Runix;
 
-import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class AbstractTimedRune extends PersistentRune {
 

@@ -18,7 +18,6 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
-//import com.newlinegaming.Runix.Runes.*;
 
 import com.newlinegaming.Runix.rune.OracleRune;
 
@@ -57,7 +56,7 @@ public class RuneHandler {
 //        runeRegistry.add(new TorchBearerRune());
 //        runeRegistry.add(new ZeerixChestRune());
 //        runeRegistry.add(new FerrousWheelRune());
-//        runeRegistry.add(new OracleRune());
+        runeRegistry.add(new OracleRune());
 //        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());
     }
