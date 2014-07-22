@@ -31,11 +31,6 @@ archivesBaseName = "${config.name}"
 
 minecraft {
 	version = "${config.mc_version}-${config.forge_version}"
-	if (file('../env').exists()){
-		assetDir = "../env/assets"
-	}else{
-		assetDir = "assets"
-	}
 
     replace '@VERSION@', project.version
     replace '@MCVERSION@', version
