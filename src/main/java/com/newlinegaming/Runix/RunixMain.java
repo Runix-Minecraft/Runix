@@ -3,11 +3,13 @@ package com.newlinegaming.Runix;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.creativetabs.TabRunix;
 import com.newlinegaming.Runix.fluids.ModFluid;
+import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.lib.LibInfo;
 import com.newlinegaming.Runix.proxys.CommonProxy;
@@ -55,8 +57,8 @@ public class RunixMain {
     //Registry's
     public RunixMain() {
 
-//        Tiers tiers = new Tiers(); //load the list of block tiers
+        Tiers tiers = new Tiers(); //load the list of block tiers
 
-//        MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
+        MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import scala.actors.threadpool.Arrays;
 
 public class Tiers {
 	
@@ -19,57 +20,70 @@ public class Tiers {
     public static final int blockBreakCost = 12;
     public static final float movementPerMeterCost = 0.22f;
     
-    private static ArrayList<String> naturalBlocks;
-    private static ArrayList<String> moveSensitiveBlocks;
-    private static ArrayList<String> crushableBlocks;
+    private static ArrayList<Block> naturalBlocks;
+    private static ArrayList<Block> moveSensitiveBlocks;
+    private static ArrayList<Block> crushableBlocks;
     private static int[] blockEnergy;
     
     public Tiers(){
         /**
          * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
          */
-        Block[] extraNaturalBlocks = new Block[] {
-                Blocks.water, Blocks.flowing_water, Blocks.bedrock,
-                Blocks.sand, Blocks.stone, Blocks.dirt,
-                Blocks.grass, Blocks.tallgrass, Blocks.snow,
-                Blocks.mycelium, Blocks.netherrack,
-                Blocks.lava, Blocks.flowing_lava, Blocks.vine, Blocks.leaves,
-                Blocks.cactus, Blocks.deadbush,
-                Blocks.ice, Blocks.sapling, Blocks.log};
+        naturalBlocks = new ArrayList<Block>(){{
+            add(Blocks.air); 
+            add(Blocks.water);
+            add(Blocks.flowing_water);
+            add(Blocks.bedrock);
+            add(Blocks.sand);
+            add(Blocks.stone);
+            add(Blocks.dirt);
+            add(Blocks.grass);
+            add(Blocks.tallgrass);
+            add(Blocks.snow);
+            add(Blocks.mycelium);
+            add(Blocks.netherrack);
+            add(Blocks.lava);
+            add(Blocks.flowing_lava);
+            add(Blocks.vine);
+            add(Blocks.leaves);
+            add(Blocks.cactus);
+            add(Blocks.deadbush);
+            add(Blocks.ice);
+            add(Blocks.sapling);
+            add(Blocks.log);
+        }};
 
-        naturalBlocks = loadBlockIds(extraNaturalBlocks);
-        naturalBlocks.add("air");// AIR 0 needs to be added manually
 //        naturalBlocks.add(GreekFire.blockIdBackup);
         
-        Block[] attachedOrFallingBlocks = new Block[] {
-                Blocks.anvil, Blocks.cocoa, Blocks.carrots, Blocks.carpet, Blocks.wheat,
-                Blocks.potatoes, Blocks.portal, Blocks.end_portal, Blocks.brewing_stand,
-                Blocks.cactus, Blocks.deadbush, Blocks.dragon_egg, Blocks.fire,
-                Blocks.grass, Blocks.gravel, Blocks.lava, Blocks.flowing_lava,
-                Blocks.ladder, Blocks.leaves, Blocks.lever, Blocks.melon_stem,
-                Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.nether_wart,
-                Blocks.piston, //these ones may be co-dependent :?
-                Blocks.piston_extension, Blocks.piston_head,
-                Blocks.sticky_piston,
-                Blocks.red_flower, Blocks.yellow_flower, Blocks.heavy_weighted_pressure_plate,
-                Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.pumpkin,
-                Blocks.rail, Blocks.activator_rail, Blocks.detector_rail, Blocks.golden_rail,
-                Blocks.powered_comparator, Blocks.unpowered_comparator,
-                Blocks.unpowered_repeater, Blocks.powered_repeater,
-                Blocks.redstone_wire, Blocks.reeds, Blocks.sand, Blocks.sapling,
-                Blocks.standing_sign, Blocks.wall_sign, Blocks.skull, Blocks.stone_button,
-                Blocks.tallgrass, Blocks.tripwire, Blocks.tripwire_hook,
-                Blocks.torch, Blocks.redstone_torch, Blocks.unlit_redstone_torch,
-                Blocks.vine, Blocks.waterlily,
-                Blocks.water, Blocks.flowing_water,
-                Blocks.wooden_button};
-        moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
-        
-        Block[] crushTheseBlocks = new Block[]{
-                Blocks.deadbush, Blocks.snow, Blocks.fire, Blocks.gravel, Blocks.water,
-                Blocks.flowing_water, Blocks.sapling, Blocks.tallgrass, Blocks.torch,//torches are debatable, since someone did place it there
-                Blocks.vine};
-        crushableBlocks = loadBlockIds(crushTheseBlocks);
+//        Block[] attachedOrFallingBlocks = new Block[] {
+//                Blocks.anvil, Blocks.cocoa, Blocks.carrots, Blocks.carpet, Blocks.wheat,
+//                Blocks.potatoes, Blocks.portal, Blocks.end_portal, Blocks.brewing_stand,
+//                Blocks.cactus, Blocks.deadbush, Blocks.dragon_egg, Blocks.fire,
+//                Blocks.grass, Blocks.gravel, Blocks.lava, Blocks.flowing_lava,
+//                Blocks.ladder, Blocks.leaves, Blocks.lever, Blocks.melon_stem,
+//                Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.nether_wart,
+//                Blocks.piston, //these ones may be co-dependent :?
+//                Blocks.piston_extension, Blocks.piston_head,
+//                Blocks.sticky_piston,
+//                Blocks.red_flower, Blocks.yellow_flower, Blocks.heavy_weighted_pressure_plate,
+//                Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.pumpkin,
+//                Blocks.rail, Blocks.activator_rail, Blocks.detector_rail, Blocks.golden_rail,
+//                Blocks.powered_comparator, Blocks.unpowered_comparator,
+//                Blocks.unpowered_repeater, Blocks.powered_repeater,
+//                Blocks.redstone_wire, Blocks.reeds, Blocks.sand, Blocks.sapling,
+//                Blocks.standing_sign, Blocks.wall_sign, Blocks.skull, Blocks.stone_button,
+//                Blocks.tallgrass, Blocks.tripwire, Blocks.tripwire_hook,
+//                Blocks.torch, Blocks.redstone_torch, Blocks.unlit_redstone_torch,
+//                Blocks.vine, Blocks.waterlily,
+//                Blocks.water, Blocks.flowing_water,
+//                Blocks.wooden_button};
+//        moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
+//        
+//        Block[] crushTheseBlocks = new Block[]{
+//                Blocks.deadbush, Blocks.snow, Blocks.fire, Blocks.gravel, Blocks.water,
+//                Blocks.flowing_water, Blocks.sapling, Blocks.tallgrass, Blocks.torch,//torches are debatable, since someone did place it there
+//                Blocks.vine};
+//        crushableBlocks = loadBlockIds(crushTheseBlocks);
 //        crushableBlocks.add(GreekFire.blockIdBackup);
         
         blockEnergy = new int[]{ //the blockID is the index for this array.  The value at blockEnergy[blockID] = runic energy
@@ -274,15 +288,16 @@ public class Tiers {
      */
     public static ArrayList<String> loadBlockIds(Block[] blockList) {
         ArrayList<String> IDs = new ArrayList<String>();
-        for(Block block : blockList)
-            IDs.add(block.getBlockById());
+//        for(Block block : blockList)
+//            IDs.add(block.getBlockById());
         return IDs;
     }
     
     public static int getEnergy(int blockID){
-        if(blockID > 255)
-            return 1;
-        return blockEnergy[blockID];
+        return 1;
+//        if(blockID > 255)
+//            return 1;
+//        return blockEnergy[blockID];
     }
 
     public static int getTier(int blockID){
@@ -303,7 +318,7 @@ public class Tiers {
      * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
      */
     public static boolean isNatural(Block blockID){
-        return naturalBlocks.contains(new Block(blockID));
+        return naturalBlocks.contains(blockID);
     }
     
     /**
@@ -313,11 +328,11 @@ public class Tiers {
      * @param blockID
      */
     public static boolean isMoveSensitive(Block blockID){
-        return moveSensitiveBlocks.contains(new Block(blockID));
+        return moveSensitiveBlocks.contains(blockID);
     }
 
     public static boolean isCrushable(Block blockID) {
-        return crushableBlocks.contains(new Blocks(blockID));
+        return crushableBlocks.contains(blockID);
     }
 }
 
