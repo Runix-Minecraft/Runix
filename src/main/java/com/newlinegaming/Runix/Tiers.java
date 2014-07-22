@@ -51,40 +51,88 @@ public class Tiers {
             add(Blocks.ice);
             add(Blocks.sapling);
             add(Blocks.log);
+//            add(GreekFire);
         }};
 
-//        naturalBlocks.add(GreekFire.blockIdBackup);
+        moveSensitiveBlocks = new ArrayList<Block>(){{
+            add(Blocks.anvil);
+            add(Blocks.cocoa);
+            add(Blocks.carrots);
+            add(Blocks.carpet);
+            add(Blocks.wheat);
+            add(Blocks.potatoes);
+            add(Blocks.portal);
+            add(Blocks.end_portal);
+            add(Blocks.brewing_stand);
+            add(Blocks.cactus);
+            add(Blocks.deadbush);
+            add(Blocks.dragon_egg);
+            add(Blocks.fire);
+            add(Blocks.grass);
+            add(Blocks.gravel);
+            add(Blocks.lava);
+            add(Blocks.flowing_lava);
+            add(Blocks.ladder);
+            add(Blocks.leaves);
+            add(Blocks.lever);
+            add(Blocks.melon_stem);
+            add(Blocks.brown_mushroom);
+            add(Blocks.red_mushroom);
+            add(Blocks.nether_wart);
+            add(Blocks.piston);
+            //these ones may be co-dependent :?
+            add(Blocks.piston_extension);
+            add(Blocks.piston_head);
+            add(Blocks.sticky_piston);
+            add(Blocks.red_flower);
+            add(Blocks.yellow_flower);
+            add(Blocks.heavy_weighted_pressure_plate);
+            add(Blocks.light_weighted_pressure_plate);
+            add(Blocks.wooden_pressure_plate);
+            add(Blocks.stone_pressure_plate);
+            add(Blocks.pumpkin);
+            add(Blocks.rail);
+            add(Blocks.activator_rail);
+            add(Blocks.detector_rail);
+            add(Blocks.golden_rail);
+            add(Blocks.powered_comparator);
+            add(Blocks.unpowered_comparator);
+            add(Blocks.unpowered_repeater);
+            add(Blocks.powered_repeater);
+            add(Blocks.redstone_wire);
+            add(Blocks.reeds);
+            add(Blocks.sand);
+            add(Blocks.sapling);
+            add(Blocks.standing_sign);
+            add(Blocks.wall_sign);
+            add(Blocks.skull);
+            add(Blocks.stone_button);
+            add(Blocks.tallgrass);
+            add(Blocks.tripwire);
+            add(Blocks.tripwire_hook);
+            add(Blocks.torch);
+            add(Blocks.redstone_torch);
+            add(Blocks.unlit_redstone_torch);
+            add(Blocks.vine);
+            add(Blocks.waterlily);
+            add(Blocks.water);
+            add(Blocks.flowing_water);
+            add(Blocks.wooden_button);
+        }};
         
-//        Block[] attachedOrFallingBlocks = new Block[] {
-//                Blocks.anvil, Blocks.cocoa, Blocks.carrots, Blocks.carpet, Blocks.wheat,
-//                Blocks.potatoes, Blocks.portal, Blocks.end_portal, Blocks.brewing_stand,
-//                Blocks.cactus, Blocks.deadbush, Blocks.dragon_egg, Blocks.fire,
-//                Blocks.grass, Blocks.gravel, Blocks.lava, Blocks.flowing_lava,
-//                Blocks.ladder, Blocks.leaves, Blocks.lever, Blocks.melon_stem,
-//                Blocks.brown_mushroom, Blocks.red_mushroom, Blocks.nether_wart,
-//                Blocks.piston, //these ones may be co-dependent :?
-//                Blocks.piston_extension, Blocks.piston_head,
-//                Blocks.sticky_piston,
-//                Blocks.red_flower, Blocks.yellow_flower, Blocks.heavy_weighted_pressure_plate,
-//                Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.pumpkin,
-//                Blocks.rail, Blocks.activator_rail, Blocks.detector_rail, Blocks.golden_rail,
-//                Blocks.powered_comparator, Blocks.unpowered_comparator,
-//                Blocks.unpowered_repeater, Blocks.powered_repeater,
-//                Blocks.redstone_wire, Blocks.reeds, Blocks.sand, Blocks.sapling,
-//                Blocks.standing_sign, Blocks.wall_sign, Blocks.skull, Blocks.stone_button,
-//                Blocks.tallgrass, Blocks.tripwire, Blocks.tripwire_hook,
-//                Blocks.torch, Blocks.redstone_torch, Blocks.unlit_redstone_torch,
-//                Blocks.vine, Blocks.waterlily,
-//                Blocks.water, Blocks.flowing_water,
-//                Blocks.wooden_button};
-//        moveSensitiveBlocks = loadBlockIds(attachedOrFallingBlocks);
-//        
-//        Block[] crushTheseBlocks = new Block[]{
-//                Blocks.deadbush, Blocks.snow, Blocks.fire, Blocks.gravel, Blocks.water,
-//                Blocks.flowing_water, Blocks.sapling, Blocks.tallgrass, Blocks.torch,//torches are debatable, since someone did place it there
-//                Blocks.vine};
-//        crushableBlocks = loadBlockIds(crushTheseBlocks);
-//        crushableBlocks.add(GreekFire.blockIdBackup);
+        crushableBlocks =  new ArrayList<Block>(){{//torches are debatable, since someone did place it there
+            add(Blocks.deadbush);
+            add(Blocks.snow);
+            add(Blocks.fire);
+            add(Blocks.gravel);
+            add(Blocks.water);
+            add(Blocks.flowing_water);
+            add(Blocks.sapling);
+            add(Blocks.tallgrass);
+            add(Blocks.torch);
+            add(Blocks.vine);
+//          add(GreekFire);
+        }};
         
         blockEnergy = new int[]{ //the blockID is the index for this array.  The value at blockEnergy[blockID] = runic energy
                 1,   //Air
