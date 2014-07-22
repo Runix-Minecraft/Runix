@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -30,12 +29,12 @@ public abstract class AbstractRune {
 	
     public int energy = 0;
 	
-    public static final Block TIER = (new BlockPlaceHolder()).setBlockName("TIER"); //Tier
-    public static final Block SIGR = (new BlockPlaceHolder()).setBlockName("SIGR"); //Signature block
-    public static final Block NONE = (new BlockPlaceHolder()).setBlockName("NONE");; //Non-Tier, Tier 0
+    public static final Block TIER = new SigBlock("TIER"); //Tier
+    public static final Block SIGR = new SigBlock("SIGR"); //Signature block
+    public static final Block NONE = new SigBlock("NONE");; //Non-Tier, Tier 0
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
-    public static final Block KEY = (new BlockPlaceHolder()).setBlockName("KEY"); //required to be in the middle of the rune
-    public static final Block ANY = (new BlockPlaceHolder()).setBlockName("ANY");
+    public static final Block KEY = new SigBlock("KEY"); //required to be in the middle of the rune
+    public static final Block ANY = new SigBlock("ANY");
     
     public String runeName = null;
     public String runeLocalizedName = null;
@@ -219,36 +218,34 @@ public abstract class AbstractRune {
 	 * @return true if there is a valid match
 	 */
     public boolean checkRunePattern(WorldXYZ coords) {
-        int inkID = getTierInkBlock(coords);
-        if(inkID == Blocks.air)
+        Block ink = getTierInkBlock(coords);
+        if(ink == Blocks.air)
             return false; //Tier blocks cannot be AIR
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {
             Block blockID = target.getBlock();
             Block patternID = shape.get(target).blockID;
-            switch(patternID){// Handle special Template Values
-                case NONE: 
-                    if( blockID == inkID )
+            switch(patternID.getUnlocalizedName()){// Handle special Template Values
+                case "NONE": 
+                    if( blockID == ink )
                         return false; 
                     break;
-                case TIER:
-                    if( blockID != inkID ){
+                case "TIER":
+                    if( blockID != ink ){
 //                                aetherSay(coords.worldObj, "Found " + blockID + " ink is " + inkID);
                         return false; //inconsistent Tier block
                     }
                     break;
-                case SIGR: 
-                    if( blockID == inkID )
+                case "SIGR": 
+                    if( blockID == ink )
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
-                case KEY:
+                case "KEY":
                     if( !target.equals(coords) )//key block must be center block and not AIR 
                         return false;
                     break;
                 default:
-                    if (patternID < 0) //Josiah: Make sure you added "break" if you add new special numbers
-                        aetherSay(coords.getWorld(), "ERROR: This rune is using an unaccounted for number!");
                     if (blockID != patternID){//normal block
 //                                aetherSay(coords.worldObj, "Found " + blockID + " expected " + patternID);
                         return false;
@@ -261,18 +258,18 @@ public abstract class AbstractRune {
     }
 
     protected int getTier(WorldXYZ coords){
-        int blockID = getTierInkBlock(coords);
-        return blockID != -1 ? Tiers.getTier(blockID) : 1;
+        Block blockID = getTierInkBlock(coords);
+        return blockID != null ? Tiers.getTier(blockID) : 1;
     }
     
-    protected int getTierInkBlock(WorldXYZ coords) {
+    protected Block getTierInkBlock(WorldXYZ coords) {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == TIER) {
                 return target.getBlock();
             }
         }
-        return -1; // There was no TIER mentioned in the pattern
+        return null; // There was no TIER mentioned in the pattern
     }
 
     /**
@@ -369,11 +366,11 @@ public abstract class AbstractRune {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID
-            int blockID = target.getBlock();
+            Block blockID = target.getBlock();
             if(shape.get(target).blockID == NONE)
                 continue; // we don't consume these
             energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockIdAndUpdate(0);// delete the block
+            target.setBlockIdAndUpdate(Blocks.air);// delete the block
         }
         System.out.println(getRuneName() + " energy: " + energy);
     }
@@ -381,15 +378,15 @@ public abstract class AbstractRune {
     /**Removes the shape and adds its block energy to the rune*/
     protected void consumeRune(Collection<WorldXYZ> shape) {
         for(WorldXYZ target : shape){
-            int blockID = target.getBlock();
+            Block blockID = target.getBlock();
             energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockIdAndUpdate(0);// delete the block
+            target.setBlockIdAndUpdate(Blocks.air);// delete the block
         }
         System.out.println(getRuneName() + " energy: " + energy);
     }
     
-    public void setBlockIdAndUpdate(WorldXYZ coords, int blockID) throws NotEnoughRunicEnergyException {
-        if( blockID == 0 )//this is actually breaking, not paying for air
+    public void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
+        if( blockID == Blocks.air )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
         else
             spendEnergy(Tiers.getEnergy(blockID));        
@@ -411,7 +408,7 @@ public abstract class AbstractRune {
      * @throws NotEnoughRunicEnergyException */
     public void moveBlock(WorldXYZ coords, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
         newPos.setBlockId(coords.getSigBlock());
-        coords.setBlockIdAndUpdate(0);
+        coords.setBlockIdAndUpdate(Blocks.air);
         spendEnergy((int) Tiers.blockMoveCost);
         
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
@@ -450,19 +447,20 @@ public abstract class AbstractRune {
 
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
-        ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
-        PersistentRune wp = null;
-        for( PersistentRune candidate : waypointList){
-            if( new Signature(candidate, candidate.location).equals( signature ) ){
-                wp = candidate;
-                break;
-            }
-        }
-        if( wp == null){
-            aetherSay(poker, "A waypoint with that signature cannot be found.");
-            return null;
-        }
-        WorldXYZ destination = new WorldXYZ(wp.location);
+        //TODO: Add in Waypoints
+//        ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
+//        PersistentRune wp = null;
+//        for( PersistentRune candidate : waypointList){
+//            if( new Signature(candidate, candidate.location).equals( signature ) ){
+//                wp = candidate;
+//                break;
+//            }
+//        }
+//        if( wp == null){
+//            aetherSay(poker, "A waypoint with that signature cannot be found.");
+//            return null;
+//        }
+        WorldXYZ destination = new WorldXYZ(0, 80, 0);//new WorldXYZ(wp.location);
         return destination;
     }
 

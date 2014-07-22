@@ -59,9 +59,7 @@ public class RunixMain {
 
     //Registry's
     public RunixMain() {
-
         Tiers tiers = new Tiers(); //load the list of block tiers
-
         MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
     }
 }
