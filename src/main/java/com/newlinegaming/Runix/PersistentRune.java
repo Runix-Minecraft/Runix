@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,7 +26,7 @@ import com.newlinegaming.Runix.handlers.RuneHandler;
 
 public abstract class PersistentRune extends AbstractRune {
     
-    private String player = null;
+    private UUID player = null;
     public WorldXYZ location = null;
     public boolean disabled = false;
     public String specialName = "";
@@ -249,14 +251,18 @@ public abstract class PersistentRune extends AbstractRune {
     }
     
     public EntityPlayer getPlayer() {
-        return MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(player);
+        for( Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList){
+            if( ((EntityPlayer) playerObj).getUniqueID() == player)
+                return (EntityPlayer)playerObj;
+        }
+        return null;
     }
 
     public void setPlayer(EntityPlayer playerObj) {
         if(playerObj == null)
             this.player = null;
         else
-            this.player = playerObj.getDisplayName();
+            this.player = playerObj.getUniqueID();
     }
 
     public int getTier() {

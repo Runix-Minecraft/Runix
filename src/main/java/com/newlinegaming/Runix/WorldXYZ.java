@@ -32,10 +32,10 @@ public class WorldXYZ extends ChunkCoordinates {
 //        this.setWorld(defaultWorld());
 //    }
 //
-//    public WorldXYZ(int x, int y, int z) {
-//        super(x, y, z);
-//        this.setWorld(defaultWorld());
-//    }
+    public WorldXYZ(int x, int y, int z) {
+        super(x, y, z);
+        this.setWorld(defaultWorld());
+    }
 
     public WorldXYZ(World world, int x, int y, int z) {
         super(x, y, z);

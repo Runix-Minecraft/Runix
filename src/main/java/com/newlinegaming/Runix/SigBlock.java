@@ -1,19 +1,29 @@
 package com.newlinegaming.Runix;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 
 /**
  * Plain old Data.  blockID and meta.  Use this to preserve all your block info.
  * Meta is the additional information like orientation or color used in some blocks.
  * Doesn't currently do TileEntity or NBT.
  */
-public class SigBlock{
+public class SigBlock extends Block{
     public Block blockID;
     public int meta;
     public SigBlock(Block blockID, int meta){
+        super(blockID.getMaterial());
         this.blockID = blockID;
         this.meta = meta;
     }
+    
+    public SigBlock(String name){ //Constructor for Named Placeholders mimics the BlockAir constructor
+        super(Material.air);
+        setBlockName(name);
+        this.blockID = this; //this is scary
+        this.meta = 0;
+    }
+    
     
     @Override
     public boolean equals(Object other){
