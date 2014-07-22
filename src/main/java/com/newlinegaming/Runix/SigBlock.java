@@ -19,6 +19,8 @@ public class SigBlock{
     public boolean equals(Object other){
         if(other instanceof SigBlock)
             return blockID == ((SigBlock)other).blockID && meta == ((SigBlock)other).meta;
+        else if (other instanceof Block)
+            return blockID == (Block)other;  //TODO: meta support && meta == ((Block)other).getM;
         return false;
     }
     

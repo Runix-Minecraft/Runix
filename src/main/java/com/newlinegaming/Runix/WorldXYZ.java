@@ -160,11 +160,11 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public SigBlock getSigBlock() {
-        return new SigBlock(getBlockId(), getMetaId());
+        return new SigBlock(getBlock(), getMetaId());
     }
 
     //Simple wrapper method for getBlockID()
-    public Block getBlockId() {
+    public Block getBlock() {
         return this.getWorld().getBlock(this.posX, this.posY, this.posZ);
     }
 
@@ -179,20 +179,20 @@ public class WorldXYZ extends ChunkCoordinates {
      * @return true if successful
      */
     public boolean setBlockIdAndUpdate(Block blockID){
-        if(blockID == Blocks.bedrock || getBlockId() == Blocks.bedrock)
+        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, blockID);
     }
 
     public boolean setBlockId(SigBlock sig){
-        if(sig.blockID == Blocks.bedrock || getBlockId() == Blocks.bedrock)
+        if(sig.blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }
 
     public boolean setBlock(Block blockID, int meta){
-        if(blockID == Blocks.bedrock || getBlockId() == Blocks.bedrock)
+        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, blockID, meta, 3);
     }
@@ -240,7 +240,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public boolean isSolid() {
-        Material base = getWorld().getBlockMaterial(posX, posY, posZ );
+        Material base = getBlock().getMaterial();
         return base.isSolid();
     }
 
@@ -248,8 +248,8 @@ public class WorldXYZ extends ChunkCoordinates {
         WorldXYZ best = offset(Vector3.UP);
         int bestEnergy = 0;
         for(WorldXYZ c : getNeighbors()){
-            if( Tiers.getEnergy(c.getBlockId()) > bestEnergy){
-                bestEnergy = Tiers.getEnergy(c.getBlockId());
+            if( Tiers.getEnergy(c.getBlock()) > bestEnergy){
+                bestEnergy = Tiers.getEnergy(c.getBlock());
                 best = c;
             }
         }

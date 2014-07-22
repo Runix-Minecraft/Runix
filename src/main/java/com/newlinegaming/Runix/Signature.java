@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import scala.actors.threadpool.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
@@ -23,7 +25,7 @@ public class Signature {
      */
     public Signature(AbstractRune rune, WorldXYZ coords) {
         blocks = new ArrayList<SigBlock>();
-        Block[] usableMetaData = new Block[]{//this list specifically lacks any block that uses meta for orientation
+        Block[] metaWhiteList = new Block[]{//this list specifically lacks any block that uses meta for orientation
                 Blocks.carpet, Blocks.wool,
                 Blocks.wheat, //added just in case you WANT an impossible waypoint
                 Blocks.hardened_clay, Blocks.jukebox, //adjusting the notes would change your Signature :D
@@ -33,14 +35,13 @@ public class Signature {
                 Blocks.stained_hardened_clay,
                 Blocks.log, Blocks.wooden_slab, Blocks.double_wooden_slab,
         };
-        metaWhiteList = Tiers.loadBlockIds(usableMetaData);
 
         HashMap<WorldXYZ, SigBlock> shape = rune.runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
-            if (shape.get(target).blockID == AbstractRune.SIGR) {
-                Block blockID = target.getBlockId();
+            if (shape.get(target).equals(AbstractRune.SIGR) ) {
+                Block blockID = target.getBlock();
                 if( blockID != Blocks.air ){
-                    if(metaWhiteList.contains(new String(blockID)))
+                    if(Arrays.asList(metaWhiteList).contains(target.getBlock()))
                         blocks.add(target.getSigBlock());
                     else
                         blocks.add(new SigBlock(blockID, 0));//just the blockID

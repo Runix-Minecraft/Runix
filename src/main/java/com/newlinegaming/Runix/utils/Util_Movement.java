@@ -89,7 +89,7 @@ public class Util_Movement {
 
     public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
-            if( !move.containsKey(newPos) && newPos.getBlockId() != Blocks.air && !Tiers.isCrushable(newPos.getBlockId()))
+            if( !move.containsKey(newPos) && newPos.getBlock() != Blocks.air && !Tiers.isCrushable(newPos.getBlock()))
                 return true;
         }
         return false;

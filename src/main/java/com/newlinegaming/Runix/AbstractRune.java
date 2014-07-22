@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -21,19 +22,20 @@ import com.newlinegaming.Runix.utils.Util_Movement;
  * AbstractRune and not in the individual runes.  This will make it easy to create new and custom runes as well as making the child classes
  * as thin as possible.
  */
-//TODO: Rename to BaseRune as this is thee base of all runes
+
+
+//TODO: Rename to BaseRune as this is the base of all runes
 public abstract class AbstractRune {
-	
-	//TODO: Get rid of  unneccsisary comments all comments that interrupt the code style
+	//TODO: Get rid of  unnecessary comments all comments that interrupt the code style
 	
     public int energy = 0;
 	
-    public static final int TIER = -1; //Tier
-    public static final int SIGR = -2; //Signature block
-    public static final int NONE = -3; //Non-Tier, Tier 0
+    public static final Block TIER = (new BlockPlaceHolder()).setBlockName("TIER"); //Tier
+    public static final Block SIGR = (new BlockPlaceHolder()).setBlockName("SIGR"); //Signature block
+    public static final Block NONE = (new BlockPlaceHolder()).setBlockName("NONE");; //Non-Tier, Tier 0
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
-    public static final int KEY = -4; //required to be in the middle of the rune
-    public static final int ANY = -5;
+    public static final Block KEY = (new BlockPlaceHolder()).setBlockName("KEY"); //required to be in the middle of the rune
+    public static final Block ANY = (new BlockPlaceHolder()).setBlockName("ANY");
     
     public String runeName = null;
     public String runeLocalizedName = null;
@@ -223,7 +225,7 @@ public abstract class AbstractRune {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {
-            Block blockID = target.getBlockId();
+            Block blockID = target.getBlock();
             Block patternID = shape.get(target).blockID;
             switch(patternID){// Handle special Template Values
                 case NONE: 
@@ -267,7 +269,7 @@ public abstract class AbstractRune {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).blockID == TIER) {
-                return target.getBlockId();
+                return target.getBlock();
             }
         }
         return -1; // There was no TIER mentioned in the pattern
@@ -298,7 +300,7 @@ public abstract class AbstractRune {
             for(WorldXYZ block : activeEdge) {
                 ArrayList<WorldXYZ> neighbors = block.getNeighbors();
                 for(WorldXYZ n : neighbors) {
-                    Block blockID = n.getBlockId();
+                    Block blockID = n.getBlock();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
                     if( !workingSet.contains(n) && !Tiers.isNatural(blockID) ) {
                         workingSet.add(n);
@@ -367,7 +369,7 @@ public abstract class AbstractRune {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID
-            int blockID = target.getBlockId();
+            int blockID = target.getBlock();
             if(shape.get(target).blockID == NONE)
                 continue; // we don't consume these
             energy += Tiers.getEnergy(blockID);//convert ID into energy
@@ -379,7 +381,7 @@ public abstract class AbstractRune {
     /**Removes the shape and adds its block energy to the rune*/
     protected void consumeRune(Collection<WorldXYZ> shape) {
         for(WorldXYZ target : shape){
-            int blockID = target.getBlockId();
+            int blockID = target.getBlock();
             energy += Tiers.getEnergy(blockID);//convert ID into energy
             target.setBlockIdAndUpdate(0);// delete the block
         }
@@ -418,8 +420,8 @@ public abstract class AbstractRune {
     }
 
     protected boolean consumeKeyBlock(WorldXYZ coords) {
-        if(Tiers.getTier(coords.getBlockId()) > 1){
-            energy += Tiers.getEnergy(coords.getBlockId());
+        if(Tiers.getTier(coords.getBlock()) > 1){
+            energy += Tiers.getEnergy(coords.getBlock());
             coords.setBlockIdAndUpdate(Blocks.cobblestone);//we don't want air sitting here
             return true;
         }
