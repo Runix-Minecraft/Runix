@@ -1,7 +1,8 @@
 package com.newlinegaming.Runix;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
-//import cpw.mods.fml.common.registry.TickRegistry;
+import net.minecraftforge.common.MinecraftForge;
 
 public abstract class AbstractTimedRune extends PersistentRune {
 
@@ -18,18 +19,18 @@ public abstract class AbstractTimedRune extends PersistentRune {
      * @param xTicks number of ticks to wait between calls.  20 ticks = 1 second
      */
     protected void updateEveryXTicks(int xTicks) {
-//        TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
+        TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
     }
 
-    //To completely remove timers once they're done :  
-//    public static void unbind(){
-//        if(instance != null){
-//            MinecraftForge.EVENT_BUS.unregister(instance);
-//            instance = null;
-//        }
-//    }
+    //To completely remove timers once they're done : g 
+    public static void unbind(){
+        if(INSTANCE != null){
+            MinecraftForge.EVENT_BUS.unregister(instance);
+            instance = null;
+        }
+    }
 //    At the moment, RunecraftRune simply pauses itself by not responding to onUpdateTick();
     
-    protected abstract void onUpdateTick(EntityPlayer subject);
+    protected abstract void onUpdateTick(EntityPlayer player);
 
 }

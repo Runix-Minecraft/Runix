@@ -1,11 +1,11 @@
 package com.newlinegaming.Runix;
 
-import com.newlinegaming.Runix.handlers.ITickHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
-import cpw.mods.fml.common.gameevent.TickEvent;
 
 
-public class RuneTimer implements ITickHandler {
+public class RuneTimer {
 
     AbstractTimedRune rune;
     private int currentTimer;
@@ -17,49 +17,19 @@ public class RuneTimer implements ITickHandler {
         maxTimer = waitTicks;
     }
     
-//    @Override
-//    public void tickStart(EnumSet<TickType> type, Object... tickData) {
-//        if (type.equals(EnumSet.of(TickType.PLAYER))) {
-//            ++currentTimer;
-//            if( currentTimer >= maxTimer)
-//            {
-//                currentTimer = 0;
-//                if(rune.disabled == false)
-//                    rune.onUpdateTick((EntityPlayer) tickData[0]);
-//            }
-//        }
-//    }
-
-
-//    @Override
-//    public String getLabel() {
-//        return null;
-//    }
-
-    @Override
-    public void onWorldTickEvent(TickEvent.WorldTickEvent event) {
-        ++ currentTimer;
-        if (currentTimer >= maxTimer) {
-            currentTimer = 0;
-            if (rune.disabled == false) {
-//                rune.onUpdateTick((EntityPlayer) event[0]);
-            	//TODO: Fix the tick handler don't know Why I though a interface was a good idea(LordIlllyohs)
-            }
-        }
+    @SubscribeEvent
+    public void onWorldTickEvent(WorldTickEvent event) {
+    	++currentTimer;
+    	if(currentTimer >= maxTimer) {
+    		currentTimer = 0;
+    		rune.onUpdateTick(null);
+    	}
     }
 
-    @Override
-    public void onServerTickEvent(TickEvent.ServerTickEvent event) {
 
-    }
 
-    @Override
-    public void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
-
-    }
-
-    @Override
-    public void onClientTickEvent(TickEvent.ClientTickEvent event) {
-
-    }
+    public String getLabel() {
+        return null;
+    }    
+    
 }
