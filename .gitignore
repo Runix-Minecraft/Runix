@@ -19,4 +19,4 @@ out
 *.ipr
 *.iws
 setupidea.bat
-assets
+/assets
