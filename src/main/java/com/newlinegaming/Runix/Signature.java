@@ -35,7 +35,7 @@ public class Signature {
                 Blocks.log, Blocks.wooden_slab, Blocks.double_wooden_slab,
         };
 
-        HashMap<WorldXYZ, SigBlock> shape = rune.runicFormulae(coords);
+        HashMap<WorldXYZ, Block> shape = rune.runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).equals(AbstractRune.SIGR) ) {
                 Block blockID = target.getBlock();

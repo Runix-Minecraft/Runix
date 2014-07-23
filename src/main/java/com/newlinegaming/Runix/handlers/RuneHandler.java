@@ -73,7 +73,10 @@ public class RuneHandler {
 
     @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent event) {
+        if(event.entityPlayer.worldObj.isRemote)//runes server side only
+            return;
         //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
+        System.out.println("Click " + event.x + "," + event.y +","+ event.z);
         if (!event.entityPlayer.worldObj.isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
             possibleRuneActivationEvent(event.entityPlayer, 
                     new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z, event.face));

@@ -327,19 +327,6 @@ public class Tiers {
         };
     }
     
-    /**
-     * The idea behind this method is to take a list of Blocks and pull all the ids.
-     * It really only exists to cut down on the number of ".blockID" that is in this file given
-     * how long it will be.  
-     * @param blockList
-     */
-    public static ArrayList<String> loadBlockIds(Block[] blockList) {
-        ArrayList<String> IDs = new ArrayList<String>();
-//        for(Block block : blockList)
-//            IDs.add(block.getBlockById());
-        return IDs;
-    }
-    
     public static int getEnergy(Block blockID){
         return 1;
 //        if(blockID > 255)

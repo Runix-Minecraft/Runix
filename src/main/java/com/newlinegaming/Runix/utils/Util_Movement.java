@@ -36,7 +36,7 @@ public class Util_Movement {
                 sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
                 point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
             }
-            else if(block.blockID != Blocks.air){//don't write AIR blocks
+            else if( !block.equals(Blocks.air)){//don't write AIR blocks
                 newStructure.put(moveMapping.get(point), block);//record original at new location
             }
         }

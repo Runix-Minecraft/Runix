@@ -45,29 +45,9 @@ public class OracleRune extends PersistentRune {
 			{RED,RED,RED}
 		}};
 	}
-
-//	@Override
-//	protected void poke(EntityPlayer poker, WorldXYZ coords){
-//		WorldXYZ OracleConsume = coords;
-//
-//		ItemStack toolused = poker.getCurrentEquippedItem();
-//		if (toolused!=null && toolused.itemID == Item.swordGold.itemID) {
-//			ArrayList<PersistentRune> d = RuneHandler.getInstance().getAllRunesByPlayer(poker);
-//			for (PersistentRune r : d)
-//				aetherSay(poker, r.runeName +  " Energy: " + r.energy);
-//		}
-//		else {
-//			int id = coords.getBlockId();
-//			aetherSay(poker, "Tier: "  + Tiers.getTier(id) + ".");
-//			aetherSay(poker, "Energy: " + Tiers.getEnergy(id) + ".");
-//			aetherSay(poker, "Properties: " + (Tiers.isNatural(id)? "Not Conductive" : "Conductive")
-//					+ ", " + (Tiers.isCrushable(id)? "Crushable." : "Not Crushable."));
-//		}
-//	}
 	
 	@Override
 	protected void poke(EntityPlayer player, WorldXYZ coords) {
-		WorldXYZ OracleConsume = coords;
 		ItemStack toolUsed = player.getHeldItem();
 		
 		if(toolUsed !=null && toolUsed.getItem() == Items.golden_sword) {

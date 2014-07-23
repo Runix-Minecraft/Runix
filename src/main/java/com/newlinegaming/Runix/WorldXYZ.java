@@ -185,7 +185,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public boolean setBlockId(SigBlock sig){
-        if(sig.blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
+        if(sig.equals(Blocks.bedrock) || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.

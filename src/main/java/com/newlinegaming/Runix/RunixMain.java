@@ -51,7 +51,7 @@ public class RunixMain {
     @EventHandler
     public void load(FMLInitializationEvent event) {
         proxy.registerRenderInformation();
-//        FMLCommonHandler.instance().bus().register(new EventHandlerWorld());
+        FMLCommonHandler.instance().bus().register(new EventHandlerWorld());
     }
 
     //Registry's
