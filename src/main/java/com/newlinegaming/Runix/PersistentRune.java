@@ -90,7 +90,7 @@ public abstract class PersistentRune extends AbstractRune {
 		}
 	}
 
-	String getJsonFilePath(World world) { //FIXME: Runes Are not saving correctly on the client server seems to have no Issues.
+	String getJsonFilePath(World world) {
 		String levelName = world.getWorldInfo().getWorldName();
 		
 		if (world.isRemote) {
