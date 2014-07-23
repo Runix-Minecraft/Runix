@@ -29,6 +29,9 @@ version = "${config.mc_version}-${config.mod_version}"
 group= "${config.group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${config.name}"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 minecraft {
 	version = "${config.mc_version}-${config.forge_version}"
 
