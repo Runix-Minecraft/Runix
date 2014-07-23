@@ -9,11 +9,13 @@ import net.minecraftforge.common.util.EnumHelper;
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.creativetabs.TabRunix;
 import com.newlinegaming.Runix.fluids.ModFluid;
+import com.newlinegaming.Runix.handlers.EventHandlerWorld;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.lib.LibInfo;
 import com.newlinegaming.Runix.proxys.CommonProxy;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -23,9 +25,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = LibInfo.MOD_ID, name = LibInfo.MOD_NAME, version = LibInfo.MOD_VERSION)
 public class RunixMain {
-
-
-
 
     //Tool and armor Materials
     public static ArmorMaterial armorRunix = EnumHelper.addArmorMaterial("RUNEIUMARMOR", 30, new int[] { 4, 6, 6, 4 }, 25);
@@ -52,6 +51,7 @@ public class RunixMain {
     @EventHandler
     public void load(FMLInitializationEvent event) {
         proxy.registerRenderInformation();
+//        FMLCommonHandler.instance().bus().register(new EventHandlerWorld());
     }
 
     //Registry's

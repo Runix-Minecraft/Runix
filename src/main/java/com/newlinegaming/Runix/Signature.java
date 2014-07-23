@@ -1,10 +1,9 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-
-import scala.actors.threadpool.Arrays;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

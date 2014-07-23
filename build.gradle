@@ -31,14 +31,9 @@ archivesBaseName = "${config.name}"
 
 minecraft {
 	version = "${config.mc_version}-${config.forge_version}"
-	if (file('../env').exists()){
-		assetDir = "../env/assets"
-	}else{
-		assetDir = "assets"
-	}
 
-    replace '@VERSION@', project.version
-    replace '@MCVERSION@', version
+    replaceIn "lib/LibInfo.java"
+    replace '@VERSION@', "${config.mc_version}-${config.mod_version}"
 }
 
 processResources
@@ -48,7 +43,7 @@ processResources
         include 'mcmod/info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'mod_version':project.version, 'minecraft_version':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info
@@ -58,7 +53,7 @@ processResources
 
     task deobfJar(type: Jar) {
         from sourceSets.main.output
-        classifier = 'deobf'
+        classifier = 'DEV'
     }
 
     artifacts {

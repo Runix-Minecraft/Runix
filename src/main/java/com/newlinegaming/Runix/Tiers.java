@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import scala.actors.threadpool.Arrays;
 
 public class Tiers {
 	

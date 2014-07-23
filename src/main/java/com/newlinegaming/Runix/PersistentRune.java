@@ -162,8 +162,8 @@ public abstract class PersistentRune extends AbstractRune {
      * @param poker Player that poked the rune
      * @param coords center block
      */
-    protected void poke(EntityPlayer poker, WorldXYZ coords){
-        if(poker.worldObj.isRemote)
+    protected void poke(EntityPlayer player, WorldXYZ coords){
+        if(player.worldObj.isRemote)
           return;
         if(oneRunePerPerson()){
             consumeRune(coords);

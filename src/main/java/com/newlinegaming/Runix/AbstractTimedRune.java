@@ -1,7 +1,7 @@
 package com.newlinegaming.Runix;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
-//import cpw.mods.fml.common.registry.TickRegistry;
 
 public abstract class AbstractTimedRune extends PersistentRune {
 
@@ -19,17 +19,19 @@ public abstract class AbstractTimedRune extends PersistentRune {
      */
     protected void updateEveryXTicks(int xTicks) {
 //        TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
+    	FMLCommonHandler.instance().bus().register(new RuneTimer(this, xTicks));
     }
 
-    //To completely remove timers once they're done :  
+    //To completely remove timers once they're done : g 
 //    public static void unbind(){
-//        if(instance != null){
-//            MinecraftForge.EVENT_BUS.unregister(instance);
-//            instance = null;
-//        }
+//    	if(INSTANCE != null){
+//    		MinecraftForge.EVENT_BUS.unregister(instance);
+//    		instance = null;
+//    	}
+//
 //    }
 //    At the moment, RunecraftRune simply pauses itself by not responding to onUpdateTick();
     
-    protected abstract void onUpdateTick(EntityPlayer subject);
+    protected abstract void onUpdateTick(EntityPlayer player);
 
 }
