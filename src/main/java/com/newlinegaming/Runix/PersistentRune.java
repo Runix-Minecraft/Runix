@@ -246,7 +246,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
     
     public boolean onPlayerLogin(String username) {
-//        System.out.println(username + " joined the server");
+        System.out.println(username + " joined the server");
         return false;
     }
     
