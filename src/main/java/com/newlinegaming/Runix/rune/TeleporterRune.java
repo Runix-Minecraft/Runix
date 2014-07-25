@@ -1,12 +1,13 @@
-package com.newlinegaming.Runix.Runes;
+package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
-
-import net.minecraft.entity.player.EntityPlayer;
 
 public class TeleporterRune extends PersistentRune {
 

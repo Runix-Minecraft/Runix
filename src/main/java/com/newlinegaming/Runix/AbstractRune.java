@@ -19,6 +19,7 @@ import com.newlinegaming.Runix.block.NoneBlock;
 import com.newlinegaming.Runix.block.SignatureBlock;
 import com.newlinegaming.Runix.block.TierBlock;
 import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
 /**
@@ -454,19 +455,19 @@ public abstract class AbstractRune {
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
         //TODO: Add in Waypoints
-//        ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
-//        PersistentRune wp = null;
-//        for( PersistentRune candidate : waypointList){
-//            if( new Signature(candidate, candidate.location).equals( signature ) ){
-//                wp = candidate;
-//                break;
-//            }
-//        }
-//        if( wp == null){
-//            aetherSay(poker, "A waypoint with that signature cannot be found.");
-//            return null;
-//        }
-        WorldXYZ destination = new WorldXYZ(0, 80, 0);//new WorldXYZ(wp.location);
+        ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
+        PersistentRune wp = null;
+        for( PersistentRune candidate : waypointList){
+            if( new Signature(candidate, candidate.location).equals( signature ) ){
+                wp = candidate;
+                break;
+            }
+        }
+        if( wp == null){
+            aetherSay(poker, "A waypoint with that signature cannot be found.");
+            return null;
+        }
+        WorldXYZ destination = new WorldXYZ(wp.location);
         return destination;
     }
 

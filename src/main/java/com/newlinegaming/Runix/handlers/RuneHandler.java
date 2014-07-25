@@ -18,9 +18,10 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
-
 import com.newlinegaming.Runix.rune.CompassRune;
 import com.newlinegaming.Runix.rune.OracleRune;
+import com.newlinegaming.Runix.rune.TeleporterRune;
+import com.newlinegaming.Runix.rune.WaypointRune;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -46,11 +47,11 @@ public class RuneHandler {
     	
     	
 //        runeRegistry.add(new PlayerHandler());
-//        runeRegistry.add(new WaypointRune());
+        runeRegistry.add(new WaypointRune());
 //        runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
 //        runeRegistry.add(new FtpRune());
-//        runeRegistry.add(new TeleporterRune());
+        runeRegistry.add(new TeleporterRune());
 //        runeRegistry.add(new RunecraftRune());
 //        runeRegistry.add(new RubricCreationRune());
 //        runeRegistry.add(new RubricRecallRune());

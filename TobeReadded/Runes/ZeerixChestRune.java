@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.Runes;
+package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.Runes;
+package com.newlinegaming.Runix.rune;
 
 import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.Vector3;
