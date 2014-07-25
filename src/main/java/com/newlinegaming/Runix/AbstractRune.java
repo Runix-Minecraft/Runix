@@ -233,27 +233,27 @@ public abstract class AbstractRune {
             Block patternID = shape.get(target);
             System.out.println("Looking For: " + patternID + " Got: " + blockID);
             switch(patternID.getUnlocalizedName()){// Handle special Template Values
-                case "NONE": 
+                case "tile.NONE": 
                     if( blockID == ink )
                         return false; 
                     break;
-                case "TIER":
+                case "tile.TIER":
                     if( blockID != ink ){
-//                                aetherSay(coords.worldObj, "Found " + blockID + " ink is " + inkID);
+//                        aetherSay(coords.getWorld(), "Found " + blockID + " ink is " + ink);
                         return false; //inconsistent Tier block
                     }
                     break;
-                case "SIGR": 
+                case "tile.SIGR": 
                     if( blockID == ink )
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
-                case "KEY":
+                case "tile.KEY":
                     if( !target.equals(coords) )//key block must be center block and not AIR 
                         return false;
                     break;
                 default:
                     if (!patternID.equals(blockID) ){//normal block
-//                                aetherSay(coords.worldObj, "Found " + blockID + " expected " + patternID);
+//                        aetherSay(coords.getWorld(), "Found " + blockID + " expected " + patternID);
                         return false;
                     }
                     break;
@@ -448,7 +448,7 @@ public abstract class AbstractRune {
     }
 
     protected String shortClassName() {
-        return this.getClass().toString().replace("class com.newlinegaming.Runix.Runes.", "");
+        return this.getClass().toString().replace("class com.newlinegaming.Runix.rune.", "");
     }
 
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
