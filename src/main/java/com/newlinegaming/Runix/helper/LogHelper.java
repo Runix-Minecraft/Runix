@@ -8,7 +8,7 @@ import com.newlinegaming.Runix.lib.LibInfo;
 
 public class LogHelper {
 
-    private static final Logger RLog = LogManager.getLogger(LibInfo.MOD_ID);
+    private static final Logger RLog = LogManager.getLogger(LibInfo.MOD_ID.toUpperCase());
 
     public static void log(Level logLevel, Object obj) {
         RLog.log(logLevel, obj.toString());
@@ -27,6 +27,6 @@ public class LogHelper {
     }
 
     public static void fatal(Object obj) {
-        log(Level.INFO, obj.toString());
+        log(Level.FATAL, obj.toString());
     }
 }

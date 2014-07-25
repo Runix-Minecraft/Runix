@@ -20,3 +20,4 @@ out
 *.iws
 setupidea.bat
 /assets
+/logs/

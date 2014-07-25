@@ -10,16 +10,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.SaveHandler;
-import net.minecraft.world.storage.SaveHandlerMP;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
@@ -27,14 +22,12 @@ import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
 import com.newlinegaming.Runix.handlers.RuneHandler;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import com.newlinegaming.Runix.helper.LogHelper;
 
 public abstract class PersistentRune extends AbstractRune {
 
-	private UUID player = null;
+	private UUID uuid = null;
+	private String displayName = null;
 	public WorldXYZ location = null;
 	public boolean disabled = false;
 	public String specialName = "";
@@ -60,12 +53,14 @@ public abstract class PersistentRune extends AbstractRune {
 			Gson converter = new Gson();
 			for(PersistentRune rune : getActiveMagic()) {
 				String runeGson = converter.toJson(rune);
-				System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
+//				System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
+				LogHelper.info("Saving ["+shortClassName()+"] " +runeGson);
 				file.println(runeGson);
 			}
 			file.close();
 		} catch (FileNotFoundException e) {
-			System.err.println("RUNIX: Couldn't write to file: " + fileName);
+//			System.err.println("RUNIX: Couldn't write to file: " + fileName);
+			LogHelper.warn("RUNIX: Couldn't write to file: " + fileName);
 		} 
 	}
 
@@ -83,9 +78,11 @@ public abstract class PersistentRune extends AbstractRune {
 				getActiveMagic().addAll(newList);
 			}
 		} catch (IOException e) {
-			System.err.println("RUNIX: Can't access file or doesn't exist: " + fileName);
+//			System.err.println("RUNIX: Can't access file or doesn't exist: " + fileName);
+			LogHelper.fatal("RUNIX: Can't access file or doesn't exist: " + fileName);
 		} catch (Exception e){
-			System.err.println("GSON failed to parse " + fileName);
+//			System.err.println("GSON failed to parse " + fileName);
+			LogHelper.fatal("GSON failed to parse " + fileName);
 			e.printStackTrace();
 		}
 	}
@@ -271,7 +268,7 @@ public abstract class PersistentRune extends AbstractRune {
 
 	public EntityPlayer getPlayer() {
 		for( Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList){
-			if( ((EntityPlayer) playerObj).getUniqueID() == player)
+			if( ((EntityPlayer) playerObj).getUniqueID() == uuid)
 				return (EntityPlayer)playerObj;
 		}
 		return null;
@@ -279,9 +276,9 @@ public abstract class PersistentRune extends AbstractRune {
 
 	public void setPlayer(EntityPlayer playerObj) {
 		if(playerObj == null)
-			this.player = null;
+			this.uuid = null;
 		else
-			this.player = playerObj.getUniqueID();
+			this.uuid = playerObj.getUniqueID();
 	}
 
 	public int getTier() {
