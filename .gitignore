@@ -21,3 +21,4 @@ out
 setupidea.bat
 /assets
 /logs/
+/remote.properties
