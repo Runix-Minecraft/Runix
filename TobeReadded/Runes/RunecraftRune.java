@@ -55,9 +55,9 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @Override
-    public int[][][] runicTemplateOriginal() {
+    public Block[][][] runicTemplateOriginal() {
         int GOLD = Block.oreGold.blockID;
-        return new int[][][]
+        return new Block[][][]
                 {{{TIER,GOLD,TIER},
                   
                   {GOLD,KEY ,GOLD},

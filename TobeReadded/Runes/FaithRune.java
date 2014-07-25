@@ -29,8 +29,8 @@ public class FaithRune extends PersistentRune{
 	    firstTime = true;
 	}
 	
-	public int[][][] runicTemplateOriginal(){
-		return new int [][][] 
+	public Block[][][] runicTemplateOriginal(){
+		return new Block[][][] 
            {{{NONE,NONE,NONE},
              {NONE, 41 ,NONE},
              {NONE,NONE,NONE}},

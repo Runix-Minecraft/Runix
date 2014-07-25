@@ -25,9 +25,9 @@ public class FtpRune extends TeleporterRune {
         this.runeName = "Faith Transfer Portal";
     }
 
-    public int[][][] runicTemplateOriginal(){
+    public Block[][][] runicTemplateOriginal(){
         int GOLD = 41;
-        return new int[][][]
+        return new Block[][][]
                 {{{NONE,NONE,TIER,SIGR,TIER,NONE,NONE},
                   {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
                   {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},

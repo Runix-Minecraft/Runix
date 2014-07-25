@@ -28,10 +28,10 @@ public class RubricRecallRune extends PersistentRune{
     }
     
 	@Override
-		public int[][][] runicTemplateOriginal() {
+		public Block[][][] runicTemplateOriginal() {
 			int RT=Block.torchRedstoneActive.blockID;
 			int AIR=0;
-			return new int [][][] 
+			return new Block[][][] 
 			            {{{TIER,TIER,SIGR,TIER,TIER},
 			              {TIER, AIR,  RT, AIR,TIER},
 			              {SIGR, RT, KEY ,  RT,SIGR},

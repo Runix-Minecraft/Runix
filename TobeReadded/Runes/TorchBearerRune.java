@@ -51,9 +51,9 @@ public class TorchBearerRune extends AbstractTimedRune {
     }
 
     @Override
-    public int[][][] runicTemplateOriginal() {
+    public Block[][][] runicTemplateOriginal() {
         int TRCH = Block.torchWood.blockID;
-        return new int [][][] 
+        return new Block[][][] 
                 {{{TIER,TRCH,TIER},
                   {TRCH,KEY ,TRCH},
                   {TIER,TRCH,TIER}}}; 

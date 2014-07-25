@@ -29,8 +29,8 @@ public class PlayerHandler extends PersistentRune {
     }
 
     @Override
-    protected int[][][] runicTemplateOriginal() {
-        return new int[][][] {
+    protected Block[][][] runicTemplateOriginal() {
+        return new Block[][][] {
         };
     }
 

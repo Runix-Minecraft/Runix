@@ -22,8 +22,8 @@ public class TeleporterRune extends PersistentRune {
         energy = 1;
     }
 
-	public int[][][] runicTemplateOriginal(){
-		return new int[][][]
+	public Block[][][] runicTemplateOriginal(){
+		return new Block[][][]
 				{{{NONE,TIER,SIGR,TIER,NONE},
 				  {TIER,TIER,TIER,TIER,TIER},
 				  {SIGR,TIER,KEY ,TIER,SIGR},

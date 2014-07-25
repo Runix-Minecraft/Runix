@@ -60,13 +60,13 @@ public abstract class AbstractRune {
 	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
 	 * the runeTemplate for that block, which can be special values like TIER or KEY.
 	 */
-	protected HashMap<WorldXYZ, Block> runicFormulae(WorldXYZ coords){
+	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
 	    if(isFlatRuneOnly())
 	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
 	    return patternToShape(runicTemplateOriginal(), coords); 
 	}
-	
-	/**
+
+    /**
      * Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
 	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
 	 * a static class variable.
@@ -226,13 +226,13 @@ public abstract class AbstractRune {
         Block ink = getTierInkBlock(coords);
         if(ink == Blocks.air)
             return false; //Tier blocks cannot be AIR
-        HashMap<WorldXYZ, Block> shape = runicFormulae(coords);
+        HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) 
         {
             Block blockID = target.getBlock();
-            Block patternID = shape.get(target);
+            SigBlock patternID = shape.get(target);
             System.out.println("Looking For: " + patternID + " Got: " + blockID);
-            switch(patternID.getUnlocalizedName()){// Handle special Template Values
+            switch(patternID.blockID.getUnlocalizedName()){// Handle special Template Values
                 case "tile.NONE": 
                     if( blockID == ink )
                         return false; 
@@ -269,7 +269,7 @@ public abstract class AbstractRune {
     }
     
     protected Block getTierInkBlock(WorldXYZ coords) {
-        HashMap<WorldXYZ, Block> shape = runicFormulae(coords);
+        HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).equals(TIER)) {
                 return target.getBlock();
@@ -330,10 +330,10 @@ public abstract class AbstractRune {
      * @param centerPoint
      * @return
      */
-    protected HashMap<WorldXYZ, Block> patternToShape(Block[][][] pattern, WorldXYZ centerPoint){
+    protected HashMap<WorldXYZ, SigBlock> patternToShape(Block[][][] pattern, WorldXYZ centerPoint){
         // World coordinates + relative offset + half the size of the rune (for middle)
         // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
-        HashMap<WorldXYZ, Block> shape = new HashMap<WorldXYZ, Block>();
+        HashMap<WorldXYZ, SigBlock> shape = new HashMap<WorldXYZ, SigBlock>();
         for (int y = 0; y < pattern.length; y++) {
             for (int z = 0; z < pattern[y].length; z++) {
                 for (int x = 0; x < pattern[y][z].length; x++) {
@@ -356,7 +356,7 @@ public abstract class AbstractRune {
                         System.err.println("Block facing not recognized: " + centerPoint.face + " should be 0-5.");
                         target = centerPoint;
                     }
-                    shape.put(target, pattern[y][z][x]);
+                    shape.put(target, new SigBlock(pattern[y][z][x], 0));
                     }
                 }
             }
@@ -369,7 +369,7 @@ public abstract class AbstractRune {
     protected void consumeRune(WorldXYZ coords) {
         if(isFlatRuneOnly())
             coords = coords.copyWithNewFacing(1);
-        HashMap<WorldXYZ, Block> shape = runicFormulae(coords);
+        HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID
             Block blockID = target.getBlock();

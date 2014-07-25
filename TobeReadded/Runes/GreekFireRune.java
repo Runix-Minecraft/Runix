@@ -21,10 +21,10 @@ public class GreekFireRune extends AbstractRune {
     }
 
     @Override
-    protected int[][][] runicTemplateOriginal() {
+    public Block[][][] runicTemplateOriginal() {
         int FENC = Block.fenceIron.blockID;
         int LAPS = Block.blockLapis.blockID;
-        return new int [][][] 
+        return new Block[][][] 
                 {{{TIER,FENC,TIER},
                   {FENC,LAPS,FENC},
                   {TIER,FENC,TIER}}}; 

@@ -1,6 +1,6 @@
 package com.newlinegaming.Runix;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
@@ -19,7 +19,10 @@ public class Tests {
         assertTrue(tier.getUnlocalizedName().equals("tile.TIER"));
     }
 
+    @Test
     public void SigBlockEqualityTest() {
-        
+        assertTrue(new SigBlock(AbstractRune.TIER, 0).equals(AbstractRune.TIER) );
+        //This does not work:
+        //assertTrue(AbstractRune.TIER == new SigBlock(AbstractRune.TIER, 0));
     }
 }

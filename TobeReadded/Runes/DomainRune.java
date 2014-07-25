@@ -42,8 +42,8 @@ public class DomainRune extends AbstractTimedRune {
     }
 
     @Override
-    protected int[][][] runicTemplateOriginal() {
-	return new int [][][]
+    public Block[][][] runicTemplateOriginal() {
+	return new Block[][][]
 		{{{0,53,0},
 		    {53,20,53},
 		    {0,53,0}},
