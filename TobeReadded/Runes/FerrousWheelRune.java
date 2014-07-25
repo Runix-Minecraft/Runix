@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
@@ -8,11 +9,12 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 
 public class FerrousWheelRune extends PersistentRune {
 
     private static ArrayList<PersistentRune> globalWheel  = new ArrayList<PersistentRune>();
-    public ArrayList<String> guestList = new ArrayList<String>();
+    public ArrayList<UUID> guestList = new ArrayList<UUID>();
     
     public FerrousWheelRune() {
         runeName = "Ferrous Wheel";
@@ -33,31 +35,31 @@ public class FerrousWheelRune extends PersistentRune {
 
     
     @Override
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
-        if(poker.worldObj.isRemote)
+    protected void poke(EntityPlayer player, WorldXYZ coords) {
+        if(player.worldObj.isRemote)
             return;
         consumeKeyBlock(coords);
-        if( !guestList.contains(poker.username) )
-            guestList.add(poker.username);
-        FerrousWheelRune next = getNextWheel(poker);
+        if( !guestList.contains(player.getUniqueID()) )
+            guestList.add(player.getUniqueID());
+        FerrousWheelRune next = getNextWheel(player);
         if(next == null || next == this){
-            aetherSay(poker, "Create more of these runes to teleport between them.");
+            aetherSay(player, "Create more of these runes to teleport between them.");
             return;
         }
         try {
-            teleportPlayer(poker, next.location);
+            teleportPlayer(player, next.location);
         } catch (NotEnoughRunicEnergyException e) {
-            aetherSay(poker, "place a valuable block in the middle and activate this again.");
+            aetherSay(player, "place a valuable block in the middle and activate this again.");
         }
     }
 
-    public FerrousWheelRune getNextWheel(EntityPlayer user){
+    public FerrousWheelRune getNextWheel(EntityPlayer player){
         if(globalWheel.size() < 2)
             return null;
         int start = globalWheel.indexOf(this);
         for(int i = (start + 1) % globalWheel.size(); i != start; i = (i+1) % globalWheel.size()){
             FerrousWheelRune fw = (FerrousWheelRune)globalWheel.get(i);
-            if( !fw.location.equals(location) && fw.guestList.contains(user.username) ) 
+            if( !fw.location.equals(location) && fw.guestList.contains(player.getUniqueID()) ) 
                 return fw;
         }
         return null;
@@ -83,13 +85,13 @@ public class FerrousWheelRune extends PersistentRune {
     
     @Override
     public Block[][][] runicTemplateOriginal() {
-        int IRON = Block.oreIron.blockID;
-        return new Block[][][]
-                {{{IRON,IRON,IRON},
-                  
-                  {IRON,KEY ,IRON},
-                  
-                  {IRON,IRON,IRON}}};
+        Block IRON = Blocks.iron_ore;
+        return new Block[][][]{{
+        	{IRON, IRON, IRON},
+        	{IRON, KEY, IRON},
+        	{IRON, IRON, IRON}
+        	
+        }};
     }
 
     @Override
