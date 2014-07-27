@@ -128,7 +128,7 @@ public abstract class AbstractRune {
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
 	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ);
-	                if(block == Blocks.air)
+	                if(block != Blocks.air)
 	                { //We found something not AIR
     	                if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
     	                        || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block

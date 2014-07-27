@@ -44,6 +44,7 @@ public class TeleporterRune extends PersistentRune {
 	    if(destination != null){
     		try {
                 teleportPlayer(poker, destination);
+                aetherSay(poker, "Testing");
             } catch (NotEnoughRunicEnergyException e) {
                 reportOutOfGas(poker);
             }
