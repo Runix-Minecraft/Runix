@@ -49,7 +49,7 @@ public class FerrousWheelRune extends PersistentRune {
         try {
             teleportPlayer(player, next.location);
         } catch (NotEnoughRunicEnergyException e) {
-            aetherSay(player, "place a valuable block in the middle and activate this again.");
+            reportOutOfGas(player);
         }
     }
 

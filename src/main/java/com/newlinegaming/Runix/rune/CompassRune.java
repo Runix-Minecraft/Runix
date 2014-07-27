@@ -18,11 +18,15 @@ public class CompassRune extends AbstractRune{
     }
     
 	public Block[][][] runicTemplateOriginal(){
-	    Block air = Blocks.air;
+	    Block air = Blocks.air;//This is AIR 0 on purpose
 		return new Block [][][] 
-            {{{TIER, air ,TIER},
-              { air ,TIER, air },
-              {TIER, air ,TIER}}}; //This is AIR 0 on purpose
+            {{
+              {TIER, air, air , air,TIER},
+              {air, TIER, air ,TIER, air},
+              {air,  air ,TIER, air, air},
+              {air, TIER, air ,TIER, air},
+              {TIER, air, air , air,TIER}
+              }}; 
 	}
 
 	public void execute(WorldXYZ coords, EntityPlayer player){
