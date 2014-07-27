@@ -42,6 +42,7 @@ public class TeleporterRune extends PersistentRune {
 	    WorldXYZ destination = findWaypointBySignature(poker, getSignature());
 
 	    if(destination != null){
+	        aetherSay(poker, "Teleporting to " + destination.toString());
     		try {
                 teleportPlayer(poker, destination);
             } catch (NotEnoughRunicEnergyException e) {

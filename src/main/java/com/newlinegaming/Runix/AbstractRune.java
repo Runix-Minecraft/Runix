@@ -118,8 +118,6 @@ public abstract class AbstractRune {
 	 */
 	//TODO: Make move this to TPRune and extend that instead of this calls
 	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
-		
-		//TODO: Kill non javadoc comments this method is mostly self documenting and it breaks coding style
 	    Vector3 direction = Vector3.facing[coords.face];
 	    for(int tries = 0; tries < 100; ++tries) {
 	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
@@ -232,7 +230,6 @@ public abstract class AbstractRune {
         {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
-            System.out.println("Looking For: " + patternID + " Got: " + blockID);
             switch(patternID.blockID.getUnlocalizedName()){// Handle special Template Values
                 case "tile.NONE": 
                     if( blockID == ink )
