@@ -12,7 +12,6 @@ buildscript {
 }
 
 apply plugin: 'forge'
-apply plugin: 'maven'
 
 ext.configFile = file "build.properties"
 
@@ -22,22 +21,13 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-task buildInfo {
-    def cmd = "git rev-parse --short HEAD"
-    def proc = cmd.execute()
-
-    ext.revision = proc.text.trim()
-
-}
-
-def ENV = System.getenv()
-
 version = "${config.mod_version}"
 group= "${config.group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${config.name}"
 
 minecraft {
-	version = "${config.mc_version}-${config.forge_version}"
+
+    version = "${config.mc_version}-${config.forge_version}"
 
     replace '@VERSION@', project.version
     replace '@MCVERSION@', version
@@ -64,24 +54,5 @@ processResources {
 
     artifacts {
         archives deobfJar
-    }
-}
-
-configurations {
-    deployerJars
-}
-
-dependencies {
-    deployerJars "org.apache.maven.wagon:wagon-ftp:2.2"
-}
-
-uploadArchives {
-    if(ENV.MURL) {
-        repositories.mavenDeployer {
-            configuration = configurations.deployerJars
-            repository(url: ENV.MURL) {
-                authentication(userName: ENV.MUSER, password: ENV.MPASS)
-            }
-        }
     }
 }
