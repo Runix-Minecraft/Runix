@@ -19,6 +19,7 @@ import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.rune.CompassRune;
+import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.OracleRune;
 import com.newlinegaming.Runix.rune.TeleporterRune;
 import com.newlinegaming.Runix.rune.WaypointRune;
@@ -57,7 +58,7 @@ public class RuneHandler {
 //        runeRegistry.add(new RubricRecallRune());
 //        runeRegistry.add(new TorchBearerRune());
 //        runeRegistry.add(new ZeerixChestRune());
-//        runeRegistry.add(new FerrousWheelRune());
+        runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
 //        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());

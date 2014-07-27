@@ -20,3 +20,5 @@ out
 *.iws
 setupidea.bat
 /assets
+/logs/
+/remote.properties

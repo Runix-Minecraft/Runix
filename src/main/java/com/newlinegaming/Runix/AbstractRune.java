@@ -116,8 +116,9 @@ public abstract class AbstractRune {
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
-	//TODO: Make move this to TPRune and extend that instead of this calls
+	//TODO: Move this to TPRune and extend that instead of this
 	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
+		
 	    Vector3 direction = Vector3.facing[coords.face];
 	    for(int tries = 0; tries < 100; ++tries) {
 	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
@@ -127,7 +128,7 @@ public abstract class AbstractRune {
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
 	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ);
-	                if(block != Blocks.air)
+	                if(block == Blocks.air)
 	                { //We found something not AIR
     	                if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
     	                        || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block
@@ -230,6 +231,7 @@ public abstract class AbstractRune {
         {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
+            System.out.println("Looking For: " + patternID + " Got: " + blockID);
             switch(patternID.blockID.getUnlocalizedName()){// Handle special Template Values
                 case "tile.NONE": 
                     if( blockID == ink )

@@ -24,3 +24,5 @@ tooltip.runix:true=True
 tooltip.runix:false=False
 tooltip.runix:ismaster=The Aether grants your request
 tooltip.runix:notmaster=The Aether rejects your greedy attempt to activate these goggles. Please return to the rightful owner:
+
+# -- Messages

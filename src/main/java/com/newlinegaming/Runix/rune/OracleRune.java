@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 public class OracleRune extends PersistentRune {
 	private static ArrayList<PersistentRune> activeOracles = new ArrayList<PersistentRune>();
@@ -59,6 +60,7 @@ public class OracleRune extends PersistentRune {
 		} else {
 			Block block = coords.getBlock();
 			
+			aetherSay(player, EnumChatFormatting.RED +block.getLocalizedName());
 			aetherSay(player, "Tier: "  + Tiers.getTier(block) + ".");
 			aetherSay(player, "Energy: " + Tiers.getEnergy(block) + ".");
 			aetherSay(player, "Properties: " + (Tiers.isNatural(block)? "Not Conductive" : "Conductive")

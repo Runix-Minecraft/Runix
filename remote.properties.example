@@ -1,0 +1,3 @@
+url=scp://maven.foo.com
+user=fooname
+pass=pass
