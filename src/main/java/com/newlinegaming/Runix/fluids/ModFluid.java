@@ -1,26 +1,28 @@
 package com.newlinegaming.Runix.fluids;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
 
 public class ModFluid {
 
-    public static Fluid QuickSilver;
+    public static Fluid QixSilver;
 
-    public static Block BlockQuickSilver;
+    public static Block BlockQixSilver;
 
     public static void init() {
 
-        QuickSilver = new FluidQuickSilver();
+//Fluids
+        QixSilver = new FluidQixSilver();
 
-        BlockQuickSilver = new BlockQuickSilver(2012);
+        //Fluid Blocks
+        BlockQixSilver = new BlockQixSilver(QixSilver, Material.lava);
 
         GameReg();
     }
 
     private static void GameReg() {
 
-        GameRegistry.registerBlock(BlockQuickSilver, "runixqiicksilver");
+//        GameRegistry.registerBlock(BlockQuickSilver, "runixqiicksilver");
     }
 }

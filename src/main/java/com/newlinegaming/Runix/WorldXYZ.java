@@ -5,20 +5,26 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 
-/**This class was created for Runix to ensure that when transferring between sets of coordinates,
+/**
+ * This class was created for Runix to ensure that when transferring between sets of coordinates,
  * the World is always known.  It extends ChunkCoordinates used by the rest of minecraft, but tracks
- * World and contains helper methods useful to Runix.*/
+ * World and contains helper methods useful to Runix.
+ */
+
+//Note might want to move to a library mod
+
 public class WorldXYZ extends ChunkCoordinates {
 
     private transient World worldObj = null;
     private int dimensionID = -500000;
     public int face = 1;
-    
+
 //    public WorldXYZ() { //default world is causing an issue with servers because defaultWorld() doesn't work correctly
 //        this.posX = 0;
 //        this.posY = 64;
@@ -26,10 +32,10 @@ public class WorldXYZ extends ChunkCoordinates {
 //        this.setWorld(defaultWorld());
 //    }
 //
-//    public WorldXYZ(int x, int y, int z) {
-//        super(x, y, z);
-//        this.setWorld(defaultWorld());
-//    }
+    public WorldXYZ(int x, int y, int z) {
+        super(x, y, z);
+        this.setWorld(defaultWorld());
+    }
 
     public WorldXYZ(World world, int x, int y, int z) {
         super(x, y, z);
@@ -42,14 +48,14 @@ public class WorldXYZ extends ChunkCoordinates {
         this.face  = face;
     }
 
-    public WorldXYZ(EntityPlayer player){
+    public WorldXYZ(EntityPlayer player) {
         super((int)(player.posX+.5), (int)(player.posY-1), (int)(player.posZ+.5));
         setWorld(player.worldObj);
     }
-    
+
     public WorldXYZ(ChunkCoordinates otherGuy) {
         super(otherGuy);
-        if( otherGuy instanceof WorldXYZ){
+        if(otherGuy instanceof WorldXYZ){
             this.setWorld(((WorldXYZ) otherGuy).getWorld());
             face = ((WorldXYZ) otherGuy).face;
         }
@@ -58,7 +64,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public World getWorld() {
-        if(worldObj == null && dimensionID != -500000){
+        if(worldObj == null && dimensionID != -500000) {
             setWorld(dimensionID);
         }
         return worldObj;
@@ -69,7 +75,8 @@ public class WorldXYZ extends ChunkCoordinates {
         dimensionID = getDimensionNumber();
     }
 
-    /** This is for loadRunes() from JSON.  We need to set the WorldObj off 
+    /**
+     * This is for loadRunes() from JSON.  We need to set the WorldObj off
      * of the dimension number.
      * @param dimension
      */
@@ -78,8 +85,10 @@ public class WorldXYZ extends ChunkCoordinates {
 //        worldObj = FMLServerHandler.instance().getServer().worldServerForDimension(dimension);
         dimensionID = getDimensionNumber();
     }
-    
-    /**Creates a new WorldXYZ based off of a previous one and a relative vector*/
+
+    /**
+     * Creates a new WorldXYZ based off of a previous one and a relative vector
+     */
     public WorldXYZ offset(int dX, int dY, int dZ){
         return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, face);
     }
@@ -87,26 +96,30 @@ public class WorldXYZ extends ChunkCoordinates {
     public WorldXYZ offset(int dX, int dY, int dZ, int facing) {
         return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, facing);
     }
-    
+
     public WorldXYZ offset(Vector3 delta){
         return new WorldXYZ(this.getWorld(), posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
 
-    /**Like offset() but for facing instead.  Returning a new instance avoids side-effecting*/
+    /**
+     * Like offset() but for facing instead.  Returning a new instance avoids side-effecting
+     */
     public WorldXYZ copyWithNewFacing(int face2) {
         WorldXYZ n = new WorldXYZ(this);
         n.face = face2;
         return n;
     }
-    
-    /**Similar to offset(), but updates the current instance instead of a new one.*/ 
+
+    /**
+     * Similar to offset(), but updates the current instance instead of a new one.
+     */
     public WorldXYZ bump(int dX, int dY, int dZ) {
         posX += dX;
         posY += dY;
         posZ += dZ;
         return this;
     }
-    
+
     public WorldXYZ rotate(WorldXYZ referencePoint, boolean counterClockwise){
         Vector3 d = new Vector3(referencePoint, this);// determine quadrant relative to reference
         int direction = counterClockwise ? -1 : 1;
@@ -123,7 +136,7 @@ public class WorldXYZ extends ChunkCoordinates {
             setWorld(defaultWorld());
         return getWorld().provider.dimensionId;
     }
-    
+
     public World defaultWorld() {
         return MinecraftServer.getServer().worldServerForDimension(0);
     }
@@ -147,45 +160,46 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public SigBlock getSigBlock() {
-        return new SigBlock(getBlockId(), getMetaId());
+        return new SigBlock(getBlock(), getMetaId());
     }
 
-    /**Simple wrapper method for getBlockID()*/
-    public int getBlockId(){
-        return this.getWorld().getBlockId(this.posX, this.posY, this.posZ);
+    //Simple wrapper method for getBlockID()
+    public Block getBlock() {
+        return this.getWorld().getBlock(this.posX, this.posY, this.posZ);
     }
-    
-    /** Sister function to getBlockID() for meta values. */
+
+    //Sister function to getBlockID() for meta values.
     public int getMetaId() {
         return getWorld().getBlockMetadata(posX, posY, posZ);
     }
 
-    /**Simple wrapper method for setBlockID()
+    /**
+     * Simple wrapper method for setBlockID()
      * @param blockID
      * @return true if successful
      */
-    public boolean setBlockIdAndUpdate(int blockID){
-        if(blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+    public boolean setBlockIdAndUpdate(Block blockID){
+        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, blockID);
     }
-    
+
     public boolean setBlockId(SigBlock sig){
-        if(sig.blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+        if(sig.equals(Blocks.bedrock) || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }
 
-    public boolean setBlock(int blockID, int meta){
-        if(blockID == Block.bedrock.blockID || getBlockId() == Block.bedrock.blockID)
+    public boolean setBlock(Block blockID, int meta){
+        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, blockID, meta, 3);
     }
-    
+
     public String toString(){//this is designed to match the GSON output
         return "{\"dimensionID\":"+dimensionID+",\"face\":"+face+",\"posX\":"+posX+",\"posY\":"+posY+",\"posZ\":"+posZ+"}";
-//        return "(" + posX + "," + posY +  "," + posZ + ")"; 
+//        return "(" + posX + "," + posY +  "," + posZ + ")";
     }
 
     public ArrayList<WorldXYZ> getNeighbors() {
@@ -197,9 +211,9 @@ public class WorldXYZ extends ChunkCoordinates {
         neighbors.add(offset( 1,0,0));
         neighbors.add(offset(0,0, 1));
         neighbors.add(offset(-1,0,0));
-        
+
         //12 edge diagonals
-        //Josiah: If there was a way to get Build Master and Runecraft to cooperate without these 
+        //Josiah: If there was a way to get Build Master and Runecraft to cooperate without these
         //extra 12 checks I would really rather only do 1/3 the workload when loading large Runecraft
         //structures
         neighbors.add(offset( 1, 1, 0));
@@ -226,7 +240,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public boolean isSolid() {
-        Material base = getWorld().getBlockMaterial(posX, posY, posZ );
+        Material base = getBlock().getMaterial();
         return base.isSolid();
     }
 
@@ -234,16 +248,16 @@ public class WorldXYZ extends ChunkCoordinates {
         WorldXYZ best = offset(Vector3.UP);
         int bestEnergy = 0;
         for(WorldXYZ c : getNeighbors()){
-            if( Tiers.getEnergy(c.getBlockId()) > bestEnergy){
-                bestEnergy = Tiers.getEnergy(c.getBlockId());
+            if( Tiers.getEnergy(c.getBlock()) > bestEnergy){
+                bestEnergy = Tiers.getEnergy(c.getBlock());
                 best = c;
             }
         }
         return best;
     }
 
-    public void bump(Vector3 d) {
-        bump(d.x, d.y, d.z);
+    public void bump(Vector3 vec) {
+        bump(vec.x, vec.y, vec.z);
     }
 
 

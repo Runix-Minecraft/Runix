@@ -1,14 +1,16 @@
 package com.newlinegaming.Runix.item;
 
+import com.newlinegaming.Runix.item.armor.ArmorAetherGoggles;
 import net.minecraft.item.Item;
 
 public class ModItem {
 
-    public static Item PlaceHolder;
+    public static Item AetherGoggles;
 
     public static void init() {
 
-        PlaceHolder = new RunixPlaceHolder(10000).setUnlocalizedName("RunixPlaceHolder");
+        AetherGoggles = new ArmorAetherGoggles();
+
 
     }
 }

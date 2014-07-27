@@ -1,8 +1,7 @@
 package com.newlinegaming.Runix;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public abstract class AbstractTimedRune extends PersistentRune {
 
@@ -12,24 +11,27 @@ public abstract class AbstractTimedRune extends PersistentRune {
         
     }
 
-    /** This registers the rune as being actively updated.  Forge (thru RuneTimer) will call
+    /**
+     * This registers the rune as being actively updated.  Forge (thru RuneTimer) will call
      * onUpdateTick() every xTicks from here on out until it is turned off.  There are
      * 20 ticks per second.
      * @param xTicks number of ticks to wait between calls.  20 ticks = 1 second
      */
     protected void updateEveryXTicks(int xTicks) {
-        TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
+//        TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
+    	FMLCommonHandler.instance().bus().register(new RuneTimer(this, xTicks));
     }
 
-    //To completely remove timers once they're done :  
+    //To completely remove timers once they're done : g 
 //    public static void unbind(){
-//        if(instance != null){
-//            MinecraftForge.EVENT_BUS.unregister(instance);
-//            instance = null;
-//        }
+//    	if(INSTANCE != null){
+//    		MinecraftForge.EVENT_BUS.unregister(instance);
+//    		instance = null;
+//    	}
+//
 //    }
 //    At the moment, RunecraftRune simply pauses itself by not responding to onUpdateTick();
     
-    protected abstract void onUpdateTick(EntityPlayer subject);
+    protected abstract void onUpdateTick(EntityPlayer player);
 
 }

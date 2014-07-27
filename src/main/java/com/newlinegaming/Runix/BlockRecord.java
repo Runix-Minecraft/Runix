@@ -1,27 +1,26 @@
 package com.newlinegaming.Runix;
 
-import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
-/** This class keeps a record of a block at a location so it can be restored after a set delay.
+/**
+ *  This class keeps a record of a block at a location so it can be restored after a set delay.
  * It can be used by Domain to rebuild blocks destroyed by Creepers, Endermen or other players.
  * 
  * Use it like this:
-    protected static DelayQueue<BlockRecord> phasedBlocks = new DelayQueue<BlockRecord>();
+ *  protected static DelayQueue<BlockRecord> phasedBlocks = new DelayQueue<BlockRecord>();
  * 
-    private void phaseBlockAt(Vector3 coords) {
-        BlockRecord record = new BlockRecord(60, coords, coords.getSigBlock());
-        phasedBlocks.add(record);
-    }
+ *  private void phaseBlockAt(Vector3 coords) {
+ *      BlockRecord record = new BlockRecord(60, coords, coords.getSigBlock());
+ *      phasedBlocks.add(record);
+ *  }
  *
  *  //ON BLOCK DESTROY EVENT
-    phaseBlockAt(new Vector3( x, y, z));
+ *  phaseBlockAt(new Vector3( x, y, z));
  *  
  */
 
-
-public class BlockRecord implements Delayed{
+public class BlockRecord implements Delayed {
     public long expirationInMillis = 0; //exact expiration time is set when the object is constructed
     public Vector3 offset;
     public SigBlock block;
