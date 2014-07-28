@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.creativetabs.TabRunix;
 import com.newlinegaming.Runix.fluids.ModFluid;
-import com.newlinegaming.Runix.handlers.EventHandlerWorld;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.lib.LibInfo;
@@ -51,7 +50,6 @@ public class RunixMain {
     @EventHandler
     public void load(FMLInitializationEvent event) {
         proxy.registerRenderInformation();
-        FMLCommonHandler.instance().bus().register(new EventHandlerWorld());
     }
 
     @EventHandler
