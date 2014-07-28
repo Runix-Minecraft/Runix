@@ -32,10 +32,10 @@ public class FaithRune extends PersistentRune{
 	
 	public Block[][][] runicTemplateOriginal(){
 	    Block gold = Blocks.gold_block;
-		return new Block[][][] 
-           {{{NONE,NONE,NONE},
-             {NONE,gold,NONE},
-             {NONE,NONE,NONE}},
+		return new Block[][][] {{
+			{NONE,NONE,NONE},
+			{NONE,gold,NONE},
+			{NONE,NONE,NONE}},
             {{gold,TIER,gold},
              {TIER,gold,TIER},
              {gold,TIER,gold}}};

@@ -6,19 +6,20 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
 
 import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.helper.RenderHelper;
 import com.newlinegaming.Runix.Signature;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.helper.RenderHelper;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -47,7 +48,7 @@ public class RubricCreationRune extends PersistentRune {
     private ArrayList<BlockRecord> scanStructure(HashSet<WorldXYZ> shape) {
         ArrayList<BlockRecord> fullData = new ArrayList<BlockRecord>();
         for(WorldXYZ point : shape){
-            if(point.getBlockId() != 0){
+            if(point.getBlock() != Blocks.air){
                 Vector3 offset = new Vector3(location, point);
                 fullData.add(new BlockRecord(1, offset, point.getSigBlock()));
             }
@@ -57,13 +58,15 @@ public class RubricCreationRune extends PersistentRune {
 
     @Override
 	public Block[][][] runicTemplateOriginal() {
-		int RTCH = Block.torchRedstoneActive.blockID;
-		return new Block[][][] 
-		      {{{ NONE,TIER,SIGR,TIER,NONE },
-				{ TIER,TIER,RTCH,TIER,TIER },
-				{ SIGR,RTCH,KEY ,RTCH,SIGR },
-				{ TIER,TIER,RTCH,TIER,TIER },
-				{ NONE,TIER,SIGR,TIER,NONE }}};
+		Block RTCH = Blocks.redstone_torch;
+		return new Block[][][] {{
+			{ NONE,TIER,SIGR,TIER,NONE },
+			{ TIER,TIER,RTCH,TIER,TIER },
+			{ SIGR,RTCH,KEY ,RTCH,SIGR },
+			{ TIER,TIER,RTCH,TIER,TIER },
+			{ NONE,TIER,SIGR,TIER,NONE }
+			
+		}};
 	}
 
 
@@ -80,14 +83,14 @@ public class RubricCreationRune extends PersistentRune {
 		    return;
 		}
 		ItemStack toolused = poker.getCurrentEquippedItem();
-		if (toolused != null && (toolused.itemID == Item.writtenBook.itemID || toolused.itemID == Item.book.itemID)) 
+		if (toolused != null && (toolused.getItem() == Items.written_book || toolused.getItem() == Items.book) || toolused.getItem() == Items.writable_book) 
 		{
             sig = new Signature(this, coords); // check signature while the rune still exists
 			consumeRune(location);// remove the rune itself add runic energy
 			structure = scanStructure(shape);// then capture everything else into the rubric file 
 			consumeRune(extractCoordinates(structure));// delete the old structure
 
-            if(toolused.itemID == Item.writtenBook.itemID){
+            if(toolused.getItem() == Items.written_book){
     	        specialName = toolused.getDisplayName();
                 aetherSay(poker, "the tool used is "+ specialName);
 			}
@@ -108,7 +111,7 @@ public class RubricCreationRune extends PersistentRune {
     }
 
     @SideOnly(Side.CLIENT)
-    @ForgeSubscribe
+    @SubscribeEvent
 	public void renderWireframe(RenderWorldLastEvent evt) {
 		if (getPlayer() != null)
 			renderer.highlightBoxes(extractCoordinates(structure), false, getPlayer(), 221, 0, 0);//TODO this is really slow for every frame
