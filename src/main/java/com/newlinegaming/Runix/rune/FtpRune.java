@@ -3,12 +3,14 @@ package com.newlinegaming.Runix.rune;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.utils.Util_Movement;
 import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.utils.Util_Movement;
 
 public class FtpRune extends TeleporterRune {
     
@@ -26,7 +28,7 @@ public class FtpRune extends TeleporterRune {
     }
 
     public Block[][][] runicTemplateOriginal(){
-        int GOLD = 41;
+        Block GOLD = Blocks.gold_block;
         return new Block[][][]
                 {{{NONE,NONE,TIER,SIGR,TIER,NONE,NONE},
                   {NONE,NONE,TIER,TIER,TIER,NONE,NONE},

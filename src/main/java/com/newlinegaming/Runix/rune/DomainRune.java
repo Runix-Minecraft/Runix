@@ -3,7 +3,9 @@ package com.newlinegaming.Runix.rune;
 import java.util.ArrayList;
 import java.util.concurrent.DelayQueue;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
@@ -43,13 +45,15 @@ public class DomainRune extends AbstractTimedRune {
 
     @Override
     public Block[][][] runicTemplateOriginal() {
+        Block air = Blocks.air;
+        Block stair = Blocks.oak_stairs;
 	return new Block[][][]
-		{{{0,53,0},
-		    {53,20,53},
-		    {0,53,0}},
-		    {{0,53,0},
-		     {53,TIER,53},
-		     {0,53,0}}};
+          {{{air , stair, air },
+		    {stair,Blocks.glass ,stair},
+		    {air , stair, air }},
+		   {{air , stair,air },
+		    {stair,TIER,stair},
+		    {air ,stair,air }}};
     }
 
     @Override
