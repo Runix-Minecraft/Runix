@@ -21,6 +21,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = LibInfo.MOD_ID, name = LibInfo.MOD_NAME, version = LibInfo.MOD_VERSION)
@@ -45,18 +46,18 @@ public class RunixMain {
         ModBlock.init();
         ModFluid.init();
         ModItem.init();
-
     }
-
+    
     @EventHandler
     public void load(FMLInitializationEvent event) {
         proxy.registerRenderInformation();
         FMLCommonHandler.instance().bus().register(new EventHandlerWorld());
     }
 
-    //Registry's
-    public RunixMain() {
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event){
         Tiers tiers = new Tiers(); //load the list of block tiers
+        tiers.initializeEnergyRegistry();
         MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
     }
 }
