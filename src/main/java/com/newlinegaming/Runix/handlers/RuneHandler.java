@@ -61,7 +61,7 @@ public class RuneHandler {
         runeRegistry.add(new CompassRune());
         runeRegistry.add(new FtpRune());
         runeRegistry.add(new TeleporterRune());
-//        runeRegistry.add(new RunecraftRune());
+        runeRegistry.add(new RunecraftRune());
 //        runeRegistry.add(new RubricCreationRune());
 //        runeRegistry.add(new RubricRecallRune());
         runeRegistry.add(new TorchBearerRune());

@@ -5,22 +5,23 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import com.newlinegaming.Runix.AbstractTimedRune;
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.helper.RenderHelper;
-import com.newlinegaming.Runix.utils.Util_Movement;
-import com.newlinegaming.Runix.WorldXYZ;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+
+import com.newlinegaming.Runix.AbstractTimedRune;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.helper.RenderHelper;
+import com.newlinegaming.Runix.utils.Util_Movement;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class RunecraftRune extends AbstractTimedRune {
     
@@ -56,13 +57,13 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @Override
     public Block[][][] runicTemplateOriginal() {
-        int GOLD = Block.oreGold.blockID;
-        return new Block[][][]
-                {{{TIER,GOLD,TIER},
-                  
-                  {GOLD,KEY ,GOLD},
-                  
-                  {TIER,GOLD,TIER}}};
+        Block GOLD = Blocks.gold_ore;
+        return new Block[][][]{{
+        	{TIER,GOLD,TIER},
+        	{GOLD,KEY ,GOLD},
+        	{TIER,GOLD,TIER}
+        	
+        }};
     }
 
     @Override
@@ -96,7 +97,7 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @SideOnly(Side.CLIENT)
-    @ForgeSubscribe
+    @SubscribeEvent
     public void renderWireframe(RenderWorldLastEvent evt) {
         if(getPlayer() != null)
             if(!renderer.highlightBoxes(vehicleBlocks, disabled, getPlayer())){
@@ -105,15 +106,13 @@ public class RunecraftRune extends AbstractTimedRune {
             }
     }
     
-    @ForgeSubscribe
+    @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (getPlayer() != null && event.action == Action.LEFT_CLICK_BLOCK)
             if( event.isCancelable() ){
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
-                if( vehicleBlocks.contains( punchBlock ))
-                {
-                    if( location.getDistance(punchBlock) < 3 )
-                    {
+                if( vehicleBlocks.contains( punchBlock )) {
+                    if( location.getDistance(punchBlock) < 3 ) {
                         boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
                         HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
                         if( !Util_Movement.shapeCollides(move) )
@@ -134,33 +133,36 @@ public class RunecraftRune extends AbstractTimedRune {
             disabled = true; //player will not be set to null until the closing animation completes
             aetherSay(poker, "You are now free from the Runecraft.");
             return;
-        }
-        else{
-            setPlayer(poker); // assign a player and start
+        }else{
+        	setPlayer(poker); // assign a player and start
             aetherSay(poker, "The Runecraft is now locked to your body.");
-            HashSet<WorldXYZ> newVehicleShape = attachedStructureShape(poker);
-            if( newVehicleShape.isEmpty() )
-                vehicleBlocks = removeAirXYZ(vehicleBlocks);
-            else
+        	HashSet<WorldXYZ> newVehicleShape = attachedStructureShape(poker);
+            if( newVehicleShape.isEmpty() ) {vehicleBlocks = removeAirXYZ(vehicleBlocks);
+        	}else {
                 vehicleBlocks = newVehicleShape;
-            renderer.reset();
+                renderer.reset();
+
+        	}
         }
     }
 
-    /**Removes the coordinates of any air blocks from the shape Set.  This can break contiguous structures
-     * and actually return a non-contiguous structure.  For Runecraft, this is desirable. */
+    /**
+     * Removes the coordinates of any air blocks from the shape Set.  This can break contiguous structures
+     * and actually return a non-contiguous structure.  For Runecraft, this is desirable. 
+     */
     private HashSet<WorldXYZ> removeAirXYZ(HashSet<WorldXYZ> oldShapeCoords) {
         for (Iterator<WorldXYZ> i = oldShapeCoords.iterator(); i.hasNext();) 
         {
             WorldXYZ xyz = i.next(); //an iterator is necessary here because of ConcurrentModificationException
-            if(xyz.getBlockId() == 0) // We specifically want to exclude AIR to avoid confusing collisions
+            if(xyz.getBlock() == Blocks.air) // We specifically want to exclude AIR to avoid confusing collisions
                 i.remove();
         }
             
         return oldShapeCoords;
     }
 
-    /**Runecraft lives or dies by its player.  So the PersistentRune behavior needs to be augmented
+    /**
+     * Runecraft lives or dies by its player.  So the PersistentRune behavior needs to be augmented
      * with a 'disabled' switch.
      */
     public void setPlayer(EntityPlayer playerObj) { 
