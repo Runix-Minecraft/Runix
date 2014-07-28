@@ -2,6 +2,8 @@ package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
+
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
 

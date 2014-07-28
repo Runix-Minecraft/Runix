@@ -18,18 +18,18 @@ public class RuneTimer {
         maxTimer = waitTicks;
     }
     
-    @SideOnly(value=Side.SERVER)
     @SubscribeEvent
-    public void onWorldTickEvent(WorldTickEvent worldevent, PlayerTickEvent playerevent) {
+    public void onWorldTickEvent(PlayerTickEvent event) {
     	++currentTimer;
     	if(currentTimer >= maxTimer) {
     		currentTimer = 0;
-    		rune.onUpdateTick(playerevent.player);
+    		rune.onUpdateTick(event.player);
+
     	}
     }
     
     public String getLabel() {
         return null;
-    }    
+    }
     
 }
