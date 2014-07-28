@@ -256,7 +256,7 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
 	protected void reportOutOfGas(EntityPlayer listener) {
-		aetherSay(listener, "We require more Vespene Gas.");
+		aetherSay(listener, "More energy needed: Place a more valuable block in the center and active this Rune again.");
 		System.out.println(getRuneName() + ": We require more Vespene Gas; " + energy);
 		disabled = true;
 	}

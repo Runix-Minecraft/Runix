@@ -35,13 +35,13 @@ public class GreekFire extends BlockFire {
 //
 //    public static int blockIdBackup = 2014;
 //
-//    public GreekFire(int blockId) {
-//        super(blockId);
+    public GreekFire() {
+        super();
+        setBlockName("Greek Fire");
 //        this.setTickRandomly(true);
 //        this.setCreativeTab(RunixMain.TabRunix);
-//        blockIdBackup = blockId; //Josiah: This is a cludge. This is why there are all those static Block.stainedClay examples in vanilla
 //        initializeBlock();
-//    }
+    }
 //
 //    @SideOnly(Side.CLIENT)
 //    public void getSubBlocks(int block, CreativeTabs tab, List subItems) {

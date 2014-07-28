@@ -116,7 +116,6 @@ public abstract class AbstractRune {
 	 * @param direction to move in if they encounter blocks
 	 * @throws NotEnoughRunicEnergyException 
 	 */
-	//TODO: Move this to TPRune and extend that instead of this
 	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
 		
 	    Vector3 direction = Vector3.facing[coords.face];
@@ -127,14 +126,14 @@ public abstract class AbstractRune {
 	        {  
 	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
 	            {//begin scanning downward
-	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ);
-	                if(block == Blocks.air)
+	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY - drop, coords.posZ);
+	                if(block != Blocks.air)
 	                { //We found something not AIR
     	                if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
     	                        || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
-    	                else if(coords.offset(0, -drop, 0).isSolid()){
+    	                else if(coords.offset(0, -drop, 0).isSolid()){ //we're going to land on something solid, without dying
     	                    //distance should be calculated uses the Nether -> Overworld transform
     	                    WorldXYZ dCalc = new WorldXYZ(player);
     	                    if(player.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
@@ -149,7 +148,6 @@ public abstract class AbstractRune {
     	                    if(!coords.getWorld().equals(player.worldObj))// && !subject.worldObj.isRemote)
     	                        player.travelToDimension(coords.getWorld().provider.dimensionId);
     	                    player.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
-    	                    System.out.println("Done Teleporting");
     	                    return;
     	                }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
 	                }

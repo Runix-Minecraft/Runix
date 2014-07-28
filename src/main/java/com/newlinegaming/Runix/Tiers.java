@@ -328,7 +328,7 @@ public class Tiers {
     }
     
     public static int getEnergy(Block blockID){
-        return 1;
+        return 1000;
 //        if(blockID > 255)
 //            return 1;
 //        return blockEnergy[blockID];
