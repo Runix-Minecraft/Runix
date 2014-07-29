@@ -31,24 +31,25 @@ public class ZeerixChestRune extends AbstractTimedRune {
     protected void onUpdateTick(EntityPlayer subject) {
         if(subject.equals(getPlayer()))
         {
-            World world = subject.worldObj;//sphere can be optimized to donut
-            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(getPlayer()), 4);
-            for(WorldXYZ newPos : sphere)
-            {
-                if(newPos.getBlock() == Blocks.air 
-                        && newPos.offset(Vector3.DOWN).isSolid()// base is solid 
-                        && !newPos.offset(Vector3.UP).isSolid()){//room to open lid
-                    try{
-                        if(location.getBlock() != Blocks.ender_chest)
-                            setBlockIdAndUpdate(location, Blocks.ender_chest);//charge for a replacement
-                        moveBlock(location, newPos);
-                    }catch( NotEnoughRunicEnergyException e){
-                        reportOutOfGas(getPlayer());
+            double distance = (new WorldXYZ(getPlayer())).getDistance(location);//distance from player to current chest
+            if( distance > 6.0){
+                HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(getPlayer()), 4);
+                for(WorldXYZ newPos : sphere)
+                {
+                    if(newPos.getBlock() == Blocks.air 
+                            && newPos.offset(Vector3.DOWN).isSolid()// base is solid 
+                            && !newPos.offset(Vector3.UP).isSolid()){//room to open lid
+                        try{
+                            if(location.getBlock() != Blocks.ender_chest)
+                                setBlockIdAndUpdate(location, Blocks.ender_chest);//charge for a replacement
+                            moveBlock(location, newPos);
+                        }catch( NotEnoughRunicEnergyException e){
+                            reportOutOfGas(getPlayer());
+                        }
+                        return; //we only need place the chest in one good position
                     }
-                    
-                    return; //we only need place the chest in one good position
                 }
-            }
+            } //else do nothing
         }
     }
   
