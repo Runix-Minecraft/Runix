@@ -78,6 +78,6 @@ public class ZeerixChestRune extends AbstractTimedRune {
     }
     
     public boolean isFlatRuneOnly() {
-        return true;
+        return false;
     }
 }

@@ -40,6 +40,7 @@ public class TorchBearerRune extends AbstractTimedRune {
                         (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) )){ //adjustable
                     try {
                         setBlockIdAndUpdate(newPos, Blocks.torch);//set torch
+                        aetherSay(subject, "Placing at " + (new Vector3(newPos, location).toString()));
                     } catch (NotEnoughRunicEnergyException e) {
                         reportOutOfGas(getPlayer());
                     }

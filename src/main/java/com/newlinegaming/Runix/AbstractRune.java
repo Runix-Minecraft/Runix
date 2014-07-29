@@ -393,7 +393,7 @@ public abstract class AbstractRune {
         if( blockID == Blocks.air )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
         else
-            spendEnergy(Tiers.getEnergy(blockID));        
+            spendEnergy(Tiers.getEnergy(blockID));
         coords.setBlockIdAndUpdate(blockID);
     }
 
