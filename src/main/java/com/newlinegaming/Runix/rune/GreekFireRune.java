@@ -31,23 +31,23 @@ public class GreekFireRune extends AbstractRune {
                   {FENC,LAPS,FENC},
                   {TIER,FENC,TIER}}}; 
     }
-    
-    @SubscribeEvent
-    public void onBlockPlace(PlayerInteractEvent event) {
-        if(!event.entityPlayer.worldObj.isRemote){
-            if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
-                WorldXYZ target = new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z);
-                target = target.offset(Vector3.facing[event.face]);
-                if(target.getBlock() == GreekFire){
-                    ItemStack blockUsed = event.entityPlayer.getCurrentEquippedItem();
-                    if(blockUsed.itemID < 255){//vanilla block
-                        if(GreekFire.consumeValuableForFuel(target, blockUsed.itemID))
-                            event.setCanceled(true);
-                    }
-                }
-            }
-        }
-    }
+    //FIXME
+//    @SubscribeEvent
+//    public void onBlockPlace(PlayerInteractEvent event) {
+//        if(!event.entityPlayer.worldObj.isRemote){
+//            if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
+//                WorldXYZ target = new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z);
+//                target = target.offset(Vector3.facing[event.face]);
+//                if(target.getBlock() == GreekFire){
+//                    ItemStack blockUsed = event.entityPlayer.getCurrentEquippedItem();
+//                    if(blockUsed.itemID < 255){//vanilla block
+//                        if(GreekFire.consumeValuableForFuel(target, blockUsed.itemID))
+//                            event.setCanceled(true);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public boolean isFlatRuneOnly() {
@@ -59,7 +59,7 @@ public class GreekFireRune extends AbstractRune {
         accept(player);
         consumeRune(coords);
         coords.setBlockIdAndUpdate(Blocks.lapis_block);
-        coords.offset(Vector3.UP).setBlock(GreekFire, 14);//GreekFire.blockID
+//        coords.offset(Vector3.UP).setBlock(GreekFire, 14);//GreekFire.blockID
         //TODO set meta on Fire block for remaining energy from the Rune
     }
 
