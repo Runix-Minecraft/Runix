@@ -123,6 +123,11 @@ uploadArchives {
                                 name 'Anthony Anderson'
                                 roles { role 'developer' }
                             }
+                            developer {
+                            	id 'RivkiinShadows'
+                            	name 'Rivkiin Shadows'
+                            	roles {role 'developer'}
+                            }
                         }
                     }
                 }
