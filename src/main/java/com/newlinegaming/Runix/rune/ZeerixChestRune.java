@@ -57,10 +57,10 @@ public class ZeerixChestRune extends AbstractTimedRune {
     public Block[][][] runicTemplateOriginal() {
         Block GOLD = Blocks.gold_ore;
         Block CHST = Blocks.ender_chest;
-        return new Block[][][] //NOTE: This is vertical notice the double }}
-                {{{NONE,TIER,NONE}},
-                  {{GOLD,TIER,GOLD}},
-                  {{TIER,CHST,TIER}}}; 
+        return new Block[][][] //NOTE: This is vertical but it gets there by using facing
+                {{{NONE,TIER,NONE},
+                  {GOLD,TIER,GOLD},
+                  {TIER,CHST,TIER}}}; 
     }
 
     @Override
