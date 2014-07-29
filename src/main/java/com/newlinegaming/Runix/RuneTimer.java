@@ -16,7 +16,7 @@ public class RuneTimer {
     }
     
     @SubscribeEvent
-    public void onWorldTickEvent(PlayerTickEvent event) {
+    public void onPlayerTickEvent(PlayerTickEvent event) {
     	++currentTimer;
     	if(currentTimer >= maxTimer) {
     		currentTimer = 0;
