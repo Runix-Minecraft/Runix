@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.creativetabs.TabRunix;
 import com.newlinegaming.Runix.fluids.ModFluid;
-import com.newlinegaming.Runix.handlers.EventHandlerWorld;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.lib.LibInfo;
@@ -21,6 +20,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = LibInfo.MOD_ID, name = LibInfo.MOD_NAME, version = LibInfo.MOD_VERSION)
@@ -45,18 +45,17 @@ public class RunixMain {
         ModBlock.init();
         ModFluid.init();
         ModItem.init();
-
     }
-
+    
     @EventHandler
     public void load(FMLInitializationEvent event) {
         proxy.registerRenderInformation();
-        FMLCommonHandler.instance().bus().register(new EventHandlerWorld());
     }
 
-    //Registry's
-    public RunixMain() {
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event){
         Tiers tiers = new Tiers(); //load the list of block tiers
+        tiers.initializeEnergyRegistry();
         MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
     }
 }

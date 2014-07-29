@@ -19,10 +19,18 @@ import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.rune.CompassRune;
+import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.rune.FerrousWheelRune;
+import com.newlinegaming.Runix.rune.FtpRune;
+import com.newlinegaming.Runix.rune.GreekFireRune;
 import com.newlinegaming.Runix.rune.OracleRune;
+import com.newlinegaming.Runix.rune.RubricCreationRune;
+import com.newlinegaming.Runix.rune.RubricRecallRune;
+import com.newlinegaming.Runix.rune.RunecraftRune;
 import com.newlinegaming.Runix.rune.TeleporterRune;
+import com.newlinegaming.Runix.rune.TorchBearerRune;
 import com.newlinegaming.Runix.rune.WaypointRune;
+import com.newlinegaming.Runix.rune.ZeerixChestRune;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -49,15 +57,15 @@ public class RuneHandler {
     	
 //        runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
-//        runeRegistry.add(new FaithRune());
+        runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
-//        runeRegistry.add(new FtpRune());
+        runeRegistry.add(new FtpRune());
         runeRegistry.add(new TeleporterRune());
-//        runeRegistry.add(new RunecraftRune());
-//        runeRegistry.add(new RubricCreationRune());
+        runeRegistry.add(new RunecraftRune()); //FIXME: Make Runecraft runes respect TileEntity Inventories 
+//        runeRegistry.add(new RubricCreationRune());//FIXME: Rune locks on activation
 //        runeRegistry.add(new RubricRecallRune());
-//        runeRegistry.add(new TorchBearerRune());
-//        runeRegistry.add(new ZeerixChestRune());
+        runeRegistry.add(new TorchBearerRune());
+        runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
 //        runeRegistry.add(new GreekFireRune());

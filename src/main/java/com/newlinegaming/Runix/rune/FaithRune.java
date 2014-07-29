@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
@@ -30,13 +31,14 @@ public class FaithRune extends PersistentRune{
 	}
 	
 	public Block[][][] runicTemplateOriginal(){
-		return new Block[][][] 
-           {{{NONE,NONE,NONE},
-             {NONE, 41 ,NONE},
-             {NONE,NONE,NONE}},
-            {{41,TIER,41},
-             {TIER,41,TIER},
-             {41,TIER,41}}};
+	    Block gold = Blocks.gold_block;
+		return new Block[][][] {{
+			{NONE,NONE,NONE},
+			{NONE,gold,NONE},
+			{NONE,NONE,NONE}},
+            {{gold,TIER,gold},
+             {TIER,gold,TIER},
+             {gold,TIER,gold}}};
 	}
 	
 //	public void execute(WorldXYZ coords, EntityPlayer player) // TODO we need a way for runes to check more complex validation and delete themselves if they don't pass
@@ -65,9 +67,9 @@ public class FaithRune extends PersistentRune{
             firstTime = false;
             consumeRune(coords);
             try {
-                setBlockIdAndUpdate(coords, Block.blockGold.blockID); //Gold block is to be a permanent marker
+                setBlockIdAndUpdate(coords, Blocks.gold_block); //Gold block is to be a permanent marker
             } catch (NotEnoughRunicEnergyException e) {}
-            energy -= Tiers.getEnergy(Block.blockGold.blockID) * 5; //the Gold blocks don't count towards the energy
+            energy -= Tiers.getEnergy(Blocks.gold_block) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
             HashSet<WorldXYZ> sphere = directlyAttachedStructure();
             energy -= sphere.size() * Tiers.blockMoveCost;

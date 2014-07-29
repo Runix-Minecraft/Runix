@@ -47,7 +47,7 @@ public class Signature {
                 }
             }
         }
-        rune.aetherSay(coords.getWorld(), "Signature:" + blocks.toString());
+//        rune.aetherSay(coords.getWorld(), "Signature:" + blocks.toString());
     }
     
     public boolean equals(Signature other){

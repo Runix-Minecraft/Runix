@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
@@ -34,12 +35,12 @@ public class ZeerixChestRune extends AbstractTimedRune {
             HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(new WorldXYZ(getPlayer()), 4);
             for(WorldXYZ newPos : sphere)
             {
-                if(newPos.getBlockId() == 0 
+                if(newPos.getBlock() == Blocks.air 
                         && newPos.offset(Vector3.DOWN).isSolid()// base is solid 
                         && !newPos.offset(Vector3.UP).isSolid()){//room to open lid
                     try{
-                        if(location.getBlockId() != Block.enderChest.blockID)
-                            setBlockIdAndUpdate(location, Block.enderChest.blockID);//charge for a replacement
+                        if(location.getBlock() != Blocks.ender_chest)
+                            setBlockIdAndUpdate(location, Blocks.ender_chest);//charge for a replacement
                         moveBlock(location, newPos);
                     }catch( NotEnoughRunicEnergyException e){
                         reportOutOfGas(getPlayer());
@@ -53,8 +54,8 @@ public class ZeerixChestRune extends AbstractTimedRune {
   
     @Override
     public Block[][][] runicTemplateOriginal() {
-        int GOLD = Block.oreGold.blockID;
-        int CHST = Block.enderChest.blockID;
+        Block GOLD = Blocks.gold_ore;
+        Block CHST = Blocks.ender_chest;
         return new Block[][][] //NOTE: This is vertical notice the double }}
                 {{{NONE,TIER,NONE}},
                   {{GOLD,TIER,GOLD}},

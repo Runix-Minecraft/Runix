@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
@@ -29,18 +30,16 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(getPlayer()) && !subject.worldObj.isRemote)
-        {
+    	if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
             World world = subject.worldObj;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
             HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
-            for(WorldXYZ newPos : sphere)
-            {
-                if(newPos.getBlockId() == 0 && newPos.offset(Vector3.DOWN).isSolid() && (
+            for(WorldXYZ newPos : sphere) {
+                if(newPos.getBlock() == Blocks.air && newPos.offset(Vector3.DOWN).isSolid() && (
                         (world.isDaytime() && world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4) ||//day time checking == caves
                         (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) )){ //adjustable
                     try {
-                        setBlockIdAndUpdate(newPos, Block.torchWood.blockID);//set torch
+                        setBlockIdAndUpdate(newPos, Blocks.torch);//set torch
                     } catch (NotEnoughRunicEnergyException e) {
                         reportOutOfGas(getPlayer());
                     }
@@ -52,11 +51,13 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     public Block[][][] runicTemplateOriginal() {
-        int TRCH = Block.torchWood.blockID;
-        return new Block[][][] 
-                {{{TIER,TRCH,TIER},
-                  {TRCH,KEY ,TRCH},
-                  {TIER,TRCH,TIER}}}; 
+        Block TRCH = Blocks.torch;
+        return new Block[][][] {{
+        	{TIER,TRCH,TIER},
+        	{TRCH,KEY ,TRCH},
+        	{TIER,TRCH,TIER}
+        	
+        }}; 
     }
 
     @Override

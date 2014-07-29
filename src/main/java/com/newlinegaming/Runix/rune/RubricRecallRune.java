@@ -3,16 +3,17 @@ package com.newlinegaming.Runix.rune;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Signature;
 import com.newlinegaming.Runix.WorldXYZ;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 
 public class RubricRecallRune extends PersistentRune{
@@ -28,16 +29,17 @@ public class RubricRecallRune extends PersistentRune{
     }
     
 	@Override
-		public Block[][][] runicTemplateOriginal() {
-			int RT=Block.torchRedstoneActive.blockID;
-			int AIR=0;
-			return new Block[][][] 
-			            {{{TIER,TIER,SIGR,TIER,TIER},
-			              {TIER, AIR,  RT, AIR,TIER},
-			              {SIGR, RT, KEY ,  RT,SIGR},
-			              {TIER, AIR,  RT, AIR,TIER},
-			              {TIER,TIER,SIGR,TIER,TIER}
-			             }}; 
+	public Block[][][] runicTemplateOriginal() {
+		Block RT=Blocks.redstone_torch;
+		Block AIR=Blocks.air;
+		return new Block[][][] {{
+			{TIER,TIER,SIGR,TIER,TIER},
+			{TIER, AIR,  RT, AIR,TIER},
+			{SIGR, RT, KEY ,  RT,SIGR},
+			{TIER, AIR,  RT, AIR,TIER},
+			{TIER,TIER,SIGR,TIER,TIER}
+			
+		}}; 
 	}
 
 	@Override
@@ -50,7 +52,7 @@ public class RubricRecallRune extends PersistentRune{
         Signature signature = getSignature();
 		
         PersistentRune rubrics = null;
-		if (toolused!=null && toolused.itemID == Item.writtenBook.itemID){
+		if (toolused!=null && toolused.getItem() == Items.written_book){
 			rubrics = (new RubricCreationRune()).getRuneBySpecialName(specialName);
 		}
 		else if( !signature.isEmpty() ){
