@@ -53,6 +53,7 @@ public class OracleRune extends PersistentRune {
 		
 		if(toolUsed !=null && toolUsed.getItem() == Items.golden_sword) {
 			ArrayList<PersistentRune> d = RuneHandler.getInstance().getAllRunesByPlayer(player);
+			aetherSay(player, "Current enchantments: " + Integer.toString(d.size()));
 			for (PersistentRune r : d) {
 				aetherSay(player, r.runeName + " Energy: "+ r.energy);
 			}
@@ -65,7 +66,6 @@ public class OracleRune extends PersistentRune {
 			aetherSay(player, "Energy: " + Tiers.getEnergy(block) + ".");
 			aetherSay(player, "Properties: " + (Tiers.isNatural(block)? "Not Conductive" : "Conductive")
 					+ ", " + (Tiers.isCrushable(block)? "Crushable." : "Not Crushable."));
-			
 		}
 	}
 
