@@ -26,15 +26,12 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-ext.remoteFile = file "remote.properties"
-
-remoteFile.withReader {
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.remote = new ConfigSlurper().parse prop
+def ENV = System.getenv()
+if (ENV.BUILD_ID) {
+	version += "${config.mc_version}-${config.mod_version}.${config.release_status}." + ENV.DRONE_BUILD_NUMBER
+} else {
+	version += "${config.mc_version}-${config.mod_version}.${config.release_status}.local"
 }
-
-version = "${config.mc_version}-${config.mod_version}.${config.release_status}"
 group= "${config.group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${config.name}"
 
@@ -84,34 +81,35 @@ dependencies {
     deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        configuration = configurations.deployerJars
-        repository(url: "${remote.url}") {
-            authentication(userName: "${remote.user}", password: "${remote.pass}")
-        }
-        
-        pom {
-                    groupId = project.group
-                    version = project.version
-                    artifactId = project.archivesBaseName
-                    project {
-                        name project.archivesBaseName
-                        packaging 'jar'
-                        description 'Runix'
-                        url 'https://github.com/Runix-Minecraft/Runix'
-
-                        scm {
-                            url 'https://github.com/Runix-Minecraft/Runix'
+if (ENV.SC_MAVEN_URL) {
+	uploadArchives {
+		repositories.mavenDeployer {
+			configuration = configurations.deployerJars
+			repository(url: ENV.SC_MAVEN_URL) {
+				authentication(userName: ENV.SC_MAVEN_USER, password: ENV.SC_MAVEN_PASS)
+			}
+			
+			pom {
+				groupId = project.group
+				version = project.version
+				artifactId = project.archivesBaseName
+				project {
+					name project.archivesBaseName
+					packaging 'jar'
+					description 'Runix'
+					url 'https://github.com/Runix-Minecraft/Runix'
+					
+						 scm {
+						 	url 'https://github.com/Runix-Minecraft/Runix'
                             connection 'scm:git:git://github.com/Runix-Minecraft/Runix.git'
                             developerConnection 'scm:git:git@github.com:Runix-Minecraft/Runix.git'
                         }
-
+                        
                         issueManagement {
                             system 'github'
                             url 'https://github.com/Runix-Minecraft/Runix/issues'
                         }
-
+                        
                         developers {
                             developer {
                                 id 'josiahseaman'
@@ -129,7 +127,8 @@ uploadArchives {
                             	roles {role 'developer'}
                             }
                         }
-                    }
-                }
-            }
+				}
+			}
+		}
+	}
 }

@@ -2,7 +2,6 @@ language: java
 jdk:
   - oraclejdk7
   - openjdk7
-  - openjdk6
 
 before_install:
  - chmod +x gradlew
@@ -15,6 +14,7 @@ env:
     TERM=dumb
 
 notifications:
+  email: false
   irc:
     channels:
       - "irc.esper.net#runix"
