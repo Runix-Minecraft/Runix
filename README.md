@@ -27,3 +27,8 @@ A PR MUST meet these standards befor being merged:
 [Wiki Page] (http://runix.wikia.com/wiki/Runix_Wiki)
 
 [Runix's licence] (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+=====
+[![Build Status](https://travis-ci.org/Runix-Minecraft/Runix.svg?branch=master)](https://travis-ci.org/Runix-Minecraft/Runix)
+
+irc.esper.net #runix
