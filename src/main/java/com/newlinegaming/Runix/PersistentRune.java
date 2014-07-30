@@ -163,11 +163,15 @@ public abstract class PersistentRune extends AbstractRune {
 	 * Return the rune in getActiveMagic() that matches the given coordinates or null if there is none
 	 */
 	public PersistentRune getRuneByPlayer(EntityPlayer activator) {
-		for(PersistentRune rune : getActiveMagic()){
-			if( rune.getPlayer() != null && rune.getPlayer().getUniqueID() == activator.getUniqueID() )
-				return rune;
-		}
-		return null;
+	    for(PersistentRune rune : getActiveMagic()){
+	        if( rune.getPlayer() != null){
+	            UUID runeID = rune.getPlayer().getUniqueID();
+	            UUID activatorID = activator.getUniqueID();
+	            if(runeID.equals(activatorID) )
+	                return rune;
+	        }   
+	    }
+	    return null;
 	}
 
 	/**
@@ -268,7 +272,7 @@ public abstract class PersistentRune extends AbstractRune {
 
 	public EntityPlayer getPlayer() {
 		for( Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList){
-			if( ((EntityPlayer) playerObj).getUniqueID() == uuid)
+			if( ((EntityPlayer) playerObj).getUniqueID().equals(uuid))
 				return (EntityPlayer)playerObj;
 		}
 		return null;
