@@ -164,7 +164,7 @@ public abstract class PersistentRune extends AbstractRune {
 	 */
 	public PersistentRune getRuneByPlayer(EntityPlayer activator) {
 		for(PersistentRune rune : getActiveMagic()){
-			if( rune.getPlayer() != null && rune.getPlayer().equals(activator) )
+			if( rune.getPlayer() != null && rune.getPlayer().getUniqueID() == activator.getUniqueID() )
 				return rune;
 		}
 		return null;
