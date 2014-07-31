@@ -164,7 +164,7 @@ public abstract class PersistentRune extends AbstractRune {
 	 */
 	public PersistentRune getRuneByPlayer(EntityPlayer activator) {
 		for(PersistentRune rune : getActiveMagic()){
-			if( rune.getPlayer() != null && rune.getPlayer().equals(activator) )
+			if( rune.getPlayer() != null && rune.getPlayer().getUniqueID() == activator.getUniqueID() )
 				return rune;
 		}
 		return null;
@@ -256,7 +256,7 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
 	protected void reportOutOfGas(EntityPlayer listener) {
-		aetherSay(listener, "More energy needed: Place a more valuable block in the center and active this Rune again.");
+		aetherSay(listener, runeName + ": More energy needed. Place a more valuable block in the center and active this Rune again.");
 		System.out.println(getRuneName() + ": We require more Vespene Gas; " + energy);
 		disabled = true;
 	}

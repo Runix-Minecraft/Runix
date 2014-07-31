@@ -132,7 +132,11 @@ public class RunecraftRune extends AbstractTimedRune {
         if(getPlayer() != null){
             disabled = true; //player will not be set to null until the closing animation completes
             aetherSay(poker, "You are now free from the Runecraft.");
-            return;
+            if(!getPlayer().worldObj.isRemote){ //client side
+                return;
+            }else{ //server side
+                setPlayer(null);
+            }
         }else{
         	setPlayer(poker); // assign a player and start
             aetherSay(poker, "The Runecraft is now locked to your body.");
