@@ -23,6 +23,7 @@ import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
 import com.newlinegaming.Runix.rune.GreekFireRune;
+import com.newlinegaming.Runix.rune.LightBeamRune;
 import com.newlinegaming.Runix.rune.OracleRune;
 import com.newlinegaming.Runix.rune.RubricCreationRune;
 import com.newlinegaming.Runix.rune.RubricRecallRune;
@@ -70,6 +71,7 @@ public class RuneHandler {
         runeRegistry.add(new OracleRune());
 //        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());
+        runeRegistry.add(new LightBeamRune());
     }
     
     public void addRune(AbstractRune rune) {

@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix.block;
 
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 
 public class ModBlock {
@@ -13,7 +14,7 @@ public class ModBlock {
 
 //        GreekFire = new GreekFire(2014).setUnlocalizedName("Greekfire");
     	
-//    	fakeAirBeam = new BlockFakeAirBeam();
+    	fakeAirBeam = new BlockFakeCarry();
 
         Gamereg();
 
@@ -23,5 +24,6 @@ public class ModBlock {
 
 //        GameRegistry.registerBlock(GreekFire, "GreekFire");
 //        GreekFire.setCreativeTab(RunixMain.TabRunix);
+        GameRegistry.registerBlock(fakeAirBeam, "RunixFakeCarry");
     }
 }

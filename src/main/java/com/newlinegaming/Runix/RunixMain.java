@@ -50,6 +50,7 @@ public class RunixMain {
     @EventHandler
     public void load(FMLInitializationEvent event) {
         proxy.registerRenderInformation();
+        proxy.registerTileEnitiy();
     }
 
     @EventHandler
