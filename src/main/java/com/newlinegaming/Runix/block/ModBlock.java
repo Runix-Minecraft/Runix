@@ -1,6 +1,5 @@
 package com.newlinegaming.Runix.block;
 
-import com.newlinegaming.Runix.block.fakeblocks.BlockFakeAirBeam;
 
 import net.minecraft.block.Block;
 
