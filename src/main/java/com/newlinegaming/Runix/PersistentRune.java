@@ -27,10 +27,9 @@ import com.newlinegaming.Runix.helper.LogHelper;
 public abstract class PersistentRune extends AbstractRune {
 
 	private UUID uuid = null;
-	private String displayName = null;
 	public WorldXYZ location = null;
 	public boolean disabled = false;
-	public String specialName = "";
+	public String instanceName = "";
 	public PersistentRune(){}
 
 
@@ -155,9 +154,9 @@ public abstract class PersistentRune extends AbstractRune {
 		return match;
 	}
 
-	public PersistentRune getRuneBySpecialName(String name) {
+	public PersistentRune getRuneByInstanceName(String name) {
 		for(PersistentRune rune : getActiveMagic()) {
-			if(rune.specialName .equals(name)) 
+			if(rune.instanceName.equals(name)) 
 				return rune;
 		}
 		return null;
