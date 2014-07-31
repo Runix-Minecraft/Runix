@@ -88,23 +88,27 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
 	String getJsonFilePath(World world) {
-		String levelName = world.getWorldInfo().getWorldName();
 		
-		if (world.isRemote) {
-			String subDirectory = MinecraftServer.getServer() instanceof DedicatedServer ? ""
-					: "saves/";
-			String directory = subDirectory + levelName + "/stored_runes/";
-			new File(directory).mkdirs();//ensure the folder exists
-			String fileName = directory + shortClassName() + ".json";
-			return fileName;
-		} else {
-			String directory = "saves/" + levelName + "/stored_runes/";
-			new File(directory).mkdirs();//ensure the folder exists
-			String fileName = directory + shortClassName() + ".json";
-			return fileName;
+		String levelName = world.getWorldInfo().getWorldName();
+		String directory = "";
+		
+		
+		try {
+//			Class
+			String subDirectory = ( MinecraftServer.getServer() instanceof DedicatedServer )? "" : "saves/";
+			directory = subDirectory + levelName + "/stored_runes/";
+			
+			
+		} catch (Throwable e) {
+			LogHelper.info("Server not found");
+			directory = "saves/" + levelName + "/stored_runes/";
 			
 		}
 		
+		new File(directory).mkdirs();//ensure the folder exists
+		String fileName = directory + shortClassName() + ".json";
+		return fileName;
+
 	}
 
 	/**
