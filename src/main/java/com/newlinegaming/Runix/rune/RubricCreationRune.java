@@ -91,8 +91,8 @@ public class RubricCreationRune extends PersistentRune {
 			consumeRune(extractCoordinates(structure));// delete the old structure
 
             if(toolused.getItem() == Items.written_book){
-    	        specialName = toolused.getDisplayName();
-                aetherSay(poker, "the tool used is "+ specialName);
+    	        instanceName = toolused.getDisplayName();
+                aetherSay(poker, "the tool used is "+ instanceName);
 			}
         }
 	}

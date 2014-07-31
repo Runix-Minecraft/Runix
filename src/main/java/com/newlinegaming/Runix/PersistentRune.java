@@ -27,10 +27,9 @@ import com.newlinegaming.Runix.helper.LogHelper;
 public abstract class PersistentRune extends AbstractRune {
 
 	private UUID uuid = null;
-	private String displayName = null;
 	public WorldXYZ location = null;
 	public boolean disabled = false;
-	public String specialName = "";
+	public String instanceName = "";
 	public PersistentRune(){}
 
 
@@ -88,23 +87,27 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
 	String getJsonFilePath(World world) {
-		String levelName = world.getWorldInfo().getWorldName();
 		
-		if (world.isRemote) {
-			String subDirectory = MinecraftServer.getServer() instanceof DedicatedServer ? ""
-					: "saves/";
-			String directory = subDirectory + levelName + "/stored_runes/";
-			new File(directory).mkdirs();//ensure the folder exists
-			String fileName = directory + shortClassName() + ".json";
-			return fileName;
-		} else {
-			String directory = "saves/" + levelName + "/stored_runes/";
-			new File(directory).mkdirs();//ensure the folder exists
-			String fileName = directory + shortClassName() + ".json";
-			return fileName;
+		String levelName = world.getWorldInfo().getWorldName();
+		String directory = "";
+		
+		
+		try {
+//			Class
+			String subDirectory = ( MinecraftServer.getServer() instanceof DedicatedServer )? "" : "saves/";
+			directory = subDirectory + levelName + "/stored_runes/";
+			
+			
+		} catch (Throwable e) {
+			LogHelper.info("Server not found");
+			directory = "saves/" + levelName + "/stored_runes/";
 			
 		}
 		
+		new File(directory).mkdirs();//ensure the folder exists
+		String fileName = directory + shortClassName() + ".json";
+		return fileName;
+
 	}
 
 	/**
@@ -151,9 +154,9 @@ public abstract class PersistentRune extends AbstractRune {
 		return match;
 	}
 
-	public PersistentRune getRuneBySpecialName(String name) {
+	public PersistentRune getRuneByInstanceName(String name) {
 		for(PersistentRune rune : getActiveMagic()) {
-			if(rune.specialName .equals(name)) 
+			if(rune.instanceName.equals(name)) 
 				return rune;
 		}
 		return null;
@@ -163,11 +166,15 @@ public abstract class PersistentRune extends AbstractRune {
 	 * Return the rune in getActiveMagic() that matches the given coordinates or null if there is none
 	 */
 	public PersistentRune getRuneByPlayer(EntityPlayer activator) {
-		for(PersistentRune rune : getActiveMagic()){
-			if( rune.getPlayer() != null && rune.getPlayer().getUniqueID() == activator.getUniqueID() )
-				return rune;
-		}
-		return null;
+	    for(PersistentRune rune : getActiveMagic()){
+	        if( rune.getPlayer() != null){
+	            UUID runeID = rune.getPlayer().getUniqueID();
+	            UUID activatorID = activator.getUniqueID();
+	            if(runeID.equals(activatorID) )
+	                return rune;
+	        }   
+	    }
+	    return null;
 	}
 
 	/**
@@ -268,7 +275,7 @@ public abstract class PersistentRune extends AbstractRune {
 
 	public EntityPlayer getPlayer() {
 		for( Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList){
-			if( ((EntityPlayer) playerObj).getUniqueID() == uuid)
+			if( ((EntityPlayer) playerObj).getUniqueID().equals(uuid))
 				return (EntityPlayer)playerObj;
 		}
 		return null;

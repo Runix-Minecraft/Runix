@@ -182,7 +182,7 @@ public class RuneHandler {
             }
         }
 
-        if(activeEdge.size() != 0)//tear detection: this should be empty by the last step
+        if(nextEdge.size() != 0)//tear detection: this should be empty by the last step
             System.err.println("RunixMain exceeded maximum structure chaining size: " + structure.size() + " blocks.");
         return structure;
     }

@@ -47,13 +47,13 @@ public class RubricRecallRune extends PersistentRune{
 		consumeKeyBlock(coords);
 		ItemStack toolused = poker.getCurrentEquippedItem();
 		if(toolused != null)
-		    specialName = toolused.getDisplayName();
+		    instanceName = toolused.getDisplayName();
 		ArrayList<PersistentRune> rubricList = (new RubricCreationRune().getActiveMagic());
         Signature signature = getSignature();
 		
         PersistentRune rubrics = null;
 		if (toolused!=null && toolused.getItem() == Items.written_book){
-			rubrics = (new RubricCreationRune()).getRuneBySpecialName(specialName);
+			rubrics = (new RubricCreationRune()).getRuneByInstanceName(instanceName);
 		}
 		else if( !signature.isEmpty() ){
     		for( PersistentRune candidate : rubricList ){
