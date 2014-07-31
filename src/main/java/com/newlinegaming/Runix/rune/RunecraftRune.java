@@ -68,15 +68,16 @@ public class RunecraftRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(moveInProgress ||(getPlayer() != null && !subject.equals(getPlayer())) )
+        if(moveInProgress || !subject.equals(getPlayer())) {
             return;
+        }
         if(getPlayer() != null)
         {
             moveInProgress = true;
             int dX = (int) (getPlayer().posX - location.posX - .5);
             int dY = (int) (getPlayer().posY - location.posY - 1);
             int dZ = (int) (getPlayer().posZ - location.posZ - .5);
-            if( 10.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
+            if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
                 setPlayer(null); //Vehicle has been abandoned
                 System.out.println("Runecraft has been abandoned.");
                 return; //Vehicle should stop moving until someone is at the wheel again
@@ -93,6 +94,8 @@ public class RunecraftRune extends AbstractTimedRune {
                 }
             }
             moveInProgress  = false;
+        }else { //getPlayer() == null
+            setPlayer(null); //clears the UUID and disables the rune
         }
     }
 
@@ -130,22 +133,17 @@ public class RunecraftRune extends AbstractTimedRune {
             initializeRune();
         
         if(getPlayer() != null){
-            disabled = true; //player will not be set to null until the closing animation completes
+            setPlayer(null);  ///disabled = true; //player will not be set to null until the closing animation completes
             aetherSay(poker, "You are now free from the Runecraft.");
-            if(!getPlayer().worldObj.isRemote){ //client side
-                return;
-            }else{ //server side
-                setPlayer(null);
-            }
         }else{
         	setPlayer(poker); // assign a player and start
             aetherSay(poker, "The Runecraft is now locked to your body.");
         	HashSet<WorldXYZ> newVehicleShape = attachedStructureShape(poker);
-            if( newVehicleShape.isEmpty() ) {vehicleBlocks = removeAirXYZ(vehicleBlocks);
+            if( newVehicleShape.isEmpty() ) {
+                vehicleBlocks = removeAirXYZ(vehicleBlocks);
         	}else {
                 vehicleBlocks = newVehicleShape;
                 renderer.reset();
-
         	}
         }
     }
