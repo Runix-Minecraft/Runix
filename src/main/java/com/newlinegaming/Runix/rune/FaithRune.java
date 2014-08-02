@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Tiers;
+import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.utils.Util_Movement;
 import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
 import com.newlinegaming.Runix.WorldXYZ;
@@ -67,7 +68,7 @@ public class FaithRune extends PersistentRune{
             firstTime = false;
             consumeRune(coords);
             try {
-                setBlockIdAndUpdate(coords, Blocks.gold_block); //Gold block is to be a permanent marker
+                setBlockIdAndUpdate(coords, ModBlock.fakeGoldBlock); //Gold block is to be a permanent marker
             } catch (NotEnoughRunicEnergyException e) {}
             energy -= Tiers.getEnergy(Blocks.gold_block) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
