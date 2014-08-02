@@ -6,9 +6,11 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockFakeCarry extends RunixAirBlockFX implements ITileEntityProvider {
+public class BlockFakeCarry extends RunixAirBlock implements ITileEntityProvider {
     
     public BlockFakeCarry() {
+        setBlockName("runix:fakeairblockfx");
+        setLightLevel(17f);
         
     }
 

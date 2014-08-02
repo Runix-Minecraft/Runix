@@ -8,13 +8,16 @@ public class ModBlock {
 
     public static Block GreekFire;
     
+    //Fake/replacement Blocks
     public static Block fakeAirBeam;
-
+    public static Block fakeGoldBlock;
+    
     public static void init() {
 
 //        GreekFire = new GreekFire(2014).setUnlocalizedName("Greekfire");
     	
     	fakeAirBeam = new BlockFakeCarry();
+    	fakeGoldBlock = new BlockFakeGold();
 
         Gamereg();
 
@@ -25,5 +28,6 @@ public class ModBlock {
 //        GameRegistry.registerBlock(GreekFire, "GreekFire");
 //        GreekFire.setCreativeTab(RunixMain.TabRunix);
         GameRegistry.registerBlock(fakeAirBeam, "RunixFakeCarry");
+        GameRegistry.registerBlock(fakeGoldBlock, "RunixFakeGoldBlock");
     }
 }
