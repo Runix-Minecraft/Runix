@@ -69,7 +69,7 @@ public class RuneHandler {
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
-//        runeRegistry.add(new GreekFireRune());
+        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());
         runeRegistry.add(new LightBeamRune());
     }

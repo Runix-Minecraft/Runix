@@ -156,8 +156,6 @@ public class GreekFire extends BlockFire {
             }
             else if (fireLifespan == 15)
             {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
-                if(random.nextInt(4) == 0)
-                    new WorldXYZ(world, x, y, z).setBlockIdAndUpdate(Blocks.glass);// fire dies of old age
                 if(random.nextInt(100) == 1)
                     return true;// this is a very low probability of dying out
             }
