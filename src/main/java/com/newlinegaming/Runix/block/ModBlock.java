@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 
 public class ModBlock {
 
-    public static Block GreekFire;
+    public static Block greekFire;
     
     //Fake/replacement Blocks
     public static Block fakeAirBeam;
@@ -14,7 +14,7 @@ public class ModBlock {
     
     public static void init() {
 
-//        GreekFire = new GreekFire(2014).setUnlocalizedName("Greekfire");
+        greekFire = GreekFire.getInstance();
     	
     	fakeAirBeam = new BlockFakeCarry();
     	fakeGoldBlock = new BlockFakeGold();
@@ -25,8 +25,7 @@ public class ModBlock {
 
     private static void Gamereg() {
 
-//        GameRegistry.registerBlock(GreekFire, "GreekFire");
-//        GreekFire.setCreativeTab(RunixMain.TabRunix);
+        GameRegistry.registerBlock(greekFire, "GreekFire");
         GameRegistry.registerBlock(fakeAirBeam, "RunixFakeCarry");
         GameRegistry.registerBlock(fakeGoldBlock, "RunixFakeGoldBlock");
     }
