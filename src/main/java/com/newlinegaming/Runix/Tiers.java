@@ -9,10 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
 public class Tiers {
-	
-    //Yea... this class is going to be overhauld will make my life as well as mod-addon developers a bit easier-
-    // I will be adding a TierRegistery that will look singthing like this-
-    // TierRegistery.registerTierBlock(Blocks.cobbleston, TierType.natural, 1) TierType will be a enum class contaning-
+    
     // naturalBlocks moveSensitiveBlocks crushableBlocks
     
     

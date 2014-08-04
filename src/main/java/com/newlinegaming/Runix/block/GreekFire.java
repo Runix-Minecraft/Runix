@@ -1,118 +1,109 @@
 package com.newlinegaming.Runix.block;
 
-//import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-//import static net.minecraftforge.common.util.ForgeDirection.EAST;
-//import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-//import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-//import static net.minecraftforge.common.util.ForgeDirection.UP;
-//import static net.minecraftforge.common.util.ForgeDirection.WEST;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
-//import net.minecraft.creativetab.CreativeTabs;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.util.AxisAlignedBB;
-//import net.minecraft.world.IBlockAccess;
-//import net.minecraft.world.World;
-//import net.minecraft.world.WorldServer;
-//
-//import cpw.mods.fml.relauncher.Side;
-//import cpw.mods.fml.relauncher.SideOnly;
-//
-//import java.util.List;
-//import java.util.Random;
-//
-//import com.newlinegaming.Runix.RunixMain;
-//import com.newlinegaming.Runix.SigBlock;
-//import com.newlinegaming.Runix.Tiers;
-//import com.newlinegaming.Runix.WorldXYZ;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.Random;
+
+import com.newlinegaming.Runix.RunixMain;
+import com.newlinegaming.Runix.SigBlock;
+import com.newlinegaming.Runix.Tiers;
+import com.newlinegaming.Runix.WorldXYZ;
 
 public class GreekFire extends BlockFire {
     
-//    protected static int[] greekFireSpreadSpeed = new int[4096];
-//    protected static int[] greekFlammability = new int[4096];
-//
-//    @SideOnly(Side.CLIENT)
-//    private Icon[] iconArray;
-//
-//    public static int blockIdBackup = 2014;
-//
+    protected static int[] greekFireSpreadSpeed = new int[4096];
+    protected static int[] greekFlammability = new int[4096];
+
+    @SideOnly(Side.CLIENT)
+    private IIcon[] iconArray;
+
+    public static int blockIdBackup = 2014;
+
     public GreekFire() {
         super();
         setBlockName("Greek Fire");
-//        this.setTickRandomly(true);
-//        this.setCreativeTab(RunixMain.TabRunix);
-//        initializeBlock();
+        setTickRandomly(true);
+        setCreativeTab(RunixMain.TabRunix);
+        initializeBlock();
     }
-//
+
 //    @SideOnly(Side.CLIENT)
 //    public void getSubBlocks(int block, CreativeTabs tab, List subItems) {
 //        subItems.add(new ItemStack(block, 1, 0));
 //        subItems.add(new ItemStack(block, 1, 14));
 //    }
-//
-//    @Override
-//    public int damageDropped (int metadata) {
-//        return metadata;
-//    }
-//
-//    @SideOnly(Side.CLIENT)
-//    public Icon getFireIcon(int par1)
-//    {
-//        return this.iconArray[par1];
-//    }
-//
-//    public void initializeBlock()
-//    {
-//        this.setLightValue(1.0f);
-//        this.setBurn(Block.stone.blockID, 30, 100);
-//        this.setBurn(Block.grass.blockID, 30, 100);
-//        this.setBurn(Block.dirt.blockID, 30, 100);
-//        this.setBurn(Block.gravel.blockID, 30, 100);
-//    }
-//
-//    private void setBurn(int id, int encouragement, int flammability)
-//    {
+
+    @Override
+    public int damageDropped (int metadata) {
+        return metadata;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public IIcon getFireIcon(int par1) {
+        return this.iconArray[par1];
+    }
+    
+    public void initializeBlock() {
+        setLightLevel(1f);
+//        this.setBurn(Blocks.stone, 30, 100);
+//        this.setBurn(Blocks.grass 30, 100);
+//        this.setBurn(Blocks.dirt, 30, 100);
+//        this.setBurn(Blocks.gravel, 30, 100);
+    }
+
+//    private void setBurn(Block id, int encouragement, int flammability){
 //        greekFireSpreadSpeed[id] = encouragement;
 //        greekFlammability[id] = flammability;
 //    }
 //
-//    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-//    {
-//        return null;
-//    }
-//
-//    public boolean isOpaqueCube()
-//    {
-//        return false;
-//    }
-//
-//    public boolean renderAsNormalBlock()
-//    {
-//        return false;
-//    }
-//
-//    public int getRenderType()
-//    {
-//        return 3;
-//    }
-//
-//    public int quantityDropped(Random par1Random)
-//    {
-//        return 0;
-//    }
-//
-//    public int tickRate(World par1World)
-//    {
-//        return 30;// + par1World.rand.nextInt(10);
-//    }
-//
-//    public void updateTick(World world, int x, int y, int z, Random random)
-//    {
-//        if (world.getGameRules().getGameRuleBooleanValue("doFireTick"))
-//        {
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        return null;
+    }
+    
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    public int getRenderType() {
+        return 3;
+    }
+
+    public int quantityDropped(Random random) {
+        return 0;
+    }
+
+    public int tickRate(World par1World) {
+        return 30;// + par1World.rand.nextInt(10);
+    }
+
+//    public void updateTick(World world, int x, int y, int z, Random random) {
+//        if (world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
 //            int fireLifespan = world.getBlockMetadata(x, y, z);
 //
 //            if(fireDiesOut(world, x, y, z, random, fireLifespan)){
-//                if(world.getBlockId(x, y, z) != Block.glass.blockID) //sometimes it crystallizes instead
+//                if(world.getBlock(x, y, z) != Blocks.grass) //sometimes it crystallizes instead
 //                    world.setBlockToAir(x, y, z);
 //            }
 //            else if(fireLifespan < 15)
@@ -126,9 +117,9 @@ public class GreekFire extends BlockFire {
 //            }
 //        }
 //    }
-//
+
 //    private boolean fireDiesOut(World world, int x, int y, int z, Random random, int fireLifespan) {
-//        Block base = Block.blocksList[world.getBlockId(x, y - 1, z)];
+//        Block base = Block.blocksList[world.getBlock(x, y - 1, z)];
 //
 //        if(isGreekFireSource(base ))
 //            return false;
@@ -534,9 +525,6 @@ public class GreekFire extends BlockFire {
 //        }
 //
 //        return true;
-//    }
-//
-//        
-//    
+//    }    
     
 }
