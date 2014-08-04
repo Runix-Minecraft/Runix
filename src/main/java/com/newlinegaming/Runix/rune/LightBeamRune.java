@@ -22,7 +22,7 @@ public class LightBeamRune extends AbstractRune {
         Block GLOW = Blocks.glowstone;
         return new Block[][][] {{
             {TIER, GLOW, TIER},
-            {GLOW, TIER, TIER},
+            {GLOW, TIER, GLOW},
             {TIER, GLOW, TIER}
         }};
 

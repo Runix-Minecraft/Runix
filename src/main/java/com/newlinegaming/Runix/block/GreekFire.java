@@ -60,6 +60,7 @@ public class GreekFire extends BlockFire {
     }
 
     
+    @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Block block, CreativeTabs tab, List subItems) {
         subItems.add(new ItemStack(block, 1, 0));

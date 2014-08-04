@@ -71,7 +71,7 @@ public class RuneHandler {
         runeRegistry.add(new OracleRune());
 //        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());
-//        runeRegistry.add(new LightBeamRune());
+        runeRegistry.add(new LightBeamRune());
     }
     
     public void addRune(AbstractRune rune) {
