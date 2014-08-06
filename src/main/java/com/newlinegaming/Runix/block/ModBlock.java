@@ -3,6 +3,7 @@ package com.newlinegaming.Runix.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
 public class ModBlock {
 
@@ -17,7 +18,7 @@ public class ModBlock {
         greekFire = GreekFire.getInstance();
     	
     	fakeAirBeam = new BlockFakeCarry();
-    	fakeGoldBlock = new BlockFakeGold();
+    	fakeGoldBlock = new FakeBlock(Blocks.gold_block);
 
         Gamereg();
 
