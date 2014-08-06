@@ -7,7 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
 import com.newlinegaming.Runix.RunixMain;
@@ -28,10 +30,10 @@ public class ArmorAetherGoggles extends ItemArmor implements ISpecialArmor {
 //    @Override
 //    public void onCreated(ItemStack is, World world, EntityPlayer player) {
 //        is.stackTagCompound = new NBTTagCompound();
-//        is.stackTagCompound.setString("master", player.getDisplayName());
+//        is.stackTagCompound.setLong(S, p_74772_2_);
 //        is.stackTagCompound.setBoolean("activated", false);
 //    }
-//
+
 //    @Override
 //    public ItemStack onItemRightClick(ItemStack is, World world, EntityPlayer player) {
 //        if (is.stackTagCompound != null) {

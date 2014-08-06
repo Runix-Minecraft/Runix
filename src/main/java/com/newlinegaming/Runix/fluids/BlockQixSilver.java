@@ -23,12 +23,14 @@ public class BlockQixSilver extends BlockFluidClassic {
         this.setCreativeTab(RunixMain.TabRunix);
         this.setBlockName("runix:qixsilver");
     }
-
+    
+    @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int side, int meta) {
         return (side == 0 || side == 1)? FQS : FQF;
     }
-
+    
+    @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister reg) {
         FQS = reg.registerIcon(LibInfo.MOD_ID + ":qixsilverstill");

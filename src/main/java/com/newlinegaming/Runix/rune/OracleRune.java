@@ -51,7 +51,10 @@ public class OracleRune extends PersistentRune {
 	protected void poke(EntityPlayer player, WorldXYZ coords) {
 		ItemStack toolUsed = player.getHeldItem();
 		
-		if(toolUsed !=null && toolUsed.getItem() == Items.golden_sword) {
+		if(toolUsed !=null && toolUsed.getItem() == Items.golden_sword || 
+		        toolUsed !=null && toolUsed.getItem() == Items.stone_sword || 
+		        toolUsed !=null && toolUsed.getItem() == Items.wooden_sword ||
+		        toolUsed !=null && toolUsed.getItem() == Items.diamond_sword) {
 			ArrayList<PersistentRune> d = RuneHandler.getInstance().getAllRunesByPlayer(player);
 			aetherSay(player, "Current enchantments: " + Integer.toString(d.size()));
 			for (PersistentRune r : d) {
