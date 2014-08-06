@@ -38,9 +38,12 @@ public class Tiers {
             add(Blocks.dirt);
             add(Blocks.grass);
             add(Blocks.tallgrass);
+            add(Blocks.double_plant);
             add(Blocks.snow_layer);
             add(Blocks.mycelium);
             add(Blocks.netherrack);
+            add(Blocks.yellow_flower);
+            add(Blocks.red_flower);
             add(Blocks.lava);
             add(Blocks.flowing_lava);
             add(Blocks.vine);
