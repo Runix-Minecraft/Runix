@@ -41,7 +41,7 @@ public class Tiers {
             add(Blocks.dirt);
             add(Blocks.grass);
             add(Blocks.tallgrass);
-            add(Blocks.snow);
+            add(Blocks.snow_layer);
             add(Blocks.mycelium);
             add(Blocks.netherrack);
             add(Blocks.lava);
@@ -124,7 +124,7 @@ public class Tiers {
         
         crushableBlocks =  new ArrayList<Block>(){{//torches are debatable, since someone did place it there
             add(Blocks.deadbush);
-            add(Blocks.snow);
+            add(Blocks.snow_layer);
             add(Blocks.fire);
             add(Blocks.gravel);
             add(Blocks.water);
@@ -219,7 +219,7 @@ public class Tiers {
         addBlock(Blocks.stone_button, 2);
         addBlock(Blocks.snow_layer, 1);
         addBlock(Blocks.ice, 1);
-        addBlock(Blocks.snow, 1);
+        addBlock(Blocks.snow, 20);
         addBlock(Blocks.cactus, 96);
         addBlock(Blocks.clay, 237);
         addBlock(Blocks.reeds, 32);
