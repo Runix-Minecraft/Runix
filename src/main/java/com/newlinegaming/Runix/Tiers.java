@@ -48,11 +48,13 @@ public class Tiers {
             add(Blocks.flowing_lava);
             add(Blocks.vine);
             add(Blocks.leaves);
+            add(Blocks.leaves2);
             add(Blocks.cactus);
             add(Blocks.deadbush);
             add(Blocks.ice);
             add(Blocks.sapling);
             add(Blocks.log);
+            add(Blocks.log2);
 //            add(GreekFire);
         }};
 
@@ -75,7 +77,6 @@ public class Tiers {
             add(Blocks.lava);
             add(Blocks.flowing_lava);
             add(Blocks.ladder);
-            add(Blocks.leaves);
             add(Blocks.lever);
             add(Blocks.melon_stem);
             add(Blocks.brown_mushroom);
@@ -157,7 +158,9 @@ public class Tiers {
         addBlock(Blocks.iron_ore, 158);
         addBlock(Blocks.coal_ore, 84);
         addBlock(Blocks.log, 32);
-        addBlock(Blocks.leaves, 1);
+        addBlock(Blocks.log2, 32);
+        addBlock(Blocks.leaves, 10);
+        addBlock(Blocks.leaves2, 10);
         addBlock(Blocks.sponge, 256);
         addBlock(Blocks.glass, 9);
         addBlock(Blocks.lapis_ore, 3964);
