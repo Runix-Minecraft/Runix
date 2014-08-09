@@ -53,7 +53,7 @@ public abstract class PersistentRune extends AbstractRune {
 			for(PersistentRune rune : getActiveMagic()) {
 				String runeGson = converter.toJson(rune);
 //				System.out.println("[SAVE]["+shortClassName()+"] " +runeGson);
-				LogHelper.info("Saving ["+shortClassName()+"] " +runeGson);
+//				LogHelper.info("Saving ["+shortClassName()+"] " +runeGson);
 				file.println(runeGson);
 			}
 			file.close();
@@ -77,8 +77,7 @@ public abstract class PersistentRune extends AbstractRune {
 				getActiveMagic().addAll(newList);
 			}
 		} catch (IOException e) {
-//			System.err.println("RUNIX: Can't access file or doesn't exist: " + fileName);
-			LogHelper.fatal("RUNIX: Can't access file or doesn't exist: " + fileName);
+			LogHelper.info("Runix: Can't access file or doesn't exist: " + fileName);
 		} catch (Exception e){
 //			System.err.println("GSON failed to parse " + fileName);
 			LogHelper.fatal("GSON failed to parse " + fileName);
@@ -99,9 +98,7 @@ public abstract class PersistentRune extends AbstractRune {
 			
 			
 		} catch (Throwable e) {
-			LogHelper.info("Server not found");
 			directory = "saves/" + levelName + "/stored_runes/";
-			
 		}
 		
 		new File(directory).mkdirs();//ensure the folder exists
