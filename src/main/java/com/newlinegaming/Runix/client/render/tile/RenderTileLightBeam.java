@@ -23,6 +23,7 @@ public class RenderTileLightBeam extends TileEntitySpecialRenderer {
         GL11.glTranslatef((float)x, (float)y, (float)z);
         
         Tessellator tess = Tessellator.instance;
+        this.bindTexture(TEXTURE);
         
         tess.startDrawingQuads();
         
@@ -30,7 +31,6 @@ public class RenderTileLightBeam extends TileEntitySpecialRenderer {
         tess.addVertexWithUV(0, 1, 0, 0, 1);//top left
         tess.addVertexWithUV(1, 1, 0, 1, 1);//top right
         tess.addVertexWithUV(1, 0, 0, 1, 0);//bottom right
-        System.out.println("FOo");
         
         tess.draw();
         GL11.glPopMatrix();
