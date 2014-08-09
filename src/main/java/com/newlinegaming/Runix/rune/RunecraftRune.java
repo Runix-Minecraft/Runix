@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.helper.RenderHelper;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
@@ -73,27 +74,33 @@ public class RunecraftRune extends AbstractTimedRune {
         }
         if(getPlayer() != null)
         {
-            moveInProgress = true;
-            int dX = (int) (getPlayer().posX - location.posX - .5);
-            int dY = (int) (getPlayer().posY - location.posY - 1);
-            int dZ = (int) (getPlayer().posZ - location.posZ - .5);
-            if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
-                setPlayer(null); //Vehicle has been abandoned
-                System.out.println("Runecraft has been abandoned.");
-                return; //Vehicle should stop moving until someone is at the wheel again
-            }
-            if(getPlayer().isSneaking())
-                dY -= 1;
-            if(dX != 0 || dY != 0 || dZ != 0){
-                HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
-                if( !Util_Movement.shapeCollides(move) ){
-                    vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
+            try{
+                moveInProgress = true;
+                int dX = (int) (getPlayer().posX - location.posX - .5);
+                int dY = (int) (getPlayer().posY - location.posY - 1);
+                int dZ = (int) (getPlayer().posZ - location.posZ - .5);
+                if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
+                    setPlayer(null); //Vehicle has been abandoned
+                    System.out.println("Runecraft has been abandoned.");
                 }
-                else{
-                    aetherSay(getPlayer(), "CRUNCH!");
+                else {
+                    if(getPlayer().isSneaking())
+                	dY -= 1;
+                    if(dX != 0 || dY != 0 || dZ != 0){
+                        HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
+                        if( !Util_Movement.shapeCollides(move) ){
+                            vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
+                        }
+                        else{
+                            aetherSay(getPlayer(), "CRUNCH!");
+                        }
+                    }
                 }
+                moveInProgress  = false;
+            } catch (Throwable t){
+        	LogHelper.fatal("Runecraft failed.");
+        	LogHelper.fatal(t);
             }
-            moveInProgress  = false;
         }else { //getPlayer() == null
             setPlayer(null); //clears the UUID and disables the rune
         }
