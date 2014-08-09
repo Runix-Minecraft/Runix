@@ -19,9 +19,9 @@ public class SigBlock{
     @Override
     public boolean equals(Object other){
         if(other instanceof SigBlock)
-            return blockID == ((SigBlock)other).blockID;// && meta == ((SigBlock)other).meta;
+            return blockID == ((SigBlock)other).blockID && meta == ((SigBlock)other).meta;
         else if (other instanceof Block)
-            return blockID.equals((Block)other);  //TODO: meta support && meta == ((Block)other).getM;
+            return blockID.equals((Block)other);  //can't get meta from block without coordinates
         return false;
     }
     

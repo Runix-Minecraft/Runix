@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final Vector3 UP =    new Vector3(0, 1,0);
@@ -32,6 +34,13 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
         z = destination.posZ - reference.posZ;
     }
     
+    public Vector3(ForgeDirection face)
+    {
+        x = face.offsetX;
+        y = face.offsetY;
+        z = face.offsetZ;
+    }
+
     public String toString(){
         return "\"x\":"+x + ", \"y\":" + y + ", \"z\":" + z;
     }

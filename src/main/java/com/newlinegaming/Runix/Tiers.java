@@ -16,7 +16,7 @@ public class Tiers {
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
     public static final float blockMoveCost = 1.0f;
-    public static final int blockBreakCost = 12;
+    public static final int blockBreakCost = 2;
     public static final float movementPerMeterCost = 0.22f;
     
     private static ArrayList<Block> naturalBlocks;
@@ -38,18 +38,23 @@ public class Tiers {
             add(Blocks.dirt);
             add(Blocks.grass);
             add(Blocks.tallgrass);
-            add(Blocks.snow);
+            add(Blocks.double_plant);
+            add(Blocks.snow_layer);
             add(Blocks.mycelium);
             add(Blocks.netherrack);
+            add(Blocks.yellow_flower);
+            add(Blocks.red_flower);
             add(Blocks.lava);
             add(Blocks.flowing_lava);
             add(Blocks.vine);
             add(Blocks.leaves);
+            add(Blocks.leaves2);
             add(Blocks.cactus);
             add(Blocks.deadbush);
             add(Blocks.ice);
             add(Blocks.sapling);
             add(Blocks.log);
+            add(Blocks.log2);
 //            add(GreekFire);
         }};
 
@@ -72,7 +77,6 @@ public class Tiers {
             add(Blocks.lava);
             add(Blocks.flowing_lava);
             add(Blocks.ladder);
-            add(Blocks.leaves);
             add(Blocks.lever);
             add(Blocks.melon_stem);
             add(Blocks.brown_mushroom);
@@ -121,7 +125,7 @@ public class Tiers {
         
         crushableBlocks =  new ArrayList<Block>(){{//torches are debatable, since someone did place it there
             add(Blocks.deadbush);
-            add(Blocks.snow);
+            add(Blocks.snow_layer);
             add(Blocks.fire);
             add(Blocks.gravel);
             add(Blocks.water);
@@ -154,7 +158,9 @@ public class Tiers {
         addBlock(Blocks.iron_ore, 158);
         addBlock(Blocks.coal_ore, 84);
         addBlock(Blocks.log, 32);
-        addBlock(Blocks.leaves, 1);
+        addBlock(Blocks.log2, 32);
+        addBlock(Blocks.leaves, 10);
+        addBlock(Blocks.leaves2, 10);
         addBlock(Blocks.sponge, 256);
         addBlock(Blocks.glass, 9);
         addBlock(Blocks.lapis_ore, 3964);
@@ -216,7 +222,7 @@ public class Tiers {
         addBlock(Blocks.stone_button, 2);
         addBlock(Blocks.snow_layer, 1);
         addBlock(Blocks.ice, 1);
-        addBlock(Blocks.snow, 1);
+        addBlock(Blocks.snow, 20);
         addBlock(Blocks.cactus, 96);
         addBlock(Blocks.clay, 237);
         addBlock(Blocks.reeds, 32);
@@ -326,9 +332,13 @@ public class Tiers {
         return (int) Math.round(Math.log(energy) / Math.log(2));
     }
 
-    public static int energyToRadiusConversion(int energy) {
+    public static int energyToRadiusConversion(int energy) { 
+        return Tiers.energyToRadiusConversion(energy, blockMoveCost);
+    }
+    
+    public static int energyToRadiusConversion(int energy, float perBlockCost) {
         int diameter = 1;
-        while( diameter * diameter * diameter * blockMoveCost < energy) //this is over generous intentionally
+        while( diameter * diameter * diameter * perBlockCost < energy) //this is over generous intentionally
             diameter += 2; // +2 so that we always have an odd number and have block centered shapes
         return diameter/2; //integer math will round down the .5
     }

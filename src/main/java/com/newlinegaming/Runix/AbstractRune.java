@@ -155,7 +155,7 @@ public abstract class AbstractRune {
 	        }
             coords = coords.offset(direction);
 	    }
-	    System.out.println("There was no safe place to put your character.");
+	    aetherSay(player, "There was no safe place to put your character.");
 	}
 	
     /* Example Code:
@@ -229,7 +229,6 @@ public abstract class AbstractRune {
         {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
-            System.out.println("Looking For: " + patternID + " Got: " + blockID);
             switch(patternID.blockID.getUnlocalizedName()){// Handle special Template Values
                 case "tile.NONE": 
                     if( blockID == ink )
@@ -237,7 +236,6 @@ public abstract class AbstractRune {
                     break;
                 case "tile.TIER":
                     if( blockID != ink ){
-//                        aetherSay(coords.getWorld(), "Found " + blockID + " ink is " + ink);
                         return false; //inconsistent Tier block
                     }
                     break;
@@ -251,7 +249,6 @@ public abstract class AbstractRune {
                     break;
                 default:
                     if (!patternID.equals(blockID) ){//normal block
-//                        aetherSay(coords.getWorld(), "Found " + blockID + " expected " + patternID);
                         return false;
                     }
                     break;

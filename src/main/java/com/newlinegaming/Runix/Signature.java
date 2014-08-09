@@ -33,6 +33,7 @@ public class Signature {
                 Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, //may be some potential there
                 Blocks.stained_hardened_clay,
                 Blocks.log, Blocks.wooden_slab, Blocks.double_wooden_slab,
+                Blocks.stained_glass, Blocks.stained_glass_pane
         };
 
         HashMap<WorldXYZ, SigBlock> shape = rune.runicFormulae(coords);
@@ -47,7 +48,6 @@ public class Signature {
                 }
             }
         }
-//        rune.aetherSay(coords.getWorld(), "Signature:" + blocks.toString());
     }
     
     public boolean equals(Signature other){
@@ -55,7 +55,11 @@ public class Signature {
             if(Collections.frequency(other.blocks, b) != Collections.frequency(blocks, b))
                 return false;
         }
-//        System.out.println("Match found");//"Comparing:" + this + " =? " + other + " = " + answer);
+        for(SigBlock b : other.blocks){//second loop ensures there's no EXTRA blocks in the other signature
+            if(Collections.frequency(other.blocks, b) != Collections.frequency(blocks, b))
+                return false;
+        }
+        
         return true;
     }
     

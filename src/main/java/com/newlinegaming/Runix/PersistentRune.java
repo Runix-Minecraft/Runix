@@ -145,7 +145,7 @@ public abstract class PersistentRune extends AbstractRune {
 				match = this.getClass().getConstructor(WorldXYZ.class, EntityPlayer.class).newInstance(coords, activator);
 				getActiveMagic().add(match);//add our new Rune to the list
 			} catch (Exception e) {
-				System.out.println("This Persistent runes require a constructor YourRune(WorldXYZ loc, EntityPlayer user) to be defined.");
+				System.err.println("This Persistent runes require a constructor YourRune(WorldXYZ loc, EntityPlayer user) to be defined.");
 				e.printStackTrace();
 				return null;
 			}
@@ -264,12 +264,10 @@ public abstract class PersistentRune extends AbstractRune {
 
 	protected void reportOutOfGas(EntityPlayer listener) {
 		aetherSay(listener, runeName + ": More energy needed. Place a more valuable block in the center and active this Rune again.");
-		System.out.println(getRuneName() + ": We require more Vespene Gas; " + energy);
 		disabled = true;
 	}
 
 	public boolean onPlayerLogin(String username) {
-		//        System.out.println(username + " joined the server");
 		return false;
 	}
 
