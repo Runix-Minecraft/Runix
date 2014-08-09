@@ -20,6 +20,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
     
     public ZeerixChestRune() {
         runeName = "Zeerix Chest";
+        updateEveryXTicks(200);
     }
 
     public ZeerixChestRune(WorldXYZ coords, EntityPlayer player2) {
