@@ -12,6 +12,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.PersistentRune;
@@ -72,8 +73,7 @@ public class RunecraftRune extends AbstractTimedRune {
         if(moveInProgress || !subject.equals(getPlayer())) {
             return;
         }
-        if(getPlayer() != null)
-        {
+        if(getPlayer() != null && checkRunePattern(location)) {
             try{
                 moveInProgress = true;
                 int dX = (int) (getPlayer().posX - location.posX - .5);
@@ -114,6 +114,11 @@ public class RunecraftRune extends AbstractTimedRune {
                 if(disabled)
                     setPlayer(null); // done with closing animation
             }
+    }
+    
+    @SubscribeEvent
+    public void event(BreakEvent b){
+	
     }
     
     @SubscribeEvent
