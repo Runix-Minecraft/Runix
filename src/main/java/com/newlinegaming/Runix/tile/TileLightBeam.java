@@ -8,9 +8,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
-public class TileFakeCarry extends TileEntity {
+public class TileLightBeam extends TileEntity {
     
-    public TileFakeCarry() {}
+    public TileLightBeam() {}
     
     @Override
     public void updateEntity() {//TODO: work on pushing entities

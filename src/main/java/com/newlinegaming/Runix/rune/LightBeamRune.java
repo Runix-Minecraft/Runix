@@ -37,7 +37,7 @@ public class LightBeamRune extends AbstractRune {
     public void execute(WorldXYZ coords, EntityPlayer player) {
         Block INK = getTierInkBlock(coords);
         Block GLOW = Blocks.glowstone;
-        Block FAKE = ModBlock.fakeAirBeam;
+        Block FAKE = ModBlock.lightBeam;
         Block[][][] outcome = new Block[][][]{{
             {INK, GLOW, INK},
             {GLOW, FAKE, GLOW},

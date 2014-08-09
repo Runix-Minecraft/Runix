@@ -9,14 +9,14 @@ public class ModBlock {
     public static Block greekFire;
     
     //Fake/replacement Blocks
-    public static Block fakeAirBeam;
+    public static Block lightBeam;
     public static Block fakeGoldBlock;
     
     public static void init() {
 
         greekFire = GreekFire.getInstance();
     	
-    	fakeAirBeam = new BlockFakeCarry();
+    	lightBeam = new BlockLightBeam();
     	fakeGoldBlock = new BlockFakeGold();
 
         Gamereg();
@@ -26,7 +26,7 @@ public class ModBlock {
     private static void Gamereg() {
 
         GameRegistry.registerBlock(greekFire, "GreekFire");
-        GameRegistry.registerBlock(fakeAirBeam, "RunixFakeCarry");
+        GameRegistry.registerBlock(lightBeam, "RunixLightBeam");
         GameRegistry.registerBlock(fakeGoldBlock, "RunixFakeGoldBlock");
     }
 }
