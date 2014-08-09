@@ -177,8 +177,7 @@ public class GreekFire extends BlockFire {
         return greekFlammability.containsKey(block) ? greekFlammability.get(block) : 0;
     }
 
-    private boolean canNeighborBurn(World par1World, int par2, int par3, int par4)
-    {
+    private boolean canNeighborBurn(World par1World, int par2, int par3, int par4){
         return canBlockCatchFire(par1World, par2 + 1, par3, par4 ) ||
                canBlockCatchFire(par1World, par2 - 1, par3, par4 ) ||
                canBlockCatchFire(par1World, par2, par3 - 1, par4 ) ||
@@ -187,13 +186,15 @@ public class GreekFire extends BlockFire {
                canBlockCatchFire(par1World, par2, par3, par4 + 1);
     }
 
-    public int getChanceToEncourageFire(IBlockAccess world, int x, int y, int z, int oldChance, ForgeDirection face)
-    {
-        return getFlammability(new WorldXYZ((World)world, x, y, z).offset(new Vector3(face)));
+    public int getChanceToEncourageFire(IBlockAccess world, int x, int y, int z, int oldChance, ForgeDirection face) {
+        try {
+            return getFlammability(new WorldXYZ((World)world, x, y, z).offset(new Vector3(face)));
+        }catch (ClassCastException ex){
+            return 0;
+        }
     }
 
-    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
-    {
+    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
         return World.doesBlockHaveSolidTopSurface(par1World, par2, par3 - 1, par4) || this.canNeighborBurn(par1World, par2, par3, par4);
     }
 
