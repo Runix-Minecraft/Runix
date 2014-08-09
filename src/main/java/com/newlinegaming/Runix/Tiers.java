@@ -16,7 +16,7 @@ public class Tiers {
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
     public static final float blockMoveCost = 1.0f;
-    public static final int blockBreakCost = 12;
+    public static final int blockBreakCost = 2;
     public static final float movementPerMeterCost = 0.22f;
     
     private static ArrayList<Block> naturalBlocks;
@@ -332,9 +332,13 @@ public class Tiers {
         return (int) Math.round(Math.log(energy) / Math.log(2));
     }
 
-    public static int energyToRadiusConversion(int energy) {
+    public static int energyToRadiusConversion(int energy) { 
+        return Tiers.energyToRadiusConversion(energy, blockMoveCost);
+    }
+    
+    public static int energyToRadiusConversion(int energy, float perBlockCost) {
         int diameter = 1;
-        while( diameter * diameter * diameter * blockMoveCost < energy) //this is over generous intentionally
+        while( diameter * diameter * diameter * perBlockCost < energy) //this is over generous intentionally
             diameter += 2; // +2 so that we always have an odd number and have block centered shapes
         return diameter/2; //integer math will round down the .5
     }

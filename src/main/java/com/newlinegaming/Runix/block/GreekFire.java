@@ -282,11 +282,12 @@ public class GreekFire extends BlockFire {
 
     public static boolean consumeValuableForFuel(WorldXYZ coords, Block fuelBlock) {
         //consume energy from neighbor to lower meta data and allow spread
-        int tier = Tiers.getTier(fuelBlock);
-        System.out.println("Tier: " + tier);
-        if(tier > 3){
+        int blockEnergy = Tiers.getEnergy(fuelBlock);
+        if(blockEnergy > 1){
             if(!coords.getWorld().isRemote){
-                int newLife = Math.min(Math.max(coords.getMetaId() - (tier-3), 0),15);
+                int newLife = Math.min(Math.max(
+                        coords.getMetaId() - Tiers.energyToRadiusConversion(blockEnergy, Tiers.blockBreakCost) //radius calculation
+                        , 0),15);
                 coords.setBlock( ModBlock.greekFire, newLife);
                 ((WorldServer)coords.getWorld()).scheduleBlockUpdate(coords.posX, coords.posY, coords.posZ, ModBlock.greekFire, 4);
 
