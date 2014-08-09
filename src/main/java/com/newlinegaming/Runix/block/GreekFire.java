@@ -27,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.newlinegaming.Runix.RunixMain;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Tiers;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.lib.LibInfo;
 
@@ -85,7 +86,6 @@ public class GreekFire extends BlockFire {
     public void initializeBlock() {
         setLightLevel(1f);
         this.setBurn(Blocks.stone, 30, 100);
-        this.setBurn(Blocks.grass, 30, 100);
         this.setBurn(Blocks.dirt, 30, 100);
         this.setBurn(Blocks.gravel, 30, 100);
     }
@@ -119,72 +119,35 @@ public class GreekFire extends BlockFire {
             int fireLifespan = world.getBlockMetadata(x, y, z);
 
             if(fireDiesOut(world, x, y, z, random, fireLifespan)){
-                if(world.getBlock(x, y, z) != Blocks.grass) //sometimes it crystallizes instead
-                    world.setBlockToAir(x, y, z);
+                world.setBlockToAir(x, y, z);
             }
             else if(fireLifespan < 15)
             {
-                int heatLoss = 1;
                 WorldXYZ loc = new WorldXYZ(world, x,y,z);
                 for(WorldXYZ neighbor : loc.getNeighbors())
-                    this.tryToCatchBlockOnFire(neighbor, heatLoss, random, fireLifespan );//new fire spread (adjacent)
-
-                tryFireJump(world, x, y, z, random, fireLifespan);
+                    this.tryToCatchBlockOnFire(neighbor, fireLifespan );//new fire spread (adjacent)
             }
         }
     }
 
+    //updated and needed
     private boolean fireDiesOut(World world, int x, int y, int z, Random random, int fireLifespan) {
         Block base = world.getBlock(x, y - 1, z);
 
-        if(isGreekFireSource(base ))
+        if(isGreekFireSource(base))
             return false;
 
-        if (!this.canPlaceBlockAt(world, x, y, z))
-            return true;// correct invalid placement (probably neighbor changed)
-
-        if (world.isRaining())// && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
-            return true;// fire got rained on and put out
-        else
-        {
-            world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
-
-            if (!this.canNeighborBurn(world, x, y, z)){
-                if (!world.getBlock(x, y-1, z).canPlaceTorchOnTop(world, x, y-1, z) || fireLifespan > 3){
-                    return true;// remove fire because it has no base or it expired with no fuel source
-                }
-            }
-            else if (fireLifespan == 15)
-            {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
-                if(random.nextInt(100) == 1)
-                    return true;// this is a very low probability of dying out
-            }
+        if (!canPlaceBlockAt(world, x, y-1, z)){
+            return true;// remove fire because it has no base and nothing to burn on
         }
+        if (fireLifespan == 15)
+        {//&& !this.canBlockCatchFire(world, x, y - 1, z, UP)
+            if(random.nextInt(100) == 1)
+                return true;// this is a very low probability of dying out
+        }
+        world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+
         return false;
-    }
-
-    private void tryFireJump(World world, int x, int y, int z, Random random, int fireLifespan) {
-        for (int fX = x - 1; fX <= x + 1; ++fX){
-            for (int fZ = z - 1; fZ <= z + 1; ++fZ){
-                for (int fY = y - 1; fY <= y + 1; ++fY){
-                    if (fX != x || fY != y || fZ != z) //not this location
-                    {
-                        int heatLoss = 100;
-                        int i2 = this.getChanceOfNeighborsEncouragingFire(world, fX, fY, fZ);
-
-                        if (i2 > 0)
-                        {
-                            int j2 = (i2 + 47) / (fireLifespan + 30);
-
-                            if (j2 > 0 && random.nextInt(heatLoss) <= j2 && !world.isRaining() )
-                            {
-                                spreadAndAgeFire(new WorldXYZ(world, fX, fY, fZ), random, fireLifespan, x,y,z); // new fire spread (distant)
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private boolean isGreekFireSource(Block base) {
@@ -193,24 +156,14 @@ public class GreekFire extends BlockFire {
         return false;
     }
 
-    public boolean func_82506_l()
+    private void tryToCatchBlockOnFire(WorldXYZ loc, int lifespan)
     {
-        return false;
-    }
-
-    private void tryToCatchBlockOnFire(WorldXYZ loc, int heatLoss, Random random, int lifespan)
-    {
-        int flammability = 0;
-        flammability = getFlammability(loc);
-
-        if (random.nextInt(heatLoss) < flammability)
-        {
-            //if (random.nextInt(lifespan + 10) < 5)
-                spreadAndAgeFire(loc, random, lifespan, loc.posX, loc.posY, loc.posZ);
+        if (getFlammability(loc) > 0){
+            spreadAndAgeFire(loc, lifespan, loc.posX, loc.posY, loc.posZ);
         }
     }
 
-    private void spreadAndAgeFire(WorldXYZ loc, Random random, int lifespan, int parentX, int parentY, int parentZ) {
+    private void spreadAndAgeFire(WorldXYZ loc, int lifespan, int parentX, int parentY, int parentZ) {
         int newLifespan = lifespan + 1;//random.nextInt(6) / 2;
 
         if (newLifespan > 15)
@@ -228,43 +181,15 @@ public class GreekFire extends BlockFire {
     {
         return canBlockCatchFire(par1World, par2 + 1, par3, par4 ) ||
                canBlockCatchFire(par1World, par2 - 1, par3, par4 ) ||
-               canBlockCatchFire(par1World, par2, par3 - 1, par4   ) ||
+               canBlockCatchFire(par1World, par2, par3 - 1, par4 ) ||
                canBlockCatchFire(par1World, par2, par3 + 1, par4 ) ||
                canBlockCatchFire(par1World, par2, par3, par4 - 1) ||
                canBlockCatchFire(par1World, par2, par3, par4 + 1);
     }
 
-    private int getChanceOfNeighborsEncouragingFire(World par1World, int x, int y, int z)
+    public int getChanceToEncourageFire(IBlockAccess world, int x, int y, int z, int oldChance, ForgeDirection face)
     {
-        byte b0 = 0;
-
-        if (!par1World.isAirBlock(x, y, z))
-        {
-            return 0;
-        }
-        else
-        {
-            int l = this.getChanceToEncourageFire(par1World, x + 1, y, z, b0, WEST);
-            l = this.getChanceToEncourageFire(par1World, x - 1, y, z, l, EAST);
-            l = this.getChanceToEncourageFire(par1World, x, y - 1, z, l, UP);
-            l = this.getChanceToEncourageFire(par1World, x, y + 1, z, l, DOWN);
-            l = this.getChanceToEncourageFire(par1World, x, y, z - 1, l, SOUTH);
-            l = this.getChanceToEncourageFire(par1World, x, y, z + 1, l, NORTH);
-            return l;
-        }
-    }
-
-    @Override
-    public boolean canBlockCatchFire(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
-    {
-        WorldXYZ coord = new WorldXYZ(par2, par3, par4);
-        Block block = coord.getBlock();
-        return block.isFlammable(coord.getWorld(), par2, par3, par4, UP);
-    }
-
-    public int getChanceToEncourageFire(World par1World, int par2, int par3, int par4, int par5)
-    {
-        return getChanceToEncourageFire(par1World, par2, par3, par4, par5, UP);
+        return getFlammability(new WorldXYZ((World)world, x, y, z).offset(new Vector3(face)));
     }
 
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
@@ -274,7 +199,7 @@ public class GreekFire extends BlockFire {
 
     public void onNeighborBlockChange(World par1World, int x, int y, int z, int par5)
     {
-        if (!World.doesBlockHaveSolidTopSurface(par1World, x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
+        if (!canPlaceBlockAt(par1World, x, y, z))
         {
             par1World.setBlockToAir(x, y, z);
         }
@@ -299,7 +224,7 @@ public class GreekFire extends BlockFire {
 
     public void onBlockAdded(World par1World, int x, int y, int z)
     {
-        if (!World.doesBlockHaveSolidTopSurface(par1World, x, y - 1, z) && !this.canNeighborBurn(par1World, x, y, z))
+        if (!canPlaceBlockAt(par1World, x, y, z))
         {
             par1World.setBlockToAir(x, y, z);
         }
