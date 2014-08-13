@@ -15,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
@@ -322,5 +323,22 @@ public abstract class PersistentRune extends AbstractRune {
 		}
 		additionalBlocks.removeAll(structure); //only return new blocks
 				return additionalBlocks;
+	}
+
+
+	public void clearActiveMagic() {
+	    for(PersistentRune rune : getActiveMagic()){
+		rune.kill();
+	    }
+	    getActiveMagic().clear();
+	}
+
+
+	public void kill() {
+	    try{
+		MinecraftForge.EVENT_BUS.unregister(this);
+	    } catch (NullPointerException e){
+		System.out.println("Failed to unregister " + this);
+	    }
 	}
 }

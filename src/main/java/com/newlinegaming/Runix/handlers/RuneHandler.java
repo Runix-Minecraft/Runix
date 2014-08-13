@@ -23,16 +23,15 @@ import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
 import com.newlinegaming.Runix.rune.GreekFireRune;
-import com.newlinegaming.Runix.rune.LightBeamRune;
 import com.newlinegaming.Runix.rune.OracleRune;
-import com.newlinegaming.Runix.rune.RubricCreationRune;
-import com.newlinegaming.Runix.rune.RubricRecallRune;
 import com.newlinegaming.Runix.rune.RunecraftRune;
 import com.newlinegaming.Runix.rune.TeleporterRune;
 import com.newlinegaming.Runix.rune.TorchBearerRune;
 import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.rune.ZeerixChestRune;
 
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 
@@ -50,7 +49,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
-    private ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
+    public ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
     
     private RuneHandler() {
         //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  
@@ -120,7 +119,6 @@ public class RuneHandler {
         }
 
     }
-
 
     /**
      * Detects a rune pattern, and executes it.

@@ -1,10 +1,13 @@
 package com.newlinegaming.Runix;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public abstract class AbstractTimedRune extends PersistentRune {
 
+//    RuneTimer instance = null;
+    
     public AbstractTimedRune(){}
     public AbstractTimedRune(WorldXYZ coords, EntityPlayer player2, String name) {
         super(coords, player2, name);
@@ -18,19 +21,20 @@ public abstract class AbstractTimedRune extends PersistentRune {
      * @param xTicks number of ticks to wait between calls.  20 ticks = 1 second
      */
     protected void updateEveryXTicks(int xTicks) {
-//        TickRegistry.registerTickHandler(new RuneTimer(this, xTicks), Side.SERVER);
-    	FMLCommonHandler.instance().bus().register(new RuneTimer(this, xTicks));
+	RuneTimer instance = new RuneTimer(this, xTicks);
+    	FMLCommonHandler.instance().bus().register(instance);
     }
 
-    //To completely remove timers once they're done : g 
-//    public static void unbind(){
-//    	if(INSTANCE != null){
+    //To completely remove timers once they're done : g
+//    @Override
+//    public void kill() {
+//    	if(instance != null) {
 //    		MinecraftForge.EVENT_BUS.unregister(instance);
 //    		instance = null;
 //    	}
-//
-//    }
-//    At the moment, RunecraftRune simply pauses itself by not responding to onUpdateTick();
+//    	super.kill();
+//    }//    At the moment, RunecraftRune simply pauses itself by not responding to onUpdateTick();
+
     
     protected abstract void onUpdateTick(EntityPlayer player);
 
