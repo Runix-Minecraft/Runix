@@ -34,12 +34,13 @@ public class TorchBearerRune extends AbstractTimedRune {
     	if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
             World world = subject.worldObj;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
-            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 2);
+            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 3);
             for(WorldXYZ newPos : sphere) {
                 if(newPos.getBlock().equals(Blocks.air) && 
-                	newPos.getBlock().canPlaceTorchOnTop(world, newPos.posX, newPos.posY-1, newPos.posZ) && (
+                	newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.posX, newPos.posY-1, newPos.posZ) && (
                         (world.isDaytime() && world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4) ||//day time checking == caves
-                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) )){ //adjustable
+                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) ))//adjustable
+                { 
                     try {
                         setBlockIdAndUpdate(newPos, Blocks.torch);//set torch
 //                        aetherSay(subject, Integer.toString(world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ))+ 
