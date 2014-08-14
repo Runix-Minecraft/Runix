@@ -335,6 +335,7 @@ public abstract class PersistentRune extends AbstractRune {
 
 
 	public void kill() {
+	    disabled = true;
 	    try{
 		MinecraftForge.EVENT_BUS.unregister(this);
 	    } catch (NullPointerException e){

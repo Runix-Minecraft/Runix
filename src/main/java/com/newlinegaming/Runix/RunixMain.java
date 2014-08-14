@@ -67,6 +67,5 @@ public class RunixMain {
         for(AbstractRune r : RuneHandler.getInstance().runeRegistry)
             if( r instanceof PersistentRune)
                 ((PersistentRune) r).clearActiveMagic();
-        RuneHandler.getInstance().runeRegistry.clear();
     }
 }
