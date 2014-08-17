@@ -174,7 +174,7 @@ public class RuneHandler {
 
             for(AbstractRune rune : runeRegistry) {
                 if(rune instanceof PersistentRune) {
-                    HashSet<WorldXYZ> additionalStructure = ((PersistentRune)rune).addYourStructure(activeEdge);
+                    HashSet<WorldXYZ> additionalStructure = ((PersistentRune)rune).addYourStructure(activeEdge, 0);
                     structure.addAll(additionalStructure);
                     nextEdge.addAll(additionalStructure);
                 }

@@ -24,6 +24,7 @@ import org.apache.commons.io.FileUtils;
 import com.google.gson.Gson;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
+import com.newlinegaming.Runix.rune.FaithRune;
 
 public abstract class PersistentRune extends AbstractRune {
 
@@ -313,21 +314,30 @@ public abstract class PersistentRune extends AbstractRune {
 	 * Remember, this is called from the manager instance of each Rune, so you are acting on behalf
 	 * of all runes of the same class.  DO NOT call your own functions except for getActiveMagic()
 	 * @param structure
+	 * @param authority 
 	 * @return
 	 */
-	public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure) {
+	public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure, int authority) {
 		HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
 		for(PersistentRune rune : getActiveMagic()) {
 			if(structure.contains(rune.location))
-				additionalBlocks = rune.directlyAttachedStructure();
+			    if(!(rune instanceof FaithRune) || authority > rune.authority()) {
+			        additionalBlocks.addAll(rune.directlyAttachedStructure()) ;
+			    }
+				
 		}
 		additionalBlocks.removeAll(structure); //only return new blocks
 				return additionalBlocks;
 	}
 
 
-	public void clearActiveMagic() {
-	    for(PersistentRune rune : getActiveMagic()){
+	public int authority() {  
+        return 0;
+    }
+
+
+    public void clearActiveMagic() {
+	    for(PersistentRune rune : getActiveMagic()) {
 		rune.kill();
 	    }
 	    getActiveMagic().clear();

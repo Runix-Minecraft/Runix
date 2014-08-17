@@ -22,11 +22,10 @@ public class FaithRune extends PersistentRune{
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
 	
-	public FaithRune(){
+	public FaithRune() {
 	    runeName = "Faith";
 	}
-	public FaithRune(WorldXYZ loc, EntityPlayer creator)
-	{
+	public FaithRune(WorldXYZ loc, EntityPlayer creator) {
 	    super(loc, creator, "Faith");
 	    firstTime = true;
 	}
@@ -34,12 +33,14 @@ public class FaithRune extends PersistentRune{
 	public Block[][][] runicTemplateOriginal(){
 	    Block gold = Blocks.gold_block;
 		return new Block[][][] {{
-			{NONE,NONE,NONE},
-			{NONE,gold,NONE},
-			{NONE,NONE,NONE}},
-            {{gold,TIER,gold},
-             {TIER,gold,TIER},
-             {gold,TIER,gold}}};
+		    {NONE,NONE,NONE},
+		    {NONE,gold,NONE},
+		    {NONE,NONE,NONE}},
+		    {{gold,TIER,gold},
+		    {TIER,gold,TIER},
+            {gold,TIER,gold}
+		    
+		}};
 	}
 	
 //	public void execute(WorldXYZ coords, EntityPlayer player) // TODO we need a way for runes to check more complex validation and delete themselves if they don't pass
@@ -79,13 +80,13 @@ public class FaithRune extends PersistentRune{
         }
     }
     
-    /**bouncIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
+    /**
+     * bouncIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
      * Faith is activated. 
      * Josiah: I've tried to speed this up as much as possible with little effect.  Profiling is needed.
      * @param sphere coordinates passed in so they don't need to be recalculated
      */
-    public void bounceIsland()
-	{
+    public void bounceIsland() {
         int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
         HashSet<WorldXYZ> structure = attachedStructureShape(getPlayer());
         WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, location.offset(0, height - location.posY, 0), 0);//scan UP, 0 buffer room
@@ -95,6 +96,11 @@ public class FaithRune extends PersistentRune{
     @Override
     public HashSet<WorldXYZ> directlyAttachedStructure() {
         return Util_SphericalFunctions.getSphere(location, radius);
+    }
+    
+    @Override
+    public int authority() {  
+        return radius;
     }
     
     //@Override
@@ -128,9 +134,6 @@ public class FaithRune extends PersistentRune{
     @Override
     public boolean isFlatRuneOnly(){
         return true;
-    }
-	
-
-	
+    }	
 
 }
