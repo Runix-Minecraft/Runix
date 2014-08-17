@@ -20,7 +20,9 @@ public class RuneTimer {
     	++currentTimer;
     	if(currentTimer >= maxTimer) {
     		currentTimer = 0;
-    		rune.onUpdateTick(event.player);
+    		if(!rune.disabled) {
+    		    rune.onUpdateTick(event.player);
+    		}
 
     	}
     }

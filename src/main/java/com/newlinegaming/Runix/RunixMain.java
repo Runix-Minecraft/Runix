@@ -22,6 +22,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 @Mod(modid = LibInfo.MOD_ID, name = LibInfo.MOD_NAME, version = LibInfo.MOD_VERSION)
 public class RunixMain {
@@ -58,5 +59,13 @@ public class RunixMain {
         Tiers tiers = new Tiers(); //load the list of block tiers
         tiers.initializeEnergyRegistry();
         MinecraftForge.EVENT_BUS.register(RuneHandler.getInstance());
+    }
+    
+    @EventHandler
+    public void serverStop(FMLServerStoppingEvent event){
+	System.out.println("Clearing all runes");
+        for(AbstractRune r : RuneHandler.getInstance().runeRegistry)
+            if( r instanceof PersistentRune)
+                ((PersistentRune) r).clearActiveMagic();
     }
 }

@@ -21,6 +21,7 @@ public class TorchBearerRune extends AbstractTimedRune {
     protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
     public TorchBearerRune() {
         runeName = "Torch Bearer";
+        updateEveryXTicks(10);
     }
 
     public TorchBearerRune( WorldXYZ coords, EntityPlayer activator ) {
@@ -33,11 +34,13 @@ public class TorchBearerRune extends AbstractTimedRune {
     	if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
             World world = subject.worldObj;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
-            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 7);
+            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 3);
             for(WorldXYZ newPos : sphere) {
-                if(newPos.getBlock() == Blocks.air && newPos.offset(Vector3.DOWN).isSolid() && (
+                if(newPos.getBlock().equals(Blocks.air) && 
+                	newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.posX, newPos.posY-1, newPos.posZ) && (
                         (world.isDaytime() && world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4) ||//day time checking == caves
-                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) )){ //adjustable
+                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) ))//adjustable
+                { 
                     try {
                         setBlockIdAndUpdate(newPos, Blocks.torch);//set torch
 //                        aetherSay(subject, Integer.toString(world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ))+ 
