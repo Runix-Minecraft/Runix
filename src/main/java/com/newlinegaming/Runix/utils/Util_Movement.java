@@ -57,7 +57,8 @@ public class Util_Movement {
         return newPositions;
     }
 
-    /**Geometry: figure out if we're on the left or right side of the rune relative to the player
+    /**
+     * Geometry: figure out if we're on the left or right side of the rune relative to the player
      */
     public static boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
         float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
@@ -107,8 +108,7 @@ public class Util_Movement {
         int collisionTries = 0;
         HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
         WorldXYZ destinationCenter = null;
-        do
-        {
+        do {
             Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
             destinationCenter = destination.offset(roomForShip).offset( stepSize.multiply(collisionTries) ); //base roomForShip + collisionTries iterations
             moveMapping = displaceShape(structure,  new Vector3(startPoint, destinationCenter));
