@@ -163,8 +163,9 @@ public class RuneHandler {
      * This is modeled after conductanceStep() but on a macro level.
      * Recursive chaining of rune structures is now working.  You can FTP a 
      * Runecraft that is touching a Faith block and the whole island will be treated and moved as one structure.
+     * @param authority 
      */
-    public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure) {
+    public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure, AbstractRune originator) {
         HashSet<WorldXYZ> activeEdge = new HashSet<WorldXYZ>();
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>(structure);//starts off being a copy of structure
 
@@ -172,11 +173,26 @@ public class RuneHandler {
             activeEdge = nextEdge;
             nextEdge = new HashSet<WorldXYZ>();
 
-            for(AbstractRune rune : runeRegistry) {
-                if(rune instanceof PersistentRune) {
-                    HashSet<WorldXYZ> additionalStructure = ((PersistentRune)rune).addYourStructure(activeEdge, 0);
-                    structure.addAll(additionalStructure);
-                    nextEdge.addAll(additionalStructure);
+	    for (AbstractRune rune : runeRegistry) {
+                if (rune instanceof PersistentRune) {
+                    // pass in and side-effect the collection
+                    HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
+                    for (PersistentRune pRune : ((PersistentRune) rune).getActiveMagic()) {
+                        if (activeEdge.contains(pRune.location)) {
+                            if (originator.authority() == 0 || originator.authority() > pRune.authority()) {
+                                // FaithRune is the only authority user at the moment
+                                additionalBlocks.addAll(pRune.directlyAttachedStructure());
+                            } else if(originator != pRune){ //obviously don't block yourself
+                             // ensure Faith Anchor stays where it is, even if other blocks are moved
+                                structure.remove(pRune.location);
+                                activeEdge.remove(pRune.location);
+                                additionalBlocks.remove(pRune.location);
+                            }
+                        }
+                    }
+
+                    structure.addAll(additionalBlocks);
+                    nextEdge.addAll(additionalBlocks);
                 }
             }
         }

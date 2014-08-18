@@ -471,4 +471,8 @@ public abstract class AbstractRune {
     public Signature getSignature() {
         return new Signature();
     }
+
+    public int authority() {
+        return 0;
+    }
 }

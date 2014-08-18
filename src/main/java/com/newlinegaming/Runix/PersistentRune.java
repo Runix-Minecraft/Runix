@@ -266,94 +266,66 @@ public abstract class PersistentRune extends AbstractRune {
 		disabled = true;
 	}
 
-	public boolean onPlayerLogin(String username) {
-		return false;
-	}
-
-	public EntityPlayer getPlayer() {
-	    try{
-		for( Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList){
-		    if( ((EntityPlayer) playerObj).getUniqueID().equals(uuid))
-			return (EntityPlayer)playerObj;
-		}
-	    } catch (NullPointerException ex){
-		LogHelper.fatal("Failed to load playerList in " + this.toString());//just return null
-	    }
-	    return null;
-	}
-
-	public void setPlayer(EntityPlayer playerObj) {
-		if(playerObj == null)
-			this.uuid = null;
-		else
-			this.uuid = playerObj.getUniqueID();
-	}
-
-	public int getTier() {
-		return super.getTier(location);
-	}
-
-	protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
-		HashSet<WorldXYZ> scannedStructure = directlyAttachedStructure();
-		if(activator != null) {
-			if(scannedStructure.isEmpty()) {
-				aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
-			}else{
-				aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
-			}
-		}
-		//add indirect connections
-		scannedStructure = RuneHandler.getInstance().chainAttachedStructures(scannedStructure);
-		return scannedStructure;
-	}
-
-
-	public HashSet<WorldXYZ> directlyAttachedStructure() {
-		int tier = getTier();
-		HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
-		return scannedStructure;
-	}
-
-	/**
-	 * Remember, this is called from the manager instance of each Rune, so you are acting on behalf
-	 * of all runes of the same class.  DO NOT call your own functions except for getActiveMagic()
-	 * @param structure
-	 * @param authority 
-	 * @return
-	 */
-	public HashSet<WorldXYZ> addYourStructure(HashSet<WorldXYZ> structure, int authority) {
-		HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
-		for(PersistentRune rune : getActiveMagic()) {
-			if(structure.contains(rune.location))
-			    if(!(rune instanceof FaithRune) || authority > rune.authority()) {
-			        additionalBlocks.addAll(rune.directlyAttachedStructure()) ;
-			    }
-				
-		}
-		additionalBlocks.removeAll(structure); //only return new blocks
-				return additionalBlocks;
-	}
-
-
-	public int authority() {  
-        return 0;
+    public boolean onPlayerLogin(String username) {
+	return false;
     }
 
+    public EntityPlayer getPlayer() {
+	try {
+	    for (Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
+		if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
+		    return (EntityPlayer) playerObj;
+	    }
+	} catch (NullPointerException ex) {
+	    LogHelper.fatal("Failed to load playerList in " + this.toString());// just return null
+	}
+        return null;
+    }
+
+    public void setPlayer(EntityPlayer playerObj) {
+        if (playerObj == null)
+            this.uuid = null;
+        else
+            this.uuid = playerObj.getUniqueID();
+    }
+
+    public int getTier() {
+        return super.getTier(location);
+    }
+
+    protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
+        HashSet<WorldXYZ> scannedStructure = directlyAttachedStructure();
+        if (activator != null) {
+            if (scannedStructure.isEmpty()) {
+                aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
+            } else {
+                aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
+            }
+        }
+        // add indirect connections
+        scannedStructure = RuneHandler.getInstance().chainAttachedStructures(scannedStructure, this);
+        return scannedStructure;
+    }
+
+    public HashSet<WorldXYZ> directlyAttachedStructure() {
+        int tier = getTier();
+        HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
+        return scannedStructure;
+    }
 
     public void clearActiveMagic() {
-	    for(PersistentRune rune : getActiveMagic()) {
-		rune.kill();
-	    }
-	    getActiveMagic().clear();
-	}
+        for (PersistentRune rune : getActiveMagic()) {
+            rune.kill();
+        }
+        getActiveMagic().clear();
+    }
 
-
-	public void kill() {
-	    disabled = true;
-	    try{
-		MinecraftForge.EVENT_BUS.unregister(this);
-	    } catch (NullPointerException e){
-		System.out.println("Failed to unregister " + this);
-	    }
-	}
+    public void kill() {
+        disabled = true;
+        try {
+            MinecraftForge.EVENT_BUS.unregister(this);
+        } catch (NullPointerException e) {
+            System.out.println("Failed to unregister " + this);
+        }
+    }
 }
