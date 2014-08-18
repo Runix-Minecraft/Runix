@@ -270,11 +270,15 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
 	public EntityPlayer getPlayer() {
+	    try{
 		for( Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList){
-			if( ((EntityPlayer) playerObj).getUniqueID().equals(uuid))
-				return (EntityPlayer)playerObj;
+		    if( ((EntityPlayer) playerObj).getUniqueID().equals(uuid))
+			return (EntityPlayer)playerObj;
 		}
-		return null;
+	    } catch (NullPointerException ex){
+		LogHelper.fatal("Failed to load playerList in " + this.toString());//just return null
+	    }
+	    return null;
 	}
 
 	public void setPlayer(EntityPlayer playerObj) {
