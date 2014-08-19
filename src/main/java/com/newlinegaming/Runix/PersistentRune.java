@@ -328,4 +328,9 @@ public abstract class PersistentRune extends AbstractRune {
             System.out.println("Failed to unregister " + this);
         }
     }
+
+    /** Currently just checkRunePattern(location).  This could be expanded to kill the rune if broken. */
+    public boolean runeIsIntact() {
+        return checkRunePattern(location);
+    }
 }
