@@ -173,16 +173,18 @@ public class RuneHandler {
             activeEdge = nextEdge;
             nextEdge = new HashSet<WorldXYZ>();
 
-	    for (AbstractRune rune : runeRegistry) {
+            for(int i = 0; i < runeRegistry.size(); i++) {
+                AbstractRune rune = runeRegistry.get(i);
                 if (rune instanceof PersistentRune) {
                     // pass in and side-effect the collection
                     HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
                     for (PersistentRune pRune : ((PersistentRune) rune).getActiveMagic()) {
                         if (activeEdge.contains(pRune.location)) {
-                            if (originator.authority() == 0 || originator.authority() > pRune.authority()) {
+                            if ((originator.authority() == 0 || originator.authority() > pRune.authority()) && originator != pRune) {
                                 // FaithRune is the only authority user at the moment
                                 additionalBlocks.addAll(pRune.directlyAttachedStructure());
-                            } else if(originator != pRune){ //obviously don't block yourself
+                                additionalBlocks.removeAll(structure); // we only want new blocks
+                            } else if(pRune instanceof FaithRune && originator != pRune){ //obviously don't block yourself
                              // ensure Faith Anchor stays where it is, even if other blocks are moved
                                 structure.remove(pRune.location);
                                 activeEdge.remove(pRune.location);
@@ -190,7 +192,6 @@ public class RuneHandler {
                             }
                         }
                     }
-
                     structure.addAll(additionalBlocks);
                     nextEdge.addAll(additionalBlocks);
                 }
