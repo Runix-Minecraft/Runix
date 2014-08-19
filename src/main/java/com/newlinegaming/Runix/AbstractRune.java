@@ -451,8 +451,9 @@ public abstract class AbstractRune {
         //TODO: Add in Waypoints
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
         PersistentRune wp = null;
-        for( PersistentRune candidate : waypointList){
-            if( new Signature(candidate, candidate.location).equals( signature ) ){
+        for( PersistentRune candidate : waypointList) {
+            if( new Signature(candidate, candidate.location).equals( signature ) 
+                    && candidate.runeIsIntact()) {
                 wp = candidate;
                 break;
             }

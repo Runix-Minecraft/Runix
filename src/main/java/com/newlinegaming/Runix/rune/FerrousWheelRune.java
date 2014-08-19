@@ -30,7 +30,6 @@ public class FerrousWheelRune extends PersistentRune {
         if(!activator.worldObj.isRemote){//server only
             super.execute(coords, activator);
         }
-            
     }
 
     
@@ -59,12 +58,14 @@ public class FerrousWheelRune extends PersistentRune {
         int start = globalWheel.indexOf(this);
         for(int i = (start + 1) % globalWheel.size(); i != start; i = (i+1) % globalWheel.size()){
             FerrousWheelRune fw = (FerrousWheelRune)globalWheel.get(i);
-            if( !fw.location.equals(location) && fw.guestList.contains(player.getUniqueID()) ) 
+            if( !fw.location.equals(location) 
+                    && fw.guestList.contains(player.getUniqueID())
+                    && fw.runeIsIntact()) 
                 return fw;
         }
         return null;
     }
-    
+
     public String toString(){
         return hashCode() + ": @" + location.toString() + " guests: " + guestList;
     }
