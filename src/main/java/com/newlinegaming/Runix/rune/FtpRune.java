@@ -21,7 +21,8 @@ public class FtpRune extends TeleporterRune {
         this.runeName = "Faith Transfer Portal";
     }
     
-    public FtpRune(WorldXYZ coords, EntityPlayer activator) {
+    public FtpRune(WorldXYZ coords, EntityPlayer activator)
+    {
         super(coords, activator);
         this.runeName = "Faith Transfer Portal";
     }
