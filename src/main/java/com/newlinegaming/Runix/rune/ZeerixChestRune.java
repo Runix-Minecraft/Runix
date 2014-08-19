@@ -57,11 +57,17 @@ public class ZeerixChestRune extends AbstractTimedRune {
     @Override
     public Block[][][] runicTemplateOriginal() {
         Block GOLD = Blocks.gold_ore;
-        Block CHST = Blocks.ender_chest;
-        return new Block[][][] //NOTE: This is vertical but it gets there by using facing
-                {{{NONE,TIER,NONE},
-                  {GOLD,TIER,GOLD},
-                  {TIER,CHST,TIER}}}; 
+        Block CHEST = Blocks.ender_chest;
+        Block WOOD = Blocks.planks;
+        return new Block[][][] {{
+            {GOLD, NONE, GOLD},
+            {NONE, CHEST, NONE},
+            {GOLD, NONE, GOLD}},
+            {{WOOD,TIER, WOOD},
+            {TIER,TIER, TIER},
+            {WOOD,TIER, WOOD}
+            
+        }};
     }
 
     @Override
@@ -80,6 +86,6 @@ public class ZeerixChestRune extends AbstractTimedRune {
     }
     
     public boolean isFlatRuneOnly() {
-        return false;
+        return true;
     }
 }
