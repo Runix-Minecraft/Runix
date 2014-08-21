@@ -21,43 +21,45 @@ public class FtpRune extends TeleporterRune {
         this.runeName = "Faith Transfer Portal";
     }
     
-    public FtpRune(WorldXYZ coords, EntityPlayer activator)
-    {
+    public FtpRune(WorldXYZ coords, EntityPlayer activator) {
         super(coords, activator);
         this.runeName = "Faith Transfer Portal";
     }
 
     public Block[][][] runicTemplateOriginal(){
         Block GOLD = Blocks.gold_block;
-        return new Block[][][]
-                {{{NONE,NONE,TIER,SIGR,TIER,NONE,NONE},
-                  {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
-                  {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},
-                  {SIGR,TIER,TIER,KEY ,TIER,TIER,SIGR},
-                  {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},
-                  {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
-                  {NONE,NONE,TIER,SIGR,TIER,NONE,NONE}}};
+        return new Block[][][] {{
+            {NONE,NONE,TIER,SIGR,TIER,NONE,NONE},
+            {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
+            {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},
+            {SIGR,TIER,TIER,KEY ,TIER,TIER,SIGR},
+            {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},
+            {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
+            {NONE,NONE,TIER,SIGR,TIER,NONE,NONE}    
+        }};
     }
 
     @Override
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+    protected void poke(EntityPlayer player, WorldXYZ coords) {
         consumeKeyBlock(coords);
         location.face = coords.face; //update the facing 
-        WorldXYZ destination = findWaypointBySignature(poker, getSignature());
-        if(destination == null)
+        WorldXYZ destination = findWaypointBySignature(player, getSignature());
+        if(destination.getWorld() == null)
             return; //failure
-        HashSet<WorldXYZ> structure = attachedStructureShape(poker);
+        HashSet<WorldXYZ> structure = attachedStructureShape(player);
         if(structure.isEmpty())
             return;
         
         try {
             WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, getTier());
-            if(destinationCenter != null)
-                teleportPlayer(poker, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
-            else
-                aetherSay(poker, "There are obstacles for over 100m in the direction of the destination waypoint.");
+            if(destinationCenter != null) {
+                teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
+            }else {
+                aetherSay(player, "There are obstacles for over 100m in the direction of the destination waypoint.");
+
+            }
         } catch (NotEnoughRunicEnergyException e) {
-            reportOutOfGas(poker);
+            reportOutOfGas(player);
         }
     }
 
