@@ -64,38 +64,6 @@ public class OracleRune extends AbstractRune {
           aetherSay(player, "Properties: " + (Tiers.isNatural(block)? "Not Conductive" : "Conductive")
                   + ", " + (Tiers.isCrushable(block)? "Crushable." : "Not Crushable."));
       }
+      
     }
-    
-//	@Override
-//	protected void poke(EntityPlayer player, WorldXYZ coords) {
-//		ItemStack toolUsed = player.getHeldItem();
-//		
-//		if(toolUsed !=null && toolUsed.getItem() == Items.golden_sword || 
-//		        toolUsed !=null && toolUsed.getItem() == Items.stone_sword || 
-//		        toolUsed !=null && toolUsed.getItem() == Items.wooden_sword ||
-//		        toolUsed !=null && toolUsed.getItem() == Items.diamond_sword) {
-//			ArrayList<PersistentRune> d = RuneHandler.getInstance().getAllRunesByPlayer(player);
-//			aetherSay(player, "Current enchantments: " + Integer.toString(d.size()));
-//			for (PersistentRune r : d) {
-//				aetherSay(player, r.runeName + " Energy: "+ r.energy);
-//			}
-//			
-//		} else {
-//			Block block = coords.getBlock();
-//			
-//			aetherSay(player, EnumChatFormatting.RED +block.getLocalizedName());
-//			aetherSay(player, "Tier: "  + Tiers.getTier(block) + ".");
-//			aetherSay(player, "Energy: " + Tiers.getEnergy(block) + ".");
-//			aetherSay(player, "Properties: " + (Tiers.isNatural(block)? "Not Conductive" : "Conductive")
-//					+ ", " + (Tiers.isCrushable(block)? "Crushable." : "Not Crushable."));
-//		}
-//	}
-//
-//	@Override
-//	public boolean isFlatRuneOnly() {
-//		return true;
-//	}
-//
-//	
-
 }
