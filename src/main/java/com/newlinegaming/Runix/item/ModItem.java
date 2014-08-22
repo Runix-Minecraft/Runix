@@ -20,7 +20,7 @@ public class ModItem {
     }
 
     private static void gameReg() {
-        GameRegistry.registerItem(AetherGoggles, "RinixAetherGoggles");
+        GameRegistry.registerItem(AetherGoggles, LibInfo.MOD_ID  + "aethergoggles");
         GameRegistry.registerItem(transRod, LibInfo.MOD_ID + "transmutationrod");
         
     }

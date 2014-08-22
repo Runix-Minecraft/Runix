@@ -12,10 +12,10 @@ public class ModelTransmutationRod extends ModelBase {
         textureWidth = 32;
         
         Rod = new ModelRenderer(this, 0, 0);
-        Rod.addBox(-1F, -15F, -1F, 2, 30, 2);
-        Rod.setRotationPoint(6F, 10F, 0F);
+        Rod.addBox(-1f, -15f, -1f, 2, 30, 2);
+        Rod.setRotationPoint(6f, 10f, 0f);
         Rod.setTextureSize(textureWidth, textureWidth);
-        setRotation(Rod, -1.07818F, 0F, 0F);
+        setRotation(Rod, 0f, 0f, 0f);
     }
     
     public void render(float f) {
