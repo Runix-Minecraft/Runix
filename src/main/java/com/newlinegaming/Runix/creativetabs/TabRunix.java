@@ -13,7 +13,7 @@ public class TabRunix extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return ModItem.AetherGoggles;
+        return ModItem.aetherGoggles;
     }
 
 }

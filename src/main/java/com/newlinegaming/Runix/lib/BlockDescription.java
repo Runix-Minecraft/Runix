@@ -2,7 +2,9 @@ package com.newlinegaming.Runix.lib;
 
 import net.minecraft.block.Block;
 
-/**Plain old Data Struct for the energyRegistry in Tiers.java **/
+/**
+ * Plain old Data Struct for the energyRegistry in Tiers.java
+ */
 public class BlockDescription
 {
     public Block type; 

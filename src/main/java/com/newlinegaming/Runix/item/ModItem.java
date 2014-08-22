@@ -8,19 +8,19 @@ import net.minecraft.item.Item;
 
 public class ModItem {
 
-    public static Item AetherGoggles;
+    public static Item aetherGoggles;
     public static Item transRod;
     
     public static void init() {
 
-        AetherGoggles = new ArmorAetherGoggles();
+        aetherGoggles = new ArmorAetherGoggles();
         transRod = new ItemTransmutationRod();
         
         gameReg();
     }
 
     private static void gameReg() {
-        GameRegistry.registerItem(AetherGoggles, LibInfo.MOD_ID  + "aethergoggles");
+        GameRegistry.registerItem(aetherGoggles, LibInfo.MOD_ID  + "aethergoggles");
         GameRegistry.registerItem(transRod, LibInfo.MOD_ID + "transmutationrod");
         
     }
