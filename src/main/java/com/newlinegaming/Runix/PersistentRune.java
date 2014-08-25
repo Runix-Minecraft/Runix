@@ -277,7 +277,7 @@ public abstract class PersistentRune extends AbstractRune {
 		    return (EntityPlayer) playerObj;
 	    }
 	} catch (NullPointerException ex) {
-	    LogHelper.fatal("Failed to load playerList in " + this.toString());// just return null
+//	    LogHelper.fatal("Failed to load playerList in " + this.toString());// just return null: FIXME Only iterate on the client
 	}
         return null;
     }
@@ -297,7 +297,7 @@ public abstract class PersistentRune extends AbstractRune {
         HashSet<WorldXYZ> scannedStructure = directlyAttachedStructure();
         if (activator != null) {
             if (scannedStructure.isEmpty()) {
-                aetherSay(activator, "There are too many block for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
+                aetherSay(activator, "There are too many blocks for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
             } else {
                 aetherSay(activator, "Found " + scannedStructure.size() + " conducting blocks");
             }
