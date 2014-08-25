@@ -208,6 +208,8 @@ public class GreekFire extends BlockFire {
 
     public static boolean consumeValuableForFuel(WorldXYZ coords, Block fuelBlock) {
         //consume energy from neighbor to lower meta data and allow spread
+        if(fuelBlock == null)
+            return false;
         int blockEnergy = Tiers.getEnergy(fuelBlock);
         if(blockEnergy > 1){
             if(!coords.getWorld().isRemote){
