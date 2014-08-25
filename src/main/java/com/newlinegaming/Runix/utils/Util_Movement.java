@@ -75,15 +75,11 @@ public class Util_Movement {
             return false;
     }
 
-    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(HashSet<WorldXYZ> structure, int dX, int dY, int dZ) {
-        return displaceShape(structure, new Vector3(dX, dY, dZ));
-    }    
-
-    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, Vector3 displacement) {
+    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, WorldXYZ startPoint, WorldXYZ destinationCenter) {
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>();
-//        Vector3 displacement
+        Vector3 displacement = new Vector3(startPoint, destinationCenter);
         for(WorldXYZ point : set)
-            moveMapping.put(point, point.offset(displacement));
+            moveMapping.put(point, point.offsetWorld(displacement, destinationCenter.getWorld()));
         return moveMapping;
     }
 
@@ -110,7 +106,7 @@ public class Util_Movement {
         do {
             Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
             destinationCenter = destination.offset(roomForShip).offsetWorld(stepSize.multiply(collisionTries), destination.getWorld() ); //base roomForShip + collisionTries iterations
-            moveMapping = displaceShape(structure,  startPoint, destinationCenter);
+            moveMapping = displaceShape(structure, startPoint, destinationCenter);
             collisionTries++;
         } while( shapeCollides( moveMapping ) && collisionTries < 20);
             

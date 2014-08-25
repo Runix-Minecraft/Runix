@@ -87,7 +87,7 @@ public class RunecraftRune extends AbstractTimedRune {
                     if(getPlayer().isSneaking())
                 	dY -= 1;
                     if(dX != 0 || dY != 0 || dZ != 0){
-                        HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  dX, dY, dZ);
+                        HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  location, location.offset(dX, dY, dZ));
                         if( !Util_Movement.shapeCollides(move) ){
                             vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
                         }
