@@ -100,6 +100,10 @@ public class WorldXYZ extends ChunkCoordinates {
     public WorldXYZ offset(Vector3 delta){
         return new WorldXYZ(this.getWorld(), posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
+    
+    public WorldXYZ offsetWorld(Vector3 delta, World dem) {
+    	return new WorldXYZ(dem, posX + delta.x, posY + delta.y, posZ + delta.z, face);
+    }
 
     /**
      * Like offset() but for facing instead.  Returning a new instance avoids side-effecting

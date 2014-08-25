@@ -26,6 +26,9 @@ import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.rune.FaithRune;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public abstract class PersistentRune extends AbstractRune {
 
 	private UUID uuid = null;
@@ -277,7 +280,7 @@ public abstract class PersistentRune extends AbstractRune {
 		    return (EntityPlayer) playerObj;
 	    }
 	} catch (NullPointerException ex) {
-//	    LogHelper.fatal("Failed to load playerList in " + this.toString());// just return null: FIXME Only iterate on the client
+		//Silent fail
 	}
         return null;
     }

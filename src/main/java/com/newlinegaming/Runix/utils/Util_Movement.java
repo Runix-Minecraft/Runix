@@ -25,8 +25,7 @@ public class Util_Movement {
      * Note: when designing moving runes, DO NOT update your PersistentRune.location variable.
      * moveShape() calls moveMagic() which will update everything including yourself.
      */
-    public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) 
-    {
+    public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) {
         SigBlock AIR = new SigBlock(Blocks.air, 0);
         HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
@@ -82,7 +81,7 @@ public class Util_Movement {
 
     public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, Vector3 displacement) {
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>();
-        
+//        Vector3 displacement
         for(WorldXYZ point : set)
             moveMapping.put(point, point.offset(displacement));
         return moveMapping;
@@ -110,8 +109,8 @@ public class Util_Movement {
         WorldXYZ destinationCenter = null;
         do {
             Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
-            destinationCenter = destination.offset(roomForShip).offset( stepSize.multiply(collisionTries) ); //base roomForShip + collisionTries iterations
-            moveMapping = displaceShape(structure,  new Vector3(startPoint, destinationCenter));
+            destinationCenter = destination.offset(roomForShip).offsetWorld(stepSize.multiply(collisionTries), destination.getWorld() ); //base roomForShip + collisionTries iterations
+            moveMapping = displaceShape(structure,  startPoint, destinationCenter);
             collisionTries++;
         } while( shapeCollides( moveMapping ) && collisionTries < 20);
             
