@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.helper.LogHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +47,14 @@ public class FerrousWheelRune extends PersistentRune {
             return;
         }
         try {
+            int oldEnergy = energy;
             teleportPlayer(player, next.location);
+            int spent = oldEnergy - energy;
+            if(getTier() > 7){ // additional efficiency
+                double efficiency = (getTier() - 6) / 4.0; //every 4 tiers is a 2x efficiency boost
+                energy += spent - (spent / efficiency);// refund
+                LogHelper.info("Refunded energy: " + (spent - (spent / efficiency)));
+            }
         } catch (NotEnoughRunicEnergyException e) {
             reportOutOfGas(player);
         }
@@ -88,9 +96,9 @@ public class FerrousWheelRune extends PersistentRune {
     public Block[][][] runicTemplateOriginal() {
         Block IRON = Blocks.iron_ore;
         return new Block[][][]{{
-        	{IRON, IRON, IRON},
+        	{TIER, IRON, TIER},
         	{IRON, KEY, IRON},
-        	{IRON, IRON, IRON}
+        	{TIER, IRON, TIER}
         	
         }};
     }
