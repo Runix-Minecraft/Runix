@@ -53,7 +53,6 @@ public class FerrousWheelRune extends PersistentRune {
             if(getTier() > 7){ // additional efficiency
                 double efficiency = (getTier() - 6) / 4.0; //every 4 tiers is a 2x efficiency boost
                 energy += spent - (spent / efficiency);// refund
-                LogHelper.info("Refunded energy: " + (spent - (spent / efficiency)));
             }
         } catch (NotEnoughRunicEnergyException e) {
             reportOutOfGas(player);
