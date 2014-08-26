@@ -7,10 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
-import com.newlinegaming.Runix.utils.Util_Movement;
 
 public class FtpRune extends TeleporterRune {
     
@@ -50,17 +48,7 @@ public class FtpRune extends TeleporterRune {
         if(structure.isEmpty())
             return;
         
-        try {
-            WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, getTier());
-            if(destinationCenter != null) {
-                teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
-            }else {
-                aetherSay(player, "There are obstacles for over 100m in the direction of the destination waypoint.");
-
-            }
-        } catch (NotEnoughRunicEnergyException e) {
-            reportOutOfGas(player);
-        }
+        moveStructureAndPlayer(player, destination, structure);
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.rune.FaithRune;
+import com.newlinegaming.Runix.utils.Util_Movement;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -335,5 +336,19 @@ public abstract class PersistentRune extends AbstractRune {
     /** Currently just checkRunePattern(location).  This could be expanded to kill the rune if broken. */
     public boolean runeIsIntact() {
         return checkRunePattern(location);
+    }
+
+
+    public void moveStructureAndPlayer(EntityPlayer player, WorldXYZ destination, HashSet<WorldXYZ> structure) {
+        try {
+            WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, getTier());
+            if(destinationCenter != null) {
+                teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
+            }else {
+                aetherSay(player, "There are obstacles for over 100m in the direction of the destination waypoint.");
+            }
+        } catch (NotEnoughRunicEnergyException e) {
+            reportOutOfGas(player);
+        }
     }
 }
