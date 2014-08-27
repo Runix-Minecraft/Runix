@@ -40,19 +40,20 @@ public class GreekFireRune extends AbstractRune {
 
     @SubscribeEvent
     public void onBlockPlace(PlayerInteractEvent event) {
-        if(!event.entityPlayer.worldObj.isRemote){
-            if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
+        if(!event.entityPlayer.worldObj.isRemote) {
+            if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR) {
                 WorldXYZ target = new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z);
                 target = target.offset(Vector3.facing[event.face]);
 
                 // only accept fuel if there is not still lifespan remaining in the fire.  Do not allow pumping free fuel or block dupe bug
                 if(target.getBlock().equals(ModBlock.greekFire) && 
-                        (target.getMetaId() == 15 || target.offset(Vector3.DOWN).getBlock().equals(Blocks.lapis_block))){ 
+                        (target.getMetaId() == 15 || target.offset(Vector3.DOWN).getBlock().equals(Blocks.lapis_block))) { 
                     ItemStack blockUsed = event.entityPlayer.getCurrentEquippedItem();
-                    if(blockUsed != null){
+                    if(blockUsed != null) {
                         Block block = Block.getBlockFromItem(blockUsed.getItem());
-                        if(GreekFire.consumeValuableForFuel(target, block)){
+                        if(GreekFire.consumeValuableForFuel(target, block)) {
                             event.setCanceled(true);
+                            blockUsed.stackSize -= 1;
                         }
                     }
                 }
