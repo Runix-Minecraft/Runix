@@ -3,10 +3,11 @@ package com.newlinegaming.Runix;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.newlinegaming.Runix.lib.BlockDescription;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+
+import com.newlinegaming.Runix.block.ModBlock;
+import com.newlinegaming.Runix.lib.BlockDescription;
 
 public class Tiers {
     
@@ -55,7 +56,7 @@ public class Tiers {
             add(Blocks.sapling);
             add(Blocks.log);
             add(Blocks.log2);
-//            add(GreekFire);
+            add(ModBlock.greekFire);
         }};
 
         moveSensitiveBlocks = new ArrayList<Block>(){{
@@ -134,7 +135,7 @@ public class Tiers {
             add(Blocks.tallgrass);
             add(Blocks.torch);
             add(Blocks.vine);
-//          add(GreekFire);
+            add(ModBlock.greekFire);
         }};
     }
 
