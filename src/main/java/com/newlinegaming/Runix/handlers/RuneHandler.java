@@ -169,7 +169,7 @@ public class RuneHandler {
         HashSet<WorldXYZ> activeEdge = new HashSet<WorldXYZ>();
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>(structure);//starts off being a copy of structure
 
-        while(!nextEdge.isEmpty() && structure.size() < 50000) {
+        while(!nextEdge.isEmpty() && structure.size() < 500000) {
             activeEdge = nextEdge;
             nextEdge = new HashSet<WorldXYZ>();
 

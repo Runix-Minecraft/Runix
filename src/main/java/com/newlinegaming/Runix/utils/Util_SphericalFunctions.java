@@ -16,7 +16,10 @@ public class Util_SphericalFunctions {
 	{
 		World world = coords.getWorld();
 		HashSet<WorldXYZ> returnvalues = new HashSet<WorldXYZ>();
-		for (int y = -radius-1; y < radius+1; y++)  {
+		//loop needs to cap at the top and bottom of the world
+		int bottom = Math.max(-radius - 1,  -1*(coords.posY - 1));
+		int top = Math.min(radius + 1, (255 - coords.posY));
+		for (int y = bottom; y < top; y++)  {
 		    for (int z = -radius-1; z < radius+1; z++){
 		        for (int x = -radius-1; x < radius+1; x++)
 		        {
