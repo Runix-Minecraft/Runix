@@ -1,9 +1,8 @@
 package com.newlinegaming.Runix.workers;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import net.minecraft.init.Blocks;
 
@@ -43,14 +42,17 @@ public class StructureMoveWorker implements IBlockWorker {
                 //inside performMove()
             if( sensitiveBlocks == null) {
                 sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
-                for(WorldXYZ point : moveMapping.keySet()){
+                ArrayList<WorldXYZ> airBlocks = new ArrayList<WorldXYZ>();
+                for(WorldXYZ point : moveMapping.keySet()) {
                     SigBlock block = point.getSigBlock();
                     if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
                         sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
                         point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
+                    } else if(block.equals(Blocks.air)) { 
+                        airBlocks.add(point); //don't calculate on AIR blocks
                     }
-                  //TODO we are adding air to newPositions
                 }
+                moveMapping.keySet().removeAll(airBlocks);
             } else { 
                 if( !moveMapping.isEmpty()) { // do other work later
                     HashMap<WorldXYZ, WorldXYZ> currentMove = new HashMap<WorldXYZ, WorldXYZ>();
@@ -67,11 +69,9 @@ public class StructureMoveWorker implements IBlockWorker {
                     for(WorldXYZ origin : currentMove.keySet()) { //Do Move
                         WorldXYZ destination = currentMove.get(origin);
                         SigBlock block = origin.getSigBlock();
-                        if( !block.equals(Blocks.air)) { //don't write AIR blocks
-                            destination.setBlockId(block);  //set at destination
-                            origin.setBlockId(AIR); //delete at origin
-                            // TODO: delete old block in a separate loop to avoid collisions with the new positioning
-                        }
+                        destination.setBlockId(block);  //set at destination
+                        origin.setBlockId(AIR); //delete at origin
+                        // TODO: delete old block in a separate loop to avoid collisions with the new positioning
                     }
                     
                     newPositions.addAll(currentMove.values());

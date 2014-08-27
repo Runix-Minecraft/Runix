@@ -74,8 +74,11 @@ public class Tiers {
             add(Blocks.dragon_egg);
             add(Blocks.fire);
             add(Blocks.gravel);
-            add(Blocks.lava);
             add(Blocks.flowing_lava);
+            add(Blocks.flowing_water);
+            add(Blocks.lava);
+            add(Blocks.leaves);
+            add(Blocks.leaves2);
             add(Blocks.ladder);
             add(Blocks.lever);
             add(Blocks.melon_stem);
@@ -92,7 +95,7 @@ public class Tiers {
             add(Blocks.light_weighted_pressure_plate);
             add(Blocks.wooden_pressure_plate);
             add(Blocks.stone_pressure_plate);
-            add(Blocks.pumpkin);
+            add(Blocks.pumpkin_stem);
             add(Blocks.rail);
             add(Blocks.activator_rail);
             add(Blocks.detector_rail);
@@ -119,7 +122,6 @@ public class Tiers {
             add(Blocks.vine);
             add(Blocks.waterlily);
             add(Blocks.water);
-            add(Blocks.flowing_water);
             add(Blocks.wooden_button);
         }};
         
