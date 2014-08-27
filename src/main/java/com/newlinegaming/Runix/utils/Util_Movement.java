@@ -6,6 +6,8 @@ import java.util.HashSet;
 
 import com.newlinegaming.Runix.*;
 import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.workers.StructureMoveWorker;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 
@@ -112,7 +114,9 @@ public class Util_Movement {
             
         if(collisionTries >= 20)
             return null; //the teleport did not work
-        performMove(moveMapping);
+//        performMove(moveMapping);
+        StructureMoveWorker worker = new StructureMoveWorker(moveMapping);
+        worker.scheduleWorkLoad();
         return destinationCenter;
     }
 

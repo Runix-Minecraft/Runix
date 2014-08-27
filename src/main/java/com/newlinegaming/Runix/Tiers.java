@@ -73,7 +73,6 @@ public class Tiers {
             add(Blocks.deadbush);
             add(Blocks.dragon_egg);
             add(Blocks.fire);
-            add(Blocks.grass);
             add(Blocks.gravel);
             add(Blocks.lava);
             add(Blocks.flowing_lava);
@@ -88,7 +87,6 @@ public class Tiers {
             add(Blocks.piston_extension);
             add(Blocks.piston_head);
             add(Blocks.sticky_piston);
-            add(Blocks.red_flower);
             add(Blocks.yellow_flower);
             add(Blocks.heavy_weighted_pressure_plate);
             add(Blocks.light_weighted_pressure_plate);
@@ -105,6 +103,7 @@ public class Tiers {
             add(Blocks.powered_repeater);
             add(Blocks.redstone_wire);
             add(Blocks.reeds);
+            add(Blocks.red_flower);
             add(Blocks.sand);
             add(Blocks.sapling);
             add(Blocks.standing_sign);

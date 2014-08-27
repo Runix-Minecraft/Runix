@@ -1,9 +1,11 @@
 package com.newlinegaming.Runix.workers;
 
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+
 public class ConductanceWorker implements IBlockWorker {
 
     @Override
-    public void doWork() {
+    public void doWork(ServerTickEvent event) {
         // TODO Auto-generated method stub
 
     }
@@ -15,7 +17,7 @@ public class ConductanceWorker implements IBlockWorker {
     }
 
     @Override
-    public void scheduleNextWorkLoad() {
+    public void scheduleWorkLoad() {
         // TODO Auto-generated method stub
 
     }

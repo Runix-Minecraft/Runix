@@ -425,16 +425,6 @@ public abstract class AbstractRune {
         }
         return false;
     }
-    
-    protected HashSet<WorldXYZ> moveShape(HashMap<WorldXYZ, WorldXYZ> moveMapping) throws NotEnoughRunicEnergyException {
-        int blocksMovedToNewArea = 0;
-        for(WorldXYZ point : moveMapping.values()) {
-            if( !moveMapping.containsKey(point) )
-                ++blocksMovedToNewArea;
-        }
-        spendEnergy( (int) (Tiers.blockMoveCost * blocksMovedToNewArea) );
-        return Util_Movement.performMove(moveMapping);
-    }
 
     protected String shortClassName() {
         return this.getClass().toString().replace("class com.newlinegaming.Runix.rune.", "");

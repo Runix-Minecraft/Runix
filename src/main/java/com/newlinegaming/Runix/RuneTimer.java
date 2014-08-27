@@ -6,7 +6,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 public class RuneTimer {
 
     AbstractTimedRune rune;
-    private int currentTimer;
+    private int currentTimer = 0;
     private int maxTimer = 20;
 
     RuneTimer(AbstractTimedRune r, int waitTicks){
