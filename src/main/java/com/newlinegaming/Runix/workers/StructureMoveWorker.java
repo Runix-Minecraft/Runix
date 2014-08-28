@@ -1,6 +1,6 @@
 package com.newlinegaming.Runix.workers;
 
-import java.util.ArrayList;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Tiers;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
@@ -52,22 +53,32 @@ public class StructureMoveWorker implements IBlockWorker {
                     searchingForSensitive = false;
                     cursor = moveMapping.entrySet().iterator(); //reset cursor to beginning for main move phase
                 } else {
+                    LogHelper.info("Processing Sensitive blocks");
                     int sensitiveBlocksFound = 0; //necessary to track the amount of change
                     while(cursor.hasNext()){
                         Entry<WorldXYZ, WorldXYZ> move = cursor.next();
-                        SigBlock block = move.getValue().getSigBlock();
-                        if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
+                        SigBlock block = move.getKey().getSigBlock();
+                        while( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
                             ++sensitiveBlocksFound;
-                            sensitiveBlocks.put(move.getKey(), block);//record at new location
+                            sensitiveBlocks.put(move.getValue(), block);//record at new location
                             move.getKey().setBlockId(AIR);//delete sensitive blocks first to prevent drops
                             //TODO there's a tiny probability of breaking an extended piston
+                            //iterate upward for stacks of gravel, sand, stems, tall grass etc.
+                            WorldXYZ up = move.getKey().offset(Vector3.UP);
+                            block = up.getSigBlock();
+                            if(!moveMapping.containsKey(up)){
+                                break;
+                            }
+                            move = new AbstractMap.SimpleEntry<WorldXYZ, WorldXYZ>(up, moveMapping.get(up));  // add only after we know it's there
                         }
-                        if( sensitiveBlocksFound > 100) //amount of change this tick
+                        if( sensitiveBlocksFound > 100){ //amount of change this tick
                             break;
+                        }
                     }
                 }
             } else { 
                 if( cursor.hasNext()) { // do iterative work here
+                    LogHelper.info("Moving blocks");
                     HashMap<WorldXYZ, WorldXYZ> currentMove = new HashMap<WorldXYZ, WorldXYZ>();
                     HashMap<WorldXYZ, WorldXYZ> airBlocks = new HashMap<WorldXYZ, WorldXYZ>();
                     while(cursor.hasNext()){
