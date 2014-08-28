@@ -36,10 +36,9 @@ public class FaithRune extends PersistentRune{
 		    {NONE,NONE,NONE},
 		    {NONE,gold,NONE},
 		    {NONE,NONE,NONE}},
-		    {{gold,TIER,gold},
-		    {TIER,gold,TIER},
-            {gold,TIER,gold}
-		    
+		    {{TIER,gold,TIER},
+		     {gold,TIER,gold},
+		     {TIER,gold,TIER}
 		}};
 	}
 	
