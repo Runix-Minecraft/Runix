@@ -53,7 +53,7 @@ public class StructureMoveWorker implements IBlockWorker {
                     searchingForSensitive = false;
                     cursor = moveMapping.entrySet().iterator(); //reset cursor to beginning for main move phase
                 } else {
-                    LogHelper.info("Processing Sensitive blocks");
+//                    LogHelper.info("Processing Sensitive blocks");
                     int sensitiveBlocksFound = 0; //necessary to track the amount of change
                     while(cursor.hasNext()){
                         Entry<WorldXYZ, WorldXYZ> move = cursor.next();
@@ -78,7 +78,7 @@ public class StructureMoveWorker implements IBlockWorker {
                 }
             } else { 
                 if( cursor.hasNext()) { // do iterative work here
-                    LogHelper.info("Moving blocks");
+//                    LogHelper.info("Moving blocks");
                     HashMap<WorldXYZ, WorldXYZ> currentMove = new HashMap<WorldXYZ, WorldXYZ>();
                     HashMap<WorldXYZ, WorldXYZ> airBlocks = new HashMap<WorldXYZ, WorldXYZ>();
                     while(cursor.hasNext()){
@@ -111,7 +111,7 @@ public class StructureMoveWorker implements IBlockWorker {
                     
                 } else { //last phase
                   //Step 4: place sensitive blocks
-                    LogHelper.info("Placing sensitive blocks");
+//                    LogHelper.info("Placing sensitive blocks");
                     for(WorldXYZ specialPos : sensitiveBlocks.keySet()) {//Place all the sensitive blocks
                         specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone
                     }
