@@ -47,7 +47,6 @@ public class StructureMoveWorker implements IBlockWorker {
             //Step 1: collision
                 //inside safelyTeleportStructure()
             //Step 2: remove sensitive everything
-                //inside performMove()
             if( searchingForSensitive) {
                 if( !cursor.hasNext()) {//finished sensitive phase
                     searchingForSensitive = false;
