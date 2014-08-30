@@ -15,6 +15,8 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final Vector3[] facing = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
     //use like this: WorldXYZ point = point.offset(Vector3.facing[point.face])
     public static final String[] faceString = {"Down", "Up", "North", "South", "West", "East"};
+    //Converts a side to the opposite side. This is the same as XOR'ing it with 1.
+    public static final int[] oppositeSide = new int[] {1, 0, 3, 2, 5, 4};
 //    public static final ArrayList<Integer> xzRotationOrder = 
 //            (ArrayList<Integer>) Arrays.asList(new Integer(2), new Integer(5), new Integer(3), new Integer(4));  
     
