@@ -172,5 +172,8 @@ public class BuildMasterRune extends AbstractTimedRune {
     public boolean isFlatRuneOnly() {
         return false;
     }
-
+    @Override
+    public boolean isAssymetrical() {
+        return true;
+    }
 }
