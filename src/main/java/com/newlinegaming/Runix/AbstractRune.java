@@ -225,11 +225,36 @@ public abstract class AbstractRune {
         if(ink == Blocks.air)
             return false; //Tier blocks cannot be AIR
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
+        if( !isAssymetrical()) {
+            return runeOrientationMatches(coords, shape);
+        } else {
+            HashMap<WorldXYZ, SigBlock> newShape = new HashMap<WorldXYZ, SigBlock>();
+            for(int orientation = 0; orientation < 4; orientation++) {
+                HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(shape.keySet(), coords, true);
+                //a miracle occurs
+                newShape.clear();
+                for(WorldXYZ origin : move.keySet()){
+                    WorldXYZ destination = move.get(origin);
+                    newShape.put(destination, shape.get(origin));
+                }
+                if( runeOrientationMatches(coords, shape) )
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean runeOrientationMatches(WorldXYZ coords, HashMap<WorldXYZ, SigBlock> shape) {
+        Block ink = getTierInkBlock(coords);
+        if(ink == Blocks.air)
+            return false; //Tier blocks cannot be AIR
+        
         for (WorldXYZ target : shape.keySet()) 
         {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
-            switch(patternID.blockID.getUnlocalizedName()){// Handle special Template Values
+            switch(patternID.blockID.getUnlocalizedName())
+            { // Handle special Template Values
                 case "tile.NONE": 
                     if( blockID == ink )
                         return false; 
@@ -244,7 +269,7 @@ public abstract class AbstractRune {
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
                 case "tile.KEY":
-                    if( !target.equals(coords) )//key block must be center block and not AIR 
+                    if( !target.equals(coords) || blockID == Blocks.air )//key block must be center block and not AIR 
                         return false;
                     break;
                 default:
@@ -252,7 +277,6 @@ public abstract class AbstractRune {
                         return false;
                     }
                     break;
-                
             }
         }
         return true;
@@ -335,26 +359,26 @@ public abstract class AbstractRune {
                     WorldXYZ target; 
                     //switch on different orientations
                     switch(centerPoint.face){
-                    case 1: //laying flat activated from top or bottom
-                    case 0:
-                        target = centerPoint.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);//TODO: clockwise vs CCW?
-                        break;
-                    case 2://NORTH or SOUTH which points along the z axis
-                    case 3://this means that flat runes (XZ runes) will extend along XY
-                        target = centerPoint.offset(-pattern[y][z].length / 2 + x,  pattern[y].length / 2 - z,  -y );//TODO: +y for SOUTH
-                        break;
-                    case 4://WEST or EAST facing
-                    case 5://flat runes extend along the ZY plane
-                        target = centerPoint.offset(-y,  pattern[y][z].length / 2 - x,  -pattern[y].length / 2 + z);
-                        break;
-                    default:
-                        System.err.println("Block facing not recognized: " + centerPoint.face + " should be 0-5.");
-                        target = centerPoint;
+                        case 1: //laying flat activated from top or bottom
+                        case 0:
+                            target = centerPoint.offset(-pattern[y][z].length / 2 + x,  -y,  -pattern[y].length / 2 + z);//TODO: clockwise vs CCW?
+                            break;
+                        case 2://NORTH or SOUTH which points along the z axis
+                        case 3://this means that flat runes (XZ runes) will extend along XY
+                            target = centerPoint.offset(-pattern[y][z].length / 2 + x,  pattern[y].length / 2 - z,  -y );//TODO: +y for SOUTH
+                            break;
+                        case 4://WEST or EAST facing
+                        case 5://flat runes extend along the ZY plane
+                            target = centerPoint.offset(-y,  pattern[y][z].length / 2 - x,  -pattern[y].length / 2 + z);
+                            break;
+                        default:
+                            System.err.println("Block facing not recognized: " + centerPoint.face + " should be 0-5.");
+                            target = centerPoint;
                     }
                     shape.put(target, new SigBlock(pattern[y][z][x], 0));
-                    }
                 }
             }
+        }
         return shape;
     }
     
@@ -432,7 +456,6 @@ public abstract class AbstractRune {
 
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
-        //TODO: Add in Waypoints
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
         PersistentRune wp = null;
         for( PersistentRune candidate : waypointList) {
@@ -459,5 +482,9 @@ public abstract class AbstractRune {
 
     public int authority() {
         return 0;
+    }
+
+    public boolean isAssymetrical() {
+        return false;
     }
 }

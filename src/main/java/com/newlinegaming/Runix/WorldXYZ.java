@@ -238,6 +238,28 @@ public class WorldXYZ extends ChunkCoordinates {
         return neighbors;
     }
 
+    public ArrayList<WorldXYZ> getNeighbors(Vector3 orientation) {
+        //TODO kludged in XY orientation
+        ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
+        //4 cardinal sides
+        neighbors.add(offset(0, 1,0));
+        neighbors.add(offset(0,-1,0));
+        neighbors.add(offset( 1,0,0));
+        neighbors.add(offset(-1,0,0));
+
+        //12 edge diagonals
+        //Josiah: If there was a way to get Build Master and Runecraft to cooperate without these
+        //extra 12 checks I would really rather only do 1/3 the workload when loading large Runecraft
+        //structures
+        neighbors.add(offset( 1, 1, 0));
+        neighbors.add(offset(-1, 1, 0));
+
+        neighbors.add(offset( 1,-1, 0));
+        neighbors.add(offset(-1,-1, 0));
+        //the 8 corner diagonals are not included
+        return neighbors;
+    }
+    
     public double getDistance(WorldXYZ other) {
         double xzDist_2 =  (posX - other.posX)*(posX - other.posX) + (posZ - other.posZ)*(posZ - other.posZ);//Math.sqrt(
         return Math.sqrt( xzDist_2 + (posY - other.posY)*(posY - other.posY));
@@ -269,4 +291,5 @@ public class WorldXYZ extends ChunkCoordinates {
     public int compareTo(Object o) {
         return 0;
     }
+
 }

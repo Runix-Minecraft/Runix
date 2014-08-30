@@ -25,6 +25,7 @@ public class Tiers {
     private static ArrayList<Block> crushableBlocks;
     private static HashMap<Block, BlockDescription> energyRegistry = new HashMap<Block, BlockDescription>();
     
+    @SuppressWarnings("serial")
     public Tiers(){
         /**
          * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
@@ -126,6 +127,7 @@ public class Tiers {
         }};
         
         crushableBlocks =  new ArrayList<Block>(){{//torches are debatable, since someone did place it there
+            add(Blocks.air);
             add(Blocks.deadbush);
             add(Blocks.snow_layer);
             add(Blocks.fire);
@@ -137,6 +139,9 @@ public class Tiers {
             add(Blocks.torch);
             add(Blocks.vine);
             add(ModBlock.greekFire);
+            add(Blocks.flowing_lava);
+            add(Blocks.lava);
+            //TODO anything in the liquid registry
         }};
     }
 
