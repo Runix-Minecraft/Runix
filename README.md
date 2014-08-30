@@ -30,7 +30,7 @@ The Java JDK is used to compile Runix.
     * For `Variable Value`, input something similar to `C:\Program Files\Java\jdk1.7.0_51` exactly as shown (or wherever your Java JDK installation is), and click `Ok`.
     * Scroll down to a variable named `Path`, and double-click on it.
     * Append `;%JAVA_HOME%\bin` EXACTLY AS SHOWN and click `Ok`.  Make sure the location is correct; double-check just to make sure.
-3. Open up your command line and run `javac`.  If it spews out a bunch of possible options and the usage, then you're good to go.  If not, either try the steps again or check the [FAQ](https://github.com/pahimar/Equivalent-Exchange-3/wiki/Frequently-Asked-Questions).
+3. Open up your command line and run `javac`.  If it spews out a bunch of possible options and the usage, then you're good to go.
 
 ####Setup Gradle
 Gradle is used to execute the various build tasks when compiling Runix.
