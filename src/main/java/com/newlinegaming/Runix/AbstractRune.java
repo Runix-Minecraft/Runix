@@ -39,8 +39,7 @@ public abstract class AbstractRune {
     public static final Block SIGR = new SignatureBlock(); //Signature block
     public static final Block NONE = new NoneBlock(); //Non-Tier, Tier 0
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
-    public static final Block KEY = new KeyBlock(); //required to be in the middle of the rune
-    public static final Block ANY = new AnyBlock();
+    public static final Block FUEL = new KeyBlock(); //required to be in the middle of the rune
     
     public String runeName = null;
     public String runeLocalizedName = null;
@@ -229,7 +228,7 @@ public abstract class AbstractRune {
             return runeOrientationMatches(coords, shape);
         } else {
             HashMap<WorldXYZ, SigBlock> newShape = new HashMap<WorldXYZ, SigBlock>();
-            for(int orientation = 0; orientation < 4; orientation++) {
+            for(int orientation = 2; orientation < 6; ++orientation) {
                 HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(shape.keySet(), coords, true);
                 //a miracle occurs
                 newShape.clear();
@@ -238,6 +237,7 @@ public abstract class AbstractRune {
                     newShape.put(destination, shape.get(origin));
                 }
                 if( runeOrientationMatches(coords, shape) )
+                    coords.face = orientation;  //side effect coords to be pointing in the detected direction
                     return true;
             }
         }
@@ -253,6 +253,7 @@ public abstract class AbstractRune {
         {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
+            System.out.println(patternID.blockID + " should be " + blockID);
             switch(patternID.blockID.getUnlocalizedName())
             { // Handle special Template Values
                 case "tile.NONE": 
@@ -268,7 +269,7 @@ public abstract class AbstractRune {
                     if( blockID == ink )
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
-                case "tile.KEY":
+                case "tile.FUEL":
                     if( !target.equals(coords) || blockID == Blocks.air )//key block must be center block and not AIR 
                         return false;
                     break;

@@ -62,7 +62,7 @@ public class RubricCreationRune extends PersistentRune {
 		return new Block[][][] {{
 			{ NONE,TIER,SIGR,TIER,NONE },
 			{ TIER,TIER,RTCH,TIER,TIER },
-			{ SIGR,RTCH,KEY ,RTCH,SIGR },
+			{ SIGR,RTCH,FUEL ,RTCH,SIGR },
 			{ TIER,TIER,RTCH,TIER,TIER },
 			{ NONE,TIER,SIGR,TIER,NONE }
 			

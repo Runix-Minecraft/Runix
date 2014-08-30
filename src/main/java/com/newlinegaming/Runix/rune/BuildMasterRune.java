@@ -69,7 +69,7 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
 
     private HashMap<WorldXYZ,WorldXYZ> findFirstMissingBlock(HashSet<WorldXYZ> structure) {
-        Vector3 offset = Vector3.NORTH;
+        Vector3 offset = Vector3.facing[location.face];
         WorldXYZ currentLayer = location;
         HashMap<WorldXYZ, WorldXYZ> buildMapping = Util_Movement.
                 displaceShape(structure, location, currentLayer);
@@ -111,8 +111,8 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
 
     private HashSet<WorldXYZ> scanTemplate() {
-        Vector3 xyOrientation = Vector3.NORTH;
-        HashSet<WorldXYZ> points = layerConductance(location.offset(xyOrientation.multiply(2)), 20, xyOrientation);
+        Vector3 orientation = Vector3.facing[location.face];
+        HashSet<WorldXYZ> points = layerConductance(location.offset(orientation.multiply(2)), 20, orientation);
         return points;
     }
     
@@ -163,7 +163,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         Block REDB = Blocks.redstone_block;
         return new Block[][][] {{
             {SBRK,REDB, SBRK}, //TODO template from wiki
-            {IRON,KEY , IRON},
+            {IRON,FUEL , IRON},
             {SBRK,IRON, SBRK}
         }};
     }
@@ -174,6 +174,6 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
     @Override
     public boolean isAssymetrical() {
-        return true;
+        return false;
     }
 }

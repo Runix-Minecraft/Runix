@@ -35,7 +35,7 @@ public class RubricRecallRune extends PersistentRune{
 		return new Block[][][] {{
 			{TIER,TIER,SIGR,TIER,TIER},
 			{TIER, AIR,  RT, AIR,TIER},
-			{SIGR, RT, KEY ,  RT,SIGR},
+			{SIGR, RT, FUEL ,  RT,SIGR},
 			{TIER, AIR,  RT, AIR,TIER},
 			{TIER,TIER,SIGR,TIER,TIER}
 			

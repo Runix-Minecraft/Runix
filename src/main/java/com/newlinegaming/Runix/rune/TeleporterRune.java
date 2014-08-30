@@ -27,7 +27,7 @@ public class TeleporterRune extends PersistentRune {
 		return new Block[][][]
 				{{{NONE,TIER,SIGR,TIER,NONE},
 				  {TIER,TIER,TIER,TIER,TIER},
-				  {SIGR,TIER,KEY ,TIER,SIGR},
+				  {SIGR,TIER,FUEL ,TIER,SIGR},
 				  {TIER,TIER,TIER,TIER,TIER},
 				  {NONE,TIER,SIGR,TIER,NONE}}};
 	}

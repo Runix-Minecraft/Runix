@@ -20,6 +20,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.rune.BuildMasterRune;
 import com.newlinegaming.Runix.rune.CompassRune;
+import com.newlinegaming.Runix.rune.ElevatorRune;
 import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
@@ -61,8 +62,8 @@ public class RuneHandler {
         runeRegistry.add(new FtpRune());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune()); //FIXME: Make Runecraft runes respect TileEntity Inventories 
-//        runeRegistry.add(new RubricCreationRune());//FIXME: Rune locks on activation
-//        runeRegistry.add(new RubricRecallRune());
+////        runeRegistry.add(new RubricCreationRune());//FIXME: Rune locks on activation
+////        runeRegistry.add(new RubricRecallRune());
         runeRegistry.add(new TorchBearerRune());
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
@@ -70,7 +71,8 @@ public class RuneHandler {
         runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());
 //        runeRegistry.add(new LightBeamRune());
-        runeRegistry.add(new BuildMasterRune());
+//        runeRegistry.add(new BuildMasterRune());
+        runeRegistry.add(new ElevatorRune());
     }
     
     public void addRune(AbstractRune rune) {

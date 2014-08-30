@@ -59,7 +59,7 @@ public class TorchBearerRune extends AbstractTimedRune {
         Block TRCH = Blocks.torch;
         return new Block[][][] {{
         	{TIER,TRCH,TIER},
-        	{TRCH,KEY ,TRCH},
+        	{TRCH,FUEL ,TRCH},
         	{TIER,TRCH,TIER}
         	
         }}; 

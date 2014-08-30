@@ -31,7 +31,7 @@ public class FtpRune extends TeleporterRune {
             {NONE,NONE,TIER,SIGR,TIER,NONE,NONE},
             {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
             {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},
-            {SIGR,TIER,TIER,KEY ,TIER,TIER,SIGR},
+            {SIGR,TIER,TIER,FUEL ,TIER,TIER,SIGR},
             {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},
             {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
             {NONE,NONE,TIER,SIGR,TIER,NONE,NONE}    

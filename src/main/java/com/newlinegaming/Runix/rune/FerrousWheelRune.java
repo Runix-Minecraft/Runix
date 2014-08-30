@@ -96,7 +96,7 @@ public class FerrousWheelRune extends PersistentRune {
         Block IRON = Blocks.iron_ore;
         return new Block[][][]{{
         	{TIER, IRON, TIER},
-        	{IRON, KEY, IRON},
+        	{IRON, FUEL, IRON},
         	{TIER, IRON, TIER}
         	
         }};

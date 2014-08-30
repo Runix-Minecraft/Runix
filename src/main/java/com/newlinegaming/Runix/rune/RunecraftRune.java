@@ -62,7 +62,7 @@ public class RunecraftRune extends AbstractTimedRune {
         Block GOLD = Blocks.gold_ore;
         return new Block[][][]{{
         	{TIER,GOLD,TIER},
-        	{GOLD,KEY ,GOLD},
+        	{GOLD,FUEL ,GOLD},
         	{TIER,GOLD,TIER}
         	
         }};
