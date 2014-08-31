@@ -40,10 +40,10 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer player) {
-        if(energy > 1){
+        if(energy > 1) {
             HashSet<WorldXYZ> structure = scanTemplate();
             if(structure.isEmpty()) {
-                aetherSay(player, "Build a 2D template on the front face of the rune.  The template must be touching the rune" +
+                aetherSay(player, "Build a 2D template on the front face of the rune.  The template must be touching the rune " +
                 		"and surrounded by air on all sides and diagonals.");
                 disabled = true;
                 return;
