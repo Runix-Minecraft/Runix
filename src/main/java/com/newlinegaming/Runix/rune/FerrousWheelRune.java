@@ -38,7 +38,7 @@ public class FerrousWheelRune extends PersistentRune {
     protected void poke(EntityPlayer player, WorldXYZ coords) {
         if(player.worldObj.isRemote)
             return;
-        consumeKeyBlock(coords);
+        consumeFuelBlock(coords);
         if( !guestList.contains(player.getUniqueID()) )
             guestList.add(player.getUniqueID());
         FerrousWheelRune next = getNextWheel(player);

@@ -38,7 +38,7 @@ public class TeleporterRune extends PersistentRune {
      */
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-        consumeKeyBlock(coords);
+        consumeFuelBlock(coords);
 	    WorldXYZ destination = findWaypointBySignature(poker, getSignature());
 
 	    if(destination != null){

@@ -72,7 +72,7 @@ public class FaithRune extends PersistentRune{
             } catch (NotEnoughRunicEnergyException e) {}
             energy -= Tiers.getEnergy(Blocks.gold_block) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
-            HashSet<WorldXYZ> sphere = directlyAttachedStructure();
+            HashSet<WorldXYZ> sphere = fullStructure();
             energy -= sphere.size() * Tiers.blockMoveCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
             bounceIsland();
@@ -93,8 +93,15 @@ public class FaithRune extends PersistentRune{
 	}
     
     @Override
-    public HashSet<WorldXYZ> directlyAttachedStructure() {
+    public HashSet<WorldXYZ> fullStructure() {
         return Util_SphericalFunctions.getSphere(location, radius);
+    }
+    
+    @Override
+    public HashSet<WorldXYZ> runeBlocks() {
+        HashSet<WorldXYZ> st = new HashSet<WorldXYZ>();
+        st.add(location);
+        return st;
     }
     
     @Override

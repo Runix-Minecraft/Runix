@@ -43,6 +43,8 @@ public abstract class AbstractRune {
     
     public String runeName = null;
     public String runeLocalizedName = null;
+
+    public boolean usesConductance = false;
 	public AbstractRune(){}
 
 	/**
@@ -463,7 +465,7 @@ public abstract class AbstractRune {
         RuneHandler.getInstance().moveMagic(moveMapping);
     }
 
-    protected boolean consumeKeyBlock(WorldXYZ coords) {
+    protected boolean consumeFuelBlock(WorldXYZ coords) {
         if(Tiers.getTier(coords.getBlock()) > 1){
             energy += Tiers.getEnergy(coords.getBlock());
             coords.setBlockIdAndUpdate(Blocks.cobblestone);//we don't want air sitting here

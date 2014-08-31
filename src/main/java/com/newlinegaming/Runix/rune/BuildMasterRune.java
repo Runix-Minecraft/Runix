@@ -34,8 +34,9 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-        consumeKeyBlock(coords);
         toggleDisabled();
+        consumeFuelBlock(coords); //this will re-enable it if there's a new fuel block
+//        HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(shape, coords, 1);
     }
 
     @Override

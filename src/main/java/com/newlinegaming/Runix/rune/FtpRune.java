@@ -23,6 +23,7 @@ public class FtpRune extends TeleporterRune {
     public FtpRune(WorldXYZ coords, EntityPlayer activator) {
         super(coords, activator);
         this.runeName = "Faith Transfer Portal";
+        usesConductance = true;
     }
 
     public Block[][][] runicTemplateOriginal(){
@@ -40,7 +41,7 @@ public class FtpRune extends TeleporterRune {
 
     @Override
     protected void poke(EntityPlayer player, WorldXYZ coords) {
-        consumeKeyBlock(coords);
+        consumeFuelBlock(coords);
         location.face = coords.face; //update the facing 
         WorldXYZ destination = findWaypointBySignature(player, getSignature());
         if(destination.getWorld() == null)
@@ -56,5 +57,4 @@ public class FtpRune extends TeleporterRune {
     public ArrayList<PersistentRune> getActiveMagic() {
         return energizedFTP;
     }
-
 }

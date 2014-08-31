@@ -184,7 +184,7 @@ public class RuneHandler {
                         if (activeEdge.contains(pRune.location)) {
                             if ((originator.authority() == 0 || originator.authority() > pRune.authority()) && originator != pRune) {
                                 // FaithRune is the only authority user at the moment
-                                additionalBlocks.addAll(pRune.directlyAttachedStructure());
+                                additionalBlocks.addAll(pRune.fullStructure());
                                 additionalBlocks.removeAll(structure); // we only want new blocks
                             } else if(pRune instanceof FaithRune && originator != pRune){ //obviously don't block yourself
                              // ensure Faith Anchor stays where it is, even if other blocks are moved

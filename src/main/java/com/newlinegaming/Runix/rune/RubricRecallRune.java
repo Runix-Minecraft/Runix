@@ -26,6 +26,7 @@ public class RubricRecallRune extends PersistentRune{
     public RubricRecallRune(WorldXYZ coords, EntityPlayer player2) 
     {
 	    super(coords, player2,"Rubric Recall");
+	    usesConductance = true;
     }
     
 	@Override
@@ -35,7 +36,7 @@ public class RubricRecallRune extends PersistentRune{
 		return new Block[][][] {{
 			{TIER,TIER,SIGR,TIER,TIER},
 			{TIER, AIR,  RT, AIR,TIER},
-			{SIGR, RT, FUEL ,  RT,SIGR},
+			{SIGR, RT, FUEL,  RT,SIGR},
 			{TIER, AIR,  RT, AIR,TIER},
 			{TIER,TIER,SIGR,TIER,TIER}
 			
@@ -44,7 +45,7 @@ public class RubricRecallRune extends PersistentRune{
 
 	@Override
 	public void poke(EntityPlayer poker, WorldXYZ coords) {
-		consumeKeyBlock(coords);
+		consumeFuelBlock(coords);
 		ItemStack toolused = poker.getCurrentEquippedItem();
 		if(toolused != null)
 		    instanceName = toolused.getDisplayName();

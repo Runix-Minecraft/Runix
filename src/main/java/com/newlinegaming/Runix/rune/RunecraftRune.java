@@ -31,7 +31,6 @@ public class RunecraftRune extends AbstractTimedRune {
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
     private transient RenderHelper renderer = null;
     private boolean moveInProgress = false;
-    
     public RunecraftRune(){
         runeName = "Runecraft";
     }
@@ -46,6 +45,7 @@ public class RunecraftRune extends AbstractTimedRune {
         super(coords, player2, "Runecraft");
         setPlayer(null); //this is because poke() acts as if the Rune was activated a second time when it is first constructed
         this.runeName = "Runecraft"; 
+        usesConductance = true;
     }
 
     /**initializeRune() is necessary because of a circular condition in the event registry
@@ -186,7 +186,7 @@ public class RunecraftRune extends AbstractTimedRune {
         else
             disabled = true; 
     }
-
+    
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;

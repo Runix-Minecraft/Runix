@@ -38,6 +38,7 @@ public class RubricCreationRune extends PersistentRune {
     public RubricCreationRune(WorldXYZ coords, EntityPlayer player2) 
     {
 	    super(coords, player2,"Rubric Creator");
+	    usesConductance = true;
 	}
     
     protected void initializeRune(){

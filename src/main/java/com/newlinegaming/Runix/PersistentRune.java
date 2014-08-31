@@ -242,8 +242,8 @@ public abstract class PersistentRune extends AbstractRune {
 	/**
 	 * Adds re-enabling runes to consumeKeyBlock
 	 */
-	protected boolean consumeKeyBlock(WorldXYZ coords) {
-		if(super.consumeKeyBlock(coords)){
+	protected boolean consumeFuelBlock(WorldXYZ coords) {
+		if(super.consumeFuelBlock(coords)){
 			disabled = false;
 			return true;
 		}
@@ -298,7 +298,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
-        HashSet<WorldXYZ> scannedStructure = directlyAttachedStructure();
+        HashSet<WorldXYZ> scannedStructure = fullStructure();
         if (activator != null) {
             if (scannedStructure.isEmpty()) {
                 aetherSay(activator, "There are too many blocks for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
@@ -311,7 +311,20 @@ public abstract class PersistentRune extends AbstractRune {
         return scannedStructure;
     }
 
-    public HashSet<WorldXYZ> directlyAttachedStructure() {
+    public HashSet<WorldXYZ> fullStructure() {
+        if(usesConductance)
+            return directConductanceStructure();
+        else 
+            return runeBlocks();
+    }
+        
+    
+    public HashSet<WorldXYZ> runeBlocks() {
+        return new HashSet<WorldXYZ>( runicFormulae(location).keySet());
+    }
+
+
+    public HashSet<WorldXYZ> directConductanceStructure() {
         int tier = getTier();
         HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
         return scannedStructure;
