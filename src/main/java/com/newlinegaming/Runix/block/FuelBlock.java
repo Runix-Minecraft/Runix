@@ -3,13 +3,13 @@ package com.newlinegaming.Runix.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-public class KeyBlock extends Block
+public class FuelBlock extends Block
 {
 
-    public KeyBlock()
+    public FuelBlock()
     {
         super(Material.air);
-        setBlockName("KEY");
+        setBlockName("FUEL");
     }
 
 }
