@@ -35,16 +35,24 @@ public class BuildMasterRune extends AbstractTimedRune {
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         consumeKeyBlock(coords);
-        disabled = false;
+        toggleDisabled();
     }
-    
+
     @Override
     protected void onUpdateTick(EntityPlayer player) {
         if(energy > 1){
             HashSet<WorldXYZ> structure = scanTemplate();
-            HashMap<WorldXYZ, WorldXYZ> buildMapping = findFirstMissingBlock(structure);
-            if(buildMapping.isEmpty())
+            if(structure.isEmpty()) {
+                aetherSay(player, "Build a 2D template on the front face of the rune.  The template must be touching the rune" +
+                		"and surrounded by air on all sides and diagonals.");
                 disabled = true;
+                return;
+            }
+            HashMap<WorldXYZ, WorldXYZ> buildMapping = findFirstMissingBlock(structure);
+            if(buildMapping.isEmpty()) {
+                aetherSay(player, "The rune has nowhere to build. It likely reached 150 blocks or an obstacle.");
+                disabled = true;
+            }
             for(WorldXYZ origin : buildMapping.keySet()) {
                 WorldXYZ destination = buildMapping.get(origin);
                 Block sourceBlock = origin.getBlock();
@@ -71,12 +79,10 @@ public class BuildMasterRune extends AbstractTimedRune {
     private HashMap<WorldXYZ,WorldXYZ> findFirstMissingBlock(HashSet<WorldXYZ> structure) {
         Vector3 offset = Vector3.facing[location.face];
         WorldXYZ currentLayer = location;
-        HashMap<WorldXYZ, WorldXYZ> buildMapping = Util_Movement.
-                displaceShape(structure, location, currentLayer);
-        while(partialTemplateMatch(buildMapping)) {
+        HashMap<WorldXYZ, WorldXYZ> buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
+        for(int stepCount = 0; stepCount < 150 && partialTemplateMatch(buildMapping); ++stepCount) {
             currentLayer = currentLayer.offset(offset);
-            buildMapping = Util_Movement.
-                    displaceShape(structure, location, currentLayer);
+            buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
         }
         
         if(anyCrushable(buildMapping.values()))//any space to build?
@@ -121,6 +127,8 @@ public class BuildMasterRune extends AbstractTimedRune {
         HashSet<WorldXYZ> workingSet = new HashSet<WorldXYZ>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
+        if(startPoint.getBlock() == Blocks.air) //this is a no go
+            return workingSet;
         workingSet.add(startPoint);
         nextEdge.add(startPoint);
         
@@ -163,7 +171,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         Block REDB = Blocks.redstone_block;
         return new Block[][][] {{
             {SBRK,REDB, SBRK}, //TODO template from wiki
-            {IRON,FUEL , IRON},
+            {IRON,FUEL ,IRON},
             {SBRK,IRON, SBRK}
         }};
     }
@@ -174,6 +182,6 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
     @Override
     public boolean isAssymetrical() {
-        return false;
+        return true;
     }
 }

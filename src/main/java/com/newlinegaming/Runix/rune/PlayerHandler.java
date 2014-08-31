@@ -16,8 +16,8 @@ public class PlayerHandler extends PersistentRune {
     private static ArrayList<PersistentRune> serverPlayers = new ArrayList<PersistentRune>();
 
     @Override
-    public boolean checkRunePattern(WorldXYZ coords) {
-        return false;
+    public WorldXYZ checkRunePattern(WorldXYZ coords) {
+        return null;
     }
 
     @Override

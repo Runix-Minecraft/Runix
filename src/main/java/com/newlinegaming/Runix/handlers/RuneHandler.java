@@ -71,8 +71,8 @@ public class RuneHandler {
         runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new DomainRune());
 //        runeRegistry.add(new LightBeamRune());
-//        runeRegistry.add(new BuildMasterRune());
         runeRegistry.add(new ElevatorRune());
+        runeRegistry.add(new BuildMasterRune());
     }
     
     public void addRune(AbstractRune rune) {
@@ -145,10 +145,10 @@ public class RuneHandler {
      * @return AbstractRune class if there is a match, null otherwise
      */
     private AbstractRune checkForAnyRunePattern(WorldXYZ coords) {
-        boolean result = false;
         for (int i = 0; i < runeRegistry.size(); i++) {
-            result = runeRegistry.get(i).checkRunePattern(new WorldXYZ(coords));
-            if (result) {
+            WorldXYZ result = runeRegistry.get(i).checkRunePattern(new WorldXYZ(coords));
+            if (result != null) {
+                coords.face = result.face;//result can contain facing information for assymetrical runes
                 return runeRegistry.get(i);
             }
         }

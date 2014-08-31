@@ -120,4 +120,21 @@ public class Util_Movement {
         return destinationCenter;
     }
 
+
+    public static HashMap<WorldXYZ, SigBlock> rotateStructureInMemory(HashMap<WorldXYZ, SigBlock> shape, WorldXYZ center, int nTurns) {
+        HashMap<WorldXYZ, SigBlock> startShape = new HashMap<WorldXYZ, SigBlock>(shape);
+        
+        for(int turnNumber = 0; turnNumber < nTurns; ++turnNumber) {
+            HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(startShape.keySet(), center, false);
+
+            HashMap<WorldXYZ, SigBlock> newShape = new HashMap<WorldXYZ, SigBlock>();//blank variable for swapping purposes
+            for(WorldXYZ origin : move.keySet()) {
+                WorldXYZ destination = move.get(origin);
+                newShape.put(destination, startShape.get(origin));
+            }
+            startShape = newShape;
+        }
+        return startShape;
+    }
+
 }

@@ -73,7 +73,7 @@ public class RunecraftRune extends AbstractTimedRune {
         if(moveInProgress || !subject.equals(getPlayer())) {
             return;
         }
-        if(getPlayer() != null && checkRunePattern(location)) {
+        if(getPlayer() != null && checkRunePattern(location) != null) {
             try{
                 moveInProgress = true;
                 int dX = (int) (getPlayer().posX - location.posX - .5);

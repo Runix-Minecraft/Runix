@@ -335,7 +335,7 @@ public abstract class PersistentRune extends AbstractRune {
 
     /** Currently just checkRunePattern(location).  This could be expanded to kill the rune if broken. */
     public boolean runeIsIntact() {
-        return checkRunePattern(location);
+        return checkRunePattern(location) != null;
     }
 
 
@@ -350,5 +350,13 @@ public abstract class PersistentRune extends AbstractRune {
         } catch (NotEnoughRunicEnergyException e) {
             reportOutOfGas(player);
         }
+    }
+
+
+    public void toggleDisabled() {
+        if(disabled)
+            disabled = false;
+        else
+            disabled = true;
     }
 }

@@ -239,25 +239,35 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public ArrayList<WorldXYZ> getNeighbors(Vector3 orientation) {
-        //TODO kludged in XY orientation
+        int x = 0;
+        int y = 0;
+        int z = 0;
         ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
-        //4 cardinal sides
-        neighbors.add(offset(0, 1,0));
-        neighbors.add(offset(0,-1,0));
-        neighbors.add(offset( 1,0,0));
-        neighbors.add(offset(-1,0,0));
-
-        //12 edge diagonals
-        //Josiah: If there was a way to get Build Master and Runecraft to cooperate without these
-        //extra 12 checks I would really rather only do 1/3 the workload when loading large Runecraft
-        //structures
-        neighbors.add(offset( 1, 1, 0));
-        neighbors.add(offset(-1, 1, 0));
-
-        neighbors.add(offset( 1,-1, 0));
-        neighbors.add(offset(-1,-1, 0));
-        //the 8 corner diagonals are not included
-        return neighbors;
+        if(Math.abs(orientation.x) == 1) {
+            for(z = -1; z <= 1; ++z){
+                for(y = -1; y <= 1; ++y){
+                    neighbors.add(offset(x,y,z));
+                }
+            }
+            return neighbors;
+        }
+        if(Math.abs(orientation.y) == 1) {
+            for(z = -1; z <= 1; ++z){
+                for(x = -1; x <= 1; ++x){
+                    neighbors.add(offset(x,y,z));
+                }
+            }
+            return neighbors;
+        }
+        if(Math.abs(orientation.z) == 1) {
+            for(y = -1; y <= 1; ++y){
+                for(x = -1; x <= 1; ++x){
+                    neighbors.add(offset(x,y,z));
+                }
+            }
+            return neighbors;
+        }
+        return getNeighbors();
     }
     
     public double getDistance(WorldXYZ other) {

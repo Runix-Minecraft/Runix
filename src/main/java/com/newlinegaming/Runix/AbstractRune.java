@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,8 +14,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import com.newlinegaming.Runix.block.AnyBlock;
-import com.newlinegaming.Runix.block.KeyBlock;
+import com.newlinegaming.Runix.block.FuelBlock;
 import com.newlinegaming.Runix.block.NoneBlock;
 import com.newlinegaming.Runix.block.SignatureBlock;
 import com.newlinegaming.Runix.block.TierBlock;
@@ -39,7 +39,7 @@ public abstract class AbstractRune {
     public static final Block SIGR = new SignatureBlock(); //Signature block
     public static final Block NONE = new NoneBlock(); //Non-Tier, Tier 0
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
-    public static final Block FUEL = new KeyBlock(); //required to be in the middle of the rune
+    public static final Block FUEL = new FuelBlock(); //required to be in the middle of the rune
     
     public String runeName = null;
     public String runeLocalizedName = null;
@@ -219,41 +219,37 @@ public abstract class AbstractRune {
 	 * and T1+ None Corners.  So if there is a recognizable shape, it will be accepted.
 	 * @return true if there is a valid match
 	 */
-    public boolean checkRunePattern(WorldXYZ coords) {
-        Block ink = getTierInkBlock(coords);
-        if(ink == Blocks.air)
-            return false; //Tier blocks cannot be AIR
+    public WorldXYZ checkRunePattern(WorldXYZ coords) {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         if( !isAssymetrical()) {
-            return runeOrientationMatches(coords, shape);
+            if(runeOrientationMatches(coords, shape))
+                return coords;
+            else
+                return null;
         } else {
-            HashMap<WorldXYZ, SigBlock> newShape = new HashMap<WorldXYZ, SigBlock>();
-            for(int orientation = 2; orientation < 6; ++orientation) {
-                HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(shape.keySet(), coords, true);
-                //a miracle occurs
-                newShape.clear();
-                for(WorldXYZ origin : move.keySet()){
-                    WorldXYZ destination = move.get(origin);
-                    newShape.put(destination, shape.get(origin));
+            Vector3[] rotationOrder = {Vector3.NORTH, Vector3.EAST, Vector3.SOUTH, Vector3.WEST,};//this is NOT the same as the order of facings
+            for(int nTurns = 0; nTurns < 4; ++nTurns) {//90 degree turns 
+                HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(shape, coords, nTurns);
+                if( runeOrientationMatches(coords, newShape) ){
+                    //side effect coords to be pointing in the detected direction, [array lookup]
+                    coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(rotationOrder[nTurns]);  
+                    return coords;
                 }
-                if( runeOrientationMatches(coords, shape) )
-                    coords.face = orientation;  //side effect coords to be pointing in the detected direction
-                    return true;
             }
         }
-        return false;
+        return null;
     }
 
     public boolean runeOrientationMatches(WorldXYZ coords, HashMap<WorldXYZ, SigBlock> shape) {
         Block ink = getTierInkBlock(coords);
         if(ink == Blocks.air)
             return false; //Tier blocks cannot be AIR
-        
+//        printPattern(shape, coords);
         for (WorldXYZ target : shape.keySet()) 
         {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
-            System.out.println(patternID.blockID + " should be " + blockID);
+//            System.out.println(patternID.blockID + " should be " + blockID);
             switch(patternID.blockID.getUnlocalizedName())
             { // Handle special Template Values
                 case "tile.NONE": 
@@ -281,6 +277,31 @@ public abstract class AbstractRune {
             }
         }
         return true;
+    }
+
+    private void printPattern(HashMap<WorldXYZ, SigBlock> shape, WorldXYZ coords) {
+        Vector3[] neighbors = {
+                new Vector3(-1, 0, -1),
+                new Vector3(0 , 0, -1),
+                new Vector3( 1, 0, -1),
+                new Vector3(-1, 0, 0),
+                new Vector3( 0, 0, 0),
+                new Vector3( 1, 0, 0),
+                new Vector3(-1, 0, 1),
+                new Vector3(0 , 0, 1),
+                new Vector3( 1, 0, 1)};
+        
+        try {
+            for(int z = -1; z <= 1; ++z){
+                for(int x = -1; x <= 1; ++x){
+                    char ch = 'O';
+                    if(shape.get(coords.offset(x, 0, z)).equals(Blocks.iron_block))
+                        ch = '#';
+                    System.out.print(ch);
+                }
+                System.out.println();//newline
+            }
+        } catch (Exception e) {}
     }
 
     protected int getTier(WorldXYZ coords){
