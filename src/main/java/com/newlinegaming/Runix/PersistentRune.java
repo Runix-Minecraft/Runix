@@ -298,7 +298,10 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
-        HashSet<WorldXYZ> scannedStructure = fullStructure();
+        return attachedStructureShape(activator, fullStructure());
+    }    
+    
+    protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator, HashSet<WorldXYZ> scannedStructure) {
         if (activator != null) {
             if (scannedStructure.isEmpty()) {
                 aetherSay(activator, "There are too many blocks for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");

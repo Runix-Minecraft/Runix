@@ -21,7 +21,8 @@ public class FaithRune extends PersistentRune{
 	public Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
-	
+    private transient HashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
+    
 	public FaithRune() {
 	    runeName = "Faith";
 	}
@@ -41,26 +42,7 @@ public class FaithRune extends PersistentRune{
 		     {TIER,gold,TIER}
 		}};
 	}
-	
-//	public void execute(WorldXYZ coords, EntityPlayer player) // TODO we need a way for runes to check more complex validation and delete themselves if they don't pass
-//	{
-//		if (!runeAllowed(player, this)) return;
-//		for (PersistentRune tmp : activeFaithList)
-//		{//Josiah: sorry, there's no way to get around type casting and still have an interface or abstract parent 
-//		    FaithRune fr = (FaithRune)tmp;
-//			if (fr.location != null && fr.radius != null)
-//			{
-//				if(coords.getDistance(fr.location) < radius)// check for other Faith centers inside our radius
-//				{
-//					player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED+"ISLANDS TOO CLOSE"));
-//					return;//TODO Chain FTP
-//				}
-//			}
-//		}
-//		PersistentRune newIsland = this.getOrCreateRune(coords, player);
-//		if(newIsland != null)
-//		    newIsland.poke(player, coords);
-//	}
+
 	
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
@@ -72,8 +54,8 @@ public class FaithRune extends PersistentRune{
             } catch (NotEnoughRunicEnergyException e) {}
             energy -= Tiers.getEnergy(Blocks.gold_block) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
-            HashSet<WorldXYZ> sphere = fullStructure();
-            energy -= sphere.size() * Tiers.blockMoveCost;
+            HashSet<WorldXYZ> tsphere = fullStructure();
+            energy -= tsphere.size() * Tiers.blockMoveCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
             bounceIsland();
         }
@@ -86,15 +68,23 @@ public class FaithRune extends PersistentRune{
      * @param sphere coordinates passed in so they don't need to be recalculated
      */
     public void bounceIsland() {
+        //assumes fullStructure() has already been called
         int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
-        HashSet<WorldXYZ> structure = attachedStructureShape(getPlayer());
-        WorldXYZ destination = location.offset(0, height - location.posY, 0).copyWithNewFacing(1); // scan up, starting at target height
-        moveStructureAndPlayer(getPlayer(), destination, structure);//scan UP, 0 buffer room
+        if(location.posY + radius*2 <= height) {
+            HashSet<WorldXYZ> structure = attachedStructureShape(getPlayer(), sphere);
+            WorldXYZ destination = new WorldXYZ(location.posX, height, location.posZ); // scan up, starting at target height
+            moveStructureAndPlayer(getPlayer(), destination, structure);//scan UP, 0 buffer room
+        } else {
+            aetherSay(getPlayer(), "Radius: " + radius +
+                    ". There's not enough room left to bounce. This island can be moved with an FTP, provided there is enough room under build height at the destination.");
+        }
 	}
     
     @Override
     public HashSet<WorldXYZ> fullStructure() {
-        return Util_SphericalFunctions.getSphere(location, radius);
+        if(sphere == null)
+            sphere = Util_SphericalFunctions.getSphere(location, radius);
+        return sphere;
     }
     
     @Override
