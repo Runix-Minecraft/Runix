@@ -14,6 +14,7 @@ public class Util_SphericalFunctions {
     
 	public static HashSet<WorldXYZ> getSphere (WorldXYZ coords, int radius)
 	{
+	    float r_squared = (float)((radius + 0.5) * (radius + 0.5));
 		World world = coords.getWorld();
 		HashSet<WorldXYZ> returnvalues = new HashSet<WorldXYZ>();
 		//loop needs to cap at the top and bottom of the world
@@ -23,9 +24,9 @@ public class Util_SphericalFunctions {
 		    for (int z = -radius-1; z < radius+1; z++){
 		        for (int x = -radius-1; x < radius+1; x++)
 		        {
-		            if(radiusCheck(x,y,z, radius))
+		            if((x * x) + (y * y) + (z * z) < r_squared)
 		            {
-		                returnvalues.add(new WorldXYZ(world,coords.posX+x,coords.posY+y,coords.posZ+z));
+		                returnvalues.add(new WorldXYZ(world, coords.posX + x, coords.posY + y, coords.posZ + z));
 		            }
 		        }
 		    }

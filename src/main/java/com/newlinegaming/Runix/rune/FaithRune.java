@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
@@ -86,6 +87,14 @@ public class FaithRune extends PersistentRune{
             sphere = Util_SphericalFunctions.getSphere(location, radius);
         return sphere;
     }
+    
+    @Override
+    /** This override is necessary to invalidate the buffered sphere variable whenever it is moved**/
+    public WorldXYZ moveYourLocation(WorldXYZ destination) {
+        sphere = null;
+        location = destination.copyWithNewFacing(location.face); //preserve old facing
+        return location;
+    }    
     
     @Override
     public HashSet<WorldXYZ> runeBlocks() {

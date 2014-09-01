@@ -31,6 +31,7 @@ public class RunecraftRune extends AbstractTimedRune {
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
     private transient RenderHelper renderer = null;
     private boolean moveInProgress = false;
+    private boolean snaggedOnSomething = false;
     public RunecraftRune(){
         runeName = "Runecraft";
     }
@@ -81,7 +82,7 @@ public class RunecraftRune extends AbstractTimedRune {
                 int dZ = (int) (getPlayer().posZ - location.posZ - .5);
                 if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
                     setPlayer(null); //Vehicle has been abandoned
-                    System.out.println("Runecraft has been abandoned.");
+                    aetherSay(subject, "Runecraft has been abandoned.");
                 }
                 else {
                     if(getPlayer().isSneaking())
@@ -89,17 +90,21 @@ public class RunecraftRune extends AbstractTimedRune {
                     if(dX != 0 || dY != 0 || dZ != 0){
                         HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  location, location.offset(dX, dY, dZ));
                         if( !Util_Movement.shapeCollides(move) ){
+                            snaggedOnSomething = false;
                             vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
                         }
-                        else{
-                            aetherSay(getPlayer(), "CRUNCH!");
+                        else{ //collision
+                            if(snaggedOnSomething == false) { //this is to avoid chat spam, it only says it once
+                                aetherSay(getPlayer(), "Runecraft collision!");
+                                snaggedOnSomething = true;
+                            }
                         }
                     }
                 }
                 moveInProgress  = false;
-            } catch (Throwable t){
-        	LogHelper.fatal("Runecraft failed.");
-        	LogHelper.fatal(t);
+            } catch (Throwable t){ //this is necessary because otherwise moveInProgress can get in an inconsistent state
+            	LogHelper.fatal("Runecraft failed.");
+            	LogHelper.fatal(t);
             }
         }else { //getPlayer() == null
             setPlayer(null); //clears the UUID and disables the rune

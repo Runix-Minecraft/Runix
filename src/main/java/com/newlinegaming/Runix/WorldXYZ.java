@@ -37,9 +37,12 @@ public class WorldXYZ extends ChunkCoordinates {
         this.setWorld(defaultWorld());
     }
 
-    public WorldXYZ(World world, int x, int y, int z) {
-        super(x, y, z);
-        this.setWorld(world);
+    public WorldXYZ(World world, int x, int y, int z) { //this constructor was made to be fast
+        posX = x;
+        posY = y;
+        posZ = z;
+        worldObj = world;
+        dimensionID = world.provider.dimensionId;
     }
 
     public WorldXYZ(World world, int x, int y, int z, int face) {

@@ -260,9 +260,15 @@ public abstract class PersistentRune extends AbstractRune {
 	public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
 		for(PersistentRune rune : getActiveMagic()){
 			if(positionsMoved.keySet().contains(rune.location) ){//grab the destination keyed by source position
-				rune.location = positionsMoved.get(rune.location).copyWithNewFacing(rune.location.face); //preserve old facing for runes
+			    rune.moveYourLocation(positionsMoved.get(rune.location));
 			}
 		}
+	}
+	
+	public WorldXYZ moveYourLocation(WorldXYZ destination) {
+	    location = destination.copyWithNewFacing(location.face); //preserve old facing for runes
+        //TODO facing is wrong!
+	    return location;
 	}
 
 	protected void reportOutOfGas(EntityPlayer listener) {
