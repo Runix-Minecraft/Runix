@@ -25,23 +25,27 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     public BuildMasterRune() {
         runeName = "Build Master";
-        updateEveryXTicks(20);
     }
 
     public BuildMasterRune( WorldXYZ coords, EntityPlayer activator ) {
         super(coords, activator, "Build Master");
-//        updateEveryXTicks(20);
+        updateEveryXTicks(40);//two second intervals
     }
 
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-//        toggleDisabled();
-//        consumeFuelBlock(coords); //this will re-enable it if there's a new fuel block
-        HashMap<WorldXYZ, SigBlock> actualBlocks = Util_Movement.scanBlocksInShape(runicFormulae(coords).keySet());
-        HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(actualBlocks, coords, 1);
-        stampBlockPattern(newShape, poker);
+        toggleDisabled();
+        consumeFuelBlock(coords); //this will re-enable it if there's a new fuel block
+        if( !disabled) {
+            aetherSay(poker, "Builder is active.");
+        }else {
+            aetherSay(poker, "Builder is turned off.");
+        }
+        //this code is a demo of rotation patterns, to use it comment out the lines above
+//        HashMap<WorldXYZ, SigBlock> actualBlocks = Util_Movement.scanBlocksInShape(runicFormulae(coords).keySet());
+//        HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(actualBlocks, coords, 1);
+//        stampBlockPattern(newShape, poker);
     }
-
 
     @Override
     protected void onUpdateTick(EntityPlayer player) {
