@@ -19,6 +19,7 @@ import com.newlinegaming.Runix.block.NoneBlock;
 import com.newlinegaming.Runix.block.SignatureBlock;
 import com.newlinegaming.Runix.block.TierBlock;
 import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.rune.BuildMasterRune;
 import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
@@ -74,8 +75,13 @@ public abstract class AbstractRune {
 	 * a static class variable.
 	 * @param coords World and xyz that Rune was activated in.
 	 * @param player We pass the player instead of World so that runes can later affect the Player
+     * @param forward 
 	 */
-	public abstract void execute(WorldXYZ coords, EntityPlayer player);
+	public void execute(WorldXYZ coords, EntityPlayer player, Vector3 forward) {
+	    execute(coords, player); //Instant runes drop the forward parameter by default
+	}
+
+    public abstract void execute(WorldXYZ coords, EntityPlayer player);
 	
 	/**
      * This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.
@@ -222,6 +228,8 @@ public abstract class AbstractRune {
 	 * @return true if there is a valid match
 	 */
     public WorldXYZ checkRunePattern(WorldXYZ coords) {
+        if(this instanceof BuildMasterRune)
+            System.out.println("Builder");
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         if( !isAssymetrical()) {
             if(runeOrientationMatches(coords, shape))
@@ -229,12 +237,21 @@ public abstract class AbstractRune {
             else
                 return null;
         } else {
-            Vector3[] rotationOrder = {Vector3.NORTH, Vector3.EAST, Vector3.SOUTH, Vector3.WEST,};//this is NOT the same as the order of facings
             for(int nTurns = 0; nTurns < 4; ++nTurns) {//90 degree turns 
                 HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(shape, coords, nTurns);
                 if( runeOrientationMatches(coords, newShape) ){
-                    //side effect coords to be pointing in the detected direction, [array lookup]
-                    coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(rotationOrder[nTurns]);  
+                    //change coords to be pointing in the detected direction, [array lookup]
+                    switch(coords.face){
+                        case 0: case 1: 
+                            coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(Vector3.xzRotationOrder[nTurns]);
+                            break;
+                        case 2: case 3: 
+                            coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(Vector3.xyRotationOrder[nTurns]);
+                            break;
+                        case 4: case 5: 
+                            coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(Vector3.yzRotationOrder[nTurns]);
+                            break;
+                    }
                     return coords;
                 }
             }

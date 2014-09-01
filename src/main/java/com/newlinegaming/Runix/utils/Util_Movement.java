@@ -3,6 +3,7 @@ package com.newlinegaming.Runix.utils;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import com.newlinegaming.Runix.*;
 import com.newlinegaming.Runix.handlers.RuneHandler;
@@ -135,6 +136,14 @@ public class Util_Movement {
             startShape = newShape;
         }
         return startShape;
+    }
+
+    public static HashMap<WorldXYZ, SigBlock> scanBlocksInShape(Set<WorldXYZ> shape) {
+        HashMap<WorldXYZ, SigBlock> actualBlocks = new HashMap<WorldXYZ, SigBlock>();
+        for(WorldXYZ point : shape) {
+            actualBlocks.put(point, point.getSigBlock());
+        }
+        return actualBlocks;
     }
 
 }

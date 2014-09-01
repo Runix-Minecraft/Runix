@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import scala.actors.threadpool.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -127,14 +132,21 @@ public class RuneHandler {
      */
     @SuppressWarnings("static-access")
 	public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
-        AbstractRune createdRune = checkForAnyRunePattern(coords);
+        Pair<AbstractRune, Vector3> matchingRuneInfo = checkForAnyRunePattern(coords);
         //TODO: check for Activator Rail in hand and subscribe the rune to minecart events
-        if (createdRune != null) {
-            createdRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
-                    createdRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
-                    Vector3.faceString[coords.face] + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
-            LogHelper.info(player.getDisplayName() + " Has activated a " + createdRune.getRuneName() + "" );
-            createdRune.execute(coords, player);
+        if (matchingRuneInfo != null) {
+            AbstractRune matchingRune = matchingRuneInfo.getLeft();
+            String direction;
+            if(matchingRune.isAssymetrical())
+                direction = Vector3.faceString[Arrays.asList(Vector3.facing).indexOf(matchingRuneInfo.getRight())];
+            else 
+                direction = Vector3.faceString[coords.face];
+            matchingRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
+                    matchingRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
+                    direction + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+            
+            LogHelper.info(player.getDisplayName() + " Has activated a " + matchingRune.getRuneName() + "" );
+            matchingRune.execute(coords, player, matchingRuneInfo.getRight());
         }
     }
 
@@ -144,12 +156,12 @@ public class RuneHandler {
      * @param coords
      * @return AbstractRune class if there is a match, null otherwise
      */
-    private AbstractRune checkForAnyRunePattern(WorldXYZ coords) {
+    private Pair<AbstractRune, Vector3> checkForAnyRunePattern(WorldXYZ coords) {
         for (int i = 0; i < runeRegistry.size(); i++) {
             WorldXYZ result = runeRegistry.get(i).checkRunePattern(new WorldXYZ(coords));
             if (result != null) {
-                coords.face = result.face;//result can contain facing information for assymetrical runes
-                return runeRegistry.get(i);
+                Vector3 forward = Vector3.facing[result.face];//result can contain facing information for assymetrical runes
+                return new MutablePair<AbstractRune, Vector3>(runeRegistry.get(i), forward);
             }
         }
         return null;

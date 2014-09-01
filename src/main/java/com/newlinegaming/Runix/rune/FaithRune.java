@@ -108,25 +108,6 @@ public class FaithRune extends PersistentRune{
         return radius;
     }
     
-    //@Override
-    /**moveMagic() On Faith Islands checks for a movement of the center block.  If that block (location) gets moved, then the move
-     * is amplified to all other blocks in the radius of the Faith Island.  This will be a little odd with rotation moves.*
-    public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) 
-    {
-        for(PersistentRune rune : getActiveMagic())
-        {
-            if(positionsMoved.keySet().contains(rune.location) ) // we have a move that affects the center
-            {
-                try {
-                    ((FaithRune) rune).moveIsland(positionsMoved);
-                } catch (NotEnoughRunicEnergyException e) {
-                    aetherSay(location.getWorld(), "The Faith sphere at " + location.toString() + " has run out of energy and the " +
-                    		"magic has become untethered from the center block.");
-                }
-            }
-        }
-    }*/
-
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeFaithList;

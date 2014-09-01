@@ -19,6 +19,9 @@ public class Vector3{// extends paulscode.sound.Vector3D.{
     public static final int[] oppositeSide = new int[] {1, 0, 3, 2, 5, 4};
 //    public static final ArrayList<Integer> xzRotationOrder = 
 //            (ArrayList<Integer>) Arrays.asList(new Integer(2), new Integer(5), new Integer(3), new Integer(4));  
+    public static Vector3[] xzRotationOrder = {Vector3.NORTH, Vector3.EAST, Vector3.SOUTH, Vector3.WEST,};
+    public static Vector3[] xyRotationOrder = {Vector3.UP, Vector3.EAST, Vector3.DOWN, Vector3.WEST,};
+    public static Vector3[] yzRotationOrder = {Vector3.NORTH, Vector3.UP, Vector3.SOUTH, Vector3.DOWN,};
     
     public int x;
     public int y;

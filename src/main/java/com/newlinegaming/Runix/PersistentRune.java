@@ -33,8 +33,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class PersistentRune extends AbstractRune {
 
 	private UUID uuid = null;
-	public WorldXYZ location = null;
 	public boolean disabled = false;
+	public WorldXYZ location = null;
+	public Vector3 forwards = Vector3.UP;
 	public String instanceName = "";
 	public PersistentRune(){}
 
@@ -128,10 +129,15 @@ public abstract class PersistentRune extends AbstractRune {
 	 * even if it is only to call super(coords, activator) in order for persistence to work correctly.
 	 */
 	@Override
-	public void execute(WorldXYZ coords, EntityPlayer activator) {
+    public void execute(WorldXYZ coords, EntityPlayer activator) {
+	    execute(coords, activator, Vector3.UP); //Up is the default
+	}
+	
+	public void execute(WorldXYZ coords, EntityPlayer activator, Vector3 forward) {
 		if(activator.worldObj.isRemote)//runes server side only
 			return;
 		PersistentRune match = getOrCreateRune(coords, activator);
+		match.forwards = forward;
 		match.poke(activator, coords); //either way, we poke the relevant rune to let it know
 	}
 

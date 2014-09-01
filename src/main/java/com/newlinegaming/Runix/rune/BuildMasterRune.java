@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,15 +30,18 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     public BuildMasterRune( WorldXYZ coords, EntityPlayer activator ) {
         super(coords, activator, "Build Master");
-        updateEveryXTicks(20);
+//        updateEveryXTicks(20);
     }
 
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
-        toggleDisabled();
-        consumeFuelBlock(coords); //this will re-enable it if there's a new fuel block
-//        HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(shape, coords, 1);
+//        toggleDisabled();
+//        consumeFuelBlock(coords); //this will re-enable it if there's a new fuel block
+        HashMap<WorldXYZ, SigBlock> actualBlocks = Util_Movement.scanBlocksInShape(runicFormulae(coords).keySet());
+        HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(actualBlocks, coords, 1);
+        stampBlockPattern(newShape, poker);
     }
+
 
     @Override
     protected void onUpdateTick(EntityPlayer player) {
@@ -78,11 +82,10 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
 
     private HashMap<WorldXYZ,WorldXYZ> findFirstMissingBlock(HashSet<WorldXYZ> structure) {
-        Vector3 offset = Vector3.facing[location.face];
         WorldXYZ currentLayer = location;
         HashMap<WorldXYZ, WorldXYZ> buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
         for(int stepCount = 0; stepCount < 150 && partialTemplateMatch(buildMapping); ++stepCount) {
-            currentLayer = currentLayer.offset(offset);
+            currentLayer = currentLayer.offset(forwards);
             buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
         }
         
@@ -118,8 +121,7 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
 
     private HashSet<WorldXYZ> scanTemplate() {
-        Vector3 orientation = Vector3.facing[location.face];
-        HashSet<WorldXYZ> points = layerConductance(location.offset(orientation.multiply(2)), 20, orientation);
+        HashSet<WorldXYZ> points = layerConductance(location.offset(forwards.multiply(2)), 20, forwards);
         return points;
     }
     

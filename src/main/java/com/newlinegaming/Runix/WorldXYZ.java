@@ -135,7 +135,12 @@ public class WorldXYZ extends ChunkCoordinates {
 //        if(index > -1) //not up or down
 //            face = Vector3.xzRotationOrder.get( (index+direction ) % 4 );
         //Josiah: you have no idea how hard it was to get this one line of code
-        return referencePoint.offset(direction * -d.z, d.y, direction * d.x, face);
+        if(referencePoint.face == 1 || referencePoint.face == 0)//UP or DOWN, xz rotation
+            return referencePoint.offset(direction * -d.z, d.y, direction * d.x, face);
+        if(referencePoint.face == 2 || referencePoint.face == 3)//North South,  XY rotation 
+            return referencePoint.offset(direction * d.y, direction * -d.x, d.z, face);
+        //East or West  YZ rotation
+        return referencePoint.offset(d.x, direction * -d.z, direction * d.y, face);
     }
 
     public int getDimensionNumber(){
