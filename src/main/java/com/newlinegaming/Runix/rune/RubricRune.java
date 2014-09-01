@@ -12,11 +12,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.SigBlock;
-import com.newlinegaming.Runix.Signature;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.RenderHelper;
@@ -29,7 +30,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class RubricRune extends PersistentRune {
 
 	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<PersistentRune>();
-	public Signature sig = null;
 	public ArrayList<BlockRecord> structure = new ArrayList<BlockRecord>();
 	protected transient RenderHelper renderer = null;
 
@@ -40,7 +40,7 @@ public class RubricRune extends PersistentRune {
 
     public RubricRune(WorldXYZ coords, EntityPlayer player2) 
     {
-	    super(coords, player2,"Rubric Creator");
+	    super(coords, player2,"Rubric");
 	    usesConductance = true;
 	}
     
@@ -62,13 +62,12 @@ public class RubricRune extends PersistentRune {
 
     @Override
 	public Block[][][] runicTemplateOriginal() {
-		Block RBLK = Blocks.redstone_block;
 		return new Block[][][] {{
-			{ NONE,TIER,SIGR,TIER,NONE },
-			{ TIER,TIER,RBLK,TIER,TIER },
-			{ SIGR,RBLK,FUEL ,RBLK,SIGR },
-			{ TIER,TIER,RBLK,TIER,TIER },
-			{ NONE,TIER,SIGR,TIER,NONE }
+			{ NONE,TIER,NONE,TIER,NONE },
+			{ TIER,TIER,NONE,TIER,TIER },
+			{ NONE,NONE,FUEL ,NONE,NONE },
+			{ TIER,TIER,NONE,TIER,TIER },
+			{ NONE,TIER,NONE,TIER,NONE }
 			
 		}};
 	}
@@ -79,30 +78,37 @@ public class RubricRune extends PersistentRune {
 	    if( renderer == null)
 	        initializeRune();
 		renderer.reset();
-		HashSet<WorldXYZ> shape = attachedStructureShape(poker); //TODO the problem is that this will be saved and persisted even without a signature
+		HashSet<WorldXYZ> shape = attachedStructureShape(poker); 
 		structure = scanStructure(shape);
 		if(structure.isEmpty()){
 		    aetherSay(poker, "The rune is touching something that is larger than "+getTier()+" blocks across.");
-		    getActiveMagic().remove(this); //TODO move this into kill()
-		    kill();// delete this failed rune attempt so it doesn't get saved
+		    getActiveMagic().remove(this);//move into kill()?
+		    kill();
 		    return;
 		}
-		ItemStack toolused = poker.getCurrentEquippedItem();
-		if (toolused != null && (toolused.getItem() == Items.written_book || toolused.getItem() == Items.book) || toolused.getItem() == Items.writable_book) 
-		{
-            sig = new Signature(this, coords); // check signature while the rune still exists
+		if(getWrittenBookName(poker) != null) {
+		    instanceName = getWrittenBookName(poker);
+            aetherSay(poker, "This structure is now called "+ instanceName);
+            
 			consumeRune(location);// remove the rune itself add runic energy
 			structure = scanStructure(shape);// then capture everything else into the rubric file 
 			consumeRune(extractCoordinates(structure));// delete the old structure
-
-            if(toolused.getItem() == Items.written_book){
-    	        instanceName = toolused.getDisplayName();
-                aetherSay(poker, "the tool used is "+ instanceName);
-			}
+        } else {
+            aetherSay(poker, "Activate Rubric with a named book to assign your structure a name.");
+            getActiveMagic().remove(this); //the rune still persists for rendering, but it can't be found or saved
         }
+		
 	}
 	
-	@Override
+	private String getWrittenBookName(EntityPlayer poker) {
+	    ItemStack toolused = poker.getCurrentEquippedItem();
+        if (toolused != null && toolused.getItem() == Items.written_book) {
+            return toolused.getDisplayName();
+        }
+        return null;
+    }
+
+    @Override
 	/**This is overridden to give Rubric increased range when picking up large structures*/
     public int getTier() {
         return super.getTier()*3;
@@ -123,43 +129,26 @@ public class RubricRune extends PersistentRune {
 	}
 
 
-    
-    public void bookClickEvent(EntityPlayer poker, WorldXYZ coords) {
-        ItemStack toolused = poker.getCurrentEquippedItem();
-        if(toolused != null)
-            instanceName = toolused.getDisplayName();
-        ArrayList<PersistentRune> rubricList = getActiveMagic();
-        Signature signature = getSignature();
-        
-        PersistentRune rubrics = null;
-        if (toolused!=null && toolused.getItem() == Items.written_book){
-            rubrics = (new RubricRune()).getRuneByInstanceName(instanceName);
-        }
-        else if( !signature.isEmpty() ) {
-            for( PersistentRune candidate : rubricList ){
-                if( signature.equals ( candidate.getSignature() ) ){
-                    rubrics = candidate;
-                    break;
-                }
+    @SubscribeEvent
+    public void bookClickEvent(PlayerInteractEvent event) {
+        if (event.action == Action.RIGHT_CLICK_BLOCK 
+                && getWrittenBookName(event.entityPlayer) != null) {
+            EntityPlayer poker = event.entityPlayer;
+            WorldXYZ coords = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
+            
+            if(getWrittenBookName(event.entityPlayer).equals(instanceName)) {
+                //          try {
+                unpackStructure(poker, structure, coords);
+                //          } catch (NotEnoughRunicEnergyException e) {
+                //              reportOutOfGas(poker);
+                //ensure recall is placed back 
+                //          }
+                //TODO fix the energy requirements
+                //consume Rune for energy
+                //transfer energy to Rubric rune
+                    //if not enough energy, Rubric can keep the energy, just ask for more
             }
         }
-        if( rubrics == null){
-            aetherSay(poker, "A Rubric with that signature cannot be found.");
-            return;
-        }
-        ArrayList<BlockRecord> structure  = ((RubricRune)rubrics).structure;
-        //          try {
-        unpackStructure(poker, structure, rubrics.location);
-
-        //          } catch (NotEnoughRunicEnergyException e) {
-        //              reportOutOfGas(poker);
-        //ensure recall is placed back 
-        //          }
-        //TODO fix the energy requirements
-        //consume Rune for energy
-        //transfer energy to Rubric rune
-            //if not enough energy, Rubric can keep the energy, just ask for more
-        //delete self
     }
 
     public void unpackStructure(EntityPlayer initiator, ArrayList<BlockRecord> structure, WorldXYZ origin){
@@ -193,10 +182,5 @@ public class RubricRune extends PersistentRune {
     
     public boolean isFlatRuneOnly() {
         return false;
-    }
-    
-    @Override
-    public Signature getSignature(){
-        return sig;
     }
 }
