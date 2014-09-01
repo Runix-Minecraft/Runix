@@ -228,8 +228,6 @@ public abstract class AbstractRune {
 	 * @return true if there is a valid match
 	 */
     public WorldXYZ checkRunePattern(WorldXYZ coords) {
-        if(this instanceof BuildMasterRune)
-            System.out.println("Builder");
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         if( !isAssymetrical()) {
             if(runeOrientationMatches(coords, shape))

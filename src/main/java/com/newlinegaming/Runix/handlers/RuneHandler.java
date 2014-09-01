@@ -31,6 +31,7 @@ import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
 import com.newlinegaming.Runix.rune.GreekFireRune;
 import com.newlinegaming.Runix.rune.OracleRune;
+import com.newlinegaming.Runix.rune.RubricRune;
 import com.newlinegaming.Runix.rune.RunecraftRune;
 import com.newlinegaming.Runix.rune.TeleporterRune;
 import com.newlinegaming.Runix.rune.TorchBearerRune;
@@ -67,8 +68,7 @@ public class RuneHandler {
         runeRegistry.add(new FtpRune());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune()); //FIXME: Make Runecraft runes respect TileEntity Inventories 
-////        runeRegistry.add(new RubricCreationRune());//FIXME: Rune locks on activation
-////        runeRegistry.add(new RubricRecallRune());
+        runeRegistry.add(new RubricRune());
         runeRegistry.add(new TorchBearerRune());
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
