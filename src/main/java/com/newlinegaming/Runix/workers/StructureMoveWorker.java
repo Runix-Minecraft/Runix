@@ -14,6 +14,7 @@ import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
+import com.newlinegaming.Runix.lib.LibConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -70,7 +71,7 @@ public class StructureMoveWorker implements IBlockWorker {
                             }
                             move = new AbstractMap.SimpleEntry<WorldXYZ, WorldXYZ>(up, moveMapping.get(up));  // add only after we know it's there
                         }
-                        if( sensitiveBlocksFound > 100){ //amount of change this tick
+                        if( sensitiveBlocksFound > LibConfig.STRUCWORKER_DEFAULT){ //amount of change this tick //FIXME: config option
                             break;
                         }
                     }
@@ -88,7 +89,7 @@ public class StructureMoveWorker implements IBlockWorker {
                         } else {
                             currentMove.put(move.getKey(), move.getValue());
                         }
-                        if( currentMove.size() + (airBlocks.size() / 5) > 100)
+                        if( currentMove.size() + (airBlocks.size() / 5) > LibConfig.STRUCWORKER_DEFAULT) //FIXME: config option
                             break;
                     }
                     //we no longer need to delete things from moveMapping because the cursor keeps our spot
