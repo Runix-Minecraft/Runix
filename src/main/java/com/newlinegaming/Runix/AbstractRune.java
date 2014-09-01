@@ -459,6 +459,14 @@ public abstract class AbstractRune {
         coords.setBlockIdAndUpdate(blockID);
     }
 
+    public void setBlockIdAndUpdate(WorldXYZ destination, SigBlock sourceBlock) throws NotEnoughRunicEnergyException {
+        if( sourceBlock.blockID == Blocks.air )//this is actually breaking, not paying for air
+            spendEnergy(Tiers.blockBreakCost);
+        else
+            spendEnergy(Tiers.getEnergy(sourceBlock.blockID));
+        destination.setBlockId(sourceBlock);
+    }
+    
     /**
      * @param energyCost 
      * @throws NotEnoughRunicEnergyException

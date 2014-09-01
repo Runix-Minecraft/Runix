@@ -25,6 +25,7 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     public BuildMasterRune() {
         runeName = "Build Master";
+        updateEveryXTicks(40);//two second intervals  //this is called from the JSON as well
     }
 
     public BuildMasterRune( WorldXYZ coords, EntityPlayer activator ) {
@@ -64,7 +65,7 @@ public class BuildMasterRune extends AbstractTimedRune {
             }
             for(WorldXYZ origin : buildMapping.keySet()) {
                 WorldXYZ destination = buildMapping.get(origin);
-                Block sourceBlock = origin.getBlock();
+                SigBlock sourceBlock = origin.getSigBlock();
                 Block destinationBlock = destination.getBlock();
                 if( !sourceBlock.equals(destinationBlock)) {
                     if(Tiers.isCrushable(destinationBlock)) {
