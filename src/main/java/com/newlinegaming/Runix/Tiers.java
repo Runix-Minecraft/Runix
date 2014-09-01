@@ -287,7 +287,7 @@ public class Tiers {
         addBlock(Blocks.birch_stairs, 0);
         addBlock(Blocks.jungle_stairs, 0);
         addBlock(Blocks.command_block, 0);
-        addBlock(Blocks.beacon, 320940);
+        addBlock(Blocks.beacon, 64188); //taken down two tiers
         addBlock(Blocks.cobblestone_wall, 1);
         addBlock(Blocks.flower_pot, 79);
         addBlock(Blocks.carrots, 0);
