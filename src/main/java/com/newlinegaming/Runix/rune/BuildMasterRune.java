@@ -74,9 +74,6 @@ public class BuildMasterRune extends AbstractTimedRune {
                             reportOutOfGas(player);
                             return;
                         }
-                    } else {
-                        //obstruction 
-                        return;
                     }
                 } else { //harmless pass through
                     //nothing to do, it will increment distance once other blocks are placed
