@@ -97,7 +97,7 @@ public class FaithRune extends PersistentRune{
     }    
     
     @Override
-    public HashSet<WorldXYZ> runeBlocks() {
+    public HashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
         HashSet<WorldXYZ> st = new HashSet<WorldXYZ>();
         st.add(location);
         return st;

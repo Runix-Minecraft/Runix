@@ -330,15 +330,9 @@ public abstract class PersistentRune extends AbstractRune {
         if(usesConductance)
             return directConductanceStructure();
         else 
-            return runeBlocks();
+            return runeBlocks(location);
     }
-        
     
-    public HashSet<WorldXYZ> runeBlocks() {
-        return new HashSet<WorldXYZ>( runicFormulae(location).keySet());
-    }
-
-
     public HashSet<WorldXYZ> directConductanceStructure() {
         int tier = getTier();
         HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
