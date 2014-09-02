@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class RubricRune extends PersistentRune {
 
 	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<PersistentRune>();
-	public ArrayList<BlockRecord> structure = new ArrayList<BlockRecord>();
+	public HashMap<Vector3, SigBlock> structure = new HashMap<Vector3, SigBlock>();
 	protected transient RenderHelper renderer = null;
 
     public RubricRune() {
@@ -49,12 +49,79 @@ public class RubricRune extends PersistentRune {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private ArrayList<BlockRecord> scanStructure(HashSet<WorldXYZ> shape) {
-        ArrayList<BlockRecord> fullData = new ArrayList<BlockRecord>();
+	@Override
+	protected void poke(EntityPlayer poker, WorldXYZ coords){
+	    if( renderer == null)
+	        initializeRune();
+		renderer.reset();
+		HashSet<WorldXYZ> shape = attachedStructureShape(poker);
+		shape.removeAll(runeBlocks(location)); //we don't want to include the rune in the pattern
+		structure = scanStructure(shape);
+		if(structure.isEmpty()){
+		    aetherSay(poker, "The rune is touching something that is larger than "+getTier()+" blocks across.");
+		    getActiveMagic().remove(this);//move into kill()?
+		    kill();
+		    return;
+		}
+		if(getWrittenBookName(poker) != null) {
+		    instanceName = getWrittenBookName(poker);
+            aetherSay(poker, "This structure is now called "+ instanceName);
+            
+			consumeRune(location);// remove the rune itself add runic energy
+        } else {
+            aetherSay(poker, "Activate Rubric with a named book to assign your structure a name.");
+            getActiveMagic().remove(this); //the rune still persists for rendering, but it can't be found or saved
+        }
+		
+	} 
+	
+	@SideOnly(Side.CLIENT)
+    @SubscribeEvent
+	public void renderWireframe(RenderWorldLastEvent evt) {
+		if (getPlayer() != null)
+			renderer.highlightBoxes(structureAbsoluteLocation(location).keySet(), false, getPlayer(), 221, 0, 0);//TODO this is really slow for every frame
+	}
+
+
+    @SubscribeEvent
+    public void bookClickEvent(PlayerInteractEvent event) {
+        if (event.action == Action.RIGHT_CLICK_BLOCK 
+                && getWrittenBookName(event.entityPlayer) != null) {
+            EntityPlayer poker = event.entityPlayer;
+            WorldXYZ coords = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
+            
+            if(getWrittenBookName(event.entityPlayer).equals(instanceName)) {
+                event.setCanceled(true);
+                //          try {
+                unpackStructure(poker, coords);
+                //          } catch (NotEnoughRunicEnergyException e) {
+                //              reportOutOfGas(poker);
+                //ensure recall is placed back 
+                //          }
+                //TODO fix the energy requirements
+                //consume Rune for energy
+                //transfer energy to Rubric rune
+                    //if not enough energy, Rubric can keep the energy, just ask for more
+            }
+        }
+    }
+
+    public void unpackStructure(EntityPlayer initiator, WorldXYZ origin){
+        //convert old coordinets to vector3 based on offset from origin
+        // create new worldXYZ by adding this.location to each vector3 
+        HashMap<WorldXYZ, SigBlock> NewStructure = structureAbsoluteLocation(origin);
+            
+        stampBlockPattern(NewStructure, initiator);
+        //TODO validate area to stamp
+        //catch: need more energy
+    }
+    
+    private HashMap<Vector3, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
+        HashMap<Vector3, SigBlock> fullData = new HashMap<Vector3, SigBlock>();
         for(WorldXYZ point : shape){
             if(point.getBlock() != Blocks.air){
                 Vector3 offset = new Vector3(location, point);
-                fullData.add(new BlockRecord(1, offset, point.getSigBlock()));
+                fullData.put(offset, point.getSigBlock());
             }
         }
         return fullData;
@@ -70,34 +137,6 @@ public class RubricRune extends PersistentRune {
 			{ NONE,TIER,NONE,TIER,NONE }
 			
 		}};
-	}
-
-
-	@Override
-	protected void poke(EntityPlayer poker, WorldXYZ coords){
-	    if( renderer == null)
-	        initializeRune();
-		renderer.reset();
-		HashSet<WorldXYZ> shape = attachedStructureShape(poker); 
-		structure = scanStructure(shape);
-		if(structure.isEmpty()){
-		    aetherSay(poker, "The rune is touching something that is larger than "+getTier()+" blocks across.");
-		    getActiveMagic().remove(this);//move into kill()?
-		    kill();
-		    return;
-		}
-		if(getWrittenBookName(poker) != null) {
-		    instanceName = getWrittenBookName(poker);
-            aetherSay(poker, "This structure is now called "+ instanceName);
-            
-			consumeRune(location);// remove the rune itself add runic energy
-			structure = scanStructure(shape);// then capture everything else into the rubric file 
-			consumeRune(extractCoordinates(structure));// delete the old structure
-        } else {
-            aetherSay(poker, "Activate Rubric with a named book to assign your structure a name.");
-            getActiveMagic().remove(this); //the rune still persists for rendering, but it can't be found or saved
-        }
-		
 	}
 	
 	private String getWrittenBookName(EntityPlayer poker) {
@@ -120,53 +159,14 @@ public class RubricRune extends PersistentRune {
 	        blocks.add(location.offset(record.offset));
         return blocks;
     }
+   
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-	public void renderWireframe(RenderWorldLastEvent evt) {
-		if (getPlayer() != null)
-			renderer.highlightBoxes(extractCoordinates(structure), false, getPlayer(), 221, 0, 0);//TODO this is really slow for every frame
-	}
-
-
-    @SubscribeEvent
-    public void bookClickEvent(PlayerInteractEvent event) {
-        if (event.action == Action.RIGHT_CLICK_BLOCK 
-                && getWrittenBookName(event.entityPlayer) != null) {
-            EntityPlayer poker = event.entityPlayer;
-            WorldXYZ coords = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
-            
-            if(getWrittenBookName(event.entityPlayer).equals(instanceName)) {
-                //          try {
-                unpackStructure(poker, structure, coords);
-                //          } catch (NotEnoughRunicEnergyException e) {
-                //              reportOutOfGas(poker);
-                //ensure recall is placed back 
-                //          }
-                //TODO fix the energy requirements
-                //consume Rune for energy
-                //transfer energy to Rubric rune
-                    //if not enough energy, Rubric can keep the energy, just ask for more
-            }
-        }
-    }
-
-    public void unpackStructure(EntityPlayer initiator, ArrayList<BlockRecord> structure, WorldXYZ origin){
-        //convert old coordinets to vector3 based on offset from origin
-        // create new worldXYZ by adding this.location to each vector3 
+    public HashMap<WorldXYZ, SigBlock> structureAbsoluteLocation(WorldXYZ origin) {
         HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<WorldXYZ, SigBlock>();
-        for(BlockRecord record : structure){
-            NewStructure.put(location.offset(record.offset), record.block);
+        for(Vector3 relative : structure.keySet()){
+            NewStructure.put(origin.offset(relative), structure.get(relative));
         }
-            
-        //try{
-        //for structure
-        
-        // for(WorldXYZ point : structure.keySet()){}
-        stampBlockPattern(NewStructure, initiator);
-            //setBlockID(
-        //TODO validate area to stamp
-        //catch: need more energy
+        return NewStructure;
     }
     
     
