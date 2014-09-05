@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 
 public class ModBlock {
 
-    public static Block greekFire;
+    public static GreekFire greekFire;
     
     //Fake/replacement Blocks
     public static Block lightBeam;

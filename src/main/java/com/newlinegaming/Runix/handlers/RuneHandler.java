@@ -68,7 +68,7 @@ public class RuneHandler {
         runeRegistry.add(new FtpRune());
         runeRegistry.add(new TeleporterRune());
         runeRegistry.add(new RunecraftRune()); //FIXME: Make Runecraft runes respect TileEntity Inventories 
-        runeRegistry.add(new RubricRune());
+//        runeRegistry.add(new RubricRune());
         runeRegistry.add(new TorchBearerRune());
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());

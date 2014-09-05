@@ -149,7 +149,7 @@ public class WorldXYZ extends ChunkCoordinates {
         return getWorld().provider.dimensionId;
     }
 
-    public World defaultWorld() {
+    public static World defaultWorld() {
         return MinecraftServer.getServer().worldServerForDimension(0);
     }
 
