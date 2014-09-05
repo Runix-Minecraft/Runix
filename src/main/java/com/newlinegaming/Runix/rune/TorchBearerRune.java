@@ -34,7 +34,7 @@ public class TorchBearerRune extends AbstractTimedRune {
     	if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
             World world = subject.worldObj;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
-            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 3);
+            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 1);
             for(WorldXYZ newPos : sphere) {
                 if(newPos.getBlock().equals(Blocks.air) && 
                 	newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.posX, newPos.posY-1, newPos.posZ) && (
