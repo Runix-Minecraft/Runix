@@ -214,6 +214,18 @@ public class WorldXYZ extends ChunkCoordinates {
 //        return "(" + posX + "," + posY +  "," + posZ + ")";
     }
 
+    public ArrayList<WorldXYZ> getDirectNeighbors() {
+        ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
+        //6 cardinal sides
+        neighbors.add(offset(0, 1,0));
+        neighbors.add(offset(0,-1,0));
+        neighbors.add(offset(0,0,-1));
+        neighbors.add(offset( 1,0,0));
+        neighbors.add(offset(0,0, 1));
+        neighbors.add(offset(-1,0,0));
+        return neighbors;
+    }
+    
     public ArrayList<WorldXYZ> getNeighbors() {
         ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
         //6 cardinal sides
@@ -308,6 +320,10 @@ public class WorldXYZ extends ChunkCoordinates {
     @Override
     public int compareTo(Object o) {
         return 0;
+    }
+
+    public boolean isCrushable() {
+        return Tiers.isCrushable(getBlock());
     }
 
 }

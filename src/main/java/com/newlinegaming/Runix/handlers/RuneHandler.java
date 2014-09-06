@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-
-import scala.actors.threadpool.Arrays;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -17,6 +12,11 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
+
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import scala.actors.threadpool.Arrays;
 
 import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.PersistentRune;
@@ -30,8 +30,8 @@ import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
 import com.newlinegaming.Runix.rune.GreekFireRune;
+import com.newlinegaming.Runix.rune.HoarFrostRune;
 import com.newlinegaming.Runix.rune.OracleRune;
-import com.newlinegaming.Runix.rune.RubricRune;
 import com.newlinegaming.Runix.rune.RunecraftRune;
 import com.newlinegaming.Runix.rune.TeleporterRune;
 import com.newlinegaming.Runix.rune.TorchBearerRune;
@@ -74,6 +74,7 @@ public class RuneHandler {
         runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
         runeRegistry.add(new GreekFireRune());
+        runeRegistry.add(new HoarFrostRune());
 //        runeRegistry.add(new DomainRune());
 //        runeRegistry.add(new LightBeamRune());
         runeRegistry.add(new ElevatorRune());
