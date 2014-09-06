@@ -32,6 +32,7 @@ public class RunecraftRune extends AbstractTimedRune {
     private transient RenderHelper renderer = null;
     private boolean moveInProgress = false;
     private boolean snaggedOnSomething = false;
+    protected boolean buttonMode = true;
     public RunecraftRune(){
         runeName = "Runecraft";
     }
@@ -69,45 +70,55 @@ public class RunecraftRune extends AbstractTimedRune {
         }};
     }
 
+    protected WorldXYZ getDestinationByPlayer(EntityPlayer subject) {
+        if(getPlayer() != null && subject.equals(getPlayer())) {
+            int dX = (int) (getPlayer().posX - location.posX - .5);
+            int dY = (int) (getPlayer().posY - location.posY - 1);
+            int dZ = (int) (getPlayer().posZ - location.posZ - .5);
+            if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
+                setPlayer(null); //Vehicle has been abandoned
+                aetherSay(subject, "Runecraft has been abandoned.");
+                return location;
+            }
+            else {
+                if(getPlayer().isSneaking())
+                    dY -= 1;
+                return location.offset(dX, dY, dZ);
+            }
+        }
+        return location;
+    }
+    
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(moveInProgress || !subject.equals(getPlayer())) {
+        if(moveInProgress) {
             return;
         }
-        if(getPlayer() != null && checkRunePattern(location) != null) {
+        if( checkRunePattern(location) != null) { //rune is still intact
             try{
                 moveInProgress = true;
-                int dX = (int) (getPlayer().posX - location.posX - .5);
-                int dY = (int) (getPlayer().posY - location.posY - 1);
-                int dZ = (int) (getPlayer().posZ - location.posZ - .5);
-                if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
-                    setPlayer(null); //Vehicle has been abandoned
-                    aetherSay(subject, "Runecraft has been abandoned.");
-                }
-                else {
-                    if(getPlayer().isSneaking())
-                	dY -= 1;
-                    if(dX != 0 || dY != 0 || dZ != 0){
-                        HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  location, location.offset(dX, dY, dZ));
-                        if( !Util_Movement.shapeCollides(move) ){
-                            snaggedOnSomething = false;
-                            vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
-                        }
-                        else{ //collision
-                            if(snaggedOnSomething == false) { //this is to avoid chat spam, it only says it once
-                                aetherSay(getPlayer(), "Runecraft collision!");
-                                snaggedOnSomething = true;
-                            }
+                WorldXYZ destination = getDestinationByPlayer(subject);
+                if( !location.equals(destination) ){
+                    HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  location, destination);
+                    if( !Util_Movement.shapeCollides(move) ){
+                        snaggedOnSomething = false;
+                        vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
+                    }
+                    else{ //collision
+                        if(snaggedOnSomething == false) { //this is to avoid chat spam, it only says it once
+                            aetherSay(getPlayer(), "Runecraft collision!");
+                            snaggedOnSomething = true;
                         }
                     }
                 }
                 moveInProgress  = false;
             } catch (Throwable t){ //this is necessary because otherwise moveInProgress can get in an inconsistent state
-            	LogHelper.fatal("Runecraft failed.");
-            	LogHelper.fatal(t);
+                LogHelper.fatal("Runecraft failed.");
+                LogHelper.fatal(t);
             }
         }else { //getPlayer() == null
             setPlayer(null); //clears the UUID and disables the rune
+            disabled = true;
         }
     }
 
