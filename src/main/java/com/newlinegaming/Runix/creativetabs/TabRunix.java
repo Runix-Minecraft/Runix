@@ -6,9 +6,8 @@ import net.minecraft.item.Item;
 
 public class TabRunix extends CreativeTabs {
 
-    public TabRunix(String lable) {
-        super(lable);
-
+    public TabRunix(String label) {
+        super(label);
     }
 
     @Override

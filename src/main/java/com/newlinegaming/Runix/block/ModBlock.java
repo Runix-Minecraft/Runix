@@ -9,21 +9,21 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class ModBlock {
 
     public static GreekFire greekFire;
+    public static HoarFrostOrigin frostOrigin;
+    public static Block lightBeam;
     
     //Fake/replacement Blocks
-    public static Block lightBeam;
     public static Block fakeGoldBlock;
-    public static HoarFrostOrigin frostOrigin;
     public static Block runixAir;
     
     public static void init() {
 
         greekFire = GreekFire.getInstance();
         frostOrigin = new HoarFrostOrigin();
-        runixAir = new RunixAirBlock();
     	
         lightBeam = new BlockLightBeam();
         fakeGoldBlock = new FakeBlock(Blocks.gold_block);
+        runixAir = new RunixAirBlock();
 
 
 

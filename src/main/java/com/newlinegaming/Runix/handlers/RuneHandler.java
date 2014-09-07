@@ -2,6 +2,7 @@ package com.newlinegaming.Runix.handlers;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -16,7 +17,6 @@ import net.minecraftforge.event.world.WorldEvent.Save;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import scala.actors.threadpool.Arrays;
 
 import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.PersistentRune;
