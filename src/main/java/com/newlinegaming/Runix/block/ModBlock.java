@@ -2,14 +2,13 @@ package com.newlinegaming.Runix.block;
 
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModBlock {
 
     public static GreekFire greekFire;
-    public static HoarFrostOrigin frostOrigin;
+    public static HoarFrost hoar_frost;
     public static Block lightBeam;
     
     //Fake/replacement Blocks
@@ -19,7 +18,7 @@ public class ModBlock {
     public static void init() {
 
         greekFire = GreekFire.getInstance();
-        frostOrigin = new HoarFrostOrigin();
+        hoar_frost = new HoarFrost();
     	
         lightBeam = new BlockLightBeam();
         fakeGoldBlock = new FakeBlock(Blocks.gold_block);
@@ -33,9 +32,9 @@ public class ModBlock {
     }
 
     private static void Gamereg() {
-
         GameRegistry.registerBlock(greekFire, "GreekFire");
-        GameRegistry.registerBlock(frostOrigin, "HoarFrost");
+//        GameRegistry.registerBlock(frostOrigin, "HoarFrost");
+        GameRegistry.registerBlock(hoar_frost, HoarFrostItem.class, "HoarFrost");
         GameRegistry.registerBlock(runixAir, "Fake Air");
         GameRegistry.registerBlock(lightBeam, "RunixLightBeam");
         GameRegistry.registerBlock(fakeGoldBlock, "RunixFakeGoldBlock");

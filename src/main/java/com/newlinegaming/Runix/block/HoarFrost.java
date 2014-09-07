@@ -1,33 +1,53 @@
 package com.newlinegaming.Runix.block;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockIce;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.RunixMain;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.WorldXYZ;
 
-public class HoarFrostOrigin extends BlockIce {
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public class HoarFrost extends BlockIce {
     
-    public HoarFrostOrigin() {
+    public HoarFrost() {
         super();
-        setBlockName("Hoar Frost");
         setTickRandomly(true);
         setCreativeTab(RunixMain.TabRunix);
         setHardness(0.5F);
         setStepSound(soundTypeGlass);
-        setBlockName("HoarFrost");
+        setBlockName("runix:hoarfrost");
         setBlockTextureName("ice_packed");
     }
     
     @Override
+    public int damageDropped (int metadata) {
+        return metadata;
+    }
+    
+    @SuppressWarnings("rawtypes") 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubBlocks(Item par1, CreativeTabs tab, List subItems) {
+        int[] growthModes = {0, 1, 2, 14, 15};
+        for (int ix = 0; ix < growthModes.length; ix++) {
+            subItems.add(new ItemStack(this, 1, growthModes[ix]));
+        }
+    }
+    
+    @Override
     public int tickRate(World par1World) {
-        int[] means = {3, 50};
         return 30 + par1World.rand.nextInt(20);
     }
     
@@ -36,15 +56,15 @@ public class HoarFrostOrigin extends BlockIce {
 //        new WorldXYZ(world, x, y, z).setBlock(ModBlock.frostOrigin, 15);//this line is to convert all existing frost blocks
         int growthMode = world.getBlockMetadata(x, y, z);
 
-        if(growthMode == 1) {//surface crawl
+        if(growthMode == 0) {//surface crawl
             ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getNeighbors();
             for(WorldXYZ n : neighbors){
                 if(n.getBlock().equals(Blocks.air)) {
                     ArrayList<WorldXYZ> indirectNeighbors = n.getDirectNeighbors();
                     for(WorldXYZ base : indirectNeighbors) {
                         Block block = base.getBlock();
-                        if( !block.equals(ModBlock.frostOrigin) && !block.equals(Blocks.air) ) { //found a child
-                            n.setBlock(ModBlock.frostOrigin, 1);
+                        if( !block.equals(ModBlock.hoar_frost) && !block.equals(Blocks.air) ) { //found a child
+                            n.setBlock(ModBlock.hoar_frost, 0);
                             world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, this.tickRate(world)); //schedule for child
                             return; //no more updates for the parent block
                         }
@@ -65,7 +85,7 @@ public class HoarFrostOrigin extends BlockIce {
             } else {
                 WorldXYZ target = neighbors.get(random.nextInt(neighbors.size()));
                 if( target.getBlock().equals(Blocks.air))
-                    target.setBlock(ModBlock.frostOrigin, 2);
+                    target.setBlock(ModBlock.hoar_frost, 2);
                 world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
             }
         }
@@ -74,8 +94,8 @@ public class HoarFrostOrigin extends BlockIce {
             WorldXYZ me = new WorldXYZ(world, x, y, z);
             ArrayList<WorldXYZ> neighbors = me.getNeighbors();
             for(WorldXYZ n : neighbors){
-                if(n.getBlock().equals(ModBlock.frostOrigin)){
-                    n.setBlock(ModBlock.frostOrigin, 14); //spread the deletion
+                if(n.getBlock().equals(ModBlock.hoar_frost)){
+                    n.setBlock(ModBlock.hoar_frost, 14); //spread the deletion
                     world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 3); //update neighbor quickly
                 }
             }
@@ -87,10 +107,10 @@ public class HoarFrostOrigin extends BlockIce {
             int conversions = 0;
             for(WorldXYZ n : neighbors){
                 SigBlock data = n.getSigBlock();
-                if(data.blockID.equals(ModBlock.frostOrigin)){
+                if(data.blockID.equals(ModBlock.hoar_frost)){
                     ++conversions;
                     if(data.meta != 15) {
-                        n.setBlock(ModBlock.frostOrigin, 15);
+                        n.setBlock(ModBlock.hoar_frost, 15);
                         world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 5); //schedule for neighbor
                     }
                 }

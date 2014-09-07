@@ -3,6 +3,7 @@ tile.runix:testblock.name=Test Block
 tile.runix:voidlog.name=[WIP] Void Log
 tile.runix:voidplanks.name=[WIP] Void Planks
 tile.runix:voidleaves.name=[WIP] Void Leaves
+tile.runix:hoarfrost.name=Hoar Frost
 
 # -- Fluids
 tile.runix:qixsilver.name=[WIP] QixSilver
