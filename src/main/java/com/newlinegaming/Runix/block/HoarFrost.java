@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.RunixMain;
 import com.newlinegaming.Runix.SigBlock;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
 import cpw.mods.fml.relauncher.Side;
@@ -40,7 +41,7 @@ public class HoarFrost extends BlockIce {
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(Item par1, CreativeTabs tab, List subItems) {
-        int[] growthModes = {0, 1, 2, 14, 15};
+        int[] growthModes = {0, 1, 2, 3, 4, 5, 7, 14};
         for (int ix = 0; ix < growthModes.length; ix++) {
             subItems.add(new ItemStack(this, 1, growthModes[ix]));
         }
@@ -48,7 +49,7 @@ public class HoarFrost extends BlockIce {
     
     @Override
     public int tickRate(World par1World) {
-        return 30 + par1World.rand.nextInt(20);
+        return 10 + par1World.rand.nextInt(10);
     }
     
     @Override
@@ -56,24 +57,44 @@ public class HoarFrost extends BlockIce {
 //        new WorldXYZ(world, x, y, z).setBlock(ModBlock.frostOrigin, 15);//this line is to convert all existing frost blocks
         int growthMode = world.getBlockMetadata(x, y, z);
 
-        if(growthMode == 0) {//surface crawl
-            ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getNeighbors();
+        if(growthMode == 0) {//Origin Sequence
+            world.scheduleBlockUpdate(x, y, z, this, 200);
+            ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getDirectNeighbors();
             for(WorldXYZ n : neighbors){
-                if(n.getBlock().equals(Blocks.air)) {
-                    ArrayList<WorldXYZ> indirectNeighbors = n.getDirectNeighbors();
-                    for(WorldXYZ base : indirectNeighbors) {
-                        Block block = base.getBlock();
-                        if( !block.equals(ModBlock.hoar_frost) && !block.equals(Blocks.air) ) { //found a child
-                            n.setBlock(ModBlock.hoar_frost, 0);
-                            world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, this.tickRate(world)); //schedule for child
-                            return; //no more updates for the parent block
-                        }
+                n.setBlock(ModBlock.hoar_frost, 1);//create crawl expansion blocks
+            }
+            new WorldXYZ(world, x, y, z).setBlock(ModBlock.hoar_frost, 3);// next phase in the sequence
+        }
+
+        if(growthMode == 1) {//surface crawl
+            world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world)); //schedule for child
+            int randomIndex = random.nextInt(Vector3.conductanceNeighbors.length);
+            WorldXYZ randomNeighbor = new WorldXYZ(world, x, y, z).offset(Vector3.conductanceNeighbors[randomIndex]);
+            if(randomNeighbor.getBlock().equals(Blocks.air)) {
+                ArrayList<WorldXYZ> indirectNeighbors = randomNeighbor.getDirectNeighbors();
+                for(WorldXYZ base : indirectNeighbors) {
+                    Block block = base.getBlock();
+                    if( !block.equals(ModBlock.hoar_frost) && !block.equals(Blocks.air) ) { //found a valid growth location
+                        randomNeighbor.setBlock(ModBlock.hoar_frost, growthMode);
+                        world.scheduleBlockUpdate(randomNeighbor.posX, randomNeighbor.posY, randomNeighbor.posZ, this, this.tickRate(world)); //schedule for child
+                        return;
                     }
                 }
             }
         }
         
-        if(growthMode == 2) { //Expanding shell
+        if(growthMode == 3) { //infectious shutdown stasis mode
+            ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getNeighbors();
+            for(WorldXYZ n : neighbors){
+                SigBlock data = n.getSigBlock();
+                if(data.blockID.equals(ModBlock.hoar_frost) && data.meta != growthMode) {
+                    n.setBlock(ModBlock.hoar_frost, growthMode);
+                    world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 5); //schedule for neighbor
+                }
+            }
+        }
+
+        if(growthMode == 7) { //Expanding shell
             ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getDirectNeighbors();
             int nCount = 0;
             for(WorldXYZ n : neighbors){
@@ -85,7 +106,7 @@ public class HoarFrost extends BlockIce {
             } else {
                 WorldXYZ target = neighbors.get(random.nextInt(neighbors.size()));
                 if( target.getBlock().equals(Blocks.air))
-                    target.setBlock(ModBlock.hoar_frost, 2);
+                    target.setBlock(ModBlock.hoar_frost, growthMode);
                 world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
             }
         }
@@ -95,29 +116,13 @@ public class HoarFrost extends BlockIce {
             ArrayList<WorldXYZ> neighbors = me.getNeighbors();
             for(WorldXYZ n : neighbors){
                 if(n.getBlock().equals(ModBlock.hoar_frost)){
-                    n.setBlock(ModBlock.hoar_frost, 14); //spread the deletion
+                    n.setBlock(ModBlock.hoar_frost, growthMode); //spread the deletion
                     world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 3); //update neighbor quickly
                 }
             }
             me.setBlock(Blocks.air, 0); //delete self
         }
         
-        if(growthMode == 15) { //infectious shutdown stasis mode
-            ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getNeighbors();
-            int conversions = 0;
-            for(WorldXYZ n : neighbors){
-                SigBlock data = n.getSigBlock();
-                if(data.blockID.equals(ModBlock.hoar_frost)){
-                    ++conversions;
-                    if(data.meta != 15) {
-                        n.setBlock(ModBlock.hoar_frost, 15);
-                        world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 5); //schedule for neighbor
-                    }
-                }
-            }
-            if(conversions == 0)
-                new WorldXYZ(world, x, y, z).setBlock(Blocks.air, 0);
-        }
     }
     
     @Override

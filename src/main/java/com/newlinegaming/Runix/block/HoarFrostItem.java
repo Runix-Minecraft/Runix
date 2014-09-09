@@ -14,8 +14,8 @@ public class HoarFrostItem extends ItemBlock {
     }
 
     private final static String[] subNames = {
-        "surface", "orange",  "shell", "lightBlue", "yellow", "lightGreen",
-        "pink", "darkGrey", "lightGrey", "cyan", "purple", "blue", "brown",
+        "origin", "creep",  "origin2", "stasis", "origin3", "explosion",
+        "pink", "shell", "lightGrey", "cyan", "purple", "blue", "brown",
         "green", "delete", "stasis"
     };
     
