@@ -6,22 +6,27 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockIce;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.RunixMain;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.lib.LibInfo;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class HoarFrost extends BlockIce {
     
+    public IIcon opaqueIcon;
+
     public HoarFrost() {
         super();
         setTickRandomly(true);
@@ -41,10 +46,25 @@ public class HoarFrost extends BlockIce {
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(Item par1, CreativeTabs tab, List subItems) {
-        int[] growthModes = {0, 1, 2, 3, 4, 5, 7, 14};
+        int[] growthModes = {0, 1, 3, 4, 14, 15};
         for (int ix = 0; ix < growthModes.length; ix++) {
             subItems.add(new ItemStack(this, 1, growthModes[ix]));
         }
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        if(meta == 1 || meta == 14)
+            return blockIcon;
+        return opaqueIcon;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister registry) {
+        opaqueIcon = registry.registerIcon(LibInfo.MOD_ID + ":hoarfrost-solid");
+        this.blockIcon = registry.registerIcon(LibInfo.MOD_ID + ":hoarfrost-50-percent-opacity");
     }
     
     @Override
@@ -58,12 +78,13 @@ public class HoarFrost extends BlockIce {
         int growthMode = world.getBlockMetadata(x, y, z);
 
         if(growthMode == 0) {//Origin Sequence
-            world.scheduleBlockUpdate(x, y, z, this, 200);
+            //TODO if hit, explode
+            world.scheduleBlockUpdate(x, y, z, this, 1500);
             ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getDirectNeighbors();
             for(WorldXYZ n : neighbors){
                 n.setBlock(ModBlock.hoar_frost, 1);//create crawl expansion blocks
             }
-            new WorldXYZ(world, x, y, z).setBlock(ModBlock.hoar_frost, 3);// next phase in the sequence
+            new WorldXYZ(world, x, y, z).setBlock(ModBlock.hoar_frost, 2);// next phase in the sequence
         }
 
         if(growthMode == 1) {//surface crawl
@@ -75,12 +96,20 @@ public class HoarFrost extends BlockIce {
                 for(WorldXYZ base : indirectNeighbors) {
                     Block block = base.getBlock();
                     if( !block.equals(ModBlock.hoar_frost) && !block.equals(Blocks.air) ) { //found a valid growth location
+                        if(random.nextInt(800) == 1)
+                            growthMode = 3; //stasis mode
                         randomNeighbor.setBlock(ModBlock.hoar_frost, growthMode);
                         world.scheduleBlockUpdate(randomNeighbor.posX, randomNeighbor.posY, randomNeighbor.posZ, this, this.tickRate(world)); //schedule for child
                         return;
                     }
                 }
             }
+        }
+        
+        if(growthMode == 2) {//Origin Sequence 2
+            //TODO if hit, explode
+            world.scheduleBlockUpdate(x, y, z, this, 10);
+            new WorldXYZ(world, x, y, z).setBlock(ModBlock.hoar_frost, 15);// final phase = delete the ice splotch
         }
         
         if(growthMode == 3) { //infectious shutdown stasis mode
@@ -94,7 +123,7 @@ public class HoarFrost extends BlockIce {
             }
         }
 
-        if(growthMode == 7) { //Expanding shell
+        if(growthMode == 14) { //Expanding shell
             ArrayList<WorldXYZ> neighbors = new WorldXYZ(world, x, y, z).getDirectNeighbors();
             int nCount = 0;
             for(WorldXYZ n : neighbors){
@@ -107,15 +136,15 @@ public class HoarFrost extends BlockIce {
                 WorldXYZ target = neighbors.get(random.nextInt(neighbors.size()));
                 if( target.getBlock().equals(Blocks.air))
                     target.setBlock(ModBlock.hoar_frost, growthMode);
-                world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+                world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world)*2);
             }
         }
         
-        if(growthMode == 14) { //infectious delete mode
+        if(growthMode == 15) { //infectious delete mode
             WorldXYZ me = new WorldXYZ(world, x, y, z);
             ArrayList<WorldXYZ> neighbors = me.getNeighbors();
             for(WorldXYZ n : neighbors){
-                if(n.getBlock().equals(ModBlock.hoar_frost)){
+                if(n.getBlock().equals(ModBlock.hoar_frost) || n.getBlock().equals(ModBlock.runixAir)){
                     n.setBlock(ModBlock.hoar_frost, growthMode); //spread the deletion
                     world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 3); //update neighbor quickly
                 }

@@ -14,9 +14,9 @@ public class HoarFrostItem extends ItemBlock {
     }
 
     private final static String[] subNames = {
-        "origin", "creep",  "origin2", "stasis", "origin3", "explosion",
-        "pink", "shell", "lightGrey", "cyan", "purple", "blue", "brown",
-        "green", "delete", "stasis"
+        "origin", "creeping",  "origin2", "crystallized", "exploding", 
+        "pink", "lightGrey", "cyan", "purple", "blue", "brown", "fuschia", "green", "orange", 
+        "blooming", "melting"
     };
     
     @Override
@@ -26,7 +26,7 @@ public class HoarFrostItem extends ItemBlock {
     
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
-        return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];
+        return subNames[itemstack.getItemDamage()] + "." + getUnlocalizedName();
     }
 
 }
