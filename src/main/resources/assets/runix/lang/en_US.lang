@@ -3,7 +3,15 @@ tile.runix:testblock.name=Test Block
 tile.runix:voidlog.name=[WIP] Void Log
 tile.runix:voidplanks.name=[WIP] Void Planks
 tile.runix:voidleaves.name=[WIP] Void Leaves
+
 tile.runix:hoarfrost.name=Hoar Frost
+tile.runix:hoarfrost.origin.name=Hoar Frost
+tile.runix:hoarfrost.creeping.name=Creeping Hoar Frost
+tile.runix:hoarfrost.origin2.name=Hoar Frost
+tile.runix:hoarfrost.crystallized.name=Crystallized Hoar Frost
+tile.runix:hoarfrost.exploding.name=Exploding Hoar Frost
+tile.runix:hoarfrost.blooming.name=Blooming Shell Hoar Frost
+tile.runix:hoarfrost.melting.name=Melting Hoar Frost
 
 # -- Fluids
 tile.runix:qixsilver.name=[WIP] QixSilver
@@ -15,7 +23,7 @@ item.runix:qixsilverbucket.name= QixSilver bucket
 # -- Armor
 item.runix:aethergoggles.name=[WIP] Goggles of the Aether
 
-# -- Mics
+# -- Misc
 itemGroup.runix:runix=Runix
 
 # -- ToolTips
