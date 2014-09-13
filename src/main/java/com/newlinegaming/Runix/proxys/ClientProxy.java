@@ -3,9 +3,10 @@ package com.newlinegaming.Runix.proxys;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
+import com.newlinegaming.Runix.client.render.block.GreekFireRenderer;
+import com.newlinegaming.Runix.client.render.block.HoarFrostRenderer;
 import com.newlinegaming.Runix.client.render.item.ItemRenderTransmutaionRod;
 import com.newlinegaming.Runix.client.render.tile.RenderTileLightBeam;
-import com.newlinegaming.Runix.client.renderer.block.GreekFireRenderer;
 import com.newlinegaming.Runix.item.ModItem;
 import com.newlinegaming.Runix.tile.TileLightBeam;
 
@@ -22,6 +23,7 @@ public class ClientProxy extends CommonProxy {
 	    ClientRegistry.bindTileEntitySpecialRenderer(TileLightBeam.class, new RenderTileLightBeam());
 	    MinecraftForgeClient.registerItemRenderer(ModItem.transRod, (IItemRenderer)new ItemRenderTransmutaionRod());
 	    RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new GreekFireRenderer());
+        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new HoarFrostRenderer());
 	}
 	
 	public void registerTileEnitiy() {} //NO OP

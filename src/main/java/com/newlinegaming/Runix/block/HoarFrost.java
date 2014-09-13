@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -40,6 +41,19 @@ public class HoarFrost extends BlockIce {
         setBlockName("runix:hoarfrost");
         setBlockTextureName("ice_packed");
 //        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1225F, 1.0F);
+    }
+
+    @Override
+    public int getRenderType() {
+        return 72;
+    }
+    
+    @Override
+    public boolean isBlockSolid(IBlockAccess world, int x, int y, int z, int side) {
+        if(world.getBlock(x, y, z).equals(ModBlock.hoar_frost)){
+            return false;
+        }
+        return Blocks.ice.isBlockSolid(world, x,y,z, side);
     }
     
     @Override

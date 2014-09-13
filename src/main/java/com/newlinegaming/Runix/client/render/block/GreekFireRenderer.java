@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix.client.renderer.block;
+package com.newlinegaming.Runix.client.render.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
