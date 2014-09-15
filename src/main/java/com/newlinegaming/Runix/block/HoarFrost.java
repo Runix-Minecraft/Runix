@@ -80,6 +80,11 @@ public class HoarFrost extends BlockIce {
         return false;
     }    
     
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+        return true;
+    }
     
     
     
