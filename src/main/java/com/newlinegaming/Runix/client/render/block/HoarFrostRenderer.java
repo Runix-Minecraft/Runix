@@ -29,8 +29,8 @@ public class HoarFrostRenderer implements ISimpleBlockRenderingHandler {
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
         Tessellator tessellator = Tessellator.instance;
-        IIcon icon = ModBlock.hoar_frost.getIcon(0, 0); //TODO individualize sides
-        IIcon icon1 = ModBlock.hoar_frost.getIcon(0, 1);
+        IIcon icon = ModBlock.hoar_frost.getIcon(0, 1); //TODO individualize sides
+        IIcon icon1 = ModBlock.hoar_frost.getIcon(0, 0);
         IIcon icon2 = icon;
         boolean anyRender = false;
 
