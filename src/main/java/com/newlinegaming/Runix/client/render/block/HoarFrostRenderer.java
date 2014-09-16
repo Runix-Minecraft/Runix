@@ -102,11 +102,10 @@ public class HoarFrostRenderer implements ISimpleBlockRenderingHandler {
         f = -0.0125F;
         if (block.isBlockSolid(world, x, y + 1, z, 0)) {//block above
             anyRender = true;
-            ++y;
-            tessellator.addVertexWithUV(d9, (double)((float)y + f), (double)(z + 0), d2, d1);
-            tessellator.addVertexWithUV(d5, (double)(y + 0), (double)(z + 0), d2, d3);
-            tessellator.addVertexWithUV(d5, (double)(y + 0), (double)(z + 1), d0, d3);
-            tessellator.addVertexWithUV(d9, (double)((float)y + f), (double)(z + 1), d0, d1);
+            tessellator.addVertexWithUV(d9, (double)((float)y + 1 + f), (double)(z + 0), d2, d1);
+            tessellator.addVertexWithUV(d5, (double)(y + 1), (double)(z + 0), d2, d3);
+            tessellator.addVertexWithUV(d5, (double)(y + 1), (double)(z + 1), d0, d3);
+            tessellator.addVertexWithUV(d9, (double)((float)y + 1 + f), (double)(z + 1), d0, d1);
         }
 
         if (block.isBlockSolid(world, x, y - 1, z, 0)) { //bottom side
