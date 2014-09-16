@@ -32,89 +32,58 @@ public class HoarFrostRenderer implements ISimpleBlockRenderingHandler {
 
         tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
         tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
-        double d0 = (double)icon.getMinU();
-        double d1 = (double)icon.getMinV();
-        double d2 = (double)icon.getMaxU();
-        double d3 = (double)icon.getMaxV();
-        float f = 1.0F;
+        double u0 = (double)icon.getMinU();
+        double v0 = (double)icon.getMinV();
+        double u1 = (double)icon.getMaxU();
+        double v1 = (double)icon.getMaxV();
+        float b = 0.0125F; //very small bump to keep planes from intersecting
 
-        float f1 = 0.0125F;
-
-        if (block.isBlockSolid(world, x - 1, y, z, 0))
-        {
+        if (block.isBlockSolid(world, x - 1, y, z, 0)) {
             anyRender = true;
-            tessellator.addVertexWithUV((double)((float)x + f1), (double)((float)y + f + f1), (double)(z + 1), d2, d1);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + 1), d2, d3);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + 0), d0, d3);
-            tessellator.addVertexWithUV((double)((float)x + f1), (double)((float)y + f + f1), (double)(z + 0), d0, d1);
-            tessellator.addVertexWithUV((double)((float)x + f1), (double)((float)y + f + f1), (double)(z + 0), d0, d1);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + 0), d0, d3);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + 1), d2, d3);
-            tessellator.addVertexWithUV((double)((float)x + f1), (double)((float)y + f + f1), (double)(z + 1), d2, d1);
+            tessellator.addVertexWithUV((double)(x + b), (double)(y + 1 + b), (double)(z + 1), u1, v0);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0 + b), (double)(z + 1), u1, v1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0 + b), (double)(z + 0), u0, v1);
+            tessellator.addVertexWithUV((double)(x + b), (double)(y + 1 + b), (double)(z + 0), u0, v0);
         }
 
-        if (block.isBlockSolid(world, x + 1, y, z, 0))
-        {
+        if (block.isBlockSolid(world, x + 1, y, z, 0)) {
             anyRender = true;
-            tessellator.addVertexWithUV((double)((float)(x + 1) - f1), (double)((float)y + f + f1), (double)(z + 0), d0, d1);
-            tessellator.addVertexWithUV((double)(x + 1 - 0), (double)((float)(y + 0) + f1), (double)(z + 0), d0, d3);
-            tessellator.addVertexWithUV((double)(x + 1 - 0), (double)((float)(y + 0) + f1), (double)(z + 1), d2, d3);
-            tessellator.addVertexWithUV((double)((float)(x + 1) - f1), (double)((float)y + f + f1), (double)(z + 1), d2, d1);
-            tessellator.addVertexWithUV((double)((float)(x + 1) - f1), (double)((float)y + f + f1), (double)(z + 1), d2, d1);
-            tessellator.addVertexWithUV((double)(x + 1 - 0), (double)((float)(y + 0) + f1), (double)(z + 1), d2, d3);
-            tessellator.addVertexWithUV((double)(x + 1 - 0), (double)((float)(y + 0) + f1), (double)(z + 0), d0, d3);
-            tessellator.addVertexWithUV((double)((float)(x + 1) - f1), (double)((float)y + f + f1), (double)(z + 0), d0, d1);
+            tessellator.addVertexWithUV((double)(x + 1 - b), (double)(y + 1 + b), (double)(z + 0), u0, v0);
+            tessellator.addVertexWithUV((double)(x + 1 - 0), (double)(y + 0 + b), (double)(z + 0), u0, v1);
+            tessellator.addVertexWithUV((double)(x + 1 - 0), (double)(y + 0 + b), (double)(z + 1), u1, v1);
+            tessellator.addVertexWithUV((double)(x + 1 - b), (double)(y + 1 + b), (double)(z + 1), u1, v0);
         }
 
-        if (block.isBlockSolid(world, x, y, z - 1, 0)) //north solid
-        {
+        if (block.isBlockSolid(world, x, y, z - 1, 0)) {//north solid
             anyRender = true;
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)y + f + f1), (double)((float)z + f1), d2, d1);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + f1), d2, d3);
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)(y + 0) + f1), (double)(z + f1), d0, d3);
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)y + f + f1), (double)((float)z + f1), d0, d1);
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)y + f + f1), (double)((float)z + f1), d0, d1);
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)(y + 0) + f1), (double)(z + f1), d0, d3);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + f1), d2, d3);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)y + f + f1), (double)((float)z + f1), d2, d1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 1 + b), (double)(z + b), u1, v0);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0 + b), (double)(z + b), u1, v1);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + 0 + b), (double)(z + b), u0, v1);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + 1 + b), (double)(z + b), u0, v0);
         }
 
-        if (block.isBlockSolid(world, x, y, z + 1, 0))
-        {
+        if (block.isBlockSolid(world, x, y, z + 1, 0)) {
             anyRender = true;
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)y + f + f1), (double)((float)(z + 1) - f1), d0, d1);
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)(y + 0) + f1), (double)(z + 1 - 0), d0, d3);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + 1 - 0), d2, d3);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)y + f + f1), (double)((float)(z + 1) - f1), d2, d1);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)y + f + f1), (double)((float)(z + 1) - f1), d2, d1);
-            tessellator.addVertexWithUV((double)(x + 0), (double)((float)(y + 0) + f1), (double)(z + 1 - 0), d2, d3);
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)(y + 0) + f1), (double)(z + 1 - 0), d0, d3);
-            tessellator.addVertexWithUV((double)(x + 1), (double)((float)y + f + f1), (double)((float)(z + 1) - f1), d0, d1);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + 1 + b), (double)(z + 1 - b), u0, v0);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + 0 + b), (double)(z + 1 - 0), u0, v1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0 + b), (double)(z + 1 - 0), u1, v1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 1 + b), (double)(z + 1 - b), u1, v0);
         }
 
-
-        double d5 = (double)x + 0.5D + 0.5D;
-        double d9 = (double)x + 0.5D - 0.5D;
-        d0 = (double)icon.getMinU();
-        d1 = (double)icon.getMinV();
-        d2 = (double)icon.getMaxU();
-        d3 = (double)icon.getMaxV();
-        f = -0.0125F;
         if (block.isBlockSolid(world, x, y + 1, z, 0)) {//block above
             anyRender = true;
-            tessellator.addVertexWithUV(d9, (double)((float)y + 1 + f), (double)(z + 0), d2, d1);
-            tessellator.addVertexWithUV(d5, (double)(y + 1), (double)(z + 0), d2, d3);
-            tessellator.addVertexWithUV(d5, (double)(y + 1), (double)(z + 1), d0, d3);
-            tessellator.addVertexWithUV(d9, (double)((float)y + 1 + f), (double)(z + 1), d0, d1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 1 - b), (double)(z + 0), u1, v0);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + 1 - b), (double)(z + 0), u1, v1);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + 1 - b), (double)(z + 1), u0, v1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + 1 - b), (double)(z + 1), u0, v0);
         }
 
         if (block.isBlockSolid(world, x, y - 1, z, 0)) { //bottom side
             anyRender = true;
-            f = -f;
-            tessellator.addVertexWithUV(d9, (double)((float)y + f), (double)(z + 1), d0, d1);
-            tessellator.addVertexWithUV(d5, (double)(y + f), (double)(z + 1), d0, d3);
-            tessellator.addVertexWithUV(d5, (double)(y + f), (double)(z + 0), d2, d3);
-            tessellator.addVertexWithUV(d9, (double)((float)y + f), (double)(z + 0), d2, d1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + b), (double)(z + 1), u0, v0);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + b), (double)(z + 1), u0, v1);
+            tessellator.addVertexWithUV((double)(x + 1), (double)(y + b), (double)(z + 0), u1, v1);
+            tessellator.addVertexWithUV((double)(x + 0), (double)(y + b), (double)(z + 0), u1, v0);
         }
 
         return anyRender;
