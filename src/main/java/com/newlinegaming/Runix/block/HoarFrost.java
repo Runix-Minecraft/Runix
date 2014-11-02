@@ -122,7 +122,7 @@ public class HoarFrost extends BlockIce {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister registry) {
-        blockIcon = registry.registerIcon(LibInfo.MOD_ID + ":hoarfrost-transparent");
+        blockIcon = registry.registerIcon(LibInfo.MOD_ID + ":hoarfrost-partial-opaque_v3");
         opaqueIcon = registry.registerIcon(LibInfo.MOD_ID + ":hoarfrost-partial-opaque");
     }
 
@@ -156,7 +156,7 @@ public class HoarFrost extends BlockIce {
                 for(WorldXYZ base : indirectNeighbors) {
                     Block block = base.getBlock();
                     if( !block.equals(ModBlock.hoar_frost) && !block.equals(Blocks.air) ) { //found a valid growth location
-                        if(random.nextInt(5000) == 1) //important to limit the exponential growth of creep
+                        if(random.nextInt(1000) == 1) //important to limit the exponential growth of creep
                             growthMode = 3; //stasis mode
                         randomNeighbor.setBlock(ModBlock.hoar_frost, growthMode);
                         world.scheduleBlockUpdate(randomNeighbor.posX, randomNeighbor.posY, randomNeighbor.posZ, this, this.tickRate(world)); //schedule for child

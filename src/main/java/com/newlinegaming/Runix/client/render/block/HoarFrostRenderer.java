@@ -25,7 +25,7 @@ public class HoarFrostRenderer implements ISimpleBlockRenderingHandler {
 
         Tessellator tessellator = Tessellator.instance;
         int meta = world.getBlockMetadata(x, y, z);
-        if(meta == 0 || meta == 2 || meta == 14)
+        if(meta == 0 || meta == 2 || meta == 3 || meta == 14)
             return renderer.renderStandardBlock(block, x, y, z); //still not rendering side blocks
         IIcon icon = ModBlock.hoar_frost.getIcon(0, meta);
         boolean anyRender = false;
