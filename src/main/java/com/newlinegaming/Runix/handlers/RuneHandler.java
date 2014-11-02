@@ -8,7 +8,7 @@ import java.util.HashSet;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,7 +31,7 @@ import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
 import com.newlinegaming.Runix.rune.GreekFireRune;
 import com.newlinegaming.Runix.rune.OracleRune;
-import com.newlinegaming.Runix.rune.RubricRune;
+//import com.newlinegaming.Runix.rune.RubricRune;
 import com.newlinegaming.Runix.rune.RunecraftRune;
 import com.newlinegaming.Runix.rune.TeleporterRune;
 import com.newlinegaming.Runix.rune.TorchBearerRune;
