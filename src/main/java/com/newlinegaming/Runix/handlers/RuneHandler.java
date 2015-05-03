@@ -8,9 +8,6 @@ import java.util.HashSet;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.Arrays;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -18,10 +15,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
-
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-
 
 import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.PersistentRune;
@@ -160,15 +153,15 @@ public class RuneHandler {
     /**
      * This is the main switch board between all of the runes.  It iterates through all runes in the order that
      * they are registered and asks if each one matches the pattern of blocks at the coordinates.
-     * @param coords
+     * @param coords location of the right click
      * @return AbstractRune class if there is a match, null otherwise
      */
     private Pair<AbstractRune, Vector3> checkForAnyRunePattern(WorldXYZ coords) {
-        for (int i = 0; i < runeRegistry.size(); i++) {
-            WorldXYZ result = runeRegistry.get(i).checkRunePattern(new WorldXYZ(coords));
+        for (AbstractRune aRuneRegistry : runeRegistry) {
+            WorldXYZ result = aRuneRegistry.checkRunePattern(new WorldXYZ(coords));
             if (result != null) {
                 Vector3 forward = Vector3.facing[result.face];//result can contain facing information for assymetrical runes
-                return new MutablePair<AbstractRune, Vector3>(runeRegistry.get(i), forward);
+                return new MutablePair<AbstractRune, Vector3>(aRuneRegistry, forward);
             }
         }
         return null;
@@ -184,18 +177,17 @@ public class RuneHandler {
      * This is modeled after conductanceStep() but on a macro level.
      * Recursive chaining of rune structures is now working.  You can FTP a 
      * Runecraft that is touching a Faith block and the whole island will be treated and moved as one structure.
-     * @param authority 
+     * param authority
      */
     public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure, AbstractRune originator) {
-        HashSet<WorldXYZ> activeEdge = new HashSet<WorldXYZ>();
+        HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>(structure);//starts off being a copy of structure
 
         while(!nextEdge.isEmpty() && structure.size() < 500000) {
             activeEdge = nextEdge;
             nextEdge = new HashSet<WorldXYZ>();
 
-            for(int i = 0; i < runeRegistry.size(); i++) {
-                AbstractRune rune = runeRegistry.get(i);
+            for (AbstractRune rune : runeRegistry) {
                 if (rune instanceof PersistentRune) {
                     // pass in and side-effect the collection
                     HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
@@ -205,8 +197,8 @@ public class RuneHandler {
                                 // FaithRune is the only authority user at the moment
                                 additionalBlocks.addAll(pRune.fullStructure());
                                 additionalBlocks.removeAll(structure); // we only want new blocks
-                            } else if(pRune instanceof FaithRune && originator != pRune){ //obviously don't block yourself
-                             // ensure Faith Anchor stays where it is, even if other blocks are moved
+                            } else if (pRune instanceof FaithRune && originator != pRune) { //obviously don't block yourself
+                                // ensure Faith Anchor stays where it is, even if other blocks are moved
                                 structure.remove(pRune.location);
                                 activeEdge.remove(pRune.location);
                                 additionalBlocks.remove(pRune.location);
