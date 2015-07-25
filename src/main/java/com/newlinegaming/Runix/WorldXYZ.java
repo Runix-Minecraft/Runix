@@ -300,18 +300,6 @@ public class WorldXYZ extends ChunkCoordinates {
         return base.isSolid();
     }
 
-    public WorldXYZ mostValuableNeighbor() {
-        WorldXYZ best = offset(Vector3.UP);
-        int bestEnergy = 0;
-        for(WorldXYZ c : getNeighbors()){
-            if( Tiers.getEnergy(c.getBlock()) > bestEnergy){
-                bestEnergy = Tiers.getEnergy(c.getBlock());
-                best = c;
-            }
-        }
-        return best;
-    }
-
     public void bump(Vector3 vec) {
         bump(vec.x, vec.y, vec.z);
     }
