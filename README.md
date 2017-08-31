@@ -1,18 +1,18 @@
-Runix
-=======
+# Runix
 
-Runix is a mod that is is heavely influence and based on [Runecraft] (http://dev.bukkit.org/bukkit-plugins/runecraft/)
+[![Build Status](https://travis-ci.org/Runix-Minecraft/Runix.svg?branch=master)](https://travis-ci.org/Runix-Minecraft/Runix)
 
-###Contributing
+Runix is a mod that is is heavily influence and based on [Runecraft] (http://dev.bukkit.org/bukkit-plugins/runecraft/)
+
+## Contributing
 To contribute Runix you must:
 
     1: Have a basic to working knowledge of Java and the Forge api.
     2: Have a basic to working knowledge of how git works.
     3: A GitHub account
     4: Fork the project
-==== 
 
-####Setup Java
+### Setup Java
 The Java JDK is used to compile Runix.
 
 1. Download and install the Java JDK.
@@ -32,7 +32,7 @@ The Java JDK is used to compile Runix.
     * Append `;%JAVA_HOME%\bin` EXACTLY AS SHOWN and click `Ok`.  Make sure the location is correct; double-check just to make sure.
 3. Open up your command line and run `javac`.  If it spews out a bunch of possible options and the usage, then you're good to go.
 
-####Setup Gradle
+### Setup Gradle
 Gradle is used to execute the various build tasks when compiling Runix.
 
 1. Download and install Gradle.
@@ -50,13 +50,13 @@ Gradle is used to execute the various build tasks when compiling Runix.
 	* Scroll down to `Path` again, and append `;%GRADLE_HOME%\bin` EXACTLY AS SHOWN and click `Ok`.  Once again, double-check the location.
 3. Open up your command line and run `gradle`.  If it says "Welcome to Gradle [version].", then you're good to go.
 
-####Setup Git
+### Setup Git
 Git is used to clone Runix and update your local copy.
 
 1. Download and install Git [here](http://git-scm.com/download/).
 	* *Optional*: Download and install a Git GUI client, such as Github for Windows/Mac, SmartGitHg, TortoiseGit, etc.  A nice list is available [here](http://git-scm.com/downloads/guis).
 
-####Setup Runix
+### Setup Runix
 This section assumes that you're using the command-line version of Git.
 
 1. Open up your command line.
@@ -70,7 +70,7 @@ This section assumes that you're using the command-line version of Git.
 		\-Runix's files (should have `build.gradle`)
 ***
 
-####Compile Runix
+### Compile Runix
 1. Execute `gradle setupCiWorkspace`. This sets up Forge and downloads the necessary libraries to build Runix.  This might take some time, be patient.
 	* You will generally only have to do this once until the Forge version in `build.properties` changes.
 2. Execute `gradle build`. If you did everything right, `BUILD SUCCESSFUL` will be displayed after it finishes.  This should be relatively quick.
@@ -80,7 +80,7 @@ This section assumes that you're using the command-line version of Git.
 		* NOTE: The local in the file name means that the jar was not built on our build server
 4. Copy the jar
 
-###Pull Request(PR) Guidelines
+## Pull Request(PR) Guidelines
 A PR MUST meet these standards befor being merged:
 
     1: The PR MUST be singed off by the author
@@ -88,14 +88,10 @@ A PR MUST meet these standards befor being merged:
     3: The PR MUST pass a Travis-ci build, if it fails odds are it won't be merged.
         -If you think it should still be merged please give us a GOOD reason to do so.
 
-=====
+## Links
 [Forum Page] (http://www.minecraftforum.net/topic/2259223-wip-runix-the-block-based-magic-mod-inspired-by-runecraft/)
 
 [Wiki Page] (http://runix.wikia.com/wiki/Runix_Wiki)
 
 [Runix's licence] (http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-=====
-[![Build Status](https://travis-ci.org/Runix-Minecraft/Runix.svg?branch=master)](https://travis-ci.org/Runix-Minecraft/Runix)
-
-irc.esper.net #runix
