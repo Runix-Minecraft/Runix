@@ -71,9 +71,9 @@ This section assumes that you're using the command-line version of Git.
 ***
 
 ### Compile Runix
-1. Execute `gradle setupCiWorkspace`. This sets up Forge and downloads the necessary libraries to build Runix.  This might take some time, be patient.
+1. Execute `gradlew setupCiWorkspace`. This sets up Forge and downloads the necessary libraries to build Runix.  This might take some time, be patient.
 	* You will generally only have to do this once until the Forge version in `build.properties` changes.
-2. Execute `gradle build`. If you did everything right, `BUILD SUCCESSFUL` will be displayed after it finishes.  This should be relatively quick.
+2. Execute `gradlew build`. If you did everything right, `BUILD SUCCESSFUL` will be displayed after it finishes.  This should be relatively quick.
     * If you see `BUILD FAILED`, check the error output (it should be right around `BUILD FAILED`), fix everything (if possible), and try again.
 3. Navigate to `WorkingDIR\Runix\build\libs`.
     *  You should see a `.jar` file named `Runix-1.7.10-majorversion.minorversion.local.jar`
