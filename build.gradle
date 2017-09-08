@@ -28,9 +28,9 @@ configFile.withReader {
 
 def ENV = System.getenv()
 if (ENV.BUILD_ID) {
-	version += "${config.mc_version}-${config.mod_version}.${config.release_status}." + ENV.DRONE_BUILD_NUMBER
+	version = "${config.mc_version}-${config.mod_version}.${config.release_status}." + ENV.DRONE_BUILD_NUMBER
 } else {
-	version += "${config.mc_version}-${config.mod_version}.${config.release_status}.local"
+	version = "${config.mc_version}-${config.mod_version}.${config.release_status}.local"
 }
 group= "${config.group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${config.name}"
@@ -136,3 +136,5 @@ if (ENV.SC_MAVEN_URL) {
 		}
 	}
 }
+
+idea { module { inheritOutputDirs = true } }

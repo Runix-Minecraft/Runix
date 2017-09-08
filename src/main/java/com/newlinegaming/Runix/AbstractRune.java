@@ -501,6 +501,11 @@ public abstract class AbstractRune {
         return this.getClass().toString().replace("class com.newlinegaming.Runix.rune.", "");
     }
 
+    /**
+     * @param poker
+     * @param signature
+     * @return WorldXYZ or null
+     */
     public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
