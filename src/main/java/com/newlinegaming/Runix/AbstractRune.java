@@ -506,7 +506,7 @@ public abstract class AbstractRune {
      * @param signature
      * @return WorldXYZ or null
      */
-    public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
+    public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) throws NoSuchSignatureException {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
         PersistentRune wp = null;
@@ -518,8 +518,7 @@ public abstract class AbstractRune {
             }
         }
         if( wp == null){
-            aetherSay(poker, "A waypoint with that signature cannot be found.");
-            return null;
+            throw new NoSuchSignatureException();
         }
         WorldXYZ destination = new WorldXYZ(wp.location);
         return destination;

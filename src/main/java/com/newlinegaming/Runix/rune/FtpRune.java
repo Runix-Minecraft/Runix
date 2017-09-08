@@ -3,6 +3,7 @@ package com.newlinegaming.Runix.rune;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.newlinegaming.Runix.NoSuchSignatureException;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -42,15 +43,17 @@ public class FtpRune extends TeleporterRune {
     @Override
     protected void poke(EntityPlayer player, WorldXYZ coords) {
         consumeFuelBlock(coords);
-        location.face = coords.face; //update the facing 
-        WorldXYZ destination = findWaypointBySignature(player, getSignature());
-        if(destination.getWorld() == null)
-            return; //failure
-        HashSet<WorldXYZ> structure = attachedStructureShape(player);
-        if(structure.isEmpty())
-            return;
-        
-        moveStructureAndPlayer(player, destination, structure);
+        location.face = coords.face; //update the facing
+        try {
+            WorldXYZ destination = findWaypointBySignature(player, getSignature());
+            HashSet<WorldXYZ> structure = attachedStructureShape(player);
+            if (structure.isEmpty())
+                return;
+
+            moveStructureAndPlayer(player, destination, structure);
+        } catch (NoSuchSignatureException e){
+            aetherSay(player, "There's no waypoint with that signature.");
+        }
     }
 
     @Override

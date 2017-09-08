@@ -9,7 +9,7 @@ public class ItemTransmutationRod extends Item {
     public ItemTransmutationRod() {
         super();
         setCreativeTab(RunixMain.TabRunix);
-//        setUnlocalizedName("runix:transmutationrod");
+        setUnlocalizedName("runix:transmutationrod");
     }
 
 }
