@@ -1,7 +1,6 @@
 package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
@@ -12,7 +11,6 @@ import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.block.ModBlock;
-import com.newlinegaming.Runix.utils.Util_Movement;
 import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
 import com.newlinegaming.Runix.WorldXYZ;
 
@@ -63,10 +61,9 @@ public class FaithRune extends PersistentRune{
     }
     
     /**
-     * bouncIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
+     * bounceIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
      * Faith is activated. 
      * Josiah: I've tried to speed this up as much as possible with little effect.  Profiling is needed.
-     * @param sphere coordinates passed in so they don't need to be recalculated
      */
     public void bounceIsland() {
         //assumes fullStructure() has already been called
@@ -90,11 +87,10 @@ public class FaithRune extends PersistentRune{
     
     @Override
     /** This override is necessary to invalidate the buffered sphere variable whenever it is moved**/
-    public WorldXYZ moveYourLocation(WorldXYZ destination) {
+    public void moveYourLocation(WorldXYZ destination) {
         sphere = null;
         location = destination.copyWithNewFacing(location.face); //preserve old facing
-        return location;
-    }    
+    }
     
     @Override
     public HashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {

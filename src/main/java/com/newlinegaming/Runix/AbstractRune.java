@@ -87,11 +87,8 @@ public abstract class AbstractRune {
      * This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
 	 * calls for 0 (AIR).
-	 * @param pattern The blockPattern to be stamped.
+	 * @param stamp The blockPattern to be stamped.
 	 * @param player used to check for build permissions.  Player also provides worldObj.
-	 * @param worldX
-	 * @param worldY
-	 * @param worldZ
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
 	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
@@ -120,8 +117,7 @@ public abstract class AbstractRune {
 	 * This method should be used for any teleport or similar move that may land the player in some blocks.
 	 * @param player
 	 * @param coords Target destination
-	 * @param direction to move in if they encounter blocks
-	 * @throws NotEnoughRunicEnergyException 
+	 * @throws NotEnoughRunicEnergyException
 	 */
 	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
 		
@@ -520,8 +516,7 @@ public abstract class AbstractRune {
         if( wp == null){
             throw new NoSuchSignatureException();
         }
-        WorldXYZ destination = new WorldXYZ(wp.location);
-        return destination;
+        return new WorldXYZ(wp.location);
     }
 
     /*
@@ -540,6 +535,6 @@ public abstract class AbstractRune {
     }
 
     public HashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
-        return new HashSet<WorldXYZ>( runicFormulae(coords).keySet());
+        return new HashSet<>(runicFormulae(coords).keySet());
     }
 }

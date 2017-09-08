@@ -24,11 +24,7 @@ import org.apache.commons.io.FileUtils;
 import com.google.gson.Gson;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
-import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.utils.Util_Movement;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class PersistentRune extends AbstractRune {
 
@@ -191,7 +187,7 @@ public abstract class PersistentRune extends AbstractRune {
 	 * the rune is first created and every time after that as well.  Functionality that you want to call when the
 	 * rune is built and also later whenever it is poked should be placed in this method, not in the constructor.
 	 * Remember, poke will always be called after a rune is created through PersistentRune.execute()
-	 * @param poker Player that poked the rune
+	 * @param player Player that poked the rune
 	 * @param coords center block
 	 */
 	protected void poke(EntityPlayer player, WorldXYZ coords){
@@ -271,10 +267,8 @@ public abstract class PersistentRune extends AbstractRune {
 		}
 	}
 	
-	public WorldXYZ moveYourLocation(WorldXYZ destination) {
+	public void moveYourLocation(WorldXYZ destination) {
 	    location = destination.copyWithNewFacing(location.face); //preserve old facing for runes
-        //TODO facing is wrong!
-	    return location;
 	}
 
 	protected void reportOutOfGas(EntityPlayer listener) {
@@ -283,7 +277,7 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
     public boolean onPlayerLogin(String username) {
-	return false;
+		return false;
     }
 
     public EntityPlayer getPlayer() {
@@ -376,9 +370,6 @@ public abstract class PersistentRune extends AbstractRune {
 
 
     public void toggleDisabled() {
-        if(disabled)
-            disabled = false;
-        else
-            disabled = true;
+		disabled = !disabled;
     }
 }

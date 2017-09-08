@@ -105,7 +105,7 @@ public class RunecraftRune extends AbstractTimedRune {
                         vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
                     }
                     else{ //collision
-                        if(snaggedOnSomething == false) { //this is to avoid chat spam, it only says it once
+                        if(!snaggedOnSomething) { //this is to avoid chat spam, it only says it once
                             aetherSay(getPlayer(), "Runecraft collision!");
                             snaggedOnSomething = true;
                         }
@@ -134,7 +134,7 @@ public class RunecraftRune extends AbstractTimedRune {
     
     @SubscribeEvent
     public void event(BreakEvent b){
-	
+	    //TODO: intercept event?
     }
     
     @SubscribeEvent
@@ -198,10 +198,7 @@ public class RunecraftRune extends AbstractTimedRune {
      */
     public void setPlayer(EntityPlayer playerObj) { 
         super.setPlayer(playerObj);
-        if(getPlayer() != null)
-            disabled = false;
-        else
-            disabled = true; 
+        disabled = getPlayer() == null;
     }
     
     @Override

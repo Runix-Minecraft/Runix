@@ -23,8 +23,8 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 public class StructureMoveWorker implements IBlockWorker {
 
     private HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
-    HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>();
-    HashMap<WorldXYZ, SigBlock> sensitiveBlocks = null;
+    private HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>();
+    private HashMap<WorldXYZ, SigBlock> sensitiveBlocks = null;
     private WorldXYZ bumpedBlock = null;  // created whenever a move collides with itself
     private int currentTimer = 0;
     private int maxTimer = 20; // 20 ticks = 1 second
