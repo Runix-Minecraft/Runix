@@ -13,15 +13,15 @@ public class ModItem {
     
     public static void init() {
 
-        aetherGoggles = new ArmorAetherGoggles();
-        transRod = new ItemTransmutationRod();
+//        aetherGoggles = new ArmorAetherGoggles();
+//        transRod = new ItemTransmutationRod();
         
         gameReg();
     }
 
     private static void gameReg() {
-        GameRegistry.registerItem(aetherGoggles, LibInfo.MOD_ID  + "aethergoggles");
-        GameRegistry.registerItem(transRod, LibInfo.MOD_ID + "transmutationrod");
+//        GameRegistry.registerItem(aetherGoggles, LibInfo.MOD_ID  + "aethergoggles");
+//        GameRegistry.registerItem(transRod, LibInfo.MOD_ID + "transmutationrod");
         
     }
 }
