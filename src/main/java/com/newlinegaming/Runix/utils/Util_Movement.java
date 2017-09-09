@@ -1,9 +1,6 @@
 package com.newlinegaming.Runix.utils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import com.newlinegaming.Runix.*;
 import com.newlinegaming.Runix.handlers.RuneHandler;
@@ -78,8 +75,8 @@ public class Util_Movement {
             return false;
     }
 
-    public static HashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, WorldXYZ startPoint, WorldXYZ destinationCenter) {
-        HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>();
+    public static LinkedHashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, WorldXYZ startPoint, WorldXYZ destinationCenter) {
+        LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = new LinkedHashMap<WorldXYZ, WorldXYZ>();
         Vector3 displacement = new Vector3(startPoint, destinationCenter);
         for(WorldXYZ point : set)
             moveMapping.put(point, point.offsetWorld(displacement, destinationCenter.getWorld()));
@@ -104,7 +101,7 @@ public class Util_Movement {
     public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) {
         Vector3 roomForShip = Vector3.facing[destination.face].multiply(radius);// TODO get width/height/depth of structure + 1
         int collisionTries = 0;
-        HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
+        LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
         WorldXYZ destinationCenter = null;
         do {
             Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m

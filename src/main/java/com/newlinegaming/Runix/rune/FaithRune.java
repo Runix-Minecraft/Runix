@@ -2,6 +2,7 @@ package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +21,7 @@ public class FaithRune extends PersistentRune{
 	public Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
-    private transient HashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
+    private transient LinkedHashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
     
 	public FaithRune() {
 	    runeName = "Faith";

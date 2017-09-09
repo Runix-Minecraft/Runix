@@ -1,9 +1,6 @@
 package com.newlinegaming.Runix.workers;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.init.Blocks;
@@ -22,7 +19,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class StructureMoveWorker implements IBlockWorker {
 
-    private HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
+    private LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
     private HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>();
     private HashMap<WorldXYZ, SigBlock> sensitiveBlocks = null;
     private WorldXYZ bumpedBlock = null;  // created whenever a move collides with itself
@@ -31,7 +28,7 @@ public class StructureMoveWorker implements IBlockWorker {
     private Iterator<Entry<WorldXYZ, WorldXYZ> > cursor = null;
     private boolean searchingForSensitive;
     
-    public StructureMoveWorker(HashMap<WorldXYZ, WorldXYZ> moveMap){
+    public StructureMoveWorker(LinkedHashMap<WorldXYZ, WorldXYZ> moveMap){
         moveMapping = moveMap;
         cursor = moveMapping.entrySet().iterator();
         sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
