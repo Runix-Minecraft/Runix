@@ -313,6 +313,10 @@ public abstract class AbstractRune {
         } catch (Exception e) {}
     }
 
+    /** Finds the Tier of Ink blocks that match the Rune at a given coordinate
+     * @param coords Center coordinates used to look up the Rune template
+     * @return int
+     */
     protected int getTier(WorldXYZ coords){
         Block blockID = getTierInkBlock(coords);
         return blockID != null ? Tiers.getTier(blockID) : 1;

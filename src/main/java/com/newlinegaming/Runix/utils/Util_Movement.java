@@ -98,8 +98,8 @@ public class Util_Movement {
      * @return center of destination teleport or null if the teleport was unsuccessful
      * @throws NotEnoughRunicEnergyException
      */
-    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int radius) {
-        Vector3 roomForShip = Vector3.facing[destination.face].multiply(radius);// TODO get width/height/depth of structure + 1
+    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int extremitySize) {
+        Vector3 roomForShip = Vector3.facing[destination.face].multiply(extremitySize);
         int collisionTries = 0;
         LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
         WorldXYZ destinationCenter = null;

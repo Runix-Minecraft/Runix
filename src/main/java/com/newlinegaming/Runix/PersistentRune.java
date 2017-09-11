@@ -299,6 +299,10 @@ public abstract class PersistentRune extends AbstractRune {
         return super.getTier(location);
     }
 
+    public int boundaryFromCenter(HashSet<WorldXYZ> structure){
+		return getTier();
+	}
+
     protected LinkedHashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
         return attachedStructureShape(activator, fullStructure());
     }    
@@ -353,7 +357,7 @@ public abstract class PersistentRune extends AbstractRune {
 
     public void moveStructureAndPlayer(EntityPlayer player, WorldXYZ destination, HashSet<WorldXYZ> structure) {
         try {
-            WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, getTier());
+            WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure));
             if(destinationCenter != null) {
                 teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
             }else {
