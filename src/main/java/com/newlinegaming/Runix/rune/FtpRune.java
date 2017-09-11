@@ -2,6 +2,7 @@ package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import com.newlinegaming.Runix.NoSuchSignatureException;
 import net.minecraft.block.Block;
@@ -36,7 +37,7 @@ public class FtpRune extends TeleporterRune {
             {SIGR,TIER,TIER,FUEL ,TIER,TIER,SIGR},
             {TIER,TIER,GOLD,TIER,GOLD,TIER,TIER},
             {NONE,NONE,TIER,TIER,TIER,NONE,NONE},
-            {NONE,NONE,TIER,SIGR,TIER,NONE,NONE}    
+            {NONE,NONE,TIER,SIGR,TIER,NONE,NONE}
         }};
     }
 
@@ -44,20 +45,27 @@ public class FtpRune extends TeleporterRune {
     protected void poke(EntityPlayer player, WorldXYZ coords) {
         consumeFuelBlock(coords);
         location.face = coords.face; //update the facing
+        WorldXYZ destination;
         try {
-            WorldXYZ destination = findWaypointBySignature(player, getSignature());
-            HashSet<WorldXYZ> structure = attachedStructureShape(player);
-            if (structure.isEmpty())
-                return;
-
-            moveStructureAndPlayer(player, destination, structure);
-        } catch (NoSuchSignatureException e){
+            destination = findWaypointBySignature(player, getSignature());
+        } catch (NoSuchSignatureException e) {
             aetherSay(player, "There's no waypoint with that signature.");
+            return;
         }
+        LinkedHashSet<WorldXYZ> structure = attachedStructureShape(player);
+        if (structure.isEmpty())
+            return;
+
+        moveStructureAndPlayer(player, destination, structure);
     }
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return energizedFTP;
+    }
+
+    @Override
+    public int getTier(){
+        return 50;
     }
 }

@@ -80,7 +80,7 @@ public class FaithRune extends PersistentRune{
 	}
     
     @Override
-    public HashSet<WorldXYZ> fullStructure() {
+    public LinkedHashSet<WorldXYZ> fullStructure() {
         if(sphere == null)
             sphere = Util_SphericalFunctions.getSphere(location, radius);
         return sphere;
@@ -94,8 +94,8 @@ public class FaithRune extends PersistentRune{
     }
     
     @Override
-    public HashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
-        HashSet<WorldXYZ> st = new HashSet<WorldXYZ>();
+    public LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
+        LinkedHashSet<WorldXYZ> st = new LinkedHashSet<WorldXYZ>();
         st.add(location);
         return st;
     }

@@ -299,11 +299,11 @@ public abstract class PersistentRune extends AbstractRune {
         return super.getTier(location);
     }
 
-    protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
+    protected LinkedHashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
         return attachedStructureShape(activator, fullStructure());
     }    
     
-    protected HashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator, HashSet<WorldXYZ> scannedStructure) {
+    protected LinkedHashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator, LinkedHashSet<WorldXYZ> scannedStructure) {
         if (activator != null) {
             if (scannedStructure.isEmpty()) {
                 aetherSay(activator, "There are too many blocks for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
@@ -316,16 +316,16 @@ public abstract class PersistentRune extends AbstractRune {
         return scannedStructure;
     }
 
-    public HashSet<WorldXYZ> fullStructure() {
+    public LinkedHashSet<WorldXYZ> fullStructure() {
         if(usesConductance)
             return directConductanceStructure();
         else 
             return runeBlocks(location);
     }
     
-    public HashSet<WorldXYZ> directConductanceStructure() {
+    public LinkedHashSet<WorldXYZ> directConductanceStructure() {
         int tier = getTier();
-        HashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
+        LinkedHashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
         return scannedStructure;
     }
 

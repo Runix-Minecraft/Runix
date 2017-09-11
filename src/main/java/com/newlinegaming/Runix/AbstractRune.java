@@ -1,10 +1,6 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -340,8 +336,8 @@ public abstract class AbstractRune {
     }
 
     /**This will return an empty list if the activation would tear a structure in two. */
-    public HashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
-        HashSet<WorldXYZ> workingSet = new HashSet<WorldXYZ>();
+    public LinkedHashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
+        LinkedHashSet<WorldXYZ> workingSet = new LinkedHashSet<WorldXYZ>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
         workingSet.add(startPoint);
@@ -352,7 +348,7 @@ public abstract class AbstractRune {
             nextEdge = new HashSet<WorldXYZ>();
           //tear detection: this should be empty by the last step
             if(iterationStep == 1 && activeEdge.size() != 0) 
-                return new HashSet<WorldXYZ>();
+                return new LinkedHashSet<WorldXYZ>();
             
             for(WorldXYZ block : activeEdge) {
                 ArrayList<WorldXYZ> neighbors = block.getNeighbors();
@@ -534,7 +530,7 @@ public abstract class AbstractRune {
         return false;
     }
 
-    public HashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
-        return new HashSet<>(runicFormulae(coords).keySet());
+    public LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
+        return new LinkedHashSet<>(runicFormulae(coords).keySet());
     }
 }

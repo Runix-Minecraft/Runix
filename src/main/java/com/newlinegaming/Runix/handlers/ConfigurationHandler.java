@@ -31,7 +31,7 @@ public class ConfigurationHandler {
     }
 
     private static void loadConf() {
-//        LibConfig.STRUCWORKER = conf.getInt("Structure Moveworker", Configuration.CATEGORY_GENERAL, LibConfig.STRUCWORKER_DEFAULT, 50, 500, "The amount of work the structure moveworker will do");
+//        LibConfig.STRUCWORKER = conf.getInt("Structure Moveworker", Configuration.CATEGORY_GENERAL, LibConfig.runixBlocksPerTick, 1, 1000, "The amount of work the structure moveworker will do");
 //        LibConfig.STRUCWORKER cong
         
     }

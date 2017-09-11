@@ -10,7 +10,6 @@ import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.handlers.RuneHandler;
-import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.lib.LibConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -68,7 +67,7 @@ public class StructureMoveWorker implements IBlockWorker {
                             }
                             move = new AbstractMap.SimpleEntry<WorldXYZ, WorldXYZ>(up, moveMapping.get(up));  // add only after we know it's there
                         }
-                        if( sensitiveBlocksFound > LibConfig.STRUCWORKER_DEFAULT){ //amount of change this tick //FIXME: config option
+                        if( sensitiveBlocksFound > LibConfig.runixBlocksPerTick){ //amount of change this tick //FIXME: config option
                             break;
                         }
                     }
@@ -84,9 +83,12 @@ public class StructureMoveWorker implements IBlockWorker {
                         if(block.equals(Blocks.air)) { 
                             airBlocks.put(move.getKey(), move.getValue()); //don't calculate on AIR blocks
                         } else {
-                            currentMove.put(move.getKey(), move.getValue());
+                            //Check the ensure that we are not simply overwriting yourself.
+                            if(!move.getKey().equals(move.getValue())) { // currently this doesn't allow rotation in place
+                                currentMove.put(move.getKey(), move.getValue());
+                            }
                         }
-                        if( currentMove.size() + (airBlocks.size() / 5) > LibConfig.STRUCWORKER_DEFAULT) //FIXME: config option
+                        if( currentMove.size() + (airBlocks.size() / 5) > LibConfig.runixBlocksPerTick) //FIXME: config option
                             break;
                     }
                     //we no longer need to delete things from moveMapping because the cursor keeps our spot
