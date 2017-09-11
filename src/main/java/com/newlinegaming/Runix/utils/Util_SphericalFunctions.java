@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix.utils;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import net.minecraft.world.World;
 
@@ -12,15 +13,15 @@ public class Util_SphericalFunctions {
         return ((x * x) + (y * y) + (z * z) < ((rd + 0.5) * (rd + 0.5)));
     }
     
-	public static HashSet<WorldXYZ> getSphere (WorldXYZ coords, int radius)
+	public static LinkedHashSet<WorldXYZ> getSphere (WorldXYZ coords, int radius)
 	{
 	    float r_squared = (float)((radius + 0.5) * (radius + 0.5));
 		World world = coords.getWorld();
-		HashSet<WorldXYZ> returnvalues = new HashSet<WorldXYZ>();
+		LinkedHashSet<WorldXYZ> returnvalues = new LinkedHashSet<WorldXYZ>();
 		//loop needs to cap at the top and bottom of the world
 		int bottom = Math.max(-radius - 1,  -1*(coords.posY - 1));
 		int top = Math.min(radius + 1, (255 - coords.posY));
-		for (int y = bottom; y < top; y++)  {
+		for (int y = top - 1; y >= bottom; y--)  {
 		    for (int z = -radius-1; z < radius+1; z++){
 		        for (int x = -radius-1; x < radius+1; x++)
 		        {

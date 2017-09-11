@@ -1,9 +1,6 @@
 package com.newlinegaming.Runix.workers;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.init.Blocks;
@@ -13,7 +10,6 @@ import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.handlers.RuneHandler;
-import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.lib.LibConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -22,16 +18,16 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class StructureMoveWorker implements IBlockWorker {
 
-    private HashMap<WorldXYZ, WorldXYZ> moveMapping = null;
-    HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>();
-    HashMap<WorldXYZ, SigBlock> sensitiveBlocks = null;
+    private LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
+    private HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>();
+    private HashMap<WorldXYZ, SigBlock> sensitiveBlocks = null;
     private WorldXYZ bumpedBlock = null;  // created whenever a move collides with itself
     private int currentTimer = 0;
     private int maxTimer = 20; // 20 ticks = 1 second
     private Iterator<Entry<WorldXYZ, WorldXYZ> > cursor = null;
     private boolean searchingForSensitive;
     
-    public StructureMoveWorker(HashMap<WorldXYZ, WorldXYZ> moveMap){
+    public StructureMoveWorker(LinkedHashMap<WorldXYZ, WorldXYZ> moveMap){
         moveMapping = moveMap;
         cursor = moveMapping.entrySet().iterator();
         sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
@@ -71,7 +67,7 @@ public class StructureMoveWorker implements IBlockWorker {
                             }
                             move = new AbstractMap.SimpleEntry<WorldXYZ, WorldXYZ>(up, moveMapping.get(up));  // add only after we know it's there
                         }
-                        if( sensitiveBlocksFound > LibConfig.STRUCWORKER_DEFAULT){ //amount of change this tick //FIXME: config option
+                        if( sensitiveBlocksFound > LibConfig.runixBlocksPerTick){ //amount of change this tick //FIXME: config option
                             break;
                         }
                     }
@@ -87,9 +83,12 @@ public class StructureMoveWorker implements IBlockWorker {
                         if(block.equals(Blocks.air)) { 
                             airBlocks.put(move.getKey(), move.getValue()); //don't calculate on AIR blocks
                         } else {
-                            currentMove.put(move.getKey(), move.getValue());
+                            //Check the ensure that we are not simply overwriting yourself.
+                            if(!move.getKey().equals(move.getValue())) { // currently this doesn't allow rotation in place
+                                currentMove.put(move.getKey(), move.getValue());
+                            }
                         }
-                        if( currentMove.size() + (airBlocks.size() / 5) > LibConfig.STRUCWORKER_DEFAULT) //FIXME: config option
+                        if( currentMove.size() + (airBlocks.size() / 5) > LibConfig.runixBlocksPerTick) //FIXME: config option
                             break;
                     }
                     //we no longer need to delete things from moveMapping because the cursor keeps our spot

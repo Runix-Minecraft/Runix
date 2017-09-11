@@ -49,8 +49,8 @@ public class HoarFrost extends BlockIce {
     
     /**
      * Returns whether this block is collideable based on the arguments passed in n
-     * @param par1 block metaData n
-     * @param par2 whether the player right-clicked while holding a boat*/
+     * @param meta block metaData n
+     * @param p_149678_2_ whether the player right-clicked while holding a boat*/
     public boolean canCollideCheck(int meta, boolean p_149678_2_)
     {
         if(meta == 1 || meta == 3 || meta == 4 || meta == 15) //creep, stasis, explode delete

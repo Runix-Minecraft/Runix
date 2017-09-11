@@ -2,6 +2,7 @@ package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
 
+import com.newlinegaming.Runix.NoSuchSignatureException;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -39,16 +40,18 @@ public class TeleporterRune extends PersistentRune {
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         consumeFuelBlock(coords);
-	    WorldXYZ destination = findWaypointBySignature(poker, getSignature());
 
-	    if(destination != null){
+	    try{
+            WorldXYZ destination = findWaypointBySignature(poker, getSignature());
 	        aetherSay(poker, "Teleporting to " + destination.toString());
     		try {
                 teleportPlayer(poker, destination);
             } catch (NotEnoughRunicEnergyException e) {
                 reportOutOfGas(poker);
             }
-	    }
+	    }catch (NoSuchSignatureException e){
+            aetherSay(poker, "There's no waypoint with that signature.");
+        }
 	}
 
     @Override

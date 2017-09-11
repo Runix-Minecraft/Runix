@@ -4,11 +4,11 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public interface IBlockWorker {
     
-    public void doWork(ServerTickEvent event);
+    void doWork(ServerTickEvent event);
     
-    public boolean isFinished();
+    boolean isFinished();
     
-    public void scheduleWorkLoad();
+    void scheduleWorkLoad();
     
 //    void render();
     

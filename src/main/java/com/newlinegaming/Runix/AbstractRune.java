@@ -1,10 +1,6 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -87,11 +83,8 @@ public abstract class AbstractRune {
      * This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.
 	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
 	 * calls for 0 (AIR).
-	 * @param pattern The blockPattern to be stamped.
+	 * @param stamp The blockPattern to be stamped.
 	 * @param player used to check for build permissions.  Player also provides worldObj.
-	 * @param worldX
-	 * @param worldY
-	 * @param worldZ
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
 	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
@@ -120,8 +113,7 @@ public abstract class AbstractRune {
 	 * This method should be used for any teleport or similar move that may land the player in some blocks.
 	 * @param player
 	 * @param coords Target destination
-	 * @param direction to move in if they encounter blocks
-	 * @throws NotEnoughRunicEnergyException 
+	 * @throws NotEnoughRunicEnergyException
 	 */
 	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
 		
@@ -321,6 +313,10 @@ public abstract class AbstractRune {
         } catch (Exception e) {}
     }
 
+    /** Finds the Tier of Ink blocks that match the Rune at a given coordinate
+     * @param coords Center coordinates used to look up the Rune template
+     * @return int
+     */
     protected int getTier(WorldXYZ coords){
         Block blockID = getTierInkBlock(coords);
         return blockID != null ? Tiers.getTier(blockID) : 1;
@@ -344,8 +340,8 @@ public abstract class AbstractRune {
     }
 
     /**This will return an empty list if the activation would tear a structure in two. */
-    public HashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
-        HashSet<WorldXYZ> workingSet = new HashSet<WorldXYZ>();
+    public LinkedHashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
+        LinkedHashSet<WorldXYZ> workingSet = new LinkedHashSet<WorldXYZ>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
         workingSet.add(startPoint);
@@ -356,7 +352,7 @@ public abstract class AbstractRune {
             nextEdge = new HashSet<WorldXYZ>();
           //tear detection: this should be empty by the last step
             if(iterationStep == 1 && activeEdge.size() != 0) 
-                return new HashSet<WorldXYZ>();
+                return new LinkedHashSet<WorldXYZ>();
             
             for(WorldXYZ block : activeEdge) {
                 ArrayList<WorldXYZ> neighbors = block.getNeighbors();
@@ -501,7 +497,12 @@ public abstract class AbstractRune {
         return this.getClass().toString().replace("class com.newlinegaming.Runix.rune.", "");
     }
 
-    public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) {
+    /**
+     * @param poker
+     * @param signature
+     * @return WorldXYZ or null
+     */
+    public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) throws NoSuchSignatureException {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
         PersistentRune wp = null;
@@ -513,11 +514,9 @@ public abstract class AbstractRune {
             }
         }
         if( wp == null){
-            aetherSay(poker, "A waypoint with that signature cannot be found.");
-            return null;
+            throw new NoSuchSignatureException();
         }
-        WorldXYZ destination = new WorldXYZ(wp.location);
-        return destination;
+        return new WorldXYZ(wp.location);
     }
 
     /*
@@ -535,7 +534,7 @@ public abstract class AbstractRune {
         return false;
     }
 
-    public HashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
-        return new HashSet<WorldXYZ>( runicFormulae(coords).keySet());
+    public LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
+        return new LinkedHashSet<>(runicFormulae(coords).keySet());
     }
 }

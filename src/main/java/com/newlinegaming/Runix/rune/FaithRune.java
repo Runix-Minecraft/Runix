@@ -1,8 +1,8 @@
 package com.newlinegaming.Runix.rune;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +12,6 @@ import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.block.ModBlock;
-import com.newlinegaming.Runix.utils.Util_Movement;
 import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
 import com.newlinegaming.Runix.WorldXYZ;
 
@@ -22,7 +21,7 @@ public class FaithRune extends PersistentRune{
 	public Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
-    private transient HashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
+    private transient LinkedHashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
     
 	public FaithRune() {
 	    runeName = "Faith";
@@ -63,10 +62,9 @@ public class FaithRune extends PersistentRune{
     }
     
     /**
-     * bouncIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
+     * bounceIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
      * Faith is activated. 
      * Josiah: I've tried to speed this up as much as possible with little effect.  Profiling is needed.
-     * @param sphere coordinates passed in so they don't need to be recalculated
      */
     public void bounceIsland() {
         //assumes fullStructure() has already been called
@@ -82,7 +80,7 @@ public class FaithRune extends PersistentRune{
 	}
     
     @Override
-    public HashSet<WorldXYZ> fullStructure() {
+    public LinkedHashSet<WorldXYZ> fullStructure() {
         if(sphere == null)
             sphere = Util_SphericalFunctions.getSphere(location, radius);
         return sphere;
@@ -90,15 +88,14 @@ public class FaithRune extends PersistentRune{
     
     @Override
     /** This override is necessary to invalidate the buffered sphere variable whenever it is moved**/
-    public WorldXYZ moveYourLocation(WorldXYZ destination) {
+    public void moveYourLocation(WorldXYZ destination) {
         sphere = null;
         location = destination.copyWithNewFacing(location.face); //preserve old facing
-        return location;
-    }    
+    }
     
     @Override
-    public HashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
-        HashSet<WorldXYZ> st = new HashSet<WorldXYZ>();
+    public LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
+        LinkedHashSet<WorldXYZ> st = new LinkedHashSet<WorldXYZ>();
         st.add(location);
         return st;
     }

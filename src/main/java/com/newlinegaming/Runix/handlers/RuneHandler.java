@@ -1,11 +1,9 @@
 package com.newlinegaming.Runix.handlers;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
+import com.newlinegaming.Runix.lib.LibConfig;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.entity.player.EntityPlayer;
@@ -179,34 +177,36 @@ public class RuneHandler {
      * Runecraft that is touching a Faith block and the whole island will be treated and moved as one structure.
      * param authority
      */
-    public HashSet<WorldXYZ> chainAttachedStructures(HashSet<WorldXYZ> structure, AbstractRune originator) {
-        HashSet<WorldXYZ> activeEdge;
-        HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>(structure);//starts off being a copy of structure
+    public LinkedHashSet<WorldXYZ> chainAttachedStructures(LinkedHashSet<WorldXYZ> structure, AbstractRune originator) {
+        LinkedHashSet<WorldXYZ> activeEdge;
+        LinkedHashSet<WorldXYZ> nextEdge = new LinkedHashSet<WorldXYZ>(structure);//starts off being a copy of structure
 
-        while(!nextEdge.isEmpty() && structure.size() < 500000) {
+        while(!nextEdge.isEmpty() && structure.size() < LibConfig.runixMaximumStructureSize()) {
             activeEdge = nextEdge;
-            nextEdge = new HashSet<WorldXYZ>();
+            nextEdge = new LinkedHashSet<WorldXYZ>();
 
             for (AbstractRune rune : runeRegistry) {
                 if (rune instanceof PersistentRune) {
                     // pass in and side-effect the collection
-                    HashSet<WorldXYZ> additionalBlocks = new HashSet<WorldXYZ>();
                     for (PersistentRune pRune : ((PersistentRune) rune).getActiveMagic()) {
+                        //TODO: Does the authority concept still make sense now that we're using conductance on everything?
                         if (activeEdge.contains(pRune.location)) {
                             if ((originator.authority() == 0 || originator.authority() > pRune.authority()) && originator != pRune) {
                                 // FaithRune is the only authority user at the moment
-                                additionalBlocks.addAll(pRune.fullStructure());
-                                additionalBlocks.removeAll(structure); // we only want new blocks
+                                //Add Faith Island Structure IN ORDER
+                                for(WorldXYZ pt : pRune.fullStructure()){
+                                    if(!structure.contains(pt)){// we only want new blocks
+                                        nextEdge.add(pt);
+                                        structure.add(pt);
+                                    }
+                                }
                             } else if (pRune instanceof FaithRune && originator != pRune) { //obviously don't block yourself
                                 // ensure Faith Anchor stays where it is, even if other blocks are moved
                                 structure.remove(pRune.location);
                                 activeEdge.remove(pRune.location);
-                                additionalBlocks.remove(pRune.location);
                             }
                         }
                     }
-                    structure.addAll(additionalBlocks);
-                    nextEdge.addAll(additionalBlocks);
                 }
             }
         }

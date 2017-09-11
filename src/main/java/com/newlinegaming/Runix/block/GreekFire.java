@@ -155,9 +155,7 @@ public class GreekFire extends BlockFire {
     }
 
     private boolean isGreekFireSource(Block base) {
-        if(base != null && base.equals(Blocks.lapis_block))
-            return true;
-        return false;
+        return base != null && base.equals(Blocks.lapis_block);
     }
 
     private void tryToCatchBlockOnFire(WorldXYZ loc, int lifespan)
