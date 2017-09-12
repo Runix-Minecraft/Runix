@@ -35,8 +35,8 @@ if (ENV.BUILD_ID) {
 group= "${config.group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "${config.name}"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 minecraft {
 	version = "${config.mc_version}-${config.forge_version}"

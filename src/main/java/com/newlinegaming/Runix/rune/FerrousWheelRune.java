@@ -46,17 +46,7 @@ public class FerrousWheelRune extends PersistentRune {
             aetherSay(player, "Create more of these runes to teleport between them.");
             return;
         }
-        try {
-            int oldEnergy = energy;
-            teleportPlayer(player, next.location);
-            int spent = oldEnergy - energy;
-            if(getTier() > 7){ // additional efficiency
-                double efficiency = (getTier() - 6) / 4.0; //every 4 tiers is a 2x efficiency boost
-                energy += spent - (spent / efficiency);// refund
-            }
-        } catch (NotEnoughRunicEnergyException e) {
-            reportOutOfGas(player);
-        }
+        teleportPlayer(player, next.location);
     }
 
     public FerrousWheelRune getNextWheel(EntityPlayer player){

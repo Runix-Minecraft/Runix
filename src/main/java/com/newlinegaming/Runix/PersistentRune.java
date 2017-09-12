@@ -356,7 +356,6 @@ public abstract class PersistentRune extends AbstractRune {
 
 
     public void moveStructureAndPlayer(EntityPlayer player, WorldXYZ destination, HashSet<WorldXYZ> structure) {
-        try {
 			Vector3 directionOfScanning = Vector3.facing[destination.face];
 			WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
             if(destinationCenter != null) {
@@ -364,9 +363,6 @@ public abstract class PersistentRune extends AbstractRune {
             }else {
                 aetherSay(player, "There are obstacles for over 100m in the direction of the destination waypoint.");
             }
-        } catch (NotEnoughRunicEnergyException e) {
-            reportOutOfGas(player);
-        }
     }
 
 

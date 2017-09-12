@@ -111,11 +111,10 @@ public abstract class AbstractRune {
      * This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
 	 * less than 20 meters onto something that's not fire or lava.
 	 * This method should be used for any teleport or similar move that may land the player in some blocks.
-	 * @param player
+	 * @param player being teleported
 	 * @param coords Target destination
-	 * @throws NotEnoughRunicEnergyException
 	 */
-	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) throws NotEnoughRunicEnergyException {
+	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) {
 		
 	    Vector3 direction = Vector3.facing[coords.face];
 	    for(int tries = 0; tries < 100; ++tries) {
@@ -142,7 +141,7 @@ public abstract class AbstractRune {
                                 dCalc.posX /= 8;
                                 dCalc.posZ /= 8;
     	                    }
-    	                    spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
+    	                    //spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
     
     	                    if(!coords.getWorld().equals(player.worldObj))// && !subject.worldObj.isRemote)
     	                        player.travelToDimension(coords.getWorld().provider.dimensionId);
@@ -472,13 +471,11 @@ public abstract class AbstractRune {
         energy -= energyCost;
     }
 
-    /**This is a minature convenience version of moveShape(moveMapping) for single blocks
-     * @throws NotEnoughRunicEnergyException */
-    public void moveBlock(WorldXYZ coords, WorldXYZ newPos) throws NotEnoughRunicEnergyException {
+    /**This is a minature convenience version of moveShape(moveMapping) for single blocks */
+    public void moveBlock(WorldXYZ coords, WorldXYZ newPos) {
         newPos.setBlockId(coords.getSigBlock());
         coords.setBlockIdAndUpdate(Blocks.air);
-        spendEnergy((int) Tiers.blockMoveCost);
-        
+
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
         moveMapping.put(coords, newPos);
         RuneHandler.getInstance().moveMagic(moveMapping);

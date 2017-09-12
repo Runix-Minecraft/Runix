@@ -55,7 +55,7 @@ public class FaithRune extends PersistentRune{
             energy -= Tiers.getEnergy(Blocks.gold_block) * 5; //the Gold blocks don't count towards the energy
             radius = Tiers.energyToRadiusConversion(energy);
             HashSet<WorldXYZ> tsphere = fullStructure();
-            energy -= tsphere.size() * Tiers.blockMoveCost;
+            energy -= tsphere.size() * Tiers.blockMobilizationCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
             bounceIsland();
         }

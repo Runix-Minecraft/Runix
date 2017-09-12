@@ -93,10 +93,9 @@ public class Util_Movement {
 
     /**
      * Attempt to teleport the structure to a non-colliding location at destination, scanning in the direction of destination.face.
-     * @param structure
-     * @param destination
+     * @param structure being moved
+     * @param destination block (with facing) of waypoint
      * @return center of destination teleport or null if the teleport was unsuccessful
-     * @throws NotEnoughRunicEnergyException
      */
     public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int extremitySize) {
         Vector3 roomForShip = Vector3.facing[destination.face].multiply(extremitySize);
@@ -112,7 +111,7 @@ public class Util_Movement {
             
         if(collisionTries >= 20)
             return null; //the teleport did not work
-//        performMove(moveMapping);
+        // used to be performMove(moveMapping);, now this is only used by Runecraft
         StructureMoveWorker worker = new StructureMoveWorker(moveMapping);
         worker.scheduleWorkLoad();
         return destinationCenter;
