@@ -13,7 +13,7 @@ public class Util_Movement {
 
     public static HashMap<WorldXYZ, WorldXYZ> xzRotation(Collection<WorldXYZ> startingShape, WorldXYZ centerPoint, boolean counterClockwise){
         //centerPoint is also the axis of rotation
-        HashMap<WorldXYZ, WorldXYZ> rotationMapping = new HashMap<WorldXYZ, WorldXYZ>();
+        HashMap<WorldXYZ, WorldXYZ> rotationMapping = new HashMap<>();
         for( WorldXYZ point : startingShape ){
             rotationMapping.put(point, point.rotate(centerPoint, counterClockwise));//flip sign on X
         }
@@ -27,8 +27,8 @@ public class Util_Movement {
      */
     public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) {
         SigBlock AIR = new SigBlock(Blocks.air, 0);
-        HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<WorldXYZ, SigBlock>();
-        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
+        HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<>();
+        HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<>();
         for(WorldXYZ point : moveMapping.keySet()){
             SigBlock block = point.getSigBlock();
             if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
@@ -51,7 +51,7 @@ public class Util_Movement {
         
         RuneHandler.getInstance().moveMagic(moveMapping);
 
-        HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>(newStructure.keySet());
+        HashSet<WorldXYZ> newPositions = new HashSet<>(newStructure.keySet());
         newPositions.addAll(sensitiveBlocks.keySet());//merge sensitive locations back in with normal
         return newPositions;
     }
@@ -68,15 +68,14 @@ public class Util_Movement {
         if( adjacent > 0.0)
             angle += 180.0;
 //        System.out.println("Rune: " + angle + "  Yaw: " + yaw + " = " + (angle - yaw));
-        if( ((angle - yaw) < 180.0 && (angle - yaw) > 0.0) || //the difference between the angle to the reference
-                ((angle - yaw) < -180.0 && (angle - yaw) > -360.0) )//and the angle we're looking determines left/right
-            return true;
-        else
-            return false;
+        //the difference between the angle to the reference
+//and the angle we're looking determines left/right
+        return ((angle - yaw) < 180.0 && (angle - yaw) > 0.0) || //the difference between the angle to the reference
+                ((angle - yaw) < -180.0 && (angle - yaw) > -360.0);
     }
 
     public static LinkedHashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, WorldXYZ startPoint, WorldXYZ destinationCenter) {
-        LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = new LinkedHashMap<WorldXYZ, WorldXYZ>();
+        LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = new LinkedHashMap<>();
         Vector3 displacement = new Vector3(startPoint, destinationCenter);
         for(WorldXYZ point : set)
             moveMapping.put(point, point.offsetWorld(displacement, destinationCenter.getWorld()));
@@ -119,12 +118,12 @@ public class Util_Movement {
 
 
     public static HashMap<WorldXYZ, SigBlock> rotateStructureInMemory(HashMap<WorldXYZ, SigBlock> shape, WorldXYZ center, int nTurns) {
-        HashMap<WorldXYZ, SigBlock> startShape = new HashMap<WorldXYZ, SigBlock>(shape);
+        HashMap<WorldXYZ, SigBlock> startShape = new HashMap<>(shape);
         
         for(int turnNumber = 0; turnNumber < nTurns; ++turnNumber) {
             HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(startShape.keySet(), center, false);
 
-            HashMap<WorldXYZ, SigBlock> newShape = new HashMap<WorldXYZ, SigBlock>();//blank variable for swapping purposes
+            HashMap<WorldXYZ, SigBlock> newShape = new HashMap<>();//blank variable for swapping purposes
             for(WorldXYZ origin : move.keySet()) {
                 WorldXYZ destination = move.get(origin);
                 newShape.put(destination, startShape.get(origin));
@@ -135,7 +134,7 @@ public class Util_Movement {
     }
 
     public static HashMap<WorldXYZ, SigBlock> scanBlocksInShape(Set<WorldXYZ> shape) {
-        HashMap<WorldXYZ, SigBlock> actualBlocks = new HashMap<WorldXYZ, SigBlock>();
+        HashMap<WorldXYZ, SigBlock> actualBlocks = new HashMap<>();
         for(WorldXYZ point : shape) {
             actualBlocks.put(point, point.getSigBlock());
         }

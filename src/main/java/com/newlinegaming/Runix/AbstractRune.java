@@ -232,13 +232,13 @@ public abstract class AbstractRune {
                     //change coords to be pointing in the detected direction, [array lookup]
                     switch(coords.face){
                         case 0: case 1: 
-                            coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(Vector3.xzRotationOrder[nTurns]);
+                            coords.face = (new ArrayList<>(Arrays.asList(Vector3.facing))).indexOf(Vector3.xzRotationOrder[nTurns]);
                             break;
                         case 2: case 3: 
-                            coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(Vector3.xyRotationOrder[nTurns]);
+                            coords.face = (new ArrayList<>(Arrays.asList(Vector3.facing))).indexOf(Vector3.xyRotationOrder[nTurns]);
                             break;
                         case 4: case 5: 
-                            coords.face = (new ArrayList<Vector3>(Arrays.asList(Vector3.facing))).indexOf(Vector3.yzRotationOrder[nTurns]);
+                            coords.face = (new ArrayList<>(Arrays.asList(Vector3.facing))).indexOf(Vector3.yzRotationOrder[nTurns]);
                             break;
                     }
                     return coords;
@@ -340,18 +340,18 @@ public abstract class AbstractRune {
 
     /**This will return an empty list if the activation would tear a structure in two. */
     public LinkedHashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
-        LinkedHashSet<WorldXYZ> workingSet = new LinkedHashSet<WorldXYZ>();
+        LinkedHashSet<WorldXYZ> workingSet = new LinkedHashSet<>();
         HashSet<WorldXYZ> activeEdge;
-        HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
+        HashSet<WorldXYZ> nextEdge = new HashSet<>();
         workingSet.add(startPoint);
         nextEdge.add(startPoint);
         
         for(int iterationStep = maxDistance+1; iterationStep > 0; iterationStep--) {
             activeEdge = nextEdge;
-            nextEdge = new HashSet<WorldXYZ>();
+            nextEdge = new HashSet<>();
           //tear detection: this should be empty by the last step
             if(iterationStep == 1 && activeEdge.size() != 0) 
-                return new LinkedHashSet<WorldXYZ>();
+                return new LinkedHashSet<>();
             
             for(WorldXYZ block : activeEdge) {
                 ArrayList<WorldXYZ> neighbors = block.getNeighbors();
@@ -386,7 +386,7 @@ public abstract class AbstractRune {
     protected HashMap<WorldXYZ, SigBlock> patternToShape(Block[][][] pattern, WorldXYZ centerPoint){
         // World coordinates + relative offset + half the size of the rune (for middle)
         // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
-        HashMap<WorldXYZ, SigBlock> shape = new HashMap<WorldXYZ, SigBlock>();
+        HashMap<WorldXYZ, SigBlock> shape = new HashMap<>();
         for (int y = 0; y < pattern.length; y++) {
             for (int z = 0; z < pattern[y].length; z++) {
                 for (int x = 0; x < pattern[y][z].length; x++) {
@@ -476,7 +476,7 @@ public abstract class AbstractRune {
         newPos.setBlockId(coords.getSigBlock());
         coords.setBlockIdAndUpdate(Blocks.air);
 
-        HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<WorldXYZ, WorldXYZ>(1, 1.0f);//tiny HashMap!
+        HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<>(1, 1.0f);//tiny HashMap!
         moveMapping.put(coords, newPos);
         RuneHandler.getInstance().moveMagic(moveMapping);
     }

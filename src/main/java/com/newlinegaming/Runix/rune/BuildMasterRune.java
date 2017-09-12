@@ -19,7 +19,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
 public class BuildMasterRune extends AbstractTimedRune {
-    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
+    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
 
     public BuildMasterRune() {
         runeName = "Build Master";
@@ -92,7 +92,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         if(anyCrushable(buildMapping.values()))//any space to build?
             return buildMapping;
         else
-            return new HashMap<WorldXYZ, WorldXYZ>();
+            return new HashMap<>();
     }
 
     /** Very forgiving match to any block in the template to continue the whole template. 
@@ -127,9 +127,9 @@ public class BuildMasterRune extends AbstractTimedRune {
     
     /**This will return an empty list if the activation would tear a structure in two. */
     public HashSet<WorldXYZ> layerConductance(WorldXYZ startPoint, int maxDistance, Vector3 orientation) {
-        HashSet<WorldXYZ> workingSet = new HashSet<WorldXYZ>();
+        HashSet<WorldXYZ> workingSet = new HashSet<>();
         HashSet<WorldXYZ> activeEdge;
-        HashSet<WorldXYZ> nextEdge = new HashSet<WorldXYZ>();
+        HashSet<WorldXYZ> nextEdge = new HashSet<>();
         if(startPoint.getBlock() == Blocks.air) //this is a no go
             return workingSet;
         workingSet.add(startPoint);
@@ -137,10 +137,10 @@ public class BuildMasterRune extends AbstractTimedRune {
         
         for(int iterationStep = maxDistance+1; iterationStep > 0; iterationStep--) {
             activeEdge = nextEdge;
-            nextEdge = new HashSet<WorldXYZ>();
+            nextEdge = new HashSet<>();
           //tear detection: this should be empty by the last step
             if(iterationStep == 1 && activeEdge.size() != 0) 
-                return new HashSet<WorldXYZ>();
+                return new HashSet<>();
             
             for(WorldXYZ block : activeEdge) {
                 ArrayList<WorldXYZ> neighbors = block.getNeighbors(orientation);

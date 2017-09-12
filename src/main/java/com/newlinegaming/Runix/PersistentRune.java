@@ -65,7 +65,7 @@ public abstract class PersistentRune extends AbstractRune {
 	public void loadRunes(Load loadEvent) {
 		String fileName = getJsonFilePath(loadEvent.world);
 		try {
-			ArrayList<PersistentRune> newList = new ArrayList<PersistentRune>();
+			ArrayList<PersistentRune> newList = new ArrayList<>();
 			List<String> json = FileUtils.readLines(new File(fileName));
 			Gson gson = new Gson(); 
 			for(String line : json) {

@@ -21,9 +21,9 @@ public class ClientProxy extends CommonProxy {
 //	    ISimpleBlockRenderingHandler handler = null;
 //	    RenderingRegistry.registerBlockHandler(handler);
 	    ClientRegistry.bindTileEntitySpecialRenderer(TileLightBeam.class, new RenderTileLightBeam());
-	    MinecraftForgeClient.registerItemRenderer(ModItem.transRod, (IItemRenderer)new ItemRenderTransmutaionRod());
-	    RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new GreekFireRenderer());
-        RenderingRegistry.registerBlockHandler((ISimpleBlockRenderingHandler) new HoarFrostRenderer());
+	    MinecraftForgeClient.registerItemRenderer(ModItem.transRod, new ItemRenderTransmutaionRod());
+	    RenderingRegistry.registerBlockHandler(new GreekFireRenderer());
+        RenderingRegistry.registerBlockHandler(new HoarFrostRenderer());
 	}
 	
 	public void registerTileEnitiy() {} //NO OP

@@ -10,7 +10,7 @@ import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
 public class WaypointRune extends PersistentRune{
-    private static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
+    private static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
     public int tier = 0;
 
     public WaypointRune(){

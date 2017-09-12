@@ -19,7 +19,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 public class StructureMoveWorker implements IBlockWorker {
 
     private LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
-    private HashSet<WorldXYZ> newPositions = new HashSet<WorldXYZ>();
+    private HashSet<WorldXYZ> newPositions = new HashSet<>();
     private HashMap<WorldXYZ, SigBlock> sensitiveBlocks = null;
     private WorldXYZ bumpedBlock = null;  // created whenever a move collides with itself
     private int currentTimer = 0;
@@ -30,7 +30,7 @@ public class StructureMoveWorker implements IBlockWorker {
     public StructureMoveWorker(LinkedHashMap<WorldXYZ, WorldXYZ> moveMap){
         moveMapping = moveMap;
         cursor = moveMapping.entrySet().iterator();
-        sensitiveBlocks = new HashMap<WorldXYZ, SigBlock>();
+        sensitiveBlocks = new HashMap<>();
         searchingForSensitive = true;
         System.out.println("Starting the StructureMoveWorker on" + moveMapping.size());
     }
@@ -65,7 +65,7 @@ public class StructureMoveWorker implements IBlockWorker {
                             if(!moveMapping.containsKey(up)){
                                 break;
                             }
-                            move = new AbstractMap.SimpleEntry<WorldXYZ, WorldXYZ>(up, moveMapping.get(up));  // add only after we know it's there
+                            move = new AbstractMap.SimpleEntry<>(up, moveMapping.get(up));  // add only after we know it's there
                         }
                         if( sensitiveBlocksFound > LibConfig.runixBlocksPerTick){ //amount of change this tick //FIXME: config option
                             break;
@@ -75,8 +75,8 @@ public class StructureMoveWorker implements IBlockWorker {
             } else { 
                 if( cursor.hasNext()) { // do iterative work here
 //                    LogHelper.info("Moving blocks");
-                    HashMap<WorldXYZ, WorldXYZ> currentMove = new HashMap<WorldXYZ, WorldXYZ>();
-                    HashMap<WorldXYZ, WorldXYZ> airBlocks = new HashMap<WorldXYZ, WorldXYZ>();
+                    HashMap<WorldXYZ, WorldXYZ> currentMove = new HashMap<>();
+                    HashMap<WorldXYZ, WorldXYZ> airBlocks = new HashMap<>();
                     while(cursor.hasNext()){
                         Entry<WorldXYZ, WorldXYZ> move = cursor.next();
                         SigBlock block = move.getKey().getSigBlock();

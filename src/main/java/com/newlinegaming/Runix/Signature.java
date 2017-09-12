@@ -14,7 +14,7 @@ public class Signature {
     public transient ArrayList<String> metaWhiteList;
     
     public Signature() {
-        blocks = new ArrayList<SigBlock>();
+        blocks = new ArrayList<>();
     }
 
     /**
@@ -23,7 +23,7 @@ public class Signature {
      * @param coords with facing
      */
     public Signature(AbstractRune rune, WorldXYZ coords) {
-        blocks = new ArrayList<SigBlock>();
+        blocks = new ArrayList<>();
         Block[] metaWhiteList = new Block[]{//this list specifically lacks any block that uses meta for orientation
                 Blocks.carpet, Blocks.wool,
                 Blocks.wheat, //added just in case you WANT an impossible waypoint

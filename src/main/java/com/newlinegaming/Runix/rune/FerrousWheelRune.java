@@ -14,8 +14,8 @@ import net.minecraft.init.Blocks;
 
 public class FerrousWheelRune extends PersistentRune {
 
-    private static ArrayList<PersistentRune> globalWheel  = new ArrayList<PersistentRune>();
-    public ArrayList<UUID> guestList = new ArrayList<UUID>();
+    private static ArrayList<PersistentRune> globalWheel  = new ArrayList<>();
+    public ArrayList<UUID> guestList = new ArrayList<>();
     
     public FerrousWheelRune() {
         runeName = "Ferrous Wheel";

@@ -21,7 +21,7 @@ public class SigBlock{
         if(other instanceof SigBlock)
             return blockID == ((SigBlock)other).blockID && meta == ((SigBlock)other).meta;
         else if (other instanceof Block)
-            return blockID.equals((Block)other);  //can't get meta from block without coordinates
+            return blockID.equals(other);  //can't get meta from block without coordinates
         return false;
     }
     

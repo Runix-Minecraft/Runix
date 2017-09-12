@@ -16,7 +16,7 @@ import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
 public class ZeerixChestRune extends AbstractTimedRune {
-    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
+    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
     
     public ZeerixChestRune() {
         runeName = "Zeerix Chest";

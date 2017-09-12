@@ -32,8 +32,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GreekFire extends BlockFire {
     
-    protected static HashMap<Block, Integer> greekFireSpreadSpeed = new HashMap<Block, Integer>();
-    protected static HashMap<Block, Integer> greekFlammability = new HashMap<Block, Integer>();
+    protected static HashMap<Block, Integer> greekFireSpreadSpeed = new HashMap<>();
+    protected static HashMap<Block, Integer> greekFlammability = new HashMap<>();
     private static GreekFire blockIdBackup = null;
 
     @SideOnly(Side.CLIENT)
@@ -223,7 +223,7 @@ public class GreekFire extends BlockFire {
                         coords.getMetaId() - Tiers.energyToRadiusConversion(blockEnergy, Tiers.blockBreakCost) //radius calculation
                         , 0),15);
                 coords.setBlock( ModBlock.greekFire, newLife);
-                ((WorldServer)coords.getWorld()).scheduleBlockUpdate(coords.posX, coords.posY, coords.posZ, ModBlock.greekFire, 4);
+                coords.getWorld().scheduleBlockUpdate(coords.posX, coords.posY, coords.posZ, ModBlock.greekFire, 4);
 
             }
             return true;

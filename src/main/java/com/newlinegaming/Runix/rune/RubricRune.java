@@ -29,8 +29,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class RubricRune extends PersistentRune {
 
-	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<PersistentRune>();
-	public HashMap<Vector3, SigBlock> structure = new HashMap<Vector3, SigBlock>();
+	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<>();
+	public HashMap<Vector3, SigBlock> structure = new HashMap<>();
 	protected transient RenderHelper renderer = null;
 
     public RubricRune() {
@@ -117,7 +117,7 @@ public class RubricRune extends PersistentRune {
     }
     
     private HashMap<Vector3, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
-        HashMap<Vector3, SigBlock> fullData = new HashMap<Vector3, SigBlock>();
+        HashMap<Vector3, SigBlock> fullData = new HashMap<>();
         for(WorldXYZ point : shape){
             if(point.getBlock() != Blocks.air){
                 Vector3 offset = new Vector3(location, point);
@@ -154,7 +154,7 @@ public class RubricRune extends PersistentRune {
     }
 
     private Collection<WorldXYZ> extractCoordinates(Collection<BlockRecord> structureRecord) {
-	    ArrayList<WorldXYZ> blocks = new ArrayList<WorldXYZ>();
+	    ArrayList<WorldXYZ> blocks = new ArrayList<>();
 	    for( BlockRecord record : structureRecord )
 	        blocks.add(location.offset(record.offset));
         return blocks;
@@ -162,7 +162,7 @@ public class RubricRune extends PersistentRune {
    
 
     public HashMap<WorldXYZ, SigBlock> structureAbsoluteLocation(WorldXYZ origin) {
-        HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<WorldXYZ, SigBlock>();
+        HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<>();
         for(Vector3 relative : structure.keySet()){
             NewStructure.put(origin.offset(relative), structure.get(relative));
         }

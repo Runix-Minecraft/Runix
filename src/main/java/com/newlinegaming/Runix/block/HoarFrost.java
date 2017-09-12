@@ -53,9 +53,7 @@ public class HoarFrost extends BlockIce {
      * @param p_149678_2_ whether the player right-clicked while holding a boat*/
     public boolean canCollideCheck(int meta, boolean p_149678_2_)
     {
-        if(meta == 1 || meta == 3 || meta == 4 || meta == 15) //creep, stasis, explode delete
-            return false;
-        return true;
+        return meta != 1 && meta != 3 && meta != 4 && meta != 15;
     }
     
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)

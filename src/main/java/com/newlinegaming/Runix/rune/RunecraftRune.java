@@ -27,8 +27,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class RunecraftRune extends AbstractTimedRune {
     
-    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
-    private HashSet<WorldXYZ> vehicleBlocks = new HashSet<WorldXYZ>();
+    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
+    private HashSet<WorldXYZ> vehicleBlocks = new HashSet<>();
     private transient RenderHelper renderer = null;
     private boolean moveInProgress = false;
     private boolean snaggedOnSomething = false;

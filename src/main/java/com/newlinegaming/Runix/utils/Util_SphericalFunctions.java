@@ -17,7 +17,7 @@ public class Util_SphericalFunctions {
 	{
 	    float r_squared = (float)((radius + 0.5) * (radius + 0.5));
 		World world = coords.getWorld();
-		LinkedHashSet<WorldXYZ> returnvalues = new LinkedHashSet<WorldXYZ>();
+		LinkedHashSet<WorldXYZ> returnvalues = new LinkedHashSet<>();
 		//loop needs to cap at the top and bottom of the world
 		int bottom = Math.max(-radius - 1,  -1*(coords.posY - 1));
 		int top = Math.min(radius + 1, (255 - coords.posY));

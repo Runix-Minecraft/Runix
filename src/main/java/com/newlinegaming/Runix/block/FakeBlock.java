@@ -9,7 +9,7 @@ import net.minecraft.init.Blocks;
 
 public class FakeBlock extends Block {
 
-    HashMap<Block, String> textures = new HashMap<Block, String>();
+    HashMap<Block, String> textures = new HashMap<>();
 
     public FakeBlock(Block mimic) {
         super(mimic.getMaterial());

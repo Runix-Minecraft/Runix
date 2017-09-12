@@ -26,7 +26,7 @@ public class Tiers {
     private static ArrayList<Block> naturalBlocks;
     private static ArrayList<Block> moveSensitiveBlocks;
     private static ArrayList<Block> crushableBlocks;
-    private static HashMap<Block, BlockDescription> energyRegistry = new HashMap<Block, BlockDescription>();
+    private static HashMap<Block, BlockDescription> energyRegistry = new HashMap<>();
     
     @SuppressWarnings("serial")
     public Tiers(){

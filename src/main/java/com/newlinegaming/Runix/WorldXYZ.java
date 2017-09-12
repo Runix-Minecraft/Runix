@@ -215,7 +215,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
 
     public ArrayList<WorldXYZ> getDirectNeighbors() {
-        ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
+        ArrayList<WorldXYZ> neighbors = new ArrayList<>();
         //6 cardinal sides
         neighbors.add(offset(0, 1,0));
         neighbors.add(offset(0,-1,0));
@@ -227,7 +227,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
     
     public ArrayList<WorldXYZ> getNeighbors() {
-        ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
+        ArrayList<WorldXYZ> neighbors = new ArrayList<>();
         //6 cardinal sides
         neighbors.add(offset(0, 1,0));
         neighbors.add(offset(0,-1,0));
@@ -262,7 +262,7 @@ public class WorldXYZ extends ChunkCoordinates {
         int x = 0;
         int y = 0;
         int z = 0;
-        ArrayList<WorldXYZ> neighbors = new ArrayList<WorldXYZ>();
+        ArrayList<WorldXYZ> neighbors = new ArrayList<>();
         if(Math.abs(orientation.x) == 1) {
             for(z = -1; z <= 1; ++z){
                 for(y = -1; y <= 1; ++y){

@@ -18,7 +18,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 /**TorchBearer functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class TorchBearerRune extends AbstractTimedRune {
-    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<PersistentRune>();
+    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
     public TorchBearerRune() {
         runeName = "Torch Bearer";
         updateEveryXTicks(10);

@@ -58,7 +58,6 @@ public class ItemRenderTransmutaionRod implements IItemRenderer {
         }
         case EQUIPPED: {
             GL11.glPushMatrix();
-            ;
             GL11.glTranslatef(0.0F, 0.0f, -0.0f);
             GL11.glScalef(1.0f, 1.0f, 1.0f);
             FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE);

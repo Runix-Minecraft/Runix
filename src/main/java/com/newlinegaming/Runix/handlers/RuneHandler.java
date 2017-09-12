@@ -52,7 +52,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
-    public ArrayList<AbstractRune> runeRegistry = new ArrayList<AbstractRune>();
+    public ArrayList<AbstractRune> runeRegistry = new ArrayList<>();
     
     private RuneHandler() {
         //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  
@@ -159,7 +159,7 @@ public class RuneHandler {
             WorldXYZ result = aRuneRegistry.checkRunePattern(new WorldXYZ(coords));
             if (result != null) {
                 Vector3 forward = Vector3.facing[result.face];//result can contain facing information for assymetrical runes
-                return new MutablePair<AbstractRune, Vector3>(aRuneRegistry, forward);
+                return new MutablePair<>(aRuneRegistry, forward);
             }
         }
         return null;
@@ -179,11 +179,11 @@ public class RuneHandler {
      */
     public LinkedHashSet<WorldXYZ> chainAttachedStructures(LinkedHashSet<WorldXYZ> structure, AbstractRune originator) {
         LinkedHashSet<WorldXYZ> activeEdge;
-        LinkedHashSet<WorldXYZ> nextEdge = new LinkedHashSet<WorldXYZ>(structure);//starts off being a copy of structure
+        LinkedHashSet<WorldXYZ> nextEdge = new LinkedHashSet<>(structure);//starts off being a copy of structure
 
         while(!nextEdge.isEmpty() && structure.size() < LibConfig.runixMaximumStructureSize()) {
             activeEdge = nextEdge;
-            nextEdge = new LinkedHashSet<WorldXYZ>();
+            nextEdge = new LinkedHashSet<>();
 
             for (AbstractRune rune : runeRegistry) {
                 if (rune instanceof PersistentRune) {
@@ -219,7 +219,7 @@ public class RuneHandler {
     // TODO   public JSON extractMagic(Collection<WorldXYZ> blocks)
 
     public ArrayList<PersistentRune> getAllRunesByPlayer(EntityPlayer player){
-        ArrayList<PersistentRune> playerRunes = new ArrayList<PersistentRune>();
+        ArrayList<PersistentRune> playerRunes = new ArrayList<>();
         for(AbstractRune r : runeRegistry)
             if( r instanceof PersistentRune) {
                 //TODO change getRuneByPlayer to return list when oneRunePerPerson = false.

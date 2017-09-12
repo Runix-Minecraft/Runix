@@ -17,7 +17,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 public class FaithRune extends PersistentRune{
 	
-	protected static ArrayList<PersistentRune> activeFaithList = new ArrayList<PersistentRune>();
+	protected static ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
 	public Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
@@ -94,7 +94,7 @@ public class FaithRune extends PersistentRune{
     
     @Override
     public LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
-        LinkedHashSet<WorldXYZ> st = new LinkedHashSet<WorldXYZ>();
+        LinkedHashSet<WorldXYZ> st = new LinkedHashSet<>();
         st.add(location);
         return st;
     }
