@@ -27,12 +27,12 @@ public abstract class PersistentRune extends AbstractRune {
 	private UUID uuid = null;
 	public boolean disabled = false;
 	public WorldXYZ location = null;
-	public Vector3 forwards = Vector3.UP;
-	public String instanceName = "";
-	public PersistentRune(){}
+	protected Vector3 forwards = Vector3.UP;
+	protected String instanceName = "";
+	protected PersistentRune(){}
 
 
-	public PersistentRune(WorldXYZ coords, EntityPlayer activator, String runeName) {
+	protected PersistentRune(WorldXYZ coords, EntityPlayer activator, String runeName) {
 		location = coords;
 		setPlayer(activator);
 		this.runeName = runeName;
@@ -84,7 +84,7 @@ public abstract class PersistentRune extends AbstractRune {
 		}
 	}
 
-	String getJsonFilePath(World world) {
+	private String getJsonFilePath(World world) {
 		
 		String levelName = world.getWorldInfo().getWorldName();
 		String directory = "";
@@ -134,7 +134,7 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
 
-	protected PersistentRune getOrCreateRune(WorldXYZ coords, EntityPlayer activator) {
+	private PersistentRune getOrCreateRune(WorldXYZ coords, EntityPlayer activator) {
 		PersistentRune match = null;
 		if(oneRunePerPerson())
 			match = getRuneByPlayer(activator);
@@ -209,7 +209,7 @@ public abstract class PersistentRune extends AbstractRune {
 	 * one per person.  If true, energy from consuming the second rune will be added
 	 * to the player's original rune.
 	 */
-	public abstract boolean oneRunePerPerson();
+	protected abstract boolean oneRunePerPerson();
 
 	/**
 	 * Prints a verification message to the user
@@ -227,7 +227,7 @@ public abstract class PersistentRune extends AbstractRune {
 	/**
 	 * Return the rune in getActiveMagic() that matches the given coordinates or null if there is none
 	 */
-	public PersistentRune getRuneByLocation(WorldXYZ coords) {
+	private PersistentRune getRuneByLocation(WorldXYZ coords) {
 		ArrayList<PersistentRune> list = getActiveMagic();
 		for(PersistentRune rune : list){
 			if( rune.location.equals(coords) )
@@ -263,7 +263,7 @@ public abstract class PersistentRune extends AbstractRune {
 		}
 	}
 	
-	public void moveYourLocation(WorldXYZ destination) {
+	protected void moveYourLocation(WorldXYZ destination) {
 	    location = destination.copyWithNewFacing(location.face); //preserve old facing for runes
 	}
 
@@ -276,7 +276,7 @@ public abstract class PersistentRune extends AbstractRune {
 		return false;
     }
 
-    public EntityPlayer getPlayer() {
+    protected EntityPlayer getPlayer() {
 	try {
 	    for (Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
 		if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
@@ -299,7 +299,7 @@ public abstract class PersistentRune extends AbstractRune {
         return super.getTier(location);
     }
 
-    public int boundaryFromCenter(HashSet<WorldXYZ> structure, Vector3 directionOfScanning){
+    protected int boundaryFromCenter(HashSet<WorldXYZ> structure, Vector3 directionOfScanning){
 		return getTier(); //Spheres are the same in all directions regardless of facing
 	}
 
@@ -327,7 +327,7 @@ public abstract class PersistentRune extends AbstractRune {
             return runeBlocks(location);
     }
     
-    public LinkedHashSet<WorldXYZ> directConductanceStructure() {
+    private LinkedHashSet<WorldXYZ> directConductanceStructure() {
         int tier = getTier();
         LinkedHashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier * 2);
         return scannedStructure;
@@ -340,7 +340,7 @@ public abstract class PersistentRune extends AbstractRune {
         getActiveMagic().clear();
     }
 
-    public void kill() {
+    protected void kill() {
         disabled = true;
         try {
             MinecraftForge.EVENT_BUS.unregister(this);
@@ -355,7 +355,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
 
-    public void moveStructureAndPlayer(EntityPlayer player, WorldXYZ destination, HashSet<WorldXYZ> structure) {
+    protected void moveStructureAndPlayer(EntityPlayer player, WorldXYZ destination, HashSet<WorldXYZ> structure) {
 			Vector3 directionOfScanning = Vector3.facing[destination.face];
 			WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
             if(destinationCenter != null) {
@@ -366,7 +366,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
 
-    public void toggleDisabled() {
+    protected void toggleDisabled() {
 		disabled = !disabled;
     }
 }

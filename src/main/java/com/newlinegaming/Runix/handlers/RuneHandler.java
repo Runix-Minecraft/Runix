@@ -129,7 +129,7 @@ public class RuneHandler {
      * Detects a rune pattern, and executes it.
      */
     @SuppressWarnings("static-access")
-	public void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
+    private void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
         Pair<AbstractRune, Vector3> matchingRuneInfo = checkForAnyRunePattern(coords);
         //TODO: check for Activator Rail in hand and subscribe the rune to minecart events
         if (matchingRuneInfo != null) {

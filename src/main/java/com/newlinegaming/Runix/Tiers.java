@@ -148,7 +148,7 @@ public class Tiers {
         }};
     }
 
-    public void initializeEnergyRegistry()
+    void initializeEnergyRegistry()
     {
         addBlock(Blocks.air, 1);
         addBlock(Blocks.stone, 1);
@@ -318,6 +318,7 @@ public class Tiers {
         addBlock(Blocks.coal_block, 756);
     }
     
+    @SuppressWarnings("WeakerAccess")
     public void addBlock(Block block, int energy){
         addBlock(block, energy, 
                 naturalBlocks.contains(block), 
@@ -325,6 +326,7 @@ public class Tiers {
                 moveSensitiveBlocks.contains(block)); //call more detailed method
     }
     
+    @SuppressWarnings("WeakerAccess")
     public void addBlock(Block type, int energy, boolean natural, boolean crushable, boolean sensitive){
         energyRegistry.put(type, new BlockDescription(type, energy, natural, crushable, sensitive));
     }

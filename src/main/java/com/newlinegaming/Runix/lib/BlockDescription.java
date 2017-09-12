@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
  */
 public class BlockDescription
 {
-    public Block type; 
+    private Block type;
     public int energy; 
     public boolean natural;
     public boolean crushable;

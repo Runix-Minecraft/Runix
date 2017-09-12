@@ -47,7 +47,7 @@ public class RenderHelper {
     /**
      * Makes a wireframe Cube given an XYZ posiiton
      */
-    protected void renderWireCube(float mx, float my, float mz, float sideLength) {
+    private void renderWireCube(float mx, float my, float mz, float sideLength) {
 
         my -= 0.4f;
         sideLength /= 2.0f; //half because +.5 and -.5 = distance 1.0 

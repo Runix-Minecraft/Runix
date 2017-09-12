@@ -7,9 +7,9 @@ import net.minecraftforge.fluids.Fluid;
 
 public class ModFluid {
 
-    public static Fluid QixSilver;
+    private static Fluid QixSilver;
 
-    public static Block BlockQixSilver;
+    private static Block BlockQixSilver;
 
     public static void init() {
 

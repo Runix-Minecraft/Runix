@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class BlockRecord implements Delayed {
-    public long expirationInMillis = 0; //exact expiration time is set when the object is constructed
+    private long expirationInMillis = 0; //exact expiration time is set when the object is constructed
     public Vector3 offset;
     public SigBlock block;
     

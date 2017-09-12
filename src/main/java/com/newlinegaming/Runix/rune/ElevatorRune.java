@@ -36,7 +36,7 @@ public class ElevatorRune extends PersistentRune {
     /**initializeRune() is necessary because of a circular condition in the event registry
      * that does not play well with the GSON object constructor loading from loadRunes()
      */
-    protected void initializeRune(WorldXYZ coords) {
+    private void initializeRune(WorldXYZ coords) {
         bottomLocation = coords.offset(0, -4, 0);
         MinecraftForge.EVENT_BUS.register(this);        
     }

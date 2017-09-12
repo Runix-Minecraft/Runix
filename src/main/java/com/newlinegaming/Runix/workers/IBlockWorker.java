@@ -2,7 +2,7 @@ package com.newlinegaming.Runix.workers;
 
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public interface IBlockWorker {
+interface IBlockWorker {
     
     void doWork(ServerTickEvent event);
     

@@ -73,7 +73,7 @@ public class WorldXYZ extends ChunkCoordinates {
         return worldObj;
     }
 
-    public void setWorld(World worldObj) {
+    private void setWorld(World worldObj) {
         this.worldObj = worldObj;
         dimensionID = getDimensionNumber();
     }
@@ -83,7 +83,7 @@ public class WorldXYZ extends ChunkCoordinates {
      * of the dimension number.
      * @param dimension
      */
-    public void setWorld(int dimension) {
+    private void setWorld(int dimension) {
         worldObj = MinecraftServer.getServer().worldServerForDimension(dimension);
 //        worldObj = FMLServerHandler.instance().getServer().worldServerForDimension(dimension);
         dimensionID = getDimensionNumber();
@@ -96,7 +96,7 @@ public class WorldXYZ extends ChunkCoordinates {
         return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, face);
     }
 
-    public WorldXYZ offset(int dX, int dY, int dZ, int facing) {
+    private WorldXYZ offset(int dX, int dY, int dZ, int facing) {
         return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, facing);
     }
 
@@ -120,7 +120,7 @@ public class WorldXYZ extends ChunkCoordinates {
     /**
      * Similar to offset(), but updates the current instance instead of a new one.
      */
-    public WorldXYZ bump(int dX, int dY, int dZ) {
+    private WorldXYZ bump(int dX, int dY, int dZ) {
         posX += dX;
         posY += dY;
         posZ += dZ;
@@ -143,13 +143,13 @@ public class WorldXYZ extends ChunkCoordinates {
         return referencePoint.offset(d.x, direction * -d.z, direction * d.y, face);
     }
 
-    public int getDimensionNumber(){
+    private int getDimensionNumber(){
         if( getWorld() == null)
             setWorld(defaultWorld());
         return getWorld().provider.dimensionId;
     }
 
-    public static World defaultWorld() {
+    private static World defaultWorld() {
         return MinecraftServer.getServer().worldServerForDimension(0);
     }
 

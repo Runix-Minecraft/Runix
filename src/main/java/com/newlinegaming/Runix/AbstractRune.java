@@ -32,17 +32,17 @@ public abstract class AbstractRune {
 	
     public int energy = 0;
 	
-    public static final Block TIER = new TierBlock(); //Tier
+    protected static final Block TIER = new TierBlock(); //Tier
     public static final Block SIGR = new SignatureBlock(); //Signature block
-    public static final Block NONE = new NoneBlock(); //Non-Tier, Tier 0
+    protected static final Block NONE = new NoneBlock(); //Non-Tier, Tier 0
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
-    public static final Block FUEL = new FuelBlock(); //required to be in the middle of the rune
+    protected static final Block FUEL = new FuelBlock(); //required to be in the middle of the rune
     
     public String runeName = null;
-    public String runeLocalizedName = null;
+    private String runeLocalizedName = null;
 
-    public boolean usesConductance = false;
-	public AbstractRune(){}
+    protected boolean usesConductance = false;
+	protected AbstractRune(){}
 
 	/**
      * Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
@@ -50,7 +50,7 @@ public abstract class AbstractRune {
 	 */
 	protected abstract Block[][][] runicTemplateOriginal();
 
-	public abstract boolean isFlatRuneOnly();
+	protected abstract boolean isFlatRuneOnly();
 
     /**
      * Use this method to check Rune template compliance, not runicTemplateOriginal().
@@ -59,7 +59,7 @@ public abstract class AbstractRune {
 	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
 	 * the runeTemplate for that block, which can be special values like TIER or KEY.
 	 */
-	protected HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
+    HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
 	    if(isFlatRuneOnly())
 	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
 	    return patternToShape(runicTemplateOriginal(), coords); 
@@ -77,7 +77,7 @@ public abstract class AbstractRune {
 	    execute(coords, player); //Instant runes drop the forward parameter by default
 	}
 
-    public abstract void execute(WorldXYZ coords, EntityPlayer player);
+    protected abstract void execute(WorldXYZ coords, EntityPlayer player);
 	
 	/**
      * This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.
@@ -248,7 +248,7 @@ public abstract class AbstractRune {
         return null;
     }
 
-    public boolean runeOrientationMatches(WorldXYZ coords, HashMap<WorldXYZ, SigBlock> shape) {
+    private boolean runeOrientationMatches(WorldXYZ coords, HashMap<WorldXYZ, SigBlock> shape) {
         Block ink = getTierInkBlock(coords);
         if(ink == Blocks.air)
             return false; //Tier blocks cannot be AIR
@@ -316,7 +316,7 @@ public abstract class AbstractRune {
      * @param coords Center coordinates used to look up the Rune template
      * @return int
      */
-    protected int getTier(WorldXYZ coords){
+    int getTier(WorldXYZ coords){
         Block blockID = getTierInkBlock(coords);
         return blockID != null ? Tiers.getTier(blockID) : 1;
     }
@@ -339,7 +339,7 @@ public abstract class AbstractRune {
     }
 
     /**This will return an empty list if the activation would tear a structure in two. */
-    public LinkedHashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
+    LinkedHashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
         LinkedHashSet<WorldXYZ> workingSet = new LinkedHashSet<>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<>();
@@ -444,7 +444,7 @@ public abstract class AbstractRune {
         System.out.println(getRuneName() + " energy: " + energy);
     }
     
-    public void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
+    protected void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
         if( blockID == Blocks.air )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
         else
@@ -452,7 +452,7 @@ public abstract class AbstractRune {
         coords.setBlockIdAndUpdate(blockID);
     }
 
-    public void setBlockIdAndUpdate(WorldXYZ destination, SigBlock sourceBlock) throws NotEnoughRunicEnergyException {
+    protected void setBlockIdAndUpdate(WorldXYZ destination, SigBlock sourceBlock) throws NotEnoughRunicEnergyException {
         if( sourceBlock.blockID == Blocks.air )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
         else
@@ -464,7 +464,7 @@ public abstract class AbstractRune {
      * @param energyCost 
      * @throws NotEnoughRunicEnergyException
      */
-    protected void spendEnergy(int energyCost) throws NotEnoughRunicEnergyException {
+    private void spendEnergy(int energyCost) throws NotEnoughRunicEnergyException {
         if( energy < energyCost){
             throw new NotEnoughRunicEnergyException();
         }
@@ -472,7 +472,7 @@ public abstract class AbstractRune {
     }
 
     /**This is a minature convenience version of moveShape(moveMapping) for single blocks */
-    public void moveBlock(WorldXYZ coords, WorldXYZ newPos) {
+    protected void moveBlock(WorldXYZ coords, WorldXYZ newPos) {
         newPos.setBlockId(coords.getSigBlock());
         coords.setBlockIdAndUpdate(Blocks.air);
 
@@ -481,7 +481,7 @@ public abstract class AbstractRune {
         RuneHandler.getInstance().moveMagic(moveMapping);
     }
 
-    protected boolean consumeFuelBlock(WorldXYZ coords) {
+    boolean consumeFuelBlock(WorldXYZ coords) {
         if(Tiers.getTier(coords.getBlock()) > 1){
             energy += Tiers.getEnergy(coords.getBlock());
             coords.setBlockIdAndUpdate(Blocks.cobblestone);//we don't want air sitting here
@@ -490,7 +490,7 @@ public abstract class AbstractRune {
         return false;
     }
 
-    protected String shortClassName() {
+    String shortClassName() {
         return this.getClass().toString().replace("class com.newlinegaming.Runix.rune.", "");
     }
 
@@ -499,7 +499,7 @@ public abstract class AbstractRune {
      * @param signature
      * @return WorldXYZ or null
      */
-    public WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) throws NoSuchSignatureException {
+    protected WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) throws NoSuchSignatureException {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
         PersistentRune wp = null;
@@ -531,7 +531,7 @@ public abstract class AbstractRune {
         return false;
     }
 
-    public LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
+    protected LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
         return new LinkedHashSet<>(runicFormulae(coords).keySet());
     }
 }

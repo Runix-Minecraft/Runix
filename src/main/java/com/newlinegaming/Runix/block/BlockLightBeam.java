@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-public class BlockLightBeam extends Block implements ITileEntityProvider{
+class BlockLightBeam extends Block implements ITileEntityProvider{
 
     public BlockLightBeam() {
         super(Material.air);

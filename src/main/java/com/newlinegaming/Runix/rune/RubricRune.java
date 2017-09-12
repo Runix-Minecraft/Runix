@@ -30,8 +30,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class RubricRune extends PersistentRune {
 
 	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<>();
-	public HashMap<Vector3, SigBlock> structure = new HashMap<>();
-	protected transient RenderHelper renderer = null;
+	private HashMap<Vector3, SigBlock> structure = new HashMap<>();
+	private transient RenderHelper renderer = null;
 
     public RubricRune() {
         runeName = "Rubric";
@@ -44,7 +44,7 @@ public class RubricRune extends PersistentRune {
 	    usesConductance = true;
 	}
     
-    protected void initializeRune(){
+    private void initializeRune(){
         renderer = new RenderHelper();
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -106,7 +106,7 @@ public class RubricRune extends PersistentRune {
         }
     }
 
-    public void unpackStructure(EntityPlayer initiator, WorldXYZ origin){
+    private void unpackStructure(EntityPlayer initiator, WorldXYZ origin){
         //convert old coordinets to vector3 based on offset from origin
         // create new worldXYZ by adding this.location to each vector3 
         HashMap<WorldXYZ, SigBlock> NewStructure = structureAbsoluteLocation(origin);
@@ -161,7 +161,7 @@ public class RubricRune extends PersistentRune {
     }
    
 
-    public HashMap<WorldXYZ, SigBlock> structureAbsoluteLocation(WorldXYZ origin) {
+    private HashMap<WorldXYZ, SigBlock> structureAbsoluteLocation(WorldXYZ origin) {
         HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<>();
         for(Vector3 relative : structure.keySet()){
             NewStructure.put(origin.offset(relative), structure.get(relative));

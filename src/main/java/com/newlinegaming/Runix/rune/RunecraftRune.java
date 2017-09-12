@@ -27,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class RunecraftRune extends AbstractTimedRune {
     
-    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
+    private static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<>();
     private transient RenderHelper renderer = null;
     private boolean moveInProgress = false;
@@ -53,7 +53,7 @@ public class RunecraftRune extends AbstractTimedRune {
     /**initializeRune() is necessary because of a circular condition in the event registry
      * that does not play well with the GSON object constructor loading from loadRunes()
      */
-    protected void initializeRune() {
+    private void initializeRune() {
         renderer = new RenderHelper();
         updateEveryXTicks(4);
         MinecraftForge.EVENT_BUS.register(this);        
@@ -70,7 +70,7 @@ public class RunecraftRune extends AbstractTimedRune {
         }};
     }
 
-    protected WorldXYZ getDestinationByPlayer(EntityPlayer subject) {
+    private WorldXYZ getDestinationByPlayer(EntityPlayer subject) {
         if(getPlayer() != null && subject.equals(getPlayer())) {
             int dX = (int) (getPlayer().posX - location.posX - .5);
             int dY = (int) (getPlayer().posY - location.posY - 1);

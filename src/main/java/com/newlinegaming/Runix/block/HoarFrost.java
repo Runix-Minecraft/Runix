@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class HoarFrost extends BlockIce {
     
-    public IIcon opaqueIcon;
+    private IIcon opaqueIcon;
     public EntityPlayer owner = null; // updated by HoarFrostItem
 
     public HoarFrost() {

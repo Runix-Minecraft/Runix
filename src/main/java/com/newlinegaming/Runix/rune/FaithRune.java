@@ -17,8 +17,8 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 public class FaithRune extends PersistentRune{
 	
-	protected static ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
-	public Integer radius = 11;
+	private static ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
+	private Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
     private transient LinkedHashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
@@ -65,7 +65,7 @@ public class FaithRune extends PersistentRune{
      * Faith is activated. 
      * Josiah: I've tried to speed this up as much as possible with little effect.  Profiling is needed.
      */
-    public void bounceIsland() {
+    private void bounceIsland() {
         //assumes fullStructure() has already been called
         int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
         if(location.posY + radius*2 <= height) {

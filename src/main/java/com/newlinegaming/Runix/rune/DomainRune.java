@@ -17,7 +17,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 public class DomainRune extends AbstractTimedRune {
 
     private static ArrayList<PersistentRune> activeDomains= new ArrayList<>();
-    protected DelayQueue<BlockRecord> phasedBlocks = new DelayQueue<>();
+    private DelayQueue<BlockRecord> phasedBlocks = new DelayQueue<>();
 
     public DomainRune() {
         runeName = ("Domain");

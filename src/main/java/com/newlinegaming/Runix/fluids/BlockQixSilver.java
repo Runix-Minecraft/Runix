@@ -10,7 +10,7 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
-public class BlockQixSilver extends BlockFluidClassic {
+class BlockQixSilver extends BlockFluidClassic {
 
     @SideOnly(Side.CLIENT)
     private IIcon FQS; //Still Icon for quicksilver

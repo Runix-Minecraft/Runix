@@ -40,7 +40,7 @@ public class RunixMain {
     public static RunixMain instance;
 
     @SidedProxy(clientSide = LibInfo.CLIENT_PROXY, serverSide = LibInfo.COMMON_PROXY)
-    public static CommonProxy proxy;
+    private static CommonProxy proxy;
 
     public static CreativeTabs TabRunix = new TabRunix(LibInfo.MOD_ID + ":runix");
 

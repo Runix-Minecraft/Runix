@@ -19,7 +19,7 @@ public class TeleporterRune extends PersistentRune {
         runeName = "Teleporter";
     }
     
-    public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
+    TeleporterRune(WorldXYZ coords, EntityPlayer activator){
         super(coords, activator,"Teleporter");
         energy = 1;
     }

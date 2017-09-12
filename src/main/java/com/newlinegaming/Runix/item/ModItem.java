@@ -1,8 +1,5 @@
 package com.newlinegaming.Runix.item;
 
-import com.newlinegaming.Runix.item.armor.ArmorAetherGoggles;
-import com.newlinegaming.Runix.lib.LibInfo;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 

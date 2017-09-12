@@ -7,7 +7,7 @@ import cpw.mods.fml.common.gameevent.InputEvent;
 import net.minecraft.client.settings.KeyBinding;
 
 
-public class KeyHandler {
+class KeyHandler {
 	
 	@SubscribeEvent
 	public void onKeyinput(InputEvent.KeyInputEvent event) {
@@ -16,9 +16,9 @@ public class KeyHandler {
 		}
 	}
 	
-	public static class KeyBindings {
+	static class KeyBindings {
 		
-		public static KeyBinding CHARGE;
+		static KeyBinding CHARGE;
 		
 		public void init() {
 			

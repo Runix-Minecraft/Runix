@@ -10,7 +10,7 @@ public class LogHelper {
 
     private static final Logger RLog = LogManager.getLogger(LibInfo.MOD_ID.toUpperCase());
 
-    public static void log(Level logLevel, Object obj) {
+    private static void log(Level logLevel, Object obj) {
         RLog.log(logLevel, obj.toString());
     }
 

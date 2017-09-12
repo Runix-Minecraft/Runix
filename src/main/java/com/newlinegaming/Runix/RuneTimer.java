@@ -3,9 +3,9 @@ package com.newlinegaming.Runix;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
-public class RuneTimer {
+class RuneTimer {
 
-    AbstractTimedRune rune;
+    private AbstractTimedRune rune;
     private int currentTimer = 0;
     private int maxTimer = 20;
 

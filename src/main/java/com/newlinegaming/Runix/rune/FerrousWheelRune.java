@@ -15,7 +15,7 @@ import net.minecraft.init.Blocks;
 public class FerrousWheelRune extends PersistentRune {
 
     private static ArrayList<PersistentRune> globalWheel  = new ArrayList<>();
-    public ArrayList<UUID> guestList = new ArrayList<>();
+    private ArrayList<UUID> guestList = new ArrayList<>();
     
     public FerrousWheelRune() {
         runeName = "Ferrous Wheel";
@@ -49,7 +49,7 @@ public class FerrousWheelRune extends PersistentRune {
         teleportPlayer(player, next.location);
     }
 
-    public FerrousWheelRune getNextWheel(EntityPlayer player){
+    private FerrousWheelRune getNextWheel(EntityPlayer player){
         if(globalWheel.size() < 2)
             return null;
         int start = globalWheel.indexOf(this);

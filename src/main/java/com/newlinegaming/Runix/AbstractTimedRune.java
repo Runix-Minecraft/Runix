@@ -8,8 +8,8 @@ public abstract class AbstractTimedRune extends PersistentRune {
 
 //    RuneTimer instance = null;
     
-    public AbstractTimedRune(){}
-    public AbstractTimedRune(WorldXYZ coords, EntityPlayer player2, String name) {
+    protected AbstractTimedRune(){}
+    protected AbstractTimedRune(WorldXYZ coords, EntityPlayer player2, String name) {
         super(coords, player2, name);
         
     }

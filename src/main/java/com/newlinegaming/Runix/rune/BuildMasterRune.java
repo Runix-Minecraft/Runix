@@ -19,7 +19,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
 public class BuildMasterRune extends AbstractTimedRune {
-    protected static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
+    private static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
 
     public BuildMasterRune() {
         runeName = "Build Master";
@@ -126,7 +126,7 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
     
     /**This will return an empty list if the activation would tear a structure in two. */
-    public HashSet<WorldXYZ> layerConductance(WorldXYZ startPoint, int maxDistance, Vector3 orientation) {
+    private HashSet<WorldXYZ> layerConductance(WorldXYZ startPoint, int maxDistance, Vector3 orientation) {
         HashSet<WorldXYZ> workingSet = new HashSet<>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<>();

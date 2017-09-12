@@ -18,7 +18,7 @@ import com.newlinegaming.Runix.lib.RunixAsset;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ArmorAetherGoggles extends ItemArmor implements ISpecialArmor {
+class ArmorAetherGoggles extends ItemArmor implements ISpecialArmor {
 
     public ArmorAetherGoggles() {
         super(RunixMain.armorRunix, 0 ,0);

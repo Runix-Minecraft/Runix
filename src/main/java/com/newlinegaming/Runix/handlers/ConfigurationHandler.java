@@ -12,6 +12,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigurationHandler {
     
+    @SuppressWarnings("WeakerAccess")
     public static Configuration conf;
     
     public static void init(File confFile) {

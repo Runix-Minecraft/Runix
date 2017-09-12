@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-public class RunixAirBlock extends Block {
+class RunixAirBlock extends Block {
 
     public RunixAirBlock() {
         super(Material.air);

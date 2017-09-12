@@ -32,8 +32,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GreekFire extends BlockFire {
     
-    protected static HashMap<Block, Integer> greekFireSpreadSpeed = new HashMap<>();
-    protected static HashMap<Block, Integer> greekFlammability = new HashMap<>();
+    private static HashMap<Block, Integer> greekFireSpreadSpeed = new HashMap<>();
+    private static HashMap<Block, Integer> greekFlammability = new HashMap<>();
     private static GreekFire blockIdBackup = null;
 
     @SideOnly(Side.CLIENT)
@@ -80,7 +80,7 @@ public class GreekFire extends BlockFire {
         greekFlammability.put(block, flammability);
     }
     
-    public void initializeBlock() {
+    private void initializeBlock() {
         setLightLevel(1f);
         setFireInfo(Blocks.stone, 30, 100);
         setFireInfo(Blocks.dirt, 30, 100);
