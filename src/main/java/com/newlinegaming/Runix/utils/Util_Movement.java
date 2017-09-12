@@ -97,12 +97,13 @@ public class Util_Movement {
      * @return center of destination teleport or null if the teleport was unsuccessful
      */
     public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int extremitySize) {
-        Vector3 roomForShip = Vector3.facing[destination.face].multiply(extremitySize);
+        Vector3 scanDirection = Vector3.facing[destination.face];
+        Vector3 roomForShip = scanDirection.multiply(extremitySize);
         int collisionTries = 0;
         LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping;
         WorldXYZ destinationCenter;
         do {
-            Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
+            Vector3 stepSize = scanDirection.multiply(5);//try moving it over 5m
             destinationCenter = destination.offset(roomForShip).offsetWorld(stepSize.multiply(collisionTries), destination.getWorld() ); //base roomForShip + collisionTries iterations
             moveMapping = displaceShape(structure, startPoint, destinationCenter);
             collisionTries++;

@@ -17,8 +17,9 @@ public class TeleporterRune extends PersistentRune {
         super();
         runeName = "Teleporter";
     }
-    
-    TeleporterRune(WorldXYZ coords, EntityPlayer activator){
+
+    @SuppressWarnings("WeakerAccess")
+    public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
         super(coords, activator,"Teleporter");
         energy = 1;
     }
