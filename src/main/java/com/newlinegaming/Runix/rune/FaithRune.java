@@ -43,24 +43,23 @@ public class FaithRune extends PersistentRune{
 		}};
 	}
 
-	
+
     @Override
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         if(firstTime){// firstTime prevents players from injecting more energy by building a second rune on top of the first
             firstTime = false;
+            radius = getTier() * 2 - 1; //Tiers.energyToRadiusConversion(energy);
             consumeRune(coords);
             try {
                 setBlockIdAndUpdate(coords, ModBlock.fakeGoldBlock); //Gold block is to be a permanent marker
             } catch (NotEnoughRunicEnergyException e) {}
-            energy -= Tiers.getEnergy(Blocks.gold_block) * 5; //the Gold blocks don't count towards the energy
-            radius = Tiers.energyToRadiusConversion(energy);
-            HashSet<WorldXYZ> tsphere = fullStructure();
-            energy -= tsphere.size() * Tiers.blockMobilizationCost;
+            HashSet<WorldXYZ> tSphere = fullStructure();
+            energy -= tSphere.size() * Tiers.blockMobilizationCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
             bounceIsland();
         }
     }
-    
+
     /**
      * bounceIsland() will place the sphere sitting on top of the old sphere's location (y+diameter).  It is used the first time
      * Faith is activated. 

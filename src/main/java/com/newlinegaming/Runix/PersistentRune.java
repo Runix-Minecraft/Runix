@@ -329,7 +329,7 @@ public abstract class PersistentRune extends AbstractRune {
     
     public LinkedHashSet<WorldXYZ> directConductanceStructure() {
         int tier = getTier();
-        LinkedHashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier);
+        LinkedHashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier * 2);
         return scannedStructure;
     }
 

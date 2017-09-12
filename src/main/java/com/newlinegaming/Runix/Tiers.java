@@ -342,10 +342,6 @@ public class Tiers {
         return (int) Math.round(Math.log(energy) / Math.log(2));
     }
 
-    public static int energyToRadiusConversion(int energy) { 
-        return Tiers.energyToRadiusConversion(energy, blockMobilizationCost);
-    }
-    
     public static int energyToRadiusConversion(int energy, float perBlockCost) {
         int diameter = 1;
         while( diameter * diameter * diameter * perBlockCost < energy) //this is over generous intentionally
