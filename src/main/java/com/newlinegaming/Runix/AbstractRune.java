@@ -27,10 +27,10 @@ import com.newlinegaming.Runix.utils.Util_Movement;
 
 //TODO: Rename to BaseRune as this is the base of all runes
 public abstract class AbstractRune {
-	//TODO: Get rid of  unnecessary comments all comments that interrupt the code style
-	
+    //TODO: Get rid of  unnecessary comments all comments that interrupt the code style
+
     public int energy = 0;
-	
+
     protected static final Block TIER = new TierBlock(); //Tier
     public static final Block SIGR = new SignatureBlock(); //Signature block
     protected static final Block NONE = new NoneBlock(); //Non-Tier, Tier 0
@@ -41,108 +41,108 @@ public abstract class AbstractRune {
     private final String runeLocalizedName = null;
 
     protected boolean usesConductance = false;
-	protected AbstractRune(){}
+    protected AbstractRune(){}
 
-	/**
+    /**
      * Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
-	 * defined in your class, never use it.  Use runicFormulae() instead.
-	 */
-	protected abstract Block[][][] runicTemplateOriginal();
+     * defined in your class, never use it.  Use runicFormulae() instead.
+     */
+    protected abstract Block[][][] runicTemplateOriginal();
 
-	protected abstract boolean isFlatRuneOnly();
+    protected abstract boolean isFlatRuneOnly();
 
     /**
      * Use this method to check Rune template compliance, not runicTemplateOriginal().
-	 * This method will take the facing of coords and use it to match orientation for vertical runes.
-	 * @param coords world coordinates and facing to check against the rune
-	 * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is 
-	 * the runeTemplate for that block, which can be special values like TIER or KEY.
-	 */
+     * This method will take the facing of coords and use it to match orientation for vertical runes.
+     * @param coords world coordinates and facing to check against the rune
+     * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is
+     * the runeTemplate for that block, which can be special values like TIER or KEY.
+     */
     HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
-	    if(isFlatRuneOnly())
-	        coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
-	    return patternToShape(runicTemplateOriginal(), coords); 
-	}
+        if(isFlatRuneOnly())
+            coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
+        return patternToShape(runicTemplateOriginal(), coords);
+    }
 
     /**
      * Executes the main function of a given Rune.  If the Rune is persistent, it will store XYZ and other salient
-	 * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
-	 * a static class variable.
-	 * @param coords World and xyz that Rune was activated in.
-	 * @param player We pass the player instead of World so that runes can later affect the Player
+     * information for future use.  Each Rune class is responsible for keeping track of the information it needs in
+     * a static class variable.
+     * @param coords World and xyz that Rune was activated in.
+     * @param player We pass the player instead of World so that runes can later affect the Player
      * @param forward 
-	 */
-	public void execute(WorldXYZ coords, EntityPlayer player, Vector3 forward) {
-	    execute(coords, player); //Instant runes drop the forward parameter by default
-	}
+     */
+    public void execute(WorldXYZ coords, EntityPlayer player, Vector3 forward) {
+        execute(coords, player); //Instant runes drop the forward parameter by default
+    }
 
     protected abstract void execute(WorldXYZ coords, EntityPlayer player);
-	
-	/**
+
+    /**
      * This method takes a 3D block Pattern and simply stamps it on the world with coordinates centered on WorldXYZ.
-	 * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template 
-	 * calls for 0 (AIR).
-	 * @param stamp The blockPattern to be stamped.
-	 * @param player used to check for build permissions.  Player also provides worldObj.
-	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
-	 */
-	@SuppressWarnings("SameReturnValue")
+     * It should only be used on shapes with odd numbered dimensions.  This will also delete blocks if the template
+     * calls for 0 (AIR).
+     * @param stamp The blockPattern to be stamped.
+     * @param player used to check for build permissions.  Player also provides worldObj.
+     * @return Returns false if the operation was blocked by build protection.  Currently always true.
+     */
+    @SuppressWarnings("SameReturnValue")
     protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
-		for(WorldXYZ target : stamp.keySet())
-		    target.setBlockId( stamp.get(target) );
-		return true;
-		//TODO: build permission checking
-	}
+        for(WorldXYZ target : stamp.keySet())
+            target.setBlockId( stamp.get(target) );
+        return true;
+        //TODO: build permission checking
+    }
 
     /**
      * This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
-	 * less than 20 meters onto something that's not fire or lava.
-	 * This method should be used for any teleport or similar move that may land the player in some blocks.
-	 * @param player being teleported
-	 * @param coords Target destination
-	 */
-	protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) {
-		
-	    Vector3 direction = Vector3.facing[coords.face];
-	    for(int tries = 0; tries < 100; ++tries) {
-	        if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
-	                && coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ) == Blocks.air
-	                && coords.getWorld().getBlock(coords.posX, coords.posY+1, coords.posZ) == Blocks.air)//two AIR blocks
-	        {  
-	            for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
-	            {//begin scanning downward
-	                Block block = coords.getWorld().getBlock(coords.posX, coords.posY - drop, coords.posZ);
-	                if(block != Blocks.air)
-	                { //We found something not AIR
-    	                if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
-    	                        || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block
+     * less than 20 meters onto something that's not fire or lava.
+     * This method should be used for any teleport or similar move that may land the player in some blocks.
+     * @param player being teleported
+     * @param coords Target destination
+     */
+    protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) {
+
+        Vector3 direction = Vector3.facing[coords.face];
+        for(int tries = 0; tries < 100; ++tries) {
+            if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
+                    && coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ) == Blocks.air
+                    && coords.getWorld().getBlock(coords.posX, coords.posY+1, coords.posZ) == Blocks.air)//two AIR blocks
+            {
+                for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
+                {//begin scanning downward
+                    Block block = coords.getWorld().getBlock(coords.posX, coords.posY - drop, coords.posZ);
+                    if(block != Blocks.air)
+                    { //We found something not AIR
+                        if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
+                                || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
-    	                else if(coords.offset(0, -drop, 0).isSolid()){ //we're going to land on something solid, without dying
-    	                    //distance should be calculated uses the Nether -> Overworld transform
-    	                    WorldXYZ dCalc = new WorldXYZ(player);
-    	                    if(player.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
-    	                        dCalc.posX *= 8;
-    	                        dCalc.posZ *= 8;
-    	                    }else if (!player.worldObj.provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
+                        else if(coords.offset(0, -drop, 0).isSolid()){ //we're going to land on something solid, without dying
+                            //distance should be calculated uses the Nether -> Overworld transform
+                            WorldXYZ dCalc = new WorldXYZ(player);
+                            if(player.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
+                                dCalc.posX *= 8;
+                                dCalc.posZ *= 8;
+                            }else if (!player.worldObj.provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
                                 dCalc.posX /= 8;
                                 dCalc.posZ /= 8;
-    	                    }
-    	                    //spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
+                            }
+                            //spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
     
-    	                    if(!coords.getWorld().equals(player.worldObj))// && !subject.worldObj.isRemote)
-    	                        player.travelToDimension(coords.getWorld().provider.dimensionId);
-    	                    player.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
-    	                    return;
-    	                }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
-	                }
-	            } 
-	        }
+                            if(!coords.getWorld().equals(player.worldObj))// && !subject.worldObj.isRemote)
+                                player.travelToDimension(coords.getWorld().provider.dimensionId);
+                            player.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
+                            return;
+                        }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
+                    }
+                }
+            }
             coords = coords.offset(direction);
-	    }
-	    aetherSay(player, "There was no safe place to put your character.");
-	}
-	
+        }
+        aetherSay(player, "There was no safe place to put your character.");
+    }
+
     /* Example Code:
      * @Override
     public ItemStack onItemRightClick(ItemStack var1, World var2, EntityPlayer var3) {
@@ -159,45 +159,45 @@ public abstract class AbstractRune {
         }
         return var1;
     }*/	
-	
-	
-	/**
+
+
+    /**
      * returns the unique name of the rune
      */
-	public String getRuneName() {
-		
-		if(!runeName.isEmpty()) {
-	    	return runeName;
-	    }else{
-	    	return shortClassName();
-	    }
-	}
+    public String getRuneName() {
+
+        if(!runeName.isEmpty()) {
+            return runeName;
+        }else{
+            return shortClassName();
+        }
+    }
 
     public static void aetherSay(EntityPlayer player, String message) {
-    	
-	    if(player != null && !player.worldObj.isRemote) {
-	    	player.addChatMessage(new ChatComponentText(message));
-	    }else{
-	    	System.out.println(message);
-	    }
-	}
+
+        if(player != null && !player.worldObj.isRemote) {
+            player.addChatMessage(new ChatComponentText(message));
+        }else{
+            System.out.println(message);
+        }
+    }
 
     public void aetherSay(World worldObj, String message) {
-    	
+
         if(!worldObj.isRemote) { //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
             Minecraft.getMinecraft().thePlayer.sendChatMessage(message); 
         }else{
             System.out.println(message);
         }
     }
-	
-	/**
+
+    /**
      * Checks to see if there is a block match for the Rune blockPattern center at
-	 * WorldXYZ coords.  
-	 * Legacy Note: RunixMain changed rune pattern recognition to accept T0 ink blocks
-	 * and T1+ None Corners.  So if there is a recognizable shape, it will be accepted.
-	 * @return true if there is a valid match
-	 */
+     * WorldXYZ coords.
+     * Legacy Note: RunixMain changed rune pattern recognition to accept T0 ink blocks
+     * and T1+ None Corners.  So if there is a recognizable shape, it will be accepted.
+     * @return true if there is a valid match
+     */
     public WorldXYZ checkRunePattern(WorldXYZ coords) {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         if( !isAssymetrical()) {

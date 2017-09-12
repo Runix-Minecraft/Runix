@@ -41,7 +41,7 @@ public class DomainRune extends AbstractTimedRune {
     
     @Override
     public boolean oneRunePerPerson() {
-	return false;
+    return false;
     }
 
     @Override
@@ -50,11 +50,11 @@ public class DomainRune extends AbstractTimedRune {
         Block stair = Blocks.oak_stairs;
         return new Block[][][]
           {{{air , stair, air },
-		    {stair,Blocks.glass ,stair},
-		    {air , stair, air }},
-		   {{air , stair, air },
-		    {stair,TIER,stair},
-		    {air ,stair, air }}};
+            {stair,Blocks.glass ,stair},
+            {air , stair, air }},
+           {{air , stair, air },
+            {stair,TIER,stair},
+            {air ,stair, air }}};
     }
 
     @Override

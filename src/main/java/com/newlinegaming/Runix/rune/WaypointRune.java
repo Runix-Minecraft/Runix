@@ -14,15 +14,13 @@ public class WaypointRune extends PersistentRune{
     public int tier = 0;
 
     public WaypointRune(){
-    	
-    	super(); 
-    	this.runeName = "Waypoint";
+        super();
+        this.runeName = "Waypoint";
     }
     
     public WaypointRune(WorldXYZ coords, EntityPlayer player)
     {
-    	super(coords, player, "Waypoint");
-        
+        super(coords, player, "Waypoint");
     }
 
     @Override
@@ -44,8 +42,8 @@ public class WaypointRune extends PersistentRune{
     }
 
     public String getRuneName() {
-		return this.runeName;
-	}
+        return this.runeName;
+    }
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {

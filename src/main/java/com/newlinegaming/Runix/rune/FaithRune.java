@@ -16,32 +16,32 @@ import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
 import com.newlinegaming.Runix.WorldXYZ;
 
 public class FaithRune extends PersistentRune{
-	
-	private static final ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
-	private Integer radius = 11;
+
+    private static final ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
+    private Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
     private transient LinkedHashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
     
-	public FaithRune() {
-	    runeName = "Faith";
-	}
-	public FaithRune(WorldXYZ loc, EntityPlayer creator) {
-	    super(loc, creator, "Faith");
-	    firstTime = true;
-	}
-	
-	public Block[][][] runicTemplateOriginal(){
-	    Block gold = Blocks.gold_block;
-		return new Block[][][] {{
-		    {NONE,NONE,NONE},
-		    {NONE,gold,NONE},
-		    {NONE,NONE,NONE}},
-		    {{TIER,gold,TIER},
-		     {gold,TIER,gold},
-		     {TIER,gold,TIER}
-		}};
-	}
+    public FaithRune() {
+        runeName = "Faith";
+    }
+    public FaithRune(WorldXYZ loc, EntityPlayer creator) {
+        super(loc, creator, "Faith");
+        firstTime = true;
+    }
+
+    public Block[][][] runicTemplateOriginal(){
+        Block gold = Blocks.gold_block;
+        return new Block[][][] {{
+            {NONE,NONE,NONE},
+            {NONE,gold,NONE},
+            {NONE,NONE,NONE}},
+            {{TIER,gold,TIER},
+             {gold,TIER,gold},
+             {TIER,gold,TIER}
+        }};
+    }
 
 
     @Override
@@ -76,7 +76,7 @@ public class FaithRune extends PersistentRune{
             aetherSay(getPlayer(), "Radius: " + radius +
                     ". There's not enough room left to bounce. This island can be moved with an FTP, provided there is enough room under build height at the destination.");
         }
-	}
+    }
     
     @Override
     public LinkedHashSet<WorldXYZ> fullStructure() {

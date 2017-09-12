@@ -56,8 +56,8 @@ public class RuneHandler {
     
     private RuneHandler() {
         //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  
-    	
-    	
+
+
 //        runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
@@ -79,7 +79,7 @@ public class RuneHandler {
     }
     
     public void addRune(AbstractRune rune) {
-    	runeRegistry.add(rune);
+        runeRegistry.add(rune);
     }
 
     public static RuneHandler getInstance(){

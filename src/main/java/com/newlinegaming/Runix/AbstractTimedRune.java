@@ -21,8 +21,8 @@ public abstract class AbstractTimedRune extends PersistentRune {
      * @param xTicks number of ticks to wait between calls.  20 ticks = 1 second
      */
     protected void updateEveryXTicks(int xTicks) {
-	RuneTimer instance = new RuneTimer(this, xTicks);
-    	FMLCommonHandler.instance().bus().register(instance);
+    RuneTimer instance = new RuneTimer(this, xTicks);
+        FMLCommonHandler.instance().bus().register(instance);
     }
 
     //To completely remove timers once they're done : g

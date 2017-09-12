@@ -17,9 +17,9 @@ public class CompassRune extends AbstractRune{
         runeName = "Compass";
     }
     
-	public Block[][][] runicTemplateOriginal(){
-	    Block air = Blocks.air;//This is AIR 0 on purpose
-		return new Block [][][] 
+    public Block[][][] runicTemplateOriginal(){
+        Block air = Blocks.air;//This is AIR 0 on purpose
+        return new Block [][][]
             {{
               {TIER, air, air , air,TIER},
               {air, TIER, air ,TIER, air},
@@ -27,28 +27,28 @@ public class CompassRune extends AbstractRune{
               {air, TIER, air ,TIER, air},
               {TIER, air, air , air,TIER}
               }}; 
-	}
+    }
 
-	public void execute(WorldXYZ coords, EntityPlayer player){
-	    Block ink = getTierInkBlock(coords);
+    public void execute(WorldXYZ coords, EntityPlayer player){
+        Block ink = getTierInkBlock(coords);
         Block air = Blocks.air;
-		Block[][][] compassOutcome = new Block[][][]
-				{{{air,ink,air},
-				  {ink,air,ink},
-				  {ink,air,ink}}};
-		coords = coords.copyWithNewFacing(1);
+        Block[][][] compassOutcome = new Block[][][]
+                {{{air,ink,air},
+                  {ink,air,ink},
+                  {ink,air,ink}}};
+        coords = coords.copyWithNewFacing(1);
         HashMap<WorldXYZ, SigBlock> stamp = patternToShape(compassOutcome, coords);
-		if(stampBlockPattern(stamp, player))
-		    accept(player);
-	}
-	
-	public String getRuneName()
-	{
-		return "Compass";
-	}
-	
-	public boolean isFlatRuneOnly() {
-	    return true;
-	}
+        if(stampBlockPattern(stamp, player))
+            accept(player);
+    }
+
+    public String getRuneName()
+    {
+        return "Compass";
+    }
+
+    public boolean isFlatRuneOnly() {
+        return true;
+    }
 
 }

@@ -85,10 +85,10 @@ public class FerrousWheelRune extends PersistentRune {
     public Block[][][] runicTemplateOriginal() {
         Block IRON = Blocks.iron_ore;
         return new Block[][][]{{
-        	{TIER, IRON, TIER},
-        	{IRON, FUEL, IRON},
-        	{TIER, IRON, TIER}
-        	
+            {TIER, IRON, TIER},
+            {IRON, FUEL, IRON},
+            {TIER, IRON, TIER}
+
         }};
     }
 

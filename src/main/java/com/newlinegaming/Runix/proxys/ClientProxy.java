@@ -15,16 +15,16 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
-	
+
     @Override
-	public void registerRenderInformation() {
+    public void registerRenderInformation() {
 //	    ISimpleBlockRenderingHandler handler = null;
 //	    RenderingRegistry.registerBlockHandler(handler);
-	    ClientRegistry.bindTileEntitySpecialRenderer(TileLightBeam.class, new RenderTileLightBeam());
-	    MinecraftForgeClient.registerItemRenderer(ModItem.transRod, new ItemRenderTransmutaionRod());
-	    RenderingRegistry.registerBlockHandler(new GreekFireRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileLightBeam.class, new RenderTileLightBeam());
+        MinecraftForgeClient.registerItemRenderer(ModItem.transRod, new ItemRenderTransmutaionRod());
+        RenderingRegistry.registerBlockHandler(new GreekFireRenderer());
         RenderingRegistry.registerBlockHandler(new HoarFrostRenderer());
-	}
-	
-	public void registerTileEnitiy() {} //NO OP
+    }
+
+    public void registerTileEnitiy() {} //NO OP
 }

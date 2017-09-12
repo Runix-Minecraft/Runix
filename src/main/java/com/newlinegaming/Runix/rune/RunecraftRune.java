@@ -63,10 +63,10 @@ public class RunecraftRune extends AbstractTimedRune {
     public Block[][][] runicTemplateOriginal() {
         Block GOLD = Blocks.gold_ore;
         return new Block[][][]{{
-        	{TIER,GOLD,TIER},
-        	{GOLD,FUEL ,GOLD},
-        	{TIER,GOLD,TIER}
-        	
+            {TIER,GOLD,TIER},
+            {GOLD,FUEL ,GOLD},
+            {TIER,GOLD,TIER}
+
         }};
     }
 
@@ -134,7 +134,7 @@ public class RunecraftRune extends AbstractTimedRune {
     
     @SubscribeEvent
     public void event(BreakEvent b){
-	    //TODO: intercept event?
+        //TODO: intercept event?
     }
     
     @SubscribeEvent
@@ -164,16 +164,16 @@ public class RunecraftRune extends AbstractTimedRune {
             setPlayer(null);  ///disabled = true; //player will not be set to null until the closing animation completes
             aetherSay(poker, "You are now free from the Runecraft.");
         }else{
-        	setPlayer(poker); // assign a player and start
+            setPlayer(poker); // assign a player and start
             aetherSay(poker, "The Runecraft is now locked to your body.");
             usesConductance = true; //backwards compatibility
-        	HashSet<WorldXYZ> newVehicleShape = attachedStructureShape(poker);
+            HashSet<WorldXYZ> newVehicleShape = attachedStructureShape(poker);
             if( newVehicleShape.isEmpty() ) {
                 vehicleBlocks = removeAirXYZ(vehicleBlocks);
-        	}else {
+            }else {
                 vehicleBlocks = newVehicleShape;
                 renderer.reset();
-        	}
+            }
         }
     }
 

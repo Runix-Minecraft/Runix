@@ -42,7 +42,7 @@ public class RubricRune extends PersistentRune {
     {
 	    super(coords, player2,"Rubric");
 	    usesConductance = true;
-	}
+    }
     
     private void initializeRune(){
         renderer = new RenderHelper();

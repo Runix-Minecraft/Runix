@@ -17,13 +17,13 @@ public class RuneTimer {
     
     @SubscribeEvent
     public void onPlayerTickEvent(PlayerTickEvent event) {
-    	++currentTimer;
-    	if(currentTimer >= maxTimer) {
-    		currentTimer = 0;
-    		if(!rune.disabled) {
-    		    rune.onUpdateTick(event.player);
-    		}
+        ++currentTimer;
+        if(currentTimer >= maxTimer) {
+            currentTimer = 0;
+            if(!rune.disabled) {
+                rune.onUpdateTick(event.player);
+            }
 
-    	}
+        }
     }
 }

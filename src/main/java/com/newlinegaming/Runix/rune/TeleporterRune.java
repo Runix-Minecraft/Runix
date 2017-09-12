@@ -23,15 +23,15 @@ public class TeleporterRune extends PersistentRune {
         energy = 1;
     }
 
-	public Block[][][] runicTemplateOriginal(){
-		return new Block[][][]
-				{{{NONE,TIER,SIGR,TIER,NONE},
-				  {TIER,TIER,TIER,TIER,TIER},
-				  {SIGR,TIER,FUEL ,TIER,SIGR},
-				  {TIER,TIER,TIER,TIER,TIER},
-				  {NONE,TIER,SIGR,TIER,NONE}}};
-	}
-	
+    public Block[][][] runicTemplateOriginal(){
+        return new Block[][][]
+                {{{NONE,TIER,SIGR,TIER,NONE},
+                  {TIER,TIER,TIER,TIER,TIER},
+                  {SIGR,TIER,FUEL ,TIER,SIGR},
+                  {TIER,TIER,TIER,TIER,TIER},
+                  {NONE,TIER,SIGR,TIER,NONE}}};
+    }
+
 
     /**
      * Teleport the player to the WaypointRune with a matching signature
@@ -40,14 +40,14 @@ public class TeleporterRune extends PersistentRune {
     protected void poke(EntityPlayer poker, WorldXYZ coords) {
         consumeFuelBlock(coords);
 
-	    try{
+        try{
             WorldXYZ destination = findWaypointBySignature(getSignature());
-	        aetherSay(poker, "Teleporting to " + destination.toString());
+            aetherSay(poker, "Teleporting to " + destination.toString());
             teleportPlayer(poker, destination);
-	    }catch (NoSuchSignatureException e){
+        }catch (NoSuchSignatureException e){
             aetherSay(poker, "There's no waypoint with that signature.");
         }
-	}
+    }
 
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {

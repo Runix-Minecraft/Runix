@@ -31,13 +31,13 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-    	if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
+        if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
             World world = subject.worldObj;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
             HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 1);
             for(WorldXYZ newPos : sphere) {
                 if(newPos.getBlock().equals(Blocks.air) && 
-                	newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.posX, newPos.posY-1, newPos.posZ) && (
+                    newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.posX, newPos.posY-1, newPos.posZ) && (
                         (world.isDaytime() && world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4) ||//day time checking == caves
                         (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) ))//adjustable
                 { 
@@ -58,10 +58,10 @@ public class TorchBearerRune extends AbstractTimedRune {
     public Block[][][] runicTemplateOriginal() {
         Block TRCH = Blocks.torch;
         return new Block[][][] {{
-        	{TIER,TRCH,TIER},
-        	{TRCH,FUEL ,TRCH},
-        	{TIER,TRCH,TIER}
-        	
+            {TIER,TRCH,TIER},
+            {TRCH,FUEL ,TRCH},
+            {TIER,TRCH,TIER}
+
         }}; 
     }
 

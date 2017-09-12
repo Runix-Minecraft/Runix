@@ -21,7 +21,7 @@ public class RenderHelper {
         progress = 0.0f;
     }
     public boolean highlightBoxes(Collection<WorldXYZ> structureBlocks, boolean reverse, EntityPlayer player){
-    	return highlightBoxes(structureBlocks, reverse, player,0, 216, 216);
+        return highlightBoxes(structureBlocks, reverse, player,0, 216, 216);
     }
     public boolean highlightBoxes(Collection<WorldXYZ> structureBlocks, boolean reverse, EntityPlayer player,int R,int G, int B){
         if((!reverse && progress > 1.0) || (reverse && progress < 0.0))

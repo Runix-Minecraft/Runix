@@ -66,7 +66,7 @@ public class RunixMain {
     
     @EventHandler
     public void serverStop(FMLServerStoppingEvent event){
-	System.out.println("Clearing all runes");
+    System.out.println("Clearing all runes");
         for(AbstractRune r : RuneHandler.getInstance().runeRegistry)
             if( r instanceof PersistentRune)
                 ((PersistentRune) r).clearActiveMagic();

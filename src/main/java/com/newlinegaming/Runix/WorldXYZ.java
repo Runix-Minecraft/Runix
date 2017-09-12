@@ -105,7 +105,7 @@ public class WorldXYZ extends ChunkCoordinates {
     }
     
     public WorldXYZ offsetWorld(Vector3 delta, World dem) {
-    	return new WorldXYZ(dem, posX + delta.x, posY + delta.y, posZ + delta.z, face);
+        return new WorldXYZ(dem, posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
 
     /**
