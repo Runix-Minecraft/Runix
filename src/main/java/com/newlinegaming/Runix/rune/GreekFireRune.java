@@ -41,7 +41,7 @@ public class GreekFireRune extends AbstractRune {
     @SubscribeEvent
     public void onBlockPlace(PlayerInteractEvent event) {
         if(!event.entityPlayer.worldObj.isRemote) {
-            if (event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR) {
+            if (event.action == Action.RIGHT_CLICK_BLOCK){  // && event.action != Action.RIGHT_CLICK_AIR) {
                 WorldXYZ target = new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z);
                 target = target.offset(Vector3.facing[event.face]);
 

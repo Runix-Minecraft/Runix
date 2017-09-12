@@ -85,12 +85,12 @@ public class RubricRune extends PersistentRune {
 
     @SubscribeEvent
     public void bookClickEvent(PlayerInteractEvent event) {
-        if (event.action == Action.RIGHT_CLICK_BLOCK 
-                && getWrittenBookName(event.entityPlayer) != null) {
+        String writtenBookName = getWrittenBookName(event.entityPlayer);
+        if (event.action == Action.RIGHT_CLICK_BLOCK && writtenBookName != null) {
             EntityPlayer poker = event.entityPlayer;
             WorldXYZ coords = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
             
-            if(getWrittenBookName(event.entityPlayer).equals(instanceName)) {
+            if(writtenBookName.equals(instanceName)) {
                 event.setCanceled(true);
                 //          try {
                 unpackStructure(poker, coords);
@@ -147,8 +147,10 @@ public class RubricRune extends PersistentRune {
         return null;
     }
 
+    /** This is overridden to give Rubric increased range when picking up large structures
+     * @return conductance range
+     */
     @Override
-	/**This is overridden to give Rubric increased range when picking up large structures*/
     public int getTier() {
         return super.getTier()*3;
     }

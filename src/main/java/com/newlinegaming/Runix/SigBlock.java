@@ -20,12 +20,20 @@ public class SigBlock{
     @Override
     public boolean equals(Object other){
         if(other instanceof SigBlock)
-            return blockID == ((SigBlock)other).blockID && meta == ((SigBlock)other).meta;
+            return equals((SigBlock) other);
         else if (other instanceof Block)
-            return blockID.equals(other);  //can't get meta from block without coordinates
+            return equals((Block)other);  //can't get meta from block without coordinates
         return false;
     }
-    
+
+    public boolean equals(SigBlock other){
+        return blockID == other.blockID && meta == other.meta;
+    }
+
+    public boolean equals(Block other){
+        return blockID.equals(other);  //can't get meta from block without coordinates
+    }
+
     public String toString(){
         return "" + blockID + ":" + meta;
     }

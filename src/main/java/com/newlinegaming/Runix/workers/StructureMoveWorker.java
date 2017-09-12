@@ -19,7 +19,6 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 public class StructureMoveWorker implements IBlockWorker {
 
     private LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
-    private final HashSet<WorldXYZ> newPositions = new HashSet<>();
     private HashMap<WorldXYZ, SigBlock> sensitiveBlocks = null;
     private WorldXYZ bumpedBlock = null;  // created whenever a move collides with itself
     private int currentTimer = 0;
@@ -104,7 +103,6 @@ public class StructureMoveWorker implements IBlockWorker {
                         // TODO: delete old block in a separate loop to avoid collisions with the new positioning
                     }
                     
-                    newPositions.addAll(currentMove.values());
                     RuneHandler.getInstance().moveMagic(currentMove);
                     RuneHandler.getInstance().moveMagic(airBlocks);
                     
@@ -114,7 +112,6 @@ public class StructureMoveWorker implements IBlockWorker {
                     for(WorldXYZ specialPos : sensitiveBlocks.keySet()) {//Place all the sensitive blocks
                         specialPos.setBlockId(sensitiveBlocks.get(specialPos));//blocks like torches and redstone
                     }
-                    newPositions.addAll(sensitiveBlocks.keySet());//merge sensitive locations back in with normal
                     sensitiveBlocks.clear();
                     moveMapping.clear();
                     //return newPositions; //TODO: For Faith and FTP, return doesn't matter, it does matter for Runecraft

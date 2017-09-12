@@ -32,8 +32,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GreekFire extends BlockFire {
     
-    private static final HashMap<Block, Integer> greekFireSpreadSpeed = new HashMap<>();
-    private static final HashMap<Block, Integer> greekFlammability = new HashMap<>();
     private static GreekFire blockIdBackup = null;
 
     @SideOnly(Side.CLIENT)
@@ -75,21 +73,12 @@ public class GreekFire extends BlockFire {
         return IconGreekFire;
     }
 
-    private void setBurn(Block block, int encouragement, int flammability){
-        greekFireSpreadSpeed.put(block, encouragement);
-        greekFlammability.put(block, flammability);
-    }
-    
     private void initializeBlock() {
         setLightLevel(1f);
         setFireInfo(Blocks.stone, 30, 100);
         setFireInfo(Blocks.dirt, 30, 100);
         setFireInfo(Blocks.gravel, 30, 100);
         rebuildFireInfo();
-        
-//        this.setBurn(Blocks.stone, 30, 100);
-//        this.setBurn(Blocks.dirt, 30, 100);
-//        this.setBurn(Blocks.gravel, 30, 100);
     }
 
     @Override
@@ -251,7 +240,7 @@ public class GreekFire extends BlockFire {
         IconGreekFire = reg.registerIcon(LibInfo.MOD_ID + ":GreekFire");
         IconGreekFire1 = reg.registerIcon(LibInfo.MOD_ID + ":GreekFire1");
     }
-    
+
     @Override
     public boolean canBlockCatchFire(IBlockAccess world, int x, int y, int z)
     {

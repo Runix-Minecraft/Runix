@@ -87,7 +87,7 @@ public abstract class PersistentRune extends AbstractRune {
 	private String getJsonFilePath(World world) {
 		
 		String levelName = world.getWorldInfo().getWorldName();
-		String directory = "";
+		String directory;
 		
 		
 		try {
@@ -99,8 +99,9 @@ public abstract class PersistentRune extends AbstractRune {
 		} catch (Throwable e) {
 			directory = "saves/" + levelName + "/stored_runes/";
 		}
-		
-		new File(directory).mkdirs();//ensure the folder exists
+
+        //noinspection ResultOfMethodCallIgnored
+        new File(directory).mkdirs();//ensure the folder exists
 		String fileName = directory + shortClassName() + ".json";
 		return fileName;
 
@@ -129,8 +130,10 @@ public abstract class PersistentRune extends AbstractRune {
 		if(activator.worldObj.isRemote)//runes server side only
 			return;
 		PersistentRune match = getOrCreateRune(coords, activator);
-		match.forwards = forward;
-		match.poke(activator, coords); //either way, we poke the relevant rune to let it know
+        if (match != null) {
+            match.forwards = forward;
+            match.poke(activator, coords); //either way, we poke the relevant rune to let it know
+        }
 	}
 
 
@@ -272,6 +275,11 @@ public abstract class PersistentRune extends AbstractRune {
 		aetherSay(listener, runeName + ": More energy needed. Place a more valuable block in the center and active this Rune again.");
 		disabled = true;
 	}
+
+    @SuppressWarnings("unused")
+    public boolean onPlayerLogin(String username) {
+        return false;
+    }
 
     protected EntityPlayer getPlayer() {
 	try {

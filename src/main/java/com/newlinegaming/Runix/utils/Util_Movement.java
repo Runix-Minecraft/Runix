@@ -99,8 +99,8 @@ public class Util_Movement {
     public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int extremitySize) {
         Vector3 roomForShip = Vector3.facing[destination.face].multiply(extremitySize);
         int collisionTries = 0;
-        LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
-        WorldXYZ destinationCenter = null;
+        LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping;
+        WorldXYZ destinationCenter;
         do {
             Vector3 stepSize = Vector3.facing[destination.face].multiply(5);//try moving it over 5m
             destinationCenter = destination.offset(roomForShip).offsetWorld(stepSize.multiply(collisionTries), destination.getWorld() ); //base roomForShip + collisionTries iterations

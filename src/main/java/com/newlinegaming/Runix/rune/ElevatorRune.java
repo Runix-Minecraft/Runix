@@ -59,10 +59,8 @@ public class ElevatorRune extends PersistentRune {
             destination = destination.offset(Vector3.facing[facing]);
         }
 
-        if(destination != null){
-            aetherSay(poker, "Teleporting to " + destination.toString());
-            teleportPlayer(poker, destination);
-        }
+        aetherSay(poker, "Teleporting to " + destination.toString());
+        teleportPlayer(poker, destination);
     }
     
     @SubscribeEvent

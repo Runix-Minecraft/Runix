@@ -15,7 +15,7 @@ public class HoarFrostItem extends ItemBlock {
     public HoarFrostItem(Block id) {
         super(id);
         setHasSubtypes(true);
-        setUnlocalizedName("hoarFrost");
+        //this.setUnlocalizedName("hoarFrost");
     }
 
     private final static String[] subNames = {
