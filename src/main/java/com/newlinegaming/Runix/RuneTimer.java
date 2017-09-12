@@ -5,7 +5,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 class RuneTimer {
 
-    private AbstractTimedRune rune;
+    private final AbstractTimedRune rune;
     private int currentTimer = 0;
     private int maxTimer = 20;
 
@@ -26,9 +26,4 @@ class RuneTimer {
 
     	}
     }
-    
-    public String getLabel() {
-        return null;
-    }
-    
 }

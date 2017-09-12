@@ -16,7 +16,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 public class FtpRune extends TeleporterRune {
     
-    private static ArrayList<PersistentRune> energizedFTP = new ArrayList<>();
+    private static final ArrayList<PersistentRune> energizedFTP = new ArrayList<>();
     
     public FtpRune(){
         super();

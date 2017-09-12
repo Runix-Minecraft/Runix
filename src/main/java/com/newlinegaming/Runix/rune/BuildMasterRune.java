@@ -19,7 +19,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
 public class BuildMasterRune extends AbstractTimedRune {
-    private static ArrayList<PersistentRune> activeMagic = new ArrayList<>();
+    private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
 
     public BuildMasterRune() {
         runeName = "Build Master";

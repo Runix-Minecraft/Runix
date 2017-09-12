@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks;
 @SuppressWarnings("WeakerAccess")
 public class FakeBlock extends Block {
 
-    private HashMap<Block, String> textures = new HashMap<>();
+    private final HashMap<Block, String> textures = new HashMap<>();
 
     public FakeBlock(Block mimic) {
         super(mimic.getMaterial());

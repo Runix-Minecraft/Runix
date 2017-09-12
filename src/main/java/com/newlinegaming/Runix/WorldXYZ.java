@@ -120,6 +120,7 @@ public class WorldXYZ extends ChunkCoordinates {
     /**
      * Similar to offset(), but updates the current instance instead of a new one.
      */
+    @SuppressWarnings("UnusedReturnValue")
     private WorldXYZ bump(int dX, int dY, int dZ) {
         posX += dX;
         posY += dY;
@@ -190,12 +191,14 @@ public class WorldXYZ extends ChunkCoordinates {
      * @param blockID
      * @return true if successful
      */
+    @SuppressWarnings("UnusedReturnValue")
     public boolean setBlockIdAndUpdate(Block blockID){
         if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlock(posX, posY, posZ, blockID);
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean setBlockId(SigBlock sig){
         if(sig.equals(Blocks.bedrock) || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock
@@ -203,6 +206,7 @@ public class WorldXYZ extends ChunkCoordinates {
         //NOTE: Use last arg 3 if you want a block update.
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean setBlock(Block blockID, int meta){
         if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
             return false; //You cannot delete or place bedrock

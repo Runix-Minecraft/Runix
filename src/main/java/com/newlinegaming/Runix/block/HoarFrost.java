@@ -104,8 +104,8 @@ public class HoarFrost extends BlockIce {
     @Override
     public void getSubBlocks(Item par1, CreativeTabs tab, List subItems) {
         int[] growthModes = {0, 1, 3, 4, 14, 15};
-        for (int ix = 0; ix < growthModes.length; ix++) {
-            subItems.add(new ItemStack(this, 1, growthModes[ix]));
+        for (int growthMode : growthModes) {
+            subItems.add(new ItemStack(this, 1, growthMode));
         }
     }
     

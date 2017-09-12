@@ -7,9 +7,9 @@ import java.util.Random;
 /** From http://stackoverflow.com/a/12386664/3067894 
  * If we use this inside a worker it will give us truly random block iteration.*/
 class RandomHashSet<A> {
-    private ArrayList<A> contents = new ArrayList();
-    private HashMap<A,Integer> indices = new HashMap<>();
-    private Random R = new Random();
+    private final ArrayList<A> contents = new ArrayList<>();
+    private final HashMap<A,Integer> indices = new HashMap<>();
+    private final Random R = new Random();
 
     //selects random element in constant time
     A randomKey() {

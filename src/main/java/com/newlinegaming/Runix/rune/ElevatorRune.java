@@ -20,7 +20,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 /**Elevator that ferries player up and down based on open spaces.  Doesn't consume energy.**/
 public class ElevatorRune extends PersistentRune {
 
-    private static ArrayList<PersistentRune> otherElevators = new ArrayList<>();
+    private static final ArrayList<PersistentRune> otherElevators = new ArrayList<>();
     private WorldXYZ bottomLocation = null;
     
     public ElevatorRune(){

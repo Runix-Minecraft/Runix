@@ -10,6 +10,7 @@ import com.newlinegaming.Runix.lib.LibInfo;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+@SuppressWarnings("WeakerAccess")
 public class ConfigurationHandler {
     
     @SuppressWarnings("WeakerAccess")

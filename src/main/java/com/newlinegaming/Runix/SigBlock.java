@@ -9,8 +9,8 @@ import net.minecraft.block.material.Material;
  * Doesn't currently do TileEntity or NBT.
  */
 public class SigBlock{
-    public int meta;
-    public Block blockID;
+    public final int meta;
+    public final Block blockID;
     public SigBlock(Block blockID, int meta){
         this.blockID = blockID;
         this.meta = meta;

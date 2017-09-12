@@ -13,7 +13,7 @@ import com.newlinegaming.Runix.WorldXYZ;
  * Instead a new PlayerHandler instance is created each time a new player enters the server for the first time.
  */
 public class PlayerHandler extends PersistentRune {
-    private static ArrayList<PersistentRune> serverPlayers = new ArrayList<>();
+    private static final ArrayList<PersistentRune> serverPlayers = new ArrayList<>();
 
     @Override
     public WorldXYZ checkRunePattern(WorldXYZ coords) {

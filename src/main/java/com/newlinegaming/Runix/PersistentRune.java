@@ -272,7 +272,8 @@ public abstract class PersistentRune extends AbstractRune {
 		disabled = true;
 	}
 
-    public boolean onPlayerLogin(String username) {
+    @SuppressWarnings("UnusedReturnValue")
+	public boolean onPlayerLogin(String username) {
 		return false;
     }
 

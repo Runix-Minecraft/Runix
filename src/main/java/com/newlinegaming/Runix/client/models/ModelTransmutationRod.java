@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 
 public class ModelTransmutationRod extends ModelBase {
     
-    private ModelRenderer Rod;
+    private final ModelRenderer Rod;
     
     public ModelTransmutationRod() {
         textureHeight = 32;

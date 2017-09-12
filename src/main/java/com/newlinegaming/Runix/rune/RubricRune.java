@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class RubricRune extends PersistentRune {
 
-	private static ArrayList<PersistentRune> storedPatterns = new ArrayList<>();
+	private static final ArrayList<PersistentRune> storedPatterns = new ArrayList<>();
 	private HashMap<Vector3, SigBlock> structure = new HashMap<>();
 	private transient RenderHelper renderer = null;
 

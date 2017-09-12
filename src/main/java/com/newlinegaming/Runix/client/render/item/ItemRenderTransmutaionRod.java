@@ -12,7 +12,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 public class ItemRenderTransmutaionRod implements IItemRenderer {
     
-    private ModelTransmutationRod model;
+    private final ModelTransmutationRod model;
     
     public ItemRenderTransmutaionRod() {
         model = new ModelTransmutationRod();

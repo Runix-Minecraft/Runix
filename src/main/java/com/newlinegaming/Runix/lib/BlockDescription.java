@@ -7,11 +7,11 @@ import net.minecraft.block.Block;
  */
 public class BlockDescription
 {
-    private Block type;
-    public int energy; 
-    public boolean natural;
-    public boolean crushable;
-    public boolean sensitive;
+    public final Block type;
+    public final int energy;
+    public final boolean natural;
+    public final boolean crushable;
+    public final boolean sensitive;
     
     public BlockDescription (Block type, int energy, boolean natural, boolean crushable, boolean sensitive){
         this.type = type;

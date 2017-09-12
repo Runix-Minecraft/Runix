@@ -17,7 +17,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 public class FaithRune extends PersistentRune{
 	
-	private static ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
+	private static final ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
 	private Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON

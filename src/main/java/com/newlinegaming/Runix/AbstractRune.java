@@ -39,7 +39,7 @@ public abstract class AbstractRune {
     protected static final Block FUEL = new FuelBlock(); //required to be in the middle of the rune
     
     public String runeName = null;
-    private String runeLocalizedName = null;
+    private final String runeLocalizedName = null;
 
     protected boolean usesConductance = false;
 	protected AbstractRune(){}
@@ -87,7 +87,8 @@ public abstract class AbstractRune {
 	 * @param player used to check for build permissions.  Player also provides worldObj.
 	 * @return Returns false if the operation was blocked by build protection.  Currently always true.
 	 */
-	protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
+	@SuppressWarnings("SameReturnValue")
+    protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
 		for(WorldXYZ target : stamp.keySet())
 		    target.setBlockId( stamp.get(target) );
 		return true;
@@ -100,7 +101,8 @@ public abstract class AbstractRune {
 	 * @param rune - the rune being cast
 	 * @return
 	 */
-	protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune) {
+	@SuppressWarnings("SameReturnValue")
+    protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune) {
 		// arbi
 //		player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN+rune.getRuneName()+ " accepted"));
 //        player.addChatComponentMessage(IChatComponent);

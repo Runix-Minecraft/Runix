@@ -52,7 +52,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
-    public ArrayList<AbstractRune> runeRegistry = new ArrayList<>();
+    public final ArrayList<AbstractRune> runeRegistry = new ArrayList<>();
     
     private RuneHandler() {
         //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  

@@ -125,11 +125,6 @@ if (ENV.SC_MAVEN_URL) {
                                 name 'Anthony Anderson'
                                 roles { role 'developer' }
                             }
-                            developer {
-                            	id 'RivkiinShadows'
-                            	name 'Rivkiin Shadows'
-                            	roles {role 'developer'}
-                            }
                         }
 				}
 			}

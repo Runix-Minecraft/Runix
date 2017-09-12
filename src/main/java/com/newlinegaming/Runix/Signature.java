@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks;
 
 public class Signature {
     
-    private ArrayList<SigBlock> blocks;
+    private final ArrayList<SigBlock> blocks;
     public transient ArrayList<String> metaWhiteList;
     
     public Signature() {

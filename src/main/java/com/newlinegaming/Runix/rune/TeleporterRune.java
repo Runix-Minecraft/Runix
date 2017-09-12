@@ -12,7 +12,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 public class TeleporterRune extends PersistentRune {
 
-    private static ArrayList<PersistentRune> energizedTeleporters = new ArrayList<>();
+    private static final ArrayList<PersistentRune> energizedTeleporters = new ArrayList<>();
     
     public TeleporterRune(){
         super();

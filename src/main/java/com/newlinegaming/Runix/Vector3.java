@@ -45,9 +45,9 @@ public class Vector3 {
         new Vector3( 0,-1, 1),
         new Vector3( 0,-1,-1)};
     
-    public int x;
-    public int y;
-    public int z;
+    public final int x;
+    public final int y;
+    public final int z;
     
     public Vector3(int mx, int my, int mz){
         x = mx;
