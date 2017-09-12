@@ -10,7 +10,6 @@ public class Vector3 {
     public static final Vector3 EAST =  new Vector3( 1,0,0);
     public static final Vector3 SOUTH = new Vector3(0,0, 1);
     public static final Vector3 WEST =  new Vector3(-1,0,0);
-    public static final Vector3 NONE =  new Vector3(0,0,0);
     //These map to the minecraft block face, such that you're standing on the side they are pointing
     public static final Vector3[] facing = {DOWN, UP, NORTH, SOUTH, WEST, EAST};
     //use like this: WorldXYZ point = point.offset(Vector3.facing[point.face])

@@ -46,7 +46,7 @@ public class FtpRune extends TeleporterRune {
         location.face = coords.face; //update the facing
         WorldXYZ destination;
         try {
-            destination = findWaypointBySignature(player, getSignature());
+            destination = findWaypointBySignature(getSignature());
         } catch (NoSuchSignatureException e) {
             aetherSay(player, "There's no waypoint with that signature.");
             return;

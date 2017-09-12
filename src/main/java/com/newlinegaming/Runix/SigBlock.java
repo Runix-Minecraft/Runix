@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
  * Meta is the additional information like orientation or color used in some blocks.
  * Doesn't currently do TileEntity or NBT.
  */
+@SuppressWarnings("unused")
 public class SigBlock{
     public final int meta;
     public final Block blockID;

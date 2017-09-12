@@ -304,10 +304,6 @@ public class WorldXYZ extends ChunkCoordinates {
         return base.isSolid();
     }
 
-    public void bump(Vector3 vec) {
-        bump(vec.x, vec.y, vec.z);
-    }
-
 
     @Override
     public int compareTo(Object o) {

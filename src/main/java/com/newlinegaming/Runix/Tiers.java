@@ -30,8 +30,7 @@ public class Tiers {
     
     @SuppressWarnings("serial")
     public Tiers(){
-        /**
-         * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
+        /* naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
          */
         naturalBlocks = new ArrayList<Block>(){{
             add(Blocks.air); 

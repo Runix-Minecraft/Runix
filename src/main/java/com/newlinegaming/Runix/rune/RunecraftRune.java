@@ -182,12 +182,9 @@ public class RunecraftRune extends AbstractTimedRune {
      * and actually return a non-contiguous structure.  For Runecraft, this is desirable. 
      */
     private HashSet<WorldXYZ> removeAirXYZ(HashSet<WorldXYZ> oldShapeCoords) {
-        for (Iterator<WorldXYZ> i = oldShapeCoords.iterator(); i.hasNext();) 
-        {
-            WorldXYZ xyz = i.next(); //an iterator is necessary here because of ConcurrentModificationException
-            if(xyz.getBlock() == Blocks.air) // We specifically want to exclude AIR to avoid confusing collisions
-                i.remove();
-        }
+        //an iterator is necessary here because of ConcurrentModificationException
+        // We specifically want to exclude AIR to avoid confusing collisions
+        oldShapeCoords.removeIf(xyz -> xyz.getBlock() == Blocks.air);
             
         return oldShapeCoords;
     }

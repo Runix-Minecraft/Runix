@@ -155,6 +155,7 @@ public abstract class PersistentRune extends AbstractRune {
 		return match;
 	}
 
+	@SuppressWarnings("unused")
 	public PersistentRune getRuneByInstanceName(String name) {
 		for(PersistentRune rune : getActiveMagic()) {
 			if(rune.instanceName.equals(name)) 
@@ -237,8 +238,8 @@ public abstract class PersistentRune extends AbstractRune {
 	}
 
 	@Override
-	/**
-	 * Adds re-enabling runes to consumeKeyBlock
+	/*
+	  Adds re-enabling runes to consumeKeyBlock
 	 */
 	protected boolean consumeFuelBlock(WorldXYZ coords) {
 		if(super.consumeFuelBlock(coords)){
@@ -271,11 +272,6 @@ public abstract class PersistentRune extends AbstractRune {
 		aetherSay(listener, runeName + ": More energy needed. Place a more valuable block in the center and active this Rune again.");
 		disabled = true;
 	}
-
-    @SuppressWarnings("UnusedReturnValue")
-	public boolean onPlayerLogin(String username) {
-		return false;
-    }
 
     protected EntityPlayer getPlayer() {
 	try {

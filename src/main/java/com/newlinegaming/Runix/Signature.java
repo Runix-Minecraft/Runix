@@ -67,9 +67,6 @@ public class Signature {
         return blocks.toString();
     }
 
-    public boolean isEmpty() {
-        return blocks.isEmpty();
-    }
 }
 
 

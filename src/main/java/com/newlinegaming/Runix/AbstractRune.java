@@ -15,7 +15,6 @@ import com.newlinegaming.Runix.block.NoneBlock;
 import com.newlinegaming.Runix.block.SignatureBlock;
 import com.newlinegaming.Runix.block.TierBlock;
 import com.newlinegaming.Runix.handlers.RuneHandler;
-import com.newlinegaming.Runix.rune.BuildMasterRune;
 import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
@@ -94,22 +93,8 @@ public abstract class AbstractRune {
 		return true;
 		//TODO: build permission checking
 	}
-	
-	/**
-     * This method takes the player and the rune, and verifies that a rune can be used. to go with perms/disabled runes.txt or whatever
-	 * @param player - the caster
-	 * @param rune - the rune being cast
-	 * @return
-	 */
-	@SuppressWarnings("SameReturnValue")
-    protected static boolean runeAllowed(EntityPlayer player, AbstractRune rune) {
-		// arbi
-//		player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN+rune.getRuneName()+ " accepted"));
-//        player.addChatComponentMessage(IChatComponent);
-		return true;
-	}
-	
-	/**
+
+    /**
      * This will safely teleport the player by scanning in the coords.face direction for 2 AIR blocks that drop the player
 	 * less than 20 meters onto something that's not fire or lava.
 	 * This method should be used for any teleport or similar move that may land the player in some blocks.
@@ -188,16 +173,9 @@ public abstract class AbstractRune {
 	    }
 	}
 
-    /**
-     * Used to get rune names from the .lang file
-     */
-    public String getLocalizedRuneName() {
-        return runeLocalizedName;
-    }
-
     public static void aetherSay(EntityPlayer player, String message) {
     	
-	    if(!player.worldObj.isRemote && player != null) {
+	    if(player != null && !player.worldObj.isRemote) {
 	    	player.addChatMessage(new ChatComponentText(message));
 	    }else{
 	    	System.out.println(message);
@@ -287,31 +265,6 @@ public abstract class AbstractRune {
             }
         }
         return true;
-    }
-
-    private void printPattern(HashMap<WorldXYZ, SigBlock> shape, WorldXYZ coords) {
-        Vector3[] neighbors = {
-                new Vector3(-1, 0, -1),
-                new Vector3(0 , 0, -1),
-                new Vector3( 1, 0, -1),
-                new Vector3(-1, 0, 0),
-                new Vector3( 0, 0, 0),
-                new Vector3( 1, 0, 0),
-                new Vector3(-1, 0, 1),
-                new Vector3(0 , 0, 1),
-                new Vector3( 1, 0, 1)};
-        
-        try {
-            for(int z = -1; z <= 1; ++z){
-                for(int x = -1; x <= 1; ++x){
-                    char ch = 'O';
-                    if(shape.get(coords.offset(x, 0, z)).equals(Blocks.iron_block))
-                        ch = '#';
-                    System.out.print(ch);
-                }
-                System.out.println();//newline
-            }
-        } catch (Exception e) {}
     }
 
     /** Finds the Tier of Ink blocks that match the Rune at a given coordinate
@@ -436,16 +389,6 @@ public abstract class AbstractRune {
         System.out.println(getRuneName() + " energy: " + energy);
     }
 
-    /**Removes the shape and adds its block energy to the rune*/
-    protected void consumeRune(Collection<WorldXYZ> shape) {
-        for(WorldXYZ target : shape){
-            Block blockID = target.getBlock();
-            energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockIdAndUpdate(Blocks.air);// delete the block
-        }
-        System.out.println(getRuneName() + " energy: " + energy);
-    }
-    
     protected void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
         if( blockID == Blocks.air )//this is actually breaking, not paying for air
             spendEnergy(Tiers.blockBreakCost);
@@ -497,11 +440,10 @@ public abstract class AbstractRune {
     }
 
     /**
-     * @param poker
      * @param signature
      * @return WorldXYZ or null
      */
-    protected WorldXYZ findWaypointBySignature(EntityPlayer poker, Signature signature) throws NoSuchSignatureException {
+    protected WorldXYZ findWaypointBySignature(Signature signature) throws NoSuchSignatureException {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
         PersistentRune wp = null;

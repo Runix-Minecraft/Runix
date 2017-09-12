@@ -6,7 +6,6 @@ import com.newlinegaming.Runix.NoSuchSignatureException;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
 
@@ -42,7 +41,7 @@ public class TeleporterRune extends PersistentRune {
         consumeFuelBlock(coords);
 
 	    try{
-            WorldXYZ destination = findWaypointBySignature(poker, getSignature());
+            WorldXYZ destination = findWaypointBySignature(getSignature());
 	        aetherSay(poker, "Teleporting to " + destination.toString());
             teleportPlayer(poker, destination);
 	    }catch (NoSuchSignatureException e){
