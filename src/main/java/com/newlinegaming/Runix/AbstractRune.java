@@ -105,13 +105,13 @@ public abstract class AbstractRune {
 
         Vector3 direction = Vector3.facing[coords.face];
         for(int tries = 0; tries < 100; ++tries) {
-            if( (coords.posY < 255 && coords.posY > 0) // coords are in bounds
-                    && coords.getWorld().getBlock(coords.posX, coords.posY, coords.posZ) == Blocks.air
-                    && coords.getWorld().getBlock(coords.posX, coords.posY+1, coords.posZ) == Blocks.air)//two AIR blocks
+            if( (coords.getY() < 255 && coords.getY() > 0) // coords are in bounds
+                    && coords.getWorld().getBlock(coords.getX(), coords.getY(), coords.getZ()) == Blocks.air
+                    && coords.getWorld().getBlock(coords.getX(), coords.getY()+1, coords.getZ()) == Blocks.air)//two AIR blocks
             {
-                for(int drop = 1; drop < 20 && coords.posY-drop > 0; ++drop)//less than a 20 meter drop
+                for(int drop = 1; drop < 20 && coords.getY()-drop > 0; ++drop)//less than a 20 meter drop
                 {//begin scanning downward
-                    Block block = coords.getWorld().getBlock(coords.posX, coords.posY - drop, coords.posZ);
+                    Block block = coords.getWorld().getBlock(coords.getX(), coords.getY() - drop, coords.getZ());
                     if(block != Blocks.air)
                     { //We found something not AIR
                         if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
@@ -132,7 +132,7 @@ public abstract class AbstractRune {
     
                             if(!coords.getWorld().equals(player.worldObj))// && !subject.worldObj.isRemote)
                                 player.travelToDimension(coords.getWorld().provider.dimensionId);
-                            player.setPositionAndUpdate(coords.posX+0.5, coords.posY, coords.posZ+0.5);
+                            player.setPositionAndUpdate(coords.getX()+0.5, coords.getY(), coords.getZ()+0.5);
                             return;
                         }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
                     }

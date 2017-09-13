@@ -67,10 +67,10 @@ public class FaithRune extends PersistentRune{
      */
     private void bounceIsland() {
         //assumes fullStructure() has already been called
-        int height = Math.min(location.posY + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
-        if(location.posY + radius*2 <= height) {
+        int height = Math.min(location.getY() + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
+        if(location.getY() + radius*2 <= height) {
             HashSet<WorldXYZ> structure = attachedStructureShape(getPlayer(), sphere);
-            WorldXYZ destination = new WorldXYZ(location.posX, height, location.posZ); // scan up, starting at target height
+            WorldXYZ destination = new WorldXYZ(location.getX(), height, location.getZ()); // scan up, starting at target height
             moveStructureAndPlayer(getPlayer(), destination, structure);//scan UP, 0 buffer room
         } else {
             aetherSay(getPlayer(), "Radius: " + radius +

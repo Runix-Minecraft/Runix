@@ -54,7 +54,7 @@ public class ElevatorRune extends PersistentRune {
         energy = 1000;
         int facing = Vector3.oppositeSide[coords.face];
         WorldXYZ destination = coords.offset(Vector3.facing[facing]).copyWithNewFacing(facing);
-        while (destination.posY < 255 && !destination.isSolid())
+        while (destination.getY() < 255 && !destination.isSolid())
         {
             destination = destination.offset(Vector3.facing[facing]);
         }

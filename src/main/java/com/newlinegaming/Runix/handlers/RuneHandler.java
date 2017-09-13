@@ -141,7 +141,7 @@ public class RuneHandler {
                 direction = Vector3.faceString[coords.face];
             matchingRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
                     matchingRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
-                    direction + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+                    direction + " at " + coords.getX() + "," + coords.getY() + "," + coords.getZ() + "." );
             
             LogHelper.info(player.getDisplayName() + " Has activated a " + matchingRune.getRuneName() + "" );
             matchingRune.execute(coords, player, matchingRuneInfo.getRight());

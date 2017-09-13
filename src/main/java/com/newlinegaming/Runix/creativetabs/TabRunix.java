@@ -2,7 +2,7 @@ package com.newlinegaming.Runix.creativetabs;
 
 import com.newlinegaming.Runix.item.ModItem;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class TabRunix extends CreativeTabs {
 
@@ -11,8 +11,8 @@ public class TabRunix extends CreativeTabs {
     }
 
     @Override
-    public Item getTabIconItem() {
-        return ModItem.aetherGoggles;
+    public ItemStack getTabIconItem() {
+        return new ItemStack(ModItem.aetherGoggles);
     }
 
 }

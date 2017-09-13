@@ -34,7 +34,7 @@ public class HoarFrostRune extends GreekFireRune {
     public void execute(WorldXYZ coords, EntityPlayer player) {
         consumeRune(coords);
         int dropsNumber = (energy / Tiers.blockBreakCost) / 251; // iron pickaxe has 251 uses
-        EntityItem drop = new EntityItem(coords.getWorld(), coords.posX, coords.posY+1, coords.posZ, new ItemStack(ModBlock.hoar_frost, dropsNumber, 0));
+        EntityItem drop = new EntityItem(coords.getWorld(), coords.getX(), coords.getY()+1, coords.getZ(), new ItemStack(ModBlock.hoar_frost, dropsNumber, 0));
         coords.getWorld().spawnEntityInWorld(drop);
     }
 

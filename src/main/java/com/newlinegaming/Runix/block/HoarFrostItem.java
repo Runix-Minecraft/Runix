@@ -53,7 +53,7 @@ public class HoarFrostItem extends ItemBlock {
 //        }
 //        if (thisOne!=null)
 //        {
-//            par2World.addWeatherEffect(new EntityLightningBolt(par2World,thisOne.posX,thisOne.posY, thisOne.posZ));
+//            par2World.addWeatherEffect(new EntityLightningBolt(par2World,thisOne.getX(),thisOne.getY(), thisOne.getZ()));
 //        }
         return par1ItemStack;
     }

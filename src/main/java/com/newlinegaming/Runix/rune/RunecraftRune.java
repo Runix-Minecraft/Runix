@@ -72,9 +72,9 @@ public class RunecraftRune extends AbstractTimedRune {
 
     private WorldXYZ getDestinationByPlayer(EntityPlayer subject) {
         if(getPlayer() != null && subject.equals(getPlayer())) {
-            int dX = (int) (getPlayer().posX - location.posX - .5);
-            int dY = (int) (getPlayer().posY - location.posY - 1);
-            int dZ = (int) (getPlayer().posZ - location.posZ - .5);
+            int dX = (int) (getPlayer().getX() - location.getX() - .5);
+            int dY = (int) (getPlayer().getY() - location.getY() - 1);
+            int dZ = (int) (getPlayer().getZ() - location.getZ() - .5);
             if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
                 setPlayer(null); //Vehicle has been abandoned
                 aetherSay(subject, "Runecraft has been abandoned.");
