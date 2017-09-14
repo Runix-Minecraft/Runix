@@ -1,5 +1,7 @@
 package com.newlinegaming.Runix;
 
+import net.minecraft.util.EnumFacing;
+
 public class Vector3 {
     public static final Vector3 UP =    new Vector3(0, 1,0);
     public static final Vector3 DOWN =  new Vector3(0,-1,0);
@@ -58,11 +60,11 @@ public class Vector3 {
         z = destination.getZ() - reference.getZ();
     }
     
-    public Vector3(ForgeDirection face)
+    public Vector3(EnumFacing face)
     {
-        x = face.offsetX;
-        y = face.offsetY;
-        z = face.offsetZ;
+        x = face.getFrontOffsetX();
+        y = face.getFrontOffsetY();
+        z = face.getFrontOffsetZ();
     }
 
     public String toString(){

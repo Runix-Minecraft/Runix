@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 
 /**
@@ -50,7 +52,8 @@ public class WorldXYZ extends BlockPos {
     }
 
     public WorldXYZ(EntityPlayer player) {
-        super((int)(player.getX()+.5), (int)(player.getY()-1), (int)(player.getZ()+.5));
+//        super((int)(player.getX()+.5), (int)(player.getY()-1), (int)(player.getZ()+.5));
+        super(player);
         setWorld(player.world);
     }
 
@@ -82,8 +85,9 @@ public class WorldXYZ extends BlockPos {
      * @param dimension
      */
     private void setWorld(int dimension) {
-        worldObj = MinecraftServer.getServer().getWorld(dimension);
+//        worldObj = MinecraftServer.getServer().getWorld(dimension);
 //        worldObj = FMLServerHandler.instance().getServer().worldServerForDimension(dimension);
+        this.worldObj = FMLServerHandler.instance().getServer().getWorld(dimension);
         dimensionID = getDimensionNumber();
     }
 
@@ -134,11 +138,11 @@ public class WorldXYZ extends BlockPos {
     private int getDimensionNumber(){
         if( getWorld() == null)
             setWorld(defaultWorld());
-        return getWorld().provider.dimensionId;
+        return getWorld().provider.getDimension();
     }
 
     private static World defaultWorld() {
-        return MinecraftServer.getServer().worldServerForDimension(0);
+        return FMLServerHandler.instance().getServer().getWorld(0);
     }
 
     @Override
@@ -160,44 +164,49 @@ public class WorldXYZ extends BlockPos {
     }
 
     public SigBlock getSigBlock() {
-        return new SigBlock(getBlock(), getMetaId());
+        return new SigBlock(getBlock());
     }
 
     //Simple wrapper method for getBlockID()
     public Block getBlock() {
-        return this.getWorld().getBlock(this.getX(), this.getY(), this.getZ());
+        return this.getWorld().getBlockState(this).getBlock();
     }
 
     //Sister function to getBlockID() for meta values.
-    public int getMetaId() {
-        return getWorld().getBlockMetadata(getX(), getY(), getZ());
-    }
+//    public int getMetaId() {
+//        return getWorld().getBlockMetadata(getX(), getY(), getZ());
+//    }
 
+    public IBlockState getBlockState() {
+        return this.getWorld().getBlockState(this);
+    }
     /**
      * Simple wrapper method for setBlockID()
-     * @param blockID
+     * @param block
      * @return true if successful
      */
     @SuppressWarnings("UnusedReturnValue")
-    public boolean setBlockIdAndUpdate(Block blockID){
-        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
+    public boolean setBlockIdAndUpdate(IBlockState block){
+        if(block == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
-        return this.getWorld().setBlock(getX(), getY(), getZ(), blockID);
+        return this.getWorld().setBlockState(this, block);
     }
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean setBlockId(SigBlock sig){
-        if(sig.equals(Blocks.bedrock) || getBlock() == Blocks.bedrock)
+        if(sig.equals(Blocks.BEDROCK) || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
-        return this.getWorld().setBlock(getX(), getY(), getZ(), sig.blockID, sig.meta, 2);
+//        return this.getWorld().setBlock(getX(), getY(), getZ(), sig.blockID, sig.meta, 2);
+        return this.getWorld().setBlockState(this, sig.getState());
         //NOTE: Use last arg 3 if you want a block update.
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public boolean setBlock(Block blockID, int meta){
-        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
+    public boolean setBlock(IBlockState block){
+        if(block == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
-        return this.getWorld().setBlock(getX(), getY(), getZ(), blockID, meta, 3);
+//        return this.getWorld().setBlock(getX(), getY(), getZ(), blockID, meta, 3);
+        return this.getWorld().setBlockState(this, block);
     }
 
     public String toString(){//this is designed to match the GSON output
@@ -287,15 +296,16 @@ public class WorldXYZ extends BlockPos {
     }
 
     public boolean isSolid() {
-        Material base = getBlock().getMaterial();
+        Material base = getBlock().getMaterial(getBlockState());
+//        getBlock().isTopSolid()
         return base.isSolid();
     }
 
 
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
+//    @Override
+//    public int compareTo(Object o) {
+//        return 0;
+//    }
 
     public boolean isCrushable() {
         return Tiers.isCrushable(getBlock());

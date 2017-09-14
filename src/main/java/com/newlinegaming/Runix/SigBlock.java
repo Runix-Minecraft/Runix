@@ -2,21 +2,34 @@ package com.newlinegaming.Runix;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 
 /**
  * Plain old Data.  getClass() and meta.  Use this to preserve all your block info.
  * Meta is the additional information like orientation or color used in some blocks.
  * Doesn't currently do TileEntity or NBT.
  */
+
+//TODO: only use block state
 @SuppressWarnings("unused")
-public class SigBlock{
-    public final int meta;
-    public final Block blockID;
-    public SigBlock(Block blockID, int meta){
-        this.blockID = blockID;
-        this.meta = meta;
+public class SigBlock {
+
+    private IBlockState state;
+    private Block block;
+
+    public SigBlock(Block block){
+        this.block = block;
+        this.state = getBlock().getDefaultState();
     }
-    
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public IBlockState getState() {
+        return state;
+    }
+
     @Override
     public boolean equals(Object other){
         if(other instanceof SigBlock)
@@ -27,14 +40,14 @@ public class SigBlock{
     }
 
     public boolean equals(SigBlock other){
-        return blockID == other.blockID && meta == other.meta;
+        return block == other.state && state == other.state;
     }
 
     public boolean equals(Block other){
-        return blockID.equals(other);  //can't get meta from block without coordinates
+        return block.equals(other);  //can't get meta from block without coordinates
     }
 
     public String toString(){
-        return "" + blockID + ":" + meta;
+        return "" + block + ":" + state.toString();
     }
 }
