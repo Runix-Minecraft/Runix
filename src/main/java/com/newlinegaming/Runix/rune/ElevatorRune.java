@@ -54,7 +54,7 @@ public class ElevatorRune extends PersistentRune {
         energy = 1000;
         int facing = Vector3.oppositeSide[coords.face];
         WorldXYZ destination = coords.offset(Vector3.facing[facing]).copyWithNewFacing(facing);
-        while (destination.posY < 255 && !destination.isSolid())
+        while (destination.getY() < 255 && !destination.isSolid())
         {
             destination = destination.offset(Vector3.facing[facing]);
         }
@@ -68,7 +68,7 @@ public class ElevatorRune extends PersistentRune {
     {
         if (event.action == Action.RIGHT_CLICK_BLOCK)
         {
-            WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
+            WorldXYZ punchBlock = new WorldXYZ(event.entity.getEntityWorld(), event.x, event.y, event.z);
             
             if (punchBlock.equals(bottomLocation))
             {

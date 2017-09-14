@@ -1,10 +1,11 @@
 package com.newlinegaming.Runix.workers;
 
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 interface IBlockWorker {
     
-    void doWork(ServerTickEvent event);
+    void doWork(TickEvent.ServerTickEvent event);
     
     boolean isFinished();
     

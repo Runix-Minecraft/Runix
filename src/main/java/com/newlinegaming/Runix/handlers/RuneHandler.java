@@ -90,18 +90,18 @@ public class RuneHandler {
 
     @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if(event.entityPlayer.worldObj.isRemote)//runes server side only
+        if(event.entityPlayer.getEntityWorld().isRemote)//runes server side only
             return;
         //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
-        if (!event.entityPlayer.worldObj.isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
+        if (!event.entityPlayer.getEntityWorld().isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
             possibleRuneActivationEvent(event.entityPlayer, 
-                    new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z, event.face));
+                    new WorldXYZ(event.entityPlayer.getEntityWorld(), event.x, event.y, event.z, event.face));
         }
     }
 
     @SubscribeEvent
     public void saving(Save saveEvent){
-        if( saveEvent.world.provider.dimensionId == 0 && !saveEvent.world.isRemote)//Josiah: I figure it's likely there's only one of these
+        if( saveEvent.world.provider.getDimension() == 0 && !saveEvent.world.isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).saveActiveRunes(saveEvent);
@@ -109,7 +109,7 @@ public class RuneHandler {
 
     @SubscribeEvent
     public void loadServer(Load loadEvent){
-        if( loadEvent.world.provider.dimensionId == 0 && !loadEvent.world.isRemote)
+        if( loadEvent.world.provider.getDimension() == 0 && !loadEvent.world.isRemote)
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).loadRunes(loadEvent);
@@ -141,7 +141,7 @@ public class RuneHandler {
                 direction = Vector3.faceString[coords.face];
             matchingRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
                     matchingRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
-                    direction + " at " + coords.posX + "," + coords.posY + "," + coords.posZ + "." );
+                    direction + " at " + coords.getX() + "," + coords.getY() + "," + coords.getZ() + "." );
             
             LogHelper.info(player.getDisplayName() + " Has activated a " + matchingRune.getRuneName() + "" );
             matchingRune.execute(coords, player, matchingRuneInfo.getRight());

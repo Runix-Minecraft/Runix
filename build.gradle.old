@@ -1,0 +1,135 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
+
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+def ENV = System.getenv()
+if (ENV.BUILD_ID) {
+	version = "${config.mc_version}-${config.mod_version}." + ENV.DRONE_BUILD_NUMBER
+} else {
+	version = "${config.mc_version}-${config.mod_version}"
+}
+group= "${config.group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "${config.name}"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+minecraft {
+	version = "${config.mc_version}-${config.forge_version}"
+
+    replaceIn "lib/LibInfo.java"
+    replace '@VERSION@', "${config.mc_version}-${config.mod_version}"
+}
+
+processResources {
+
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+    
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+                
+        // replace version and mcversion
+        expand 'mod_version':project.version, 'minecraft_version':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/*.info'
+    }
+
+    task deobfJar(type: Jar) {
+        from sourceSets.main.output
+        classifier = 'DEV'
+    }
+
+    artifacts {
+        archives deobfJar
+    }
+}
+
+configurations {
+    deployerJars
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
+}
+
+if (ENV.SC_MAVEN_URL) {
+	uploadArchives {
+		repositories.mavenDeployer {
+			configuration = configurations.deployerJars
+			repository(url: ENV.SC_MAVEN_URL) {
+				authentication(userName: ENV.SC_MAVEN_USER, password: ENV.SC_MAVEN_PASS)
+			}
+			
+			pom {
+				groupId = project.group
+				version = project.version
+				artifactId = project.archivesBaseName
+				project {
+					name project.archivesBaseName
+					packaging 'jar'
+					description 'Runix'
+					url 'https://github.com/Runix-Minecraft/Runix'
+					
+						 scm {
+						 	url 'https://github.com/Runix-Minecraft/Runix'
+                            connection 'scm:git:git://github.com/Runix-Minecraft/Runix.git'
+                            developerConnection 'scm:git:git@github.com:Runix-Minecraft/Runix.git'
+                        }
+                        
+                        issueManagement {
+                            system 'github'
+                            url 'https://github.com/Runix-Minecraft/Runix/issues'
+                        }
+                        
+                        developers {
+                            developer {
+                                id 'josiahseaman'
+                                name 'Josiah Seaman'
+                                roles { role 'developer' }
+                            }
+                            developer {
+                                id 'LordIllyohs'
+                                name 'Anthony Anderson'
+                                roles { role 'developer' }
+                            }
+                        }
+				}
+			}
+		}
+	}
+}
+
+idea { module { inheritOutputDirs = true } }

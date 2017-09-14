@@ -1,8 +1,5 @@
 package com.newlinegaming.Runix;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
-
 public class Vector3 {
     public static final Vector3 UP =    new Vector3(0, 1,0);
     public static final Vector3 DOWN =  new Vector3(0,-1,0);
@@ -56,9 +53,9 @@ public class Vector3 {
     
     /** Returns a difference vector such that reference + vector = destination */
     public Vector3(WorldXYZ reference, WorldXYZ destination){
-        x = destination.posX - reference.posX; 
-        y = destination.posY - reference.posY;
-        z = destination.posZ - reference.posZ;
+        x = destination.getX() - reference.getX();
+        y = destination.getY() - reference.getY();
+        z = destination.getZ() - reference.getZ();
     }
     
     public Vector3(ForgeDirection face)

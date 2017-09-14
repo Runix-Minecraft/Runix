@@ -31,19 +31,19 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
-            World world = subject.worldObj;//sphere can be optimized to donut
+        if(subject.equals(getPlayer()) && !subject.getEntityWorld().isRemote) {
+            World world = subject.getEntityWorld();//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
             HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 1);
             for(WorldXYZ newPos : sphere) {
                 if(newPos.getBlock().equals(Blocks.air) && 
-                    newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.posX, newPos.posY-1, newPos.posZ) && (
-                        (world.isDaytime() && world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ) < 4) ||//day time checking == caves
-                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.posX, newPos.posY, newPos.posZ) < 4) ))//adjustable
+                    newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.getX(), newPos.getY()-1, newPos.getZ()) && (
+                        (world.isDaytime() && world.getBlockLightValue(newPos.getX(), newPos.getY(), newPos.getZ()) < 4) ||//day time checking == caves
+                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.getX(), newPos.getY(), newPos.getZ()) < 4) ))//adjustable
                 { 
                     try {
                         setBlockIdAndUpdate(newPos, Blocks.torch);//set torch
-//                        aetherSay(subject, Integer.toString(world.getBlockLightValue(newPos.posX, newPos.posY, newPos.posZ))+ 
+//                        aetherSay(subject, Integer.toString(world.getBlockLightValue(newPos.getX(), newPos.getY(), newPos.getZ()))+
 //                                " light level.  Placing at " + (new Vector3(newPos, location).toString()));
                     } catch (NotEnoughRunicEnergyException e) {
                         reportOutOfGas(getPlayer());

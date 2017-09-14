@@ -62,8 +62,8 @@ public class Util_Movement {
     public static boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
         float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
         yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
-        double opposite = player.posZ - referencePoint.posZ - .5;
-        double adjacent = player.posX - referencePoint.posX - .5;
+        double opposite = player.getZ() - referencePoint.getZ() - .5;
+        double adjacent = player.getX() - referencePoint.getX() - .5;
         double angle = Math.toDegrees(Math.atan( opposite / adjacent )) + 90.0;
         if( adjacent > 0.0)
             angle += 180.0;
