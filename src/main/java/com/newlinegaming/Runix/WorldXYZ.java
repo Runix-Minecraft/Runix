@@ -134,7 +134,7 @@ public class WorldXYZ extends BlockPos {
     private int getDimensionNumber(){
         if( getWorld() == null)
             setWorld(defaultWorld());
-        return getWorld().provider.dimensionId;
+        return getWorld().provider.getDimension();
     }
 
     private static World defaultWorld() {
@@ -180,23 +180,23 @@ public class WorldXYZ extends BlockPos {
      */
     @SuppressWarnings("UnusedReturnValue")
     public boolean setBlockIdAndUpdate(Block blockID){
-        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
-            return false; //You cannot delete or place bedrock
+        if(blockID == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
+            return false; //You cannot delete or place BEDROCK
         return this.getWorld().setBlock(getX(), getY(), getZ(), blockID);
     }
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean setBlockId(SigBlock sig){
-        if(sig.equals(Blocks.bedrock) || getBlock() == Blocks.bedrock)
-            return false; //You cannot delete or place bedrock
+        if(sig.equals(Blocks.BEDROCK) || getBlock() == Blocks.BEDROCK)
+            return false; //You cannot delete or place BEDROCK
         return this.getWorld().setBlock(getX(), getY(), getZ(), sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean setBlock(Block blockID, int meta){
-        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
-            return false; //You cannot delete or place bedrock
+        if(blockID == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
+            return false; //You cannot delete or place BEDROCK
         return this.getWorld().setBlock(getX(), getY(), getZ(), blockID, meta, 3);
     }
 

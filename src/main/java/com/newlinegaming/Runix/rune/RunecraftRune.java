@@ -141,7 +141,7 @@ public class RunecraftRune extends AbstractTimedRune {
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (getPlayer() != null && event.action == Action.LEFT_CLICK_BLOCK)
             if( event.isCancelable() ){
-                WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
+                WorldXYZ punchBlock = new WorldXYZ(event.entity.getEntityWorld(), event.x, event.y, event.z);
                 if( vehicleBlocks.contains( punchBlock )) {
                     if( location.getDistance(punchBlock) < 3 ) {
                         boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
