@@ -157,7 +157,7 @@ public class HoarFrost extends BlockIce {
                         if(random.nextInt(1000) == 1) //important to limit the exponential growth of creep
                             growthMode = 3; //stasis mode
                         randomNeighbor.setBlock(ModBlock.hoar_frost, growthMode);
-                        world.scheduleBlockUpdate(randomNeighbor.getX(), randomNeighbor.getY(), randomNeighbor.getZ(), this, this.tickRate(world)); //schedule for child
+                        world.scheduleBlockUpdate(randomNeighbor.posX, randomNeighbor.posY, randomNeighbor.posZ, this, this.tickRate(world)); //schedule for child
                         return;
                     }
                 }
@@ -176,7 +176,7 @@ public class HoarFrost extends BlockIce {
                 SigBlock data = n.getSigBlock();
                 if(data.blockID.equals(ModBlock.hoar_frost) && (data.meta == 1 || data.meta == 14)) {
                     n.setBlock(ModBlock.hoar_frost, growthMode);
-                    world.scheduleBlockUpdate(n.getX(), n.getY(), n.getZ(), this, 5); //schedule for neighbor
+                    world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 5); //schedule for neighbor
                 }
             }
         }
@@ -186,7 +186,7 @@ public class HoarFrost extends BlockIce {
             for(WorldXYZ n : neighbors) {
                 if(owner != null) {
                     SigBlock sig = n.getSigBlock();
-                    sig.blockID.dropBlockAsItem(world, n.getX(), n.getY(), n.getZ(), sig.meta, 0); // last param is fortune
+                    sig.blockID.dropBlockAsItem(world, n.posX, n.posY, n.posZ, sig.meta, 0); // last param is fortune
                     n.setBlock(Blocks.air, 0);
                 } else {
                     System.out.println("No owner");
@@ -218,7 +218,7 @@ public class HoarFrost extends BlockIce {
             for(WorldXYZ n : neighbors){
                 if(n.getBlock().equals(ModBlock.hoar_frost) || n.getBlock().equals(ModBlock.runixAir)){
                     n.setBlock(ModBlock.hoar_frost, growthMode); //spread the deletion
-                    world.scheduleBlockUpdate(n.getX(), n.getY(), n.getZ(), this, 3); //update neighbor quickly
+                    world.scheduleBlockUpdate(n.posX, n.posY, n.posZ, this, 3); //update neighbor quickly
                 }
             }
             me.setBlock(Blocks.air, 0); //delete self

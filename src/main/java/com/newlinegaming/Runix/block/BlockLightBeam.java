@@ -1,23 +1,22 @@
 package com.newlinegaming.Runix.block;
 
-/**Old irrelevant code from MC 1.7.10
- *
-
 import com.newlinegaming.Runix.RunixMain;
 import com.newlinegaming.Runix.lib.LibInfo;
 import com.newlinegaming.Runix.tile.TileLightBeam;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 class BlockLightBeam extends Block implements ITileEntityProvider{
 
     public BlockLightBeam() {
-        super(Material.AIR);
+        super(Material.air);
         setCreativeTab(RunixMain.TabRunix);
         setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
         setBlockTextureName(LibInfo.MOD_ID +":blank");
@@ -54,5 +53,3 @@ class BlockLightBeam extends Block implements ITileEntityProvider{
     }
 
 }
-
- */

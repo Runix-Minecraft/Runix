@@ -19,15 +19,15 @@ public class Util_SphericalFunctions {
         World world = coords.getWorld();
         LinkedHashSet<WorldXYZ> returnvalues = new LinkedHashSet<>();
         //loop needs to cap at the top and bottom of the world
-        int bottom = Math.max(-radius - 1,  -1*(coords.getY() - 1));
-        int top = Math.min(radius + 1, (255 - coords.getY()));
+        int bottom = Math.max(-radius - 1,  -1*(coords.posY - 1));
+        int top = Math.min(radius + 1, (255 - coords.posY));
         for (int y = top - 1; y >= bottom; y--)  {
             for (int z = -radius-1; z < radius+1; z++){
                 for (int x = -radius-1; x < radius+1; x++)
                 {
                     if((x * x) + (y * y) + (z * z) < r_squared)
                     {
-                        returnvalues.add(new WorldXYZ(world, coords.getX() + x, coords.getY() + y, coords.getZ() + z));
+                        returnvalues.add(new WorldXYZ(world, coords.posX + x, coords.posY + y, coords.posZ + z));
                     }
                 }
             }

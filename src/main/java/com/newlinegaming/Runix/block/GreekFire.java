@@ -150,7 +150,7 @@ public class GreekFire extends BlockFire {
     private void tryToCatchBlockOnFire(WorldXYZ loc, int lifespan)
     {
         if (getFlammability(loc) > 0){
-            spreadAndAgeFire(loc, lifespan, loc.getX(), loc.getY(), loc.getZ());
+            spreadAndAgeFire(loc, lifespan, loc.posX, loc.posY, loc.posZ);
         }
     }
 
@@ -212,7 +212,7 @@ public class GreekFire extends BlockFire {
                         coords.getMetaId() - Tiers.energyToRadiusConversion(blockEnergy, Tiers.blockBreakCost) //radius calculation
                         , 0),15);
                 coords.setBlock( ModBlock.greekFire, newLife);
-                coords.getWorld().scheduleBlockUpdate(coords.getX(), coords.getY(), coords.getZ(), ModBlock.greekFire, 4);
+                coords.getWorld().scheduleBlockUpdate(coords.posX, coords.posY, coords.posZ, ModBlock.greekFire, 4);
 
             }
             return true;
