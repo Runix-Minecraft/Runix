@@ -1,6 +1,8 @@
 package com.newlinegaming.Runix;
 
-import com.newlinegaming.Runix.lib.BlockDescription;
+import com.newlinegaming.Runix.api.tier.ITier;
+import com.newlinegaming.Runix.apiimpl.API;
+import com.newlinegaming.Runix.apiimpl.tier.Tier;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
@@ -24,7 +26,7 @@ public class Tiers {
     private static ArrayList<Block> naturalBlocks;
     private static ArrayList<Block> moveSensitiveBlocks;
     private static ArrayList<Block> crushableBlocks;
-    private static final HashMap<Block, BlockDescription> energyRegistry = new HashMap<>();
+    private static final HashMap<Block, ITier> energyRegistry = new HashMap<>();
     
     @SuppressWarnings("serial")
     public Tiers(){
@@ -313,71 +315,24 @@ public class Tiers {
         addBlock(Blocks.CARPET, 53);
         addBlock(Blocks.HARDENED_CLAY, 247);
         addBlock(Blocks.COAL_BLOCK, 756);
+
+
+
+        energyRegistry.forEach((blk, eng) -> API.INSTANCE().registerTier(blk, eng));
+
     }
     
 //    @SuppressWarnings("WeakerAccess")
     private void addBlock(Block block, int energy){
-        addBlock(block, energy, 
-                naturalBlocks.contains(block), 
-                crushableBlocks.contains(block), 
+        addBlock(block, energy, naturalBlocks.contains(block), crushableBlocks.contains(block),
                 moveSensitiveBlocks.contains(block)); //call more detailed method
     }
     
     @SuppressWarnings("WeakerAccess")
-    public void addBlock(Block type, int energy, boolean natural, boolean crushable, boolean sensitive){
-        energyRegistry.put(type, new BlockDescription(type, energy, natural, crushable, sensitive));
+    private void addBlock(Block type, int energy, boolean natural, boolean crushable, boolean sensitive){
+        energyRegistry.put(type, new Tier(type, energy, natural, crushable, sensitive));
     }
     
-    public static int getEnergy(Block blockID){
-        if( !energyRegistry.containsKey(blockID)){
-            return 1;
-        }
-        return energyRegistry.get(blockID).energy;
-    }
-
-    public static int getTier(Block blockID){
-        int energy = getEnergy(blockID);
-        energy = energy < 1 ? 1 : energy; // log(0) = crash bad
-        return (int) Math.round(Math.log(energy) / Math.log(2));
-    }
-
-    public static int energyToRadiusConversion(int energy, float perBlockCost) {
-        int diameter = 1;
-        while( diameter * diameter * diameter * perBlockCost < energy) //this is over generous intentionally
-            diameter += 2; // +2 so that we always have an odd number and have block centered shapes
-        return diameter/2; //integer math will round down the .5
-    }
-    
-    
-    /**
-     * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
-     */
-    public static boolean isNatural(Block blockID){
-        if( !energyRegistry.containsKey(blockID)){
-            return false;
-        }
-        return energyRegistry.get(blockID).natural;
-    }
-    
-    /**
-     * This is a list of all the blocks that need special treatment when moving groups of blocks
-     * like FTP or Runecraft.  All independent blocks need to be placed first because all of these
-     * blocks attach to other blocks or (in the case of liquids) need to be held in by solid blocks.
-     * @param blockID
-     */
-    public static boolean isMoveSensitive(Block blockID){
-        if( !energyRegistry.containsKey(blockID)){
-            return false;
-        }
-        return energyRegistry.get(blockID).sensitive;
-    }
-
-    public static boolean isCrushable(Block blockID) {
-        if( !energyRegistry.containsKey(blockID)){
-            return false;
-        }
-        return energyRegistry.get(blockID).crushable;
-    }
 }
 
 

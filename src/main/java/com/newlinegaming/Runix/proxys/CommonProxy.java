@@ -1,9 +1,9 @@
 package com.newlinegaming.Runix.proxys;
 
+import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.api.tier.ITier;
 import com.newlinegaming.Runix.apiimpl.API;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -13,13 +13,10 @@ import java.util.HashMap;
 
 public class CommonProxy {
 
-    private HashMap<Block, ITier> tiers = new HashMap<>();
-    private ArrayList<Block> naturalBlocks;
-    private ArrayList<Block> moveSenBlocks;
-    private ArrayList<Block> crushableBlocks;
 
     public void preInit(FMLPreInitializationEvent e) {
         API.bind(e.getAsmData());
+        Tiers tier = new Tiers();
     }
 
     public void init(FMLInitializationEvent e) {
@@ -30,12 +27,6 @@ public class CommonProxy {
 
     }
 
-    private void registerTeirs() {
-
-
-
-        tiers.forEach((b, t) -> API.INSTANCE().registerTier(b,t));
-    }
 
 //    public void registerRenderInformation() {} //NO-OP
     

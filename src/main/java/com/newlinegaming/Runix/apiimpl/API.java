@@ -47,6 +47,17 @@ public class API implements IRunixAPI {
 
     @Override
     public void registerTier(Block block, ITier tier) {
+        teirsReg.put(block, tier);
+    }
 
+    /**
+     * gets the tier object from the registry
+     *
+     * @param block
+     * @return
+     */
+    @Override
+    public ITier getTier(Block block) {
+        return null;
     }
 }
