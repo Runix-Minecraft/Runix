@@ -45,6 +45,12 @@ public class WorldXYZ extends BlockPos {
         dimensionID = world.provider.getDimension();
     }
 
+    public WorldXYZ(World world, BlockPos pos) {
+        super(pos);
+        worldObj = world;
+
+    }
+
     public WorldXYZ(World world, int x, int y, int z, int face) {
         super(x,y,z);
         this.setWorld(world);

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.newlinegaming.Runix.helper.TierHelper;
 import com.newlinegaming.Runix.utils.UtilMovement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,7 +67,7 @@ public class BuildMasterRune extends AbstractTimedRune {
                 SigBlock sourceBlock = origin.getSigBlock();
                 Block destinationBlock = destination.getBlock();
                 if( !sourceBlock.equals(destinationBlock)) {
-                    if(Tiers.isCrushable(destinationBlock)) {
+                    if(TierHelper.isCrushable(destinationBlock)) {
                         try {
                             setBlockIdAndUpdate(destination, sourceBlock);//no physics?
                         } catch (NotEnoughRunicEnergyException e) {
@@ -114,7 +115,7 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     private boolean anyCrushable(Collection<WorldXYZ> points) {
         for( WorldXYZ point : points) {
-            if(Tiers.isCrushable(point.getBlock()))
+            if(TierHelper.isCrushable(point.getBlock()))
                 return true;
         }
         return false;
@@ -130,7 +131,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         HashSet<WorldXYZ> workingSet = new HashSet<>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<>();
-        if(startPoint.getBlock() == Blocks.air) //this is a no go
+        if(startPoint.getBlock() == Blocks.AIR) //this is a no go
             return workingSet;
         workingSet.add(startPoint);
         nextEdge.add(startPoint);
@@ -147,7 +148,7 @@ public class BuildMasterRune extends AbstractTimedRune {
                 for(WorldXYZ n : neighbors) {
                     Block blockID = n.getBlock();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
-                    if( !workingSet.contains(n) && blockID != Blocks.air ) {
+                    if( !workingSet.contains(n) && blockID != Blocks.AIR) {
                         workingSet.add(n);
                         nextEdge.add(n);
                     }
@@ -169,9 +170,9 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     @Override
     protected Block[][][] runicTemplateOriginal() {
-        Block IRON = Blocks.iron_block;
-        Block SBRK = Blocks.stonebrick;
-        Block REDB = Blocks.redstone_block;
+        Block IRON = Blocks.IRON_BLOCK;
+        Block SBRK = Blocks.STONEBRICK;
+        Block REDB = Blocks.REDSTONE_BLOCK;
         return new Block[][][] {{
             {SBRK,REDB, SBRK}, //TODO template from wiki
             {IRON,FUEL ,IRON},

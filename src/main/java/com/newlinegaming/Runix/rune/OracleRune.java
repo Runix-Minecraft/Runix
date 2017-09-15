@@ -1,19 +1,19 @@
 package com.newlinegaming.Runix.rune;
 
-import java.util.ArrayList;
-
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.AbstractRune;
-import com.newlinegaming.Runix.Tiers;
+import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
-
+import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
+
+import java.util.ArrayList;
 
 public class OracleRune extends AbstractRune {
     
@@ -24,7 +24,7 @@ public class OracleRune extends AbstractRune {
     @Override
     protected Block[][][] runicTemplateOriginal() {
         
-        Block RED = Blocks.redstone_wire;
+        Block RED = Blocks.REDSTONE_WIRE;
         
         return new Block[][][] {{
             {RED, RED ,RED},
@@ -41,12 +41,12 @@ public class OracleRune extends AbstractRune {
 
     @Override
     public void execute(WorldXYZ coords, EntityPlayer player) {
-      ItemStack toolUsed = player.getHeldItem();
+      ItemStack toolUsed = player.getHeldItemMainhand();
       
-      if(toolUsed !=null && toolUsed.getItem() == Items.golden_sword || 
-              toolUsed !=null && toolUsed.getItem() == Items.stone_sword || 
-              toolUsed !=null && toolUsed.getItem() == Items.wooden_sword ||
-              toolUsed !=null && toolUsed.getItem() == Items.diamond_sword) {
+      if(toolUsed !=null && toolUsed.getItem() == Items.GOLDEN_SWORD ||
+              toolUsed !=null && toolUsed.getItem() == Items.STONE_SWORD ||
+              toolUsed !=null && toolUsed.getItem() == Items.WOODEN_SHOVEL ||
+              toolUsed !=null && toolUsed.getItem() == Items.DIAMOND_SWORD) {
           
           ArrayList<PersistentRune> d = RuneHandler.getInstance().getAllRunesByPlayer(player);
           aetherSay(player, "Current enchantments: " + Integer.toString(d.size()));
@@ -58,11 +58,11 @@ public class OracleRune extends AbstractRune {
           
           Block block = coords.getBlock();
           
-          aetherSay(player, EnumChatFormatting.RED +block.getLocalizedName());
-          aetherSay(player, "Tier: "  + Tiers.getTier(block) + ".");
-          aetherSay(player, "Energy: " + Tiers.getEnergy(block) + ".");
-          aetherSay(player, "Properties: " + (Tiers.isNatural(block)? "Not Conductive" : "Conductive")
-                  + ", " + (Tiers.isCrushable(block)? "Crushable." : "Not Crushable."));
+          aetherSay(player, TextFormatting.RED +block.getLocalizedName());
+          aetherSay(player, "Tier: "  + TierHelper.getTier(block) + ".");
+          aetherSay(player, "Energy: " + TierHelper.getEnergy(block) + ".");
+          aetherSay(player, "Properties: " + (TierHelper.isNatural(block)? "Not Conductive" : "Conductive")
+                  + ", " + (TierHelper.isCrushable(block)? "Crushable." : "Not Crushable."));
       }
       
     }

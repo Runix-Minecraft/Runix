@@ -46,11 +46,11 @@ public class DomainRune extends AbstractTimedRune {
 
     @Override
     public Block[][][] runicTemplateOriginal() {
-        Block air = Blocks.air;
-        Block stair = Blocks.oak_stairs;
+        Block air = Blocks.AIR;
+        Block stair = Blocks.OAK_STAIRS;
         return new Block[][][]
           {{{air , stair, air },
-            {stair,Blocks.glass ,stair},
+            {stair,Blocks.GLASS ,stair},
             {air , stair, air }},
            {{air , stair, air },
             {stair,TIER,stair},
@@ -70,8 +70,8 @@ public class DomainRune extends AbstractTimedRune {
     private void unphaseExpiredBlocks() {
         for( BlockRecord expired = phasedBlocks.poll(); expired != null; expired = phasedBlocks.poll()){
             //TODO drop block if non-air block
-            System.out.println(expired.offset.toString() + "  ==  " + expired.block.blockID);
-            location.offset(expired.offset).setBlockIdAndUpdate(expired.block.blockID);
+            System.out.println(expired.offset.toString() + "  ==  " + expired.block.getBlock().getLocalizedName());
+            location.offset(expired.offset).setBlockIdAndUpdate(expired.block.getState());
         }
     }
 

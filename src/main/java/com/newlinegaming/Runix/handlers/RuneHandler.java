@@ -1,41 +1,31 @@
 package com.newlinegaming.Runix.handlers;
 
 
-import java.util.*;
-
-import com.newlinegaming.Runix.lib.LibConfig;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.event.world.WorldEvent.Load;
-import net.minecraftforge.event.world.WorldEvent.Save;
-
 import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
-import com.newlinegaming.Runix.rune.BuildMasterRune;
-import com.newlinegaming.Runix.rune.CompassRune;
-import com.newlinegaming.Runix.rune.ElevatorRune;
-import com.newlinegaming.Runix.rune.FaithRune;
-import com.newlinegaming.Runix.rune.FerrousWheelRune;
-import com.newlinegaming.Runix.rune.FtpRune;
-import com.newlinegaming.Runix.rune.GreekFireRune;
-import com.newlinegaming.Runix.rune.HoarFrostRune;
-import com.newlinegaming.Runix.rune.OracleRune;
-//import com.newlinegaming.Runix.rune.RubricRune;
-import com.newlinegaming.Runix.rune.RunecraftRune;
-import com.newlinegaming.Runix.rune.TeleporterRune;
-import com.newlinegaming.Runix.rune.TorchBearerRune;
-import com.newlinegaming.Runix.rune.WaypointRune;
-import com.newlinegaming.Runix.rune.ZeerixChestRune;
+import com.newlinegaming.Runix.lib.LibConfig;
+import com.newlinegaming.Runix.rune.*;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.WorldEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Save;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+
+//import com.newlinegaming.Runix.rune.RubricRune;
 
 
 /**
@@ -52,7 +42,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 public class RuneHandler {
     private static RuneHandler instance = null;//Singleton pattern
-    public final ArrayList<AbstractRune> runeRegistry = new ArrayList<>();
+    public final ArrayList<AbstractRune> runeRegistry = new ArrayList<>();//TODO move to forges registries
     
     private RuneHandler() {
         //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  
@@ -88,20 +78,29 @@ public class RuneHandler {
         return instance;
     }
 
-    @SubscribeEvent
-    public void playerInteractEvent(PlayerInteractEvent event) {
-        if(event.entityPlayer.worldObj.isRemote)//runes server side only
-            return;
-        //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
-        if (!event.entityPlayer.worldObj.isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
-            possibleRuneActivationEvent(event.entityPlayer, 
-                    new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z, event.face));
+//    @SubscribeEvent
+//    public void playerInteractEvent(PlayerInteractEvent event) {
+//        if(event.getWorld().isRemote)//runes server side only
+//            return;
+//        //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
+//        if (!event.entityPlayer.worldObj.isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
+//            possibleRuneActivationEvent(event.entityPlayer,
+//                    new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z, event.face));
+//        }
+//    }
+
+    public void playerInteractEvent(PlayerInteractEvent.RightClickBlock e) {
+        Block blk = e.getWorld().getBlockState(e.getPos()).getBlock();
+        if (!e.getWorld().isRemote) {
+            if (blk != Blocks.AIR) {
+                possibleRuneActivationEvent(e.getEntityPlayer(), new WorldXYZ(e.getWorld(), e.getPos()));
+            }
         }
     }
 
     @SubscribeEvent
     public void saving(Save saveEvent){
-        if( saveEvent.world.provider.dimensionId == 0 && !saveEvent.world.isRemote)//Josiah: I figure it's likely there's only one of these
+        if( saveEvent.getWorld().provider.getDimension() == 0 && !saveEvent.getWorld().isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).saveActiveRunes(saveEvent);
@@ -109,7 +108,7 @@ public class RuneHandler {
 
     @SubscribeEvent
     public void loadServer(Load loadEvent){
-        if( loadEvent.world.provider.dimensionId == 0 && !loadEvent.world.isRemote)
+        if( loadEvent.getWorld().provider.getDimension() == 0 && !loadEvent.getWorld().isRemote)
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
                     ((PersistentRune) r).loadRunes(loadEvent);
@@ -117,10 +116,10 @@ public class RuneHandler {
 
     @SubscribeEvent
     public void playerLogin(EntityJoinWorldEvent event){
-        if(event.entity instanceof EntityPlayer){ //fires once each for Client and Server side join event
+        if(event.getEntity() instanceof EntityPlayer){ //fires once each for Client and Server side join event
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
-                    ((PersistentRune) r).onPlayerLogin(((EntityPlayer)event.entity).getDisplayName());
+                    ((PersistentRune)r).onPlayerLogin(((EntityPlayer) event.getEntity()).getDisplayNameString());
         }
 
     }
@@ -139,8 +138,8 @@ public class RuneHandler {
                 direction = Vector3.faceString[Arrays.asList(Vector3.facing).indexOf(matchingRuneInfo.getRight())];
             else 
                 direction = Vector3.faceString[coords.face];
-            matchingRune.aetherSay(player, "The Aether sees you activating a " + EnumChatFormatting.GREEN + 
-                    matchingRune.getRuneName() + EnumChatFormatting.WHITE + " facing "+
+            matchingRune.aetherSay(player, "The Aether sees you activating a " + TextFormatting.GREEN +
+                    matchingRune.getRuneName() + TextFormatting.WHITE + " facing "+
                     direction + " at " + coords.getX() + "," + coords.getY() + "," + coords.getZ() + "." );
             
             LogHelper.info(player.getDisplayName() + " Has activated a " + matchingRune.getRuneName() + "" );

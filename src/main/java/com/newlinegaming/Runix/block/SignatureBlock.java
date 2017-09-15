@@ -8,7 +8,7 @@ public class SignatureBlock extends Block
 
     public SignatureBlock()
     {
-        super(Material.air);
+        super(Material.AIR);
         setBlockName("SIGR");
     }
 

@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.Tiers;
@@ -18,7 +17,6 @@ import com.newlinegaming.Runix.block.GreekFire;
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GreekFireRune extends AbstractRune {
     

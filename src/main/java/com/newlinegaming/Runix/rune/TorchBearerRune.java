@@ -31,18 +31,18 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
-            World world = subject.worldObj;//sphere can be optimized to donut
+        if(subject.equals(getPlayer()) && !subject.world.isRemote) {
+            World world = subject.world;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
             HashSet<WorldXYZ> sphere = UtilSphericalFunctions.getShell(location, 1);
             for(WorldXYZ newPos : sphere) {
-                if(newPos.getBlock().equals(Blocks.air) && 
-                    newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.getX(), newPos.getY()-1, newPos.getZ()) && (
-                        (world.isDaytime() && world.getBlockLightValue(newPos.getX(), newPos.getY(), newPos.getZ()) < 4) ||//day time checking == caves
+                if(newPos.getBlock().equals(Blocks.AIR) &&
+                    newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(newPos.getBlockState(), world, newPos.down()) && (
+                        (world.isDaytime() && world.getBlockLightOpacity(newPos) < 4) ||//day time checking == caves
                         (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.getX(), newPos.getY(), newPos.getZ()) < 4) ))//adjustable
-                { 
+                {//TODO look for 1.12 equivalent
                     try {
-                        setBlockIdAndUpdate(newPos, Blocks.torch);//set torch
+                        setBlockIdAndUpdate(newPos, Blocks.TORCH);//set torch
 //                        aetherSay(subject, Integer.toString(world.getBlockLightValue(newPos.getX(), newPos.getY(), newPos.getZ()))+
 //                                " light level.  Placing at " + (new Vector3(newPos, location).toString()));
                     } catch (NotEnoughRunicEnergyException e) {
@@ -56,7 +56,7 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     public Block[][][] runicTemplateOriginal() {
-        Block TRCH = Blocks.torch;
+        Block TRCH = Blocks.TORCH;
         return new Block[][][] {{
             {TIER,TRCH,TIER},
             {TRCH,FUEL ,TRCH},

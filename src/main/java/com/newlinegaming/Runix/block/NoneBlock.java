@@ -9,7 +9,7 @@ public class NoneBlock extends Block
 
     public NoneBlock()
     {
-        super(Material.air);
+        super(Material.AIR);
         setBlockName("NONE");
     }
     

@@ -36,12 +36,12 @@ public class ZeerixChestRune extends AbstractTimedRune {
                 HashSet<WorldXYZ> sphere = UtilSphericalFunctions.getShell(new WorldXYZ(getPlayer()), 4);
                 for(WorldXYZ newPos : sphere)
                 {
-                    if(newPos.getBlock() == Blocks.air 
+                    if(newPos.getBlock() == Blocks.AIR
                             && newPos.offset(Vector3.DOWN).isSolid()// base is solid 
                             && !newPos.offset(Vector3.UP).isSolid()){//room to open lid
                         try{
-                            if(location.getBlock() != Blocks.ender_chest)
-                                setBlockIdAndUpdate(location, Blocks.ender_chest);//charge for a replacement
+                            if(location.getBlock() != Blocks.ENDER_CHEST)
+                                setBlockIdAndUpdate(location, Blocks.ENDER_CHEST);//charge for a replacement
                             moveBlock(location, newPos);
                         }catch( NotEnoughRunicEnergyException e){
                             reportOutOfGas(getPlayer());
@@ -55,9 +55,9 @@ public class ZeerixChestRune extends AbstractTimedRune {
   
     @Override
     public Block[][][] runicTemplateOriginal() {
-        Block GOLD = Blocks.gold_ore;
-        Block CHEST = Blocks.ender_chest;
-        Block WOOD = Blocks.planks;
+        Block GOLD = Blocks.GOLD_ORE;
+        Block CHEST = Blocks.ENDER_CHEST;
+        Block WOOD = Blocks.PLANKS;
         return new Block[][][] {{
             {GOLD, NONE, GOLD},
             {NONE, CHEST, NONE},

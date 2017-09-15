@@ -1,16 +1,13 @@
 package com.newlinegaming.Runix.rune;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
-import com.newlinegaming.Runix.helper.LogHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class FerrousWheelRune extends PersistentRune {
 
@@ -28,7 +25,7 @@ public class FerrousWheelRune extends PersistentRune {
 
     @Override
     public void execute(WorldXYZ coords, EntityPlayer activator) {
-        if(!activator.worldObj.isRemote){//server only
+        if(!activator.world.isRemote){//server only
             super.execute(coords, activator);
         }
     }
@@ -36,7 +33,7 @@ public class FerrousWheelRune extends PersistentRune {
     
     @Override
     protected void poke(EntityPlayer player, WorldXYZ coords) {
-        if(player.worldObj.isRemote)
+        if(player.world.isRemote)
             return;
         consumeFuelBlock(coords);
         if( !guestList.contains(player.getUniqueID()) )
@@ -83,7 +80,7 @@ public class FerrousWheelRune extends PersistentRune {
     
     @Override
     public Block[][][] runicTemplateOriginal() {
-        Block IRON = Blocks.iron_ore;
+        Block IRON = Blocks.IRON_ORE;
         return new Block[][][]{{
             {TIER, IRON, TIER},
             {IRON, FUEL, IRON},
