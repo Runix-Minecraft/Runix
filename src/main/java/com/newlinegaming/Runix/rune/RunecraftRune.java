@@ -3,8 +3,8 @@ package com.newlinegaming.Runix.rune;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 
+import com.newlinegaming.Runix.utils.UtilMovement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,7 +19,6 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.helper.RenderHelper;
-import com.newlinegaming.Runix.utils.Util_Movement;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -99,10 +98,10 @@ public class RunecraftRune extends AbstractTimedRune {
                 moveInProgress = true;
                 WorldXYZ destination = getDestinationByPlayer(subject);
                 if( !location.equals(destination) ){
-                    HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.displaceShape(vehicleBlocks,  location, destination);
-                    if( !Util_Movement.shapeCollides(move) ){
+                    HashMap<WorldXYZ, WorldXYZ> move = UtilMovement.displaceShape(vehicleBlocks,  location, destination);
+                    if( !UtilMovement.shapeCollides(move) ){
                         snaggedOnSomething = false;
-                        vehicleBlocks = Util_Movement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
+                        vehicleBlocks = UtilMovement.performMove(move);//Josiah: it turns out that running out of gas isn't fun
                     }
                     else{ //collision
                         if(!snaggedOnSomething) { //this is to avoid chat spam, it only says it once
@@ -144,10 +143,10 @@ public class RunecraftRune extends AbstractTimedRune {
                 WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.contains( punchBlock )) {
                     if( location.getDistance(punchBlock) < 3 ) {
-                        boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);
-                        HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(vehicleBlocks, location, counterClockwise);
-                        if( !Util_Movement.shapeCollides(move) )
-                            vehicleBlocks = Util_Movement.performMove(move);
+                        boolean counterClockwise = !UtilMovement.lookingRightOfCenterBlock(getPlayer(), location);
+                        HashMap<WorldXYZ, WorldXYZ> move = UtilMovement.xzRotation(vehicleBlocks, location, counterClockwise);
+                        if( !UtilMovement.shapeCollides(move) )
+                            vehicleBlocks = UtilMovement.performMove(move);
                     }
                     event.setCanceled(true); //build protect anything in vehicleBlocks
                     System.out.println("Runecraft protected");

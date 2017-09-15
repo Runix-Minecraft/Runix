@@ -5,7 +5,6 @@ import java.util.*;
 import com.newlinegaming.Runix.api.Constants;
 import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -19,10 +18,7 @@ import com.newlinegaming.Runix.block.SignatureBlock;
 import com.newlinegaming.Runix.block.TierBlock;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.rune.WaypointRune;
-import com.newlinegaming.Runix.utils.Util_Movement;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.server.FMLServerHandler;
+import com.newlinegaming.Runix.utils.UtilMovement;
 
 /**
  * This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
@@ -216,7 +212,7 @@ public abstract class AbstractRune {
                 return null;
         } else {
             for(int nTurns = 0; nTurns < 4; ++nTurns) {//90 degree turns 
-                HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(shape, coords, nTurns);
+                HashMap<WorldXYZ, SigBlock> newShape = UtilMovement.rotateStructureInMemory(shape, coords, nTurns);
                 if( runeOrientationMatches(coords, newShape) ){
                     //change coords to be pointing in the detected direction, [array lookup]
                     switch(coords.face){

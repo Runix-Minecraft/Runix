@@ -3,6 +3,7 @@ package com.newlinegaming.Runix.workers;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.SigBlock;
@@ -11,10 +12,10 @@ import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.lib.LibConfig;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class StructureMoveWorker implements IBlockWorker {
 
@@ -34,12 +35,12 @@ public class StructureMoveWorker implements IBlockWorker {
     }
     
     @SubscribeEvent
-    public void doWork(ServerTickEvent event) {
+    public void doWork(TickEvent.ServerTickEvent event) {
         ++currentTimer;
         int maxTimer = 20; // 20 ticks = 1 second
         if( !isFinished() && currentTimer >= maxTimer){ // called only once per second
             currentTimer = 0;
-            SigBlock AIR = new SigBlock(Blocks.air, 0);
+            SigBlock AIR = new SigBlock(Blocks.AIR);
             //Step 1: collision
                 //inside safelyTeleportStructure()
             //Step 2: remove sensitive everything
@@ -53,7 +54,7 @@ public class StructureMoveWorker implements IBlockWorker {
                     while(cursor.hasNext()){
                         Entry<WorldXYZ, WorldXYZ> move = cursor.next();
                         SigBlock block = move.getKey().getSigBlock();
-                        while( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
+                        while(TierHelper.isMoveSensitive(block.getBlock()) ){//we're splitting sensitive blocks into their own set
                             ++sensitiveBlocksFound;
                             sensitiveBlocks.put(move.getValue(), block);//record at new location
                             move.getKey().setBlockId(AIR);//delete sensitive blocks first to prevent drops
@@ -79,7 +80,7 @@ public class StructureMoveWorker implements IBlockWorker {
                     while(cursor.hasNext()){
                         Entry<WorldXYZ, WorldXYZ> move = cursor.next();
                         SigBlock block = move.getKey().getSigBlock();
-                        if(block.equals(Blocks.air)) { 
+                        if(block.equals(Blocks.AIR)) {
                             airBlocks.put(move.getKey(), move.getValue()); //don't calculate on AIR blocks
                         } else {
                             //Check the ensure that we are not simply overwriting yourself.
@@ -127,7 +128,7 @@ public class StructureMoveWorker implements IBlockWorker {
 
     @Override
     public void scheduleWorkLoad() {
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
 }

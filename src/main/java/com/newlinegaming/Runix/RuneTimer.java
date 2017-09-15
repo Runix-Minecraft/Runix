@@ -1,7 +1,7 @@
 package com.newlinegaming.Runix;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class RuneTimer {
 
@@ -16,7 +16,7 @@ public class RuneTimer {
     }
     
     @SubscribeEvent
-    public void onPlayerTickEvent(PlayerTickEvent event) {
+    public void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
         ++currentTimer;
         if(currentTimer >= maxTimer) {
             currentTimer = 0;

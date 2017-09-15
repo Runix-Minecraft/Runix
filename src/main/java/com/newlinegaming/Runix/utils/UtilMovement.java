@@ -2,14 +2,17 @@ package com.newlinegaming.Runix.utils;
 
 import java.util.*;
 
-import com.newlinegaming.Runix.*;
+import com.newlinegaming.Runix.SigBlock;
+import com.newlinegaming.Runix.Vector3;
+import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.helper.TierHelper;
 import com.newlinegaming.Runix.workers.StructureMoveWorker;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 
-public class Util_Movement {
+public class UtilMovement {
 
     public static HashMap<WorldXYZ, WorldXYZ> xzRotation(Collection<WorldXYZ> startingShape, WorldXYZ centerPoint, boolean counterClockwise){
         //centerPoint is also the axis of rotation
@@ -26,16 +29,16 @@ public class Util_Movement {
      * moveShape() calls moveMagic() which will update everything including yourself.
      */
     public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) {
-        SigBlock AIR = new SigBlock(Blocks.air, 0);
+        SigBlock AIR = new SigBlock(Blocks.AIR);
         HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<>();
         for(WorldXYZ point : moveMapping.keySet()){
             SigBlock block = point.getSigBlock();
-            if( Tiers.isMoveSensitive(block.blockID) ){//we're splitting sensitive blocks into their own set
+            if(TierHelper.isMoveSensitive(block.getBlock())) {//we're splitting sensitive blocks into their own set
                 sensitiveBlocks.put(moveMapping.get(point), block);//record at new location
                 point.setBlockId(AIR);//delete sensitive blocks first to prevent drops
             }
-            else if( !block.equals(Blocks.air)){//don't write AIR blocks
+            else if(!block.equals(Blocks.AIR)) {//don't write AIR blocks
                 newStructure.put(moveMapping.get(point), block);//record original at new location
             }
         }
@@ -62,8 +65,8 @@ public class Util_Movement {
     public static boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
         float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
         yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
-        double opposite = player.getZ() - referencePoint.getZ() - .5;
-        double adjacent = player.getX() - referencePoint.getX() - .5;
+        double opposite = player.getPosition().getZ() - referencePoint.getZ() - .5;
+        double adjacent = player.getPosition().getX() - referencePoint.getX() - .5;
         double angle = Math.toDegrees(Math.atan( opposite / adjacent )) + 90.0;
         if( adjacent > 0.0)
             angle += 180.0;
@@ -84,7 +87,7 @@ public class Util_Movement {
 
     public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
-            if( !move.containsKey(newPos) && newPos.getBlock() != Blocks.air && !Tiers.isCrushable(newPos.getBlock()))
+            if( !move.containsKey(newPos) && newPos.getBlock() != Blocks.AIR && !TierHelper.isCrushable(newPos.getBlock()))
                 return true;
         }
         return false;
@@ -122,7 +125,7 @@ public class Util_Movement {
         HashMap<WorldXYZ, SigBlock> startShape = new HashMap<>(shape);
         
         for(int turnNumber = 0; turnNumber < nTurns; ++turnNumber) {
-            HashMap<WorldXYZ, WorldXYZ> move = Util_Movement.xzRotation(startShape.keySet(), center, false);
+            HashMap<WorldXYZ, WorldXYZ> move = UtilMovement.xzRotation(startShape.keySet(), center, false);
 
             HashMap<WorldXYZ, SigBlock> newShape = new HashMap<>();//blank variable for swapping purposes
             for(WorldXYZ origin : move.keySet()) {

@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
+import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
@@ -34,7 +34,7 @@ public class TorchBearerRune extends AbstractTimedRune {
         if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
             World world = subject.worldObj;//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
-            HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 1);
+            HashSet<WorldXYZ> sphere = UtilSphericalFunctions.getShell(location, 1);
             for(WorldXYZ newPos : sphere) {
                 if(newPos.getBlock().equals(Blocks.air) && 
                     newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(world, newPos.getX(), newPos.getY()-1, newPos.getZ()) && (

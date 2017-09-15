@@ -25,26 +25,26 @@ public class Signature {
     public Signature(AbstractRune rune, WorldXYZ coords) {
         blocks = new ArrayList<>();
         Block[] metaWhiteList = new Block[]{//this list specifically lacks any block that uses meta for orientation
-                Blocks.carpet, Blocks.wool,
-                Blocks.wheat, //added just in case you WANT an impossible waypoint
-                Blocks.hardened_clay, Blocks.jukebox, //adjusting the notes would change your Signature :D
-                Blocks.planks,
-                Blocks.heavy_weighted_pressure_plate,
-                Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, //may be some potential there
-                Blocks.stained_hardened_clay,
-                Blocks.log, Blocks.wooden_slab, Blocks.double_wooden_slab,
-                Blocks.stained_glass, Blocks.stained_glass_pane
+                Blocks.CARPET, Blocks.WOOL,
+                Blocks.WHEAT, //added just in case you WANT an impossible waypoint
+                Blocks.HARDENED_CLAY, Blocks.JUKEBOX, //adjusting the notes would change your Signature :D
+                Blocks.PLANKS,
+                Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE,
+                Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, Blocks.WOODEN_PRESSURE_PLATE, Blocks.STONE_PRESSURE_PLATE, //may be some potential there
+                Blocks.STAINED_HARDENED_CLAY,
+                Blocks.LOG, Blocks.LOG2, Blocks.WOODEN_SLAB, Blocks.DOUBLE_WOODEN_SLAB,
+                Blocks.STAINED_GLASS, Blocks.STAINED_GLASS_PANE
         };
 
         HashMap<WorldXYZ, SigBlock> shape = rune.runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
             if (shape.get(target).equals(AbstractRune.SIGR) ) {
                 Block blockID = target.getBlock();
-                if( !blockID.equals(Blocks.air) ){
+                if( !blockID.equals(Blocks.AIR) ){
                     if(Arrays.asList(metaWhiteList).contains(target.getBlock()))
                         blocks.add(target.getSigBlock());
                     else
-                        blocks.add(new SigBlock(blockID, 0));//just the blockID
+                        blocks.add(new SigBlock(blockID));//just the blockID
                 }
             }
         }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.newlinegaming.Runix.utils.UtilMovement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,6 @@ import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
-import com.newlinegaming.Runix.utils.Util_Movement;
 
 public class BuildMasterRune extends AbstractTimedRune {
     private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
@@ -41,8 +41,8 @@ public class BuildMasterRune extends AbstractTimedRune {
             aetherSay(poker, "Builder is turned off.");
         }
         //this code is a demo of rotation patterns, to use it comment out the lines above
-//        HashMap<WorldXYZ, SigBlock> actualBlocks = Util_Movement.scanBlocksInShape(runicFormulae(coords).keySet());
-//        HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(actualBlocks, coords, 1);
+//        HashMap<WorldXYZ, SigBlock> actualBlocks = UtilMovement.scanBlocksInShape(runicFormulae(coords).keySet());
+//        HashMap<WorldXYZ, SigBlock> newShape = UtilMovement.rotateStructureInMemory(actualBlocks, coords, 1);
 //        stampBlockPattern(newShape, poker);
     }
 
@@ -83,10 +83,10 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     private HashMap<WorldXYZ,WorldXYZ> findFirstMissingBlock(HashSet<WorldXYZ> structure) {
         WorldXYZ currentLayer = location;
-        HashMap<WorldXYZ, WorldXYZ> buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
+        HashMap<WorldXYZ, WorldXYZ> buildMapping = UtilMovement.displaceShape(structure, location, currentLayer);
         for(int stepCount = 0; stepCount < 150 && partialTemplateMatch(buildMapping); ++stepCount) {
             currentLayer = currentLayer.offset(forwards);
-            buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
+            buildMapping = UtilMovement.displaceShape(structure, location, currentLayer);
         }
         
         if(anyCrushable(buildMapping.values()))//any space to build?
