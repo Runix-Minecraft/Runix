@@ -1,9 +1,16 @@
 package com.newlinegaming.Runix.helper;
 
+import com.newlinegaming.Runix.api.tier.ITier;
 import com.newlinegaming.Runix.apiimpl.API;
 import net.minecraft.block.Block;
 
 public class TierHelper {
+
+
+
+    public static ITier getTier(Block block) {
+        return API.INSTANCE().getTier(block);
+    }
 
     /**
      *
@@ -18,12 +25,13 @@ public class TierHelper {
        }
     }
 
+
     /**
      *
      * @param block
      * @return
      */
-    public static int getTier(Block block) {
+    public static int getTierNumber(Block block) {
         int energy = getEnergy(block);
         energy = energy < 1 ? 1 : energy;
         return (int) Math.round(Math.log(energy) / Math.log(2));

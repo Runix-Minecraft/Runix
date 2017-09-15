@@ -13,4 +13,10 @@ public interface IRunixAPI {
      * @return
      */
     ITier getTier(Block block);
+
+    default float blockMobilizationCost() {
+        return 4;
+    }
+
+
 }

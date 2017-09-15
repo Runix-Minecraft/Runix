@@ -1,16 +1,16 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-
+import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.server.FMLServerHandler;
+
+import java.util.ArrayList;
 
 
 /**
@@ -308,7 +308,7 @@ public class WorldXYZ extends BlockPos {
 //    }
 
     public boolean isCrushable() {
-        return Tiers.isCrushable(getBlock());
+        return TierHelper.isCrushable(getBlock());
     }
 
 }

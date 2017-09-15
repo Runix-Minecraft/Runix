@@ -16,9 +16,9 @@ public class Tiers {
     
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
-    public static final float blockMobilizationCost = 4; // Moving a block doesn't cost energy per move, making
+//    public static final float blockMobilizationCost = 4; // Moving a block doesn't cost energy per move, making
     // a block mobile has a one time up front energy cost i.e. Faith, Phase Blocks, Runecraft is tricky
-    public static final int blockBreakCost = 2;
+//    public static final int blockBreakCost = 2;
     public static final int breakEvenBlockBreakCost = 6; //If you wanted something like Greek Fire to be energy neutral
     //after mining and converting all valuable blocks to energy.
     public static final float movementPerMeterCost = 0.22f;
