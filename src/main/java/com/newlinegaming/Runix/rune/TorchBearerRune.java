@@ -31,8 +31,8 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(getPlayer()) && !subject.worldObj.isRemote) {
-            World world = subject.worldObj;//sphere can be optimized to donut
+        if(subject.equals(getPlayer()) && !subject.getEntityWorld().isRemote) {
+            World world = subject.getEntityWorld();//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
             HashSet<WorldXYZ> sphere = Util_SphericalFunctions.getShell(location, 1);
             for(WorldXYZ newPos : sphere) {

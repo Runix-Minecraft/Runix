@@ -121,17 +121,17 @@ public abstract class AbstractRune {
                         else if(coords.offset(0, -drop, 0).isSolid()){ //we're going to land on something solid, without dying
                             //distance should be calculated uses the Nether -> Overworld transform
                             WorldXYZ dCalc = new WorldXYZ(player);
-                            if(player.worldObj.provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
+                            if(player.getEntityWorld().provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
                                 dCalc.posX *= 8;
                                 dCalc.posZ *= 8;
-                            }else if (!player.worldObj.provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
+                            }else if (!player.getEntityWorld().provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
                                 dCalc.posX /= 8;
                                 dCalc.posZ /= 8;
                             }
                             //spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
     
-                            if(!coords.getWorld().equals(player.worldObj))// && !subject.worldObj.isRemote)
-                                player.travelToDimension(coords.getWorld().provider.dimensionId);
+                            if(!coords.getWorld().equals(player.getEntityWorld()))// && !subject.getEntityWorld().isRemote)
+                                player.changeDimension(coords.getWorld().provider.getDimension());
                             player.setPositionAndUpdate(coords.getX()+0.5, coords.getY(), coords.getZ()+0.5);
                             return;
                         }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
@@ -175,7 +175,7 @@ public abstract class AbstractRune {
 
     public static void aetherSay(EntityPlayer player, String message) {
 
-        if(player != null && !player.worldObj.isRemote) {
+        if(player != null && !player.getEntityWorld().isRemote) {
             player.addChatMessage(new ChatComponentText(message));
         }else{
             System.out.println(message);

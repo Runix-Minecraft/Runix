@@ -127,7 +127,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     public void execute(WorldXYZ coords, EntityPlayer activator, Vector3 forward) {
-        if(activator.worldObj.isRemote)//runes server side only
+        if(activator.getEntityWorld().isRemote)//runes server side only
             return;
         PersistentRune match = getOrCreateRune(coords, activator);
         if (match != null) {
@@ -191,7 +191,7 @@ public abstract class PersistentRune extends AbstractRune {
      * @param coords center block
      */
     protected void poke(EntityPlayer player, WorldXYZ coords){
-        if(player.worldObj.isRemote)
+        if(player.getEntityWorld().isRemote)
             return;
         if(oneRunePerPerson()){
             consumeRune(coords);

@@ -186,6 +186,7 @@ public class WorldXYZ extends BlockPos {
      * @return true if successful
      */
     @SuppressWarnings("UnusedReturnValue")
+
     public boolean setBlockIdAndUpdate(IBlockState block){
         if(block == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock

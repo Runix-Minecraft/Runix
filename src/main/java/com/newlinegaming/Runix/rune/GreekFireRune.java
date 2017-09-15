@@ -40,9 +40,9 @@ public class GreekFireRune extends AbstractRune {
 
     @SubscribeEvent
     public void onBlockPlace(PlayerInteractEvent event) {
-        if(!event.entityPlayer.worldObj.isRemote) {
+        if(!event.entityPlayer.getEntityWorld().isRemote) {
             if (event.action == Action.RIGHT_CLICK_BLOCK){  // && event.action != Action.RIGHT_CLICK_AIR) {
-                WorldXYZ target = new WorldXYZ(event.entityPlayer.worldObj, event.x, event.y, event.z);
+                WorldXYZ target = new WorldXYZ(event.entityPlayer.getEntityWorld(), event.x, event.y, event.z);
                 target = target.offset(Vector3.facing[event.face]);
 
                 // only accept fuel if there is not still lifespan remaining in the fire.  Do not allow pumping free fuel or block dupe bug
