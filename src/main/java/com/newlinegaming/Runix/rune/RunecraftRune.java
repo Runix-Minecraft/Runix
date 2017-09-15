@@ -72,9 +72,9 @@ public class RunecraftRune extends AbstractTimedRune {
 
     private WorldXYZ getDestinationByPlayer(EntityPlayer subject) {
         if(getPlayer() != null && subject.equals(getPlayer())) {
-            int dX = (int) (getPlayer().getX() - location.getX() - .5);
-            int dY = (int) (getPlayer().getY() - location.getY() - 1);
-            int dZ = (int) (getPlayer().getZ() - location.getZ() - .5);
+            int dX = (int) (getPlayer().posX - location.posX - .5);
+            int dY = (int) (getPlayer().posY - location.posY - 1);
+            int dZ = (int) (getPlayer().posZ - location.posZ - .5);
             if( 6.0 < location.getDistance(new WorldXYZ(getPlayer())) ){
                 setPlayer(null); //Vehicle has been abandoned
                 aetherSay(subject, "Runecraft has been abandoned.");
@@ -141,7 +141,7 @@ public class RunecraftRune extends AbstractTimedRune {
     public void playerInteractEvent(PlayerInteractEvent event) {
         if (getPlayer() != null && event.action == Action.LEFT_CLICK_BLOCK)
             if( event.isCancelable() ){
-                WorldXYZ punchBlock = new WorldXYZ(event.entity.getEntityWorld(), event.x, event.y, event.z);
+                WorldXYZ punchBlock = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
                 if( vehicleBlocks.contains( punchBlock )) {
                     if( location.getDistance(punchBlock) < 3 ) {
                         boolean counterClockwise = !Util_Movement.lookingRightOfCenterBlock(getPlayer(), location);

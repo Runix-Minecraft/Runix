@@ -5,8 +5,6 @@ import org.lwjgl.opengl.GL11;
 import com.newlinegaming.Runix.client.models.ModelTransmutationRod;
 import com.newlinegaming.Runix.lib.LibInfo;
 
-/**Old code from MC 1.7.10  Hopefully now rendering and item registration is simpler.
-
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -101,4 +99,3 @@ public class ItemRenderTransmutaionRod implements IItemRenderer {
     }
 
 }
-*/

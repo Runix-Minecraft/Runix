@@ -85,28 +85,28 @@ public class FtpRune extends TeleporterRune {
         //and only 6 outcomes, walking through the logic is just as long and more confusing to read.
 
         if(directionOfScanning == Vector3.DOWN) { //DOWN =  (0,-1,0);
-            WorldXYZ max = Collections.max(structure, (pt1,pt2) -> pt2.getY() - pt1.getY());
-            return max.getY() - location.getY() + margin; // margin increases the distance regardless of direction
+            WorldXYZ max = Collections.max(structure, (pt1,pt2) -> pt2.posY - pt1.posY);
+            return max.posY - location.posY + margin; // margin increases the distance regardless of direction
         }
         if(directionOfScanning == Vector3.SOUTH) { //SOUTH = (0,0, 1);
-            WorldXYZ min = Collections.min(structure, (pt1,pt2) -> pt2.getZ() - pt1.getZ());
-            return location.getZ() - min.getZ() + margin;
+            WorldXYZ min = Collections.min(structure, (pt1,pt2) -> pt2.posZ - pt1.posZ);
+            return location.posZ - min.posZ + margin;
         }
         if(directionOfScanning == Vector3.NORTH) { //NORTH = (0,0,-1);
-            WorldXYZ max = Collections.max(structure, (pt1,pt2) -> pt2.getZ() - pt1.getZ());
-            return max.getZ() - location.getZ() + margin;
+            WorldXYZ max = Collections.max(structure, (pt1,pt2) -> pt2.posZ - pt1.posZ);
+            return max.posZ - location.posZ + margin;
         }
         if(directionOfScanning == Vector3.EAST) { //EAST =  ( 1,0,0);
-            WorldXYZ min = Collections.min(structure, (pt1,pt2) -> pt2.getX() - pt1.getX());
-            return location.getX() - min.getX() + margin;
+            WorldXYZ min = Collections.min(structure, (pt1,pt2) -> pt2.posX - pt1.posX);
+            return location.posX - min.posX + margin;
         }
         if(directionOfScanning == Vector3.WEST) { //WEST =  (-1,0,0);
-            WorldXYZ max = Collections.max(structure, (pt1,pt2) -> pt2.getX() - pt1.getX());
-            return max.getX() - location.getX() + margin;
+            WorldXYZ max = Collections.max(structure, (pt1,pt2) -> pt2.posX - pt1.posX);
+            return max.posX - location.posX + margin;
         }
         //UP =    (0, 1,0); and default in case we get a diagonal or NONE vector for some reason
-        WorldXYZ min = Collections.min(structure, (pt1,pt2) -> pt2.getY() - pt1.getY());
-        return location.getY() - min.getY() + margin;
+        WorldXYZ min = Collections.min(structure, (pt1,pt2) -> pt2.posY - pt1.posY);
+        return location.posY - min.posY + margin;
 
     }
 }

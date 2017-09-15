@@ -7,28 +7,28 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 
 /**
  * This class was created for Runix to ensure that when transferring between sets of coordinates,
- * the World is always known.  It extends BlockPos used by the rest of minecraft, but tracks
+ * the World is always known.  It extends ChunkCoordinates used by the rest of minecraft, but tracks
  * World and contains helper methods useful to Runix.
  */
 
 //Note might want to move to a library mod
 
-public class WorldXYZ extends BlockPos {
+public class WorldXYZ extends ChunkCoordinates {
 
     private transient World worldObj = null;
     private int dimensionID = -500000;
     public int face = 1;
 
 //    public WorldXYZ() { //default world is causing an issue with servers because defaultWorld() doesn't work correctly
-//        this.getX() = 0;
-//        this.getY() = 64;
-//        this.getZ() = 0;
+//        this.posX = 0;
+//        this.posY = 64;
+//        this.posZ = 0;
 //        this.setWorld(defaultWorld());
 //    }
 //
@@ -38,9 +38,11 @@ public class WorldXYZ extends BlockPos {
     }
 
     public WorldXYZ(World world, int x, int y, int z) { //this constructor was made to be fast
-        super(x, y, z);
+        posX = x;
+        posY = y;
+        posZ = z;
         worldObj = world;
-        dimensionID = world.provider.getDimension();
+        dimensionID = world.provider.dimensionId;
     }
 
     public WorldXYZ(World world, int x, int y, int z, int face) {
@@ -50,11 +52,11 @@ public class WorldXYZ extends BlockPos {
     }
 
     public WorldXYZ(EntityPlayer player) {
-        super((int)(player.getX()+.5), (int)(player.getY()-1), (int)(player.getZ()+.5));
-        setWorld(player.world);
+        super((int)(player.posX+.5), (int)(player.posY-1), (int)(player.posZ+.5));
+        setWorld(player.worldObj);
     }
 
-    public WorldXYZ(BlockPos otherGuy) {
+    public WorldXYZ(ChunkCoordinates otherGuy) {
         super(otherGuy);
         if(otherGuy instanceof WorldXYZ){
             this.setWorld(((WorldXYZ) otherGuy).getWorld());
@@ -82,7 +84,7 @@ public class WorldXYZ extends BlockPos {
      * @param dimension
      */
     private void setWorld(int dimension) {
-        worldObj = MinecraftServer.getServer().getWorld(dimension);
+        worldObj = MinecraftServer.getServer().worldServerForDimension(dimension);
 //        worldObj = FMLServerHandler.instance().getServer().worldServerForDimension(dimension);
         dimensionID = getDimensionNumber();
     }
@@ -91,19 +93,19 @@ public class WorldXYZ extends BlockPos {
      * Creates a new WorldXYZ based off of a previous one and a relative vector
      */
     public WorldXYZ offset(int dX, int dY, int dZ){
-        return new WorldXYZ(this.getWorld(), this.getX() + dX, this.getY() + dY, this.getZ() + dZ, face);
+        return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, face);
     }
 
     private WorldXYZ offset(int dX, int dY, int dZ, int facing) {
-        return new WorldXYZ(this.getWorld(), this.getX() + dX, this.getY() + dY, this.getZ() + dZ, facing);
+        return new WorldXYZ(this.getWorld(), this.posX + dX, this.posY + dY, this.posZ + dZ, facing);
     }
 
     public WorldXYZ offset(Vector3 delta){
-        return new WorldXYZ(this.getWorld(), getX() + delta.x, getY() + delta.y, getZ() + delta.z, face);
+        return new WorldXYZ(this.getWorld(), posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
     
     public WorldXYZ offsetWorld(Vector3 delta, World dem) {
-        return new WorldXYZ(dem, getX() + delta.x, getY() + delta.y, getZ() + delta.z, face);
+        return new WorldXYZ(dem, posX + delta.x, posY + delta.y, posZ + delta.z, face);
     }
 
     /**
@@ -113,6 +115,17 @@ public class WorldXYZ extends BlockPos {
         WorldXYZ n = new WorldXYZ(this);
         n.face = face2;
         return n;
+    }
+
+    /**
+     * Similar to offset(), but updates the current instance instead of a new one.
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    private WorldXYZ bump(int dX, int dY, int dZ) {
+        posX += dX;
+        posY += dY;
+        posZ += dZ;
+        return this;
     }
 
     public WorldXYZ rotate(WorldXYZ referencePoint, boolean counterClockwise){
@@ -134,7 +147,7 @@ public class WorldXYZ extends BlockPos {
     private int getDimensionNumber(){
         if( getWorld() == null)
             setWorld(defaultWorld());
-        return getWorld().provider.getDimension();
+        return getWorld().provider.dimensionId;
     }
 
     private static World defaultWorld() {
@@ -144,12 +157,12 @@ public class WorldXYZ extends BlockPos {
     @Override
     public boolean equals(Object otherObj)
     {
-        if (!(otherObj instanceof BlockPos)){
+        if (!(otherObj instanceof ChunkCoordinates)){
             return false;
         }
         else{
-            BlockPos other = (BlockPos)otherObj;
-            if( this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ()){
+            ChunkCoordinates other = (ChunkCoordinates)otherObj;
+            if( this.posX == other.posX && this.posY == other.posY && this.posZ == other.posZ){
                 if(other instanceof WorldXYZ)
                     return ((WorldXYZ) other).getWorld() == this.getWorld();
                 else //NOTE: This does not compare the face of each coordinate
@@ -165,12 +178,12 @@ public class WorldXYZ extends BlockPos {
 
     //Simple wrapper method for getBlockID()
     public Block getBlock() {
-        return this.getWorld().getBlock(this.getX(), this.getY(), this.getZ());
+        return this.getWorld().getBlock(this.posX, this.posY, this.posZ);
     }
 
     //Sister function to getBlockID() for meta values.
     public int getMetaId() {
-        return getWorld().getBlockMetadata(getX(), getY(), getZ());
+        return getWorld().getBlockMetadata(posX, posY, posZ);
     }
 
     /**
@@ -180,29 +193,29 @@ public class WorldXYZ extends BlockPos {
      */
     @SuppressWarnings("UnusedReturnValue")
     public boolean setBlockIdAndUpdate(Block blockID){
-        if(blockID == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
-            return false; //You cannot delete or place BEDROCK
-        return this.getWorld().setBlock(getX(), getY(), getZ(), blockID);
+        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
+            return false; //You cannot delete or place bedrock
+        return this.getWorld().setBlock(posX, posY, posZ, blockID);
     }
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean setBlockId(SigBlock sig){
-        if(sig.equals(Blocks.BEDROCK) || getBlock() == Blocks.BEDROCK)
-            return false; //You cannot delete or place BEDROCK
-        return this.getWorld().setBlock(getX(), getY(), getZ(), sig.blockID, sig.meta, 2);
+        if(sig.equals(Blocks.bedrock) || getBlock() == Blocks.bedrock)
+            return false; //You cannot delete or place bedrock
+        return this.getWorld().setBlock(posX, posY, posZ, sig.blockID, sig.meta, 2);
         //NOTE: Use last arg 3 if you want a block update.
     }
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean setBlock(Block blockID, int meta){
-        if(blockID == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
-            return false; //You cannot delete or place BEDROCK
-        return this.getWorld().setBlock(getX(), getY(), getZ(), blockID, meta, 3);
+        if(blockID == Blocks.bedrock || getBlock() == Blocks.bedrock)
+            return false; //You cannot delete or place bedrock
+        return this.getWorld().setBlock(posX, posY, posZ, blockID, meta, 3);
     }
 
     public String toString(){//this is designed to match the GSON output
-        return "{\"dimensionID\":"+dimensionID+",\"face\":"+face+",\"getX()\":"+getX()+",\"getY()\":"+getY()+",\"getZ()\":"+getZ()+"}";
-//        return "(" + getX() + "," + getY() +  "," + getZ() + ")";
+        return "{\"dimensionID\":"+dimensionID+",\"face\":"+face+",\"posX\":"+posX+",\"posY\":"+posY+",\"posZ\":"+posZ+"}";
+//        return "(" + posX + "," + posY +  "," + posZ + ")";
     }
 
     public ArrayList<WorldXYZ> getDirectNeighbors() {
@@ -282,8 +295,8 @@ public class WorldXYZ extends BlockPos {
     }
     
     public double getDistance(WorldXYZ other) {
-        double xzDist_2 =  (getX() - other.getX())*(getX() - other.getX()) + (getZ() - other.getZ())*(getZ() - other.getZ());//Math.sqrt(
-        return Math.sqrt( xzDist_2 + (getY() - other.getY())*(getY() - other.getY()));
+        double xzDist_2 =  (posX - other.posX)*(posX - other.posX) + (posZ - other.posZ)*(posZ - other.posZ);//Math.sqrt(
+        return Math.sqrt( xzDist_2 + (posY - other.posY)*(posY - other.posY));
     }
 
     public boolean isSolid() {

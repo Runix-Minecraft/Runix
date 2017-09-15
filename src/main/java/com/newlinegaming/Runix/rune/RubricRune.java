@@ -88,7 +88,7 @@ public class RubricRune extends PersistentRune {
         String writtenBookName = getWrittenBookName(event.entityPlayer);
         if (event.action == Action.RIGHT_CLICK_BLOCK && writtenBookName != null) {
             EntityPlayer poker = event.entityPlayer;
-            WorldXYZ coords = new WorldXYZ(event.entity.getEntityWorld(), event.x, event.y, event.z);
+            WorldXYZ coords = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
             
             if(writtenBookName.equals(instanceName)) {
                 event.setCanceled(true);

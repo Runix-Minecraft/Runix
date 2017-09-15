@@ -30,15 +30,15 @@ public class RenderHelper {
             progress += 0.02f;//animation timer
         else
             progress -= 0.04f;
-        double doubleX = player.getX() - 0.5;
-        double doubleY = player.getY() + 0.1;
-        double doubleZ = player.getZ() - 0.5;
+        double doubleX = player.posX - 0.5;
+        double doubleY = player.posY + 0.1;
+        double doubleZ = player.posZ - 0.5;
         GL11.glPushMatrix();
             GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
             GL11.glColor3ub((byte)R,(byte)G,(byte)B);
             
             for(WorldXYZ block : structureBlocks){
-                renderWireCube(block.getX(), block.getY(), block.getZ(), progress);
+                renderWireCube(block.posX, block.posY, block.posZ, progress);
             }
         GL11.glPopMatrix();
         return true;
