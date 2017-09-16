@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -67,10 +68,6 @@ public class RuneHandler {
         runeRegistry.add(new ElevatorRune());
         runeRegistry.add(new BuildMasterRune());
     }
-    
-    public void addRune(AbstractRune rune) {
-        runeRegistry.add(rune);
-    }
 
     public static RuneHandler getInstance(){
         if(instance == null)
@@ -89,6 +86,7 @@ public class RuneHandler {
 //        }
 //    }
 
+    @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent.RightClickBlock e) {
         Block blk = e.getWorld().getBlockState(e.getPos()).getBlock();
         if (!e.getWorld().isRemote) {
