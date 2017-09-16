@@ -3,7 +3,7 @@ package com.newlinegaming.Runix.rune;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
-import com.newlinegaming.Runix.api.Constants;
+import com.newlinegaming.Runix.api.RunixConstants;
 import com.newlinegaming.Runix.block.ModBlock;
 import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
 import net.minecraft.block.Block;
@@ -50,10 +50,10 @@ public class FaithRune extends PersistentRune{
             radius = getTier() * 2 - 1; //Tiers.energyToRadiusConversion(energy);
             consumeRune(coords);
             try {
-                setBlockIdAndUpdate(coords, ModBlock.fakeGoldBlock); //Gold block is to be a permanent marker
+                setBlockIdAndUpdate(coords, Blocks.BEDROCK); //Gold block is to be a permanent marker
             } catch (NotEnoughRunicEnergyException e) {}
             HashSet<WorldXYZ> tSphere = fullStructure();
-            energy -= tSphere.size() * Constants.blockMobilizationCost;
+            energy -= tSphere.size() * RunixConstants.blockMobilizationCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
             bounceIsland();
         }

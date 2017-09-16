@@ -2,7 +2,7 @@ package com.newlinegaming.Runix;
 
 import java.util.*;
 
-import com.newlinegaming.Runix.api.Constants;
+import com.newlinegaming.Runix.api.RunixConstants;
 import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,10 +12,10 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import com.newlinegaming.Runix.block.FuelBlock;
-import com.newlinegaming.Runix.block.NoneBlock;
-import com.newlinegaming.Runix.block.SignatureBlock;
-import com.newlinegaming.Runix.block.TierBlock;
+import com.newlinegaming.Runix.block.fake.FuelBlock;
+import com.newlinegaming.Runix.block.fake.NoneBlock;
+import com.newlinegaming.Runix.block.fake.SignatureBlock;
+import com.newlinegaming.Runix.block.fake.TierBlock;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.utils.UtilMovement;
@@ -396,7 +396,7 @@ public abstract class AbstractRune {
 
     protected void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
         if( blockID == Blocks.AIR)//this is actually breaking, not paying for air
-            spendEnergy(Constants.blockBreakCost);
+            spendEnergy(RunixConstants.blockBreakCost);
         else
             spendEnergy(TierHelper.getEnergy(blockID));
         coords.setBlockIdAndUpdate(blockID.getDefaultState());
@@ -404,7 +404,7 @@ public abstract class AbstractRune {
 
     protected void setBlockIdAndUpdate(WorldXYZ destination, SigBlock sourceBlock) throws NotEnoughRunicEnergyException {
         if(sourceBlock.getBlock() == Blocks.AIR )//this is actually breaking, not paying for air
-            spendEnergy(Constants.blockBreakCost);
+            spendEnergy(RunixConstants.blockBreakCost);
         else
             spendEnergy(TierHelper.getEnergy(sourceBlock.getBlock()));
         destination.setBlockId(sourceBlock);
