@@ -1,5 +1,5 @@
 package com.newlinegaming.Runix.client.render.block;
-
+/*
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -100,3 +100,4 @@ public class HoarFrostRenderer implements ISimpleBlockRenderingHandler {
     }
 
 }
+*/

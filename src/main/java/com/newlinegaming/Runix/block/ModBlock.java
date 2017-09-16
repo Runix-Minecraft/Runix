@@ -4,13 +4,13 @@ package com.newlinegaming.Runix.block;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ModBlock {
 
-    public static GreekFire greekFire;
-    public static HoarFrost hoar_frost;
+//    public static GreekFire greekFire;
+//    public static HoarFrost hoar_frost;
     public static Block lightBeam;
     
     //Fake/replacement Blocks
@@ -19,23 +19,25 @@ public class ModBlock {
     
     public static void init() {
 
-        greekFire = GreekFire.getInstance();
-        hoar_frost = new HoarFrost();
-
-        lightBeam = new BlockLightBeam();
-        fakeGoldBlock = new FakeBlock(Blocks.gold_block);
+//        greekFire = GreekFire.getInstance();
+//        hoar_frost = new HoarFrost();
+//
+//        lightBeam = new BlockLightBeam();
+        fakeGoldBlock = new FakeBlock(Blocks.GOLD_BLOCK);
         runixAir = new RunixAirBlock();
 
         Gamereg();
     }
 
+    @SubscribeEvent
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        event.getRegistry().registerAll(runixAir, fakeGoldBlock);
+    }
+
     private static void Gamereg() {
-        GameRegistry.registerBlock(greekFire, "GreekFire");
-        GameRegistry.registerBlock(hoar_frost, HoarFrostItem.class, "HoarFrost");
-        GameRegistry.registerBlock(runixAir, "Fake Air");
-        GameRegistry.registerBlock(lightBeam, "RunixLightBeam");
-        GameRegistry.registerBlock(fakeGoldBlock, "RunixFakeGoldBlock");
-        
-        
+        //TODO: move the rest to registerBlocks method above
+//        GameRegistry.registerBlock(greekFire, "GreekFire");
+//        GameRegistry.registerBlock(hoar_frost, HoarFrostItem.class, "HoarFrost");
+//        GameRegistry.registerBlock(lightBeam, "RunixLightBeam");
     }
 }

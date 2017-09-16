@@ -1,10 +1,7 @@
 package com.newlinegaming.Runix.block;
-
+/*
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -59,3 +56,4 @@ public class HoarFrostItem extends ItemBlock {
     }
     
 }
+*/

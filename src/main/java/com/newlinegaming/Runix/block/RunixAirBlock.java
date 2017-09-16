@@ -2,22 +2,21 @@ package com.newlinegaming.Runix.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 class RunixAirBlock extends Block {
 
     public RunixAirBlock() {
-        super(Material.air);
+        super(Material.AIR);
     }
 
     public int getRenderType() {
         return -1;
     }
     
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return null;
-    }
+//    public AxisAligned getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+//        return null;
+//    }
 
     public boolean isOpaqueCube() {
         return false;

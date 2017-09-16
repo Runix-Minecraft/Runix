@@ -22,7 +22,7 @@ import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.RenderHelper;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -85,9 +85,9 @@ public class RubricRune extends PersistentRune {
 
     @SubscribeEvent
     public void bookClickEvent(PlayerInteractEvent event) {
-        String writtenBookName = getWrittenBookName(event.entityPlayer);
+        String writtenBookName = getWrittenBookName(event.getEntityPlayer());
         if (event.action == Action.RIGHT_CLICK_BLOCK && writtenBookName != null) {
-            EntityPlayer poker = event.entityPlayer;
+            EntityPlayer poker = event.getEntityPlayer();
             WorldXYZ coords = new WorldXYZ(event.entity.getEntityWorld(), event.x, event.y, event.z);
             
             if(writtenBookName.equals(instanceName)) {

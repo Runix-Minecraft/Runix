@@ -21,7 +21,7 @@ import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.helper.RenderHelper;
 import com.newlinegaming.Runix.utils.Util_Movement;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

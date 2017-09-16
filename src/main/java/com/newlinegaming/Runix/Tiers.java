@@ -59,7 +59,7 @@ public class Tiers {
             add(Blocks.SAPLING);
             add(Blocks.LOG);
             add(Blocks.LOG2);
-            add(ModBlock.greekFire);
+//            add(ModBlock.greekFire);
         }};
 
         moveSensitiveBlocks = new ArrayList<Block>(){{
@@ -139,7 +139,7 @@ public class Tiers {
             add(Blocks.TALLGRASS);
             add(Blocks.TORCH);
             add(Blocks.VINE);
-            add(ModBlock.greekFire);
+//            add(ModBlock.greekFire);
             add(Blocks.FLOWING_LAVA);
             add(Blocks.LAVA);
             //TODO anything in the liquid registry

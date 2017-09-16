@@ -1,5 +1,5 @@
 package com.newlinegaming.Runix.block;
-
+/*
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,7 +50,7 @@ public class HoarFrost extends BlockIce {
     /**
      * Returns whether this block is collideable based on the arguments passed in n
      * @param meta block metaData n
-     * @param p_149678_2_ whether the player right-clicked while holding a boat*/
+     * @param p_149678_2_ whether the player right-clicked while holding a boat* /
     public boolean canCollideCheck(int meta, boolean p_149678_2_)
     {
         return meta != 1 && meta != 3 && meta != 4 && meta != 15;
@@ -72,7 +72,7 @@ public class HoarFrost extends BlockIce {
     /**
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
+     * /
     public boolean isOpaqueCube()
     {
         return false;
@@ -235,3 +235,4 @@ public class HoarFrost extends BlockIce {
 
     
 }
+*/

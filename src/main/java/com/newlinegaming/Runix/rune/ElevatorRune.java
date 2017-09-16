@@ -14,7 +14,7 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 
 /**Elevator that ferries player up and down based on open spaces.  Doesn't consume energy.**/

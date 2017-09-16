@@ -4,13 +4,12 @@ package com.newlinegaming.Runix.handlers;
 import java.util.*;
 
 import com.newlinegaming.Runix.lib.LibConfig;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
@@ -25,8 +24,6 @@ import com.newlinegaming.Runix.rune.ElevatorRune;
 import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
-import com.newlinegaming.Runix.rune.GreekFireRune;
-import com.newlinegaming.Runix.rune.HoarFrostRune;
 import com.newlinegaming.Runix.rune.OracleRune;
 //import com.newlinegaming.Runix.rune.RubricRune;
 import com.newlinegaming.Runix.rune.RunecraftRune;
@@ -34,8 +31,6 @@ import com.newlinegaming.Runix.rune.TeleporterRune;
 import com.newlinegaming.Runix.rune.TorchBearerRune;
 import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.rune.ZeerixChestRune;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 
 /**
@@ -70,8 +65,8 @@ public class RuneHandler {
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
         runeRegistry.add(new OracleRune());
-        runeRegistry.add(new GreekFireRune());
-        runeRegistry.add(new HoarFrostRune());
+//        runeRegistry.add(new GreekFireRune());
+//        runeRegistry.add(new HoarFrostRune());
 //        runeRegistry.add(new DomainRune());
 //        runeRegistry.add(new LightBeamRune());
         runeRegistry.add(new ElevatorRune());
@@ -90,12 +85,12 @@ public class RuneHandler {
 
     @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent event) {
-        if(event.entityPlayer.getEntityWorld().isRemote)//runes server side only
+        if(event.getEntityPlayer().getEntityWorld().isRemote)//runes server side only
             return;
         //Note: I've noticed that torch RIGHT_CLICK when you can't place a torch only show up client side, not server side
-        if (!event.entityPlayer.getEntityWorld().isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
-            possibleRuneActivationEvent(event.entityPlayer, 
-                    new WorldXYZ(event.entityPlayer.getEntityWorld(), event.x, event.y, event.z, event.face));
+        if (!event.getEntityPlayer().getEntityWorld().isRemote && event.action == Action.RIGHT_CLICK_BLOCK && event.action != Action.RIGHT_CLICK_AIR){
+            possibleRuneActivationEvent(event.getEntityPlayer(),
+                    new WorldXYZ(event.getEntityPlayer().getEntityWorld(), event.x, event.y, event.z, event.face));
         }
     }
 

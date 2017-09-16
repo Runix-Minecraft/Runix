@@ -13,7 +13,7 @@ import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.lib.LibConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class StructureMoveWorker implements IBlockWorker {
