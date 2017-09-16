@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
@@ -86,22 +89,24 @@ public abstract class PersistentRune extends AbstractRune {
 
     private String getJsonFilePath(World world) {
 
-        String levelName = world.getWorldInfo().getWorldName();
-        String directory;
+//        String levelName = world.getWorldInfo().getWorldName();
+//        String directory;
+        File base = DimensionManager.getCurrentSaveRootDirectory();
 
 
-        try {
-//			Class
-            String subDirectory = (FMLServerHandler.instance().getServer() instanceof DedicatedServer )? "" : "saves/";
-            directory = subDirectory + levelName + "/stored_runes/";
+//        try {
+////			Class
+//            String subDirectory = (world.getSaveHandler() instanceof DedicatedServer )? "" : "saves/";
+//            directory = subDirectory + levelName + "/stored_runes/";
 
 
-        } catch (Throwable e) {
-            directory = "saves/" + levelName + "/stored_runes/";
-        }
+//        } catch (Throwable e) {
+//            directory = "saves/" + levelName + "/stored_runes/";
+//        }
+        File directory = new File(base + "/stored_runes/");
 
         //noinspection ResultOfMethodCallIgnored
-        new File(directory).mkdirs();//ensure the folder exists
+        directory.mkdirs();//ensure the folder exists
         String fileName = directory + shortClassName() + ".json";
         return fileName;
 
