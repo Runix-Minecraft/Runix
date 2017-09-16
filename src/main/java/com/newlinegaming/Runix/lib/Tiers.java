@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.lib;
 
 import com.newlinegaming.Runix.api.tier.ITier;
 import com.newlinegaming.Runix.apiimpl.API;

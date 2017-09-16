@@ -22,7 +22,7 @@ package com.newlinegaming.Runix.block;
 //
 //import com.newlinegaming.Runix.RunixMain;
 //import com.newlinegaming.Runix.SigBlock;
-//import com.newlinegaming.Runix.Tiers;
+//import com.newlinegaming.Runix.lib.Tiers;
 //import com.newlinegaming.Runix.Vector3;
 //import com.newlinegaming.Runix.WorldXYZ;
 //import com.newlinegaming.Runix.lib.LibInfo;

@@ -1,17 +1,12 @@
 package com.newlinegaming.Runix.proxys;
 
-import com.newlinegaming.Runix.Tiers;
-import com.newlinegaming.Runix.api.tier.ITier;
+import com.newlinegaming.Runix.lib.Tiers;
 import com.newlinegaming.Runix.apiimpl.API;
 import com.newlinegaming.Runix.handlers.RuneHandler;
-import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CommonProxy {
 

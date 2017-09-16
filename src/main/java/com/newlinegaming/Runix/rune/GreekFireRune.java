@@ -1,21 +1,5 @@
 package com.newlinegaming.Runix.rune;
 
-import java.util.HashSet;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-
-import com.newlinegaming.Runix.AbstractRune;
-import com.newlinegaming.Runix.Tiers;
-import com.newlinegaming.Runix.Vector3;
-import com.newlinegaming.Runix.WorldXYZ;
-import com.newlinegaming.Runix.block.ModBlock;
-import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
-
 //TODO reimplement when greek fire is added back
 
 //public class GreekFireRune extends AbstractRune {
