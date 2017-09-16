@@ -192,8 +192,15 @@ public class WorldXYZ extends BlockPos {
      * @return true if successful
      */
     @SuppressWarnings("UnusedReturnValue")
-    public boolean setBlockIdAndUpdate(IBlockState block){
+
+    public boolean setBlockIdAndUpdate(Block block){
         if(block == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
+            return false; //You cannot delete or place bedrock
+        return this.getWorld().setBlockState(this, block.getDefaultState());
+    }
+
+    public boolean setBlockIdAndUpdate(IBlockState block){
+        if(block.getBlock() == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlockState(this, block);
     }
@@ -303,15 +310,9 @@ public class WorldXYZ extends BlockPos {
 
     public boolean isSolid() {
         Material base = getBlock().getMaterial(getBlockState());
-//        getBlock().isTopSolid()
-        return base.isSolid();
+        return base.isSolid(); // possibly canPlaceBlockAt()
     }
 
-
-//    @Override
-//    public int compareTo(Object o) {
-//        return 0;
-//    }
 
     public boolean isCrushable() {
         return TierHelper.isCrushable(getBlock());
