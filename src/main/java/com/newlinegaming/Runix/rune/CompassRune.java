@@ -18,7 +18,7 @@ public class CompassRune extends AbstractRune{
     }
     
     public Block[][][] runicTemplateOriginal(){
-        Block air = Blocks.air;//This is AIR 0 on purpose
+        Block air = Blocks.AIR;//This is AIR 0 on purpose
         return new Block [][][]
             {{
               {TIER, air, air , air,TIER},
@@ -31,7 +31,7 @@ public class CompassRune extends AbstractRune{
 
     public void execute(WorldXYZ coords, EntityPlayer player){
         Block ink = getTierInkBlock(coords);
-        Block air = Blocks.air;
+        Block air = Blocks.AIR;
         Block[][][] compassOutcome = new Block[][][]
                 {{{air,ink,air},
                   {ink,air,ink},

@@ -2,7 +2,6 @@ package com.newlinegaming.Runix;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public abstract class AbstractTimedRune extends PersistentRune {
 
@@ -22,7 +21,7 @@ public abstract class AbstractTimedRune extends PersistentRune {
      */
     protected void updateEveryXTicks(int xTicks) {
     RuneTimer instance = new RuneTimer(this, xTicks);
-        FMLCommonHandler.instance().bus().register(instance);
+        MinecraftForge.EVENT_BUS.register(instance);
     }
 
     //To completely remove timers once they're done : g

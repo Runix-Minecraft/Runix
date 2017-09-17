@@ -2,21 +2,23 @@ package com.newlinegaming.Runix;
 
 import java.util.*;
 
+import com.newlinegaming.Runix.api.RunixConstants;
+import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import com.newlinegaming.Runix.block.FuelBlock;
-import com.newlinegaming.Runix.block.NoneBlock;
-import com.newlinegaming.Runix.block.SignatureBlock;
-import com.newlinegaming.Runix.block.TierBlock;
+import com.newlinegaming.Runix.block.fake.FuelBlock;
+import com.newlinegaming.Runix.block.fake.NoneBlock;
+import com.newlinegaming.Runix.block.fake.SignatureBlock;
+import com.newlinegaming.Runix.block.fake.TierBlock;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.rune.WaypointRune;
-import com.newlinegaming.Runix.utils.Util_Movement;
+import com.newlinegaming.Runix.utils.UtilMovement;
 
 /**
  * This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
@@ -106,33 +108,35 @@ public abstract class AbstractRune {
         Vector3 direction = Vector3.facing[coords.face];
         for(int tries = 0; tries < 100; ++tries) {
             if( (coords.getY() < 255 && coords.getY() > 0) // coords are in bounds
-                    && coords.getWorld().getBlock(coords.getX(), coords.getY(), coords.getZ()) == Blocks.air
-                    && coords.getWorld().getBlock(coords.getX(), coords.getY()+1, coords.getZ()) == Blocks.air)//two AIR blocks
+                    && coords.getWorld().getBlockState(new BlockPos(coords.getX(), coords.getY(), coords.getZ())) == Blocks.AIR
+                    && coords.getWorld().getBlockState(new BlockPos(coords.getX(), coords.getY()+1, coords.getZ())) == Blocks.AIR)//two AIR blocks
             {
                 for(int drop = 1; drop < 20 && coords.getY()-drop > 0; ++drop)//less than a 20 meter drop
                 {//begin scanning downward
-                    Block block = coords.getWorld().getBlock(coords.getX(), coords.getY() - drop, coords.getZ());
-                    if(block != Blocks.air)
+                    Block block = coords.getWorld().getBlockState(new BlockPos(coords.getX(), coords.getY() - drop, coords.getZ())).getBlock();
+                    if(block != Blocks.AIR)
                     { //We found something not AIR
-                        if (block == Blocks.lava || block == Blocks.flowing_lava//check for Lava, fire, and void
-                                || block == Blocks.fire){//if we teleport now, the player will land on an unsafe block
+                        if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA//check for Lava, fire, and void
+                                || block == Blocks.FIRE){//if we teleport now, the player will land on an unsafe block
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
                         else if(coords.offset(0, -drop, 0).isSolid()){ //we're going to land on something solid, without dying
                             //distance should be calculated uses the Nether -> Overworld transform
                             WorldXYZ dCalc = new WorldXYZ(player);
-                            if(player.getEntityWorld().provider.isHellWorld  && !coords.getWorld().provider.isHellWorld){ //leaving the Nether
-                                dCalc.posX *= 8;
-                                dCalc.posZ *= 8;
-                            }else if (!player.getEntityWorld().provider.isHellWorld  && coords.getWorld().provider.isHellWorld){// going to the Nether
-                                dCalc.posX /= 8;
-                                dCalc.posZ /= 8;
+                            int x = dCalc.getX();
+                            int z = dCalc.getZ();
+                            if(player.world.provider.isNether()  && !coords.getWorld().provider.isNether()){ //leaving the Nether
+                                x *= 8;
+                                z *= 8;
+                            }else if (!player.world.provider.isNether()  && coords.getWorld().provider.isNether()){// going to the Nether
+                                x /= 8;
+                                z /= 8;
                             }
                             //spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
     
-                            if(!coords.getWorld().equals(player.getEntityWorld()))// && !subject.getEntityWorld().isRemote)
+                            if(!coords.getWorld().equals(player.world))// && !subject.worldObj.isRemote)
                                 player.changeDimension(coords.getWorld().provider.getDimension());
-                            player.setPositionAndUpdate(coords.getX()+0.5, coords.getY(), coords.getZ()+0.5);
+                            player.setPositionAndUpdate(x + 0.5, coords.getY(), z + 0.5);
                             return;
                         }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
                     }
@@ -175,8 +179,8 @@ public abstract class AbstractRune {
 
     public static void aetherSay(EntityPlayer player, String message) {
 
-        if(player != null && !player.getEntityWorld().isRemote) {
-            player.addChatMessage(new ChatComponentText(message));
+        if(player != null && !player.world.isRemote) {
+            player.sendMessage(new TextComponentString(message));
         }else{
             System.out.println(message);
         }
@@ -185,7 +189,8 @@ public abstract class AbstractRune {
     public void aetherSay(World worldObj, String message) {
 
         if(!worldObj.isRemote) { //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
-            Minecraft.getMinecraft().thePlayer.sendChatMessage(message); 
+//            FMLServerHandler.instance().getServer().getP.sendMessage(new TextComponentString(message));
+//            FMLCommonHandler.instance().
         }else{
             System.out.println(message);
         }
@@ -207,7 +212,7 @@ public abstract class AbstractRune {
                 return null;
         } else {
             for(int nTurns = 0; nTurns < 4; ++nTurns) {//90 degree turns 
-                HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(shape, coords, nTurns);
+                HashMap<WorldXYZ, SigBlock> newShape = UtilMovement.rotateStructureInMemory(shape, coords, nTurns);
                 if( runeOrientationMatches(coords, newShape) ){
                     //change coords to be pointing in the detected direction, [array lookup]
                     switch(coords.face){
@@ -230,7 +235,7 @@ public abstract class AbstractRune {
 
     private boolean runeOrientationMatches(WorldXYZ coords, HashMap<WorldXYZ, SigBlock> shape) {
         Block ink = getTierInkBlock(coords);
-        if(ink == Blocks.air)
+        if(ink == Blocks.AIR)
             return false; //Tier blocks cannot be AIR
 //        printPattern(shape, coords);
         for (WorldXYZ target : shape.keySet()) 
@@ -238,7 +243,7 @@ public abstract class AbstractRune {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
 //            System.out.println(patternID.blockID + " should be " + blockID);
-            switch(patternID.blockID.getUnlocalizedName())
+            switch(patternID.getBlock().getUnlocalizedName())
             { // Handle special Template Values
                 case "tile.NONE": 
                     if( blockID == ink )
@@ -254,7 +259,7 @@ public abstract class AbstractRune {
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
                 case "tile.FUEL":
-                    if( !target.equals(coords) || blockID == Blocks.air )//key block must be center block and not AIR 
+                    if( !target.equals(coords) || blockID == Blocks.AIR)//key block must be center block and not AIR
                         return false;
                     break;
                 default:
@@ -273,7 +278,7 @@ public abstract class AbstractRune {
      */
     int getTier(WorldXYZ coords){
         Block blockID = getTierInkBlock(coords);
-        return blockID != null ? Tiers.getTier(blockID) : 1;
+        return blockID != null ? TierHelper.getTierNumber(blockID) : 1;
     }
     
     protected Block getTierInkBlock(WorldXYZ coords) {
@@ -290,7 +295,7 @@ public abstract class AbstractRune {
      * Call accept() once you are sure the rune will be executed to tell the player it was successful.
      */
     protected void accept(EntityPlayer player) {
-        aetherSay(player, EnumChatFormatting.GREEN + getRuneName() + " Accepted.");
+        aetherSay(player, TextFormatting.GREEN + getRuneName() + " Accepted.");
     }
 
     /**This will return an empty list if the activation would tear a structure in two. */
@@ -313,7 +318,7 @@ public abstract class AbstractRune {
                 for(WorldXYZ n : neighbors) {
                     Block blockID = n.getBlock();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
-                    if( !workingSet.contains(n) && !Tiers.isNatural(blockID) ) {
+                    if( !workingSet.contains(n) && !TierHelper.isNatural(blockID) ) {
                         workingSet.add(n);
                         nextEdge.add(n);
                     }
@@ -365,7 +370,7 @@ public abstract class AbstractRune {
                             target = centerPoint;
                     }
                     if(pattern[y][z][x] != NONE) { //do not include NONE blocks in the runic template at all.
-                        shape.put(target, new SigBlock(pattern[y][z][x], 0));
+                        shape.put(target, new SigBlock(pattern[y][z][x]));
                     }
                 }
             }
@@ -383,25 +388,25 @@ public abstract class AbstractRune {
         for( WorldXYZ target : shape.keySet()){
             //for each block, get blockID
             Block blockID = target.getBlock();
-            energy += Tiers.getEnergy(blockID);//convert ID into energy
-            target.setBlockIdAndUpdate(Blocks.air);// delete the block
+            energy += TierHelper.getEnergy(blockID);//convert ID into energy
+            target.setBlockIdAndUpdate(Blocks.AIR.getDefaultState());// delete the block
         }
         System.out.println(getRuneName() + " energy: " + energy);
     }
 
     protected void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
-        if( blockID == Blocks.air )//this is actually breaking, not paying for air
-            spendEnergy(Tiers.blockBreakCost);
+        if( blockID == Blocks.AIR)//this is actually breaking, not paying for air
+            spendEnergy(RunixConstants.blockBreakCost);
         else
-            spendEnergy(Tiers.getEnergy(blockID));
-        coords.setBlockIdAndUpdate(blockID);
+            spendEnergy(TierHelper.getEnergy(blockID));
+        coords.setBlockIdAndUpdate(blockID.getDefaultState());
     }
 
     protected void setBlockIdAndUpdate(WorldXYZ destination, SigBlock sourceBlock) throws NotEnoughRunicEnergyException {
-        if( sourceBlock.blockID == Blocks.air )//this is actually breaking, not paying for air
-            spendEnergy(Tiers.blockBreakCost);
+        if(sourceBlock.getBlock() == Blocks.AIR )//this is actually breaking, not paying for air
+            spendEnergy(RunixConstants.blockBreakCost);
         else
-            spendEnergy(Tiers.getEnergy(sourceBlock.blockID));
+            spendEnergy(TierHelper.getEnergy(sourceBlock.getBlock()));
         destination.setBlockId(sourceBlock);
     }
     
@@ -419,7 +424,7 @@ public abstract class AbstractRune {
     /**This is a minature convenience version of moveShape(moveMapping) for single blocks */
     protected void moveBlock(WorldXYZ coords, WorldXYZ newPos) {
         newPos.setBlockId(coords.getSigBlock());
-        coords.setBlockIdAndUpdate(Blocks.air);
+        coords.setBlockIdAndUpdate(Blocks.AIR.getDefaultState());
 
         HashMap<WorldXYZ, WorldXYZ> moveMapping = new HashMap<>(1, 1.0f);//tiny HashMap!
         moveMapping.put(coords, newPos);
@@ -427,9 +432,9 @@ public abstract class AbstractRune {
     }
 
     boolean consumeFuelBlock(WorldXYZ coords) {
-        if(Tiers.getTier(coords.getBlock()) > 1){
-            energy += Tiers.getEnergy(coords.getBlock());
-            coords.setBlockIdAndUpdate(Blocks.cobblestone);//we don't want air sitting here
+        if(TierHelper.getTierNumber(coords.getBlock()) > 1){
+            energy += TierHelper.getEnergy(coords.getBlock());
+            coords.setBlockIdAndUpdate(Blocks.COBBLESTONE.getDefaultState());//we don't want air sitting here
             return true;
         }
         return false;

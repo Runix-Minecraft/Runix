@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
@@ -21,10 +20,9 @@ import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.RenderHelper;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class RubricRune extends PersistentRune {
@@ -83,20 +81,44 @@ public class RubricRune extends PersistentRune {
 	}
 
 
+//    @SubscribeEvent
+//    public void bookClickEvent(PlayerInteractEvent event) {
+//        String writtenBookName = getWrittenBookName(event.entityPlayer);
+//        if (event.action == Action.RIGHT_CLICK_BLOCK && writtenBookName != null) {
+//            EntityPlayer poker = event.entityPlayer;
+//            WorldXYZ coords = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
+//
+//            if(writtenBookName.equals(instanceName)) {
+//                event.setCanceled(true);
+//                //          try {
+//                unpackStructure(poker, coords);
+//                //          } catch (NotEnoughRunicEnergyException e) {
+//                //              reportOutOfGas(poker);
+//                //ensure recall is placed back
+//                //          }
+//                //TODO fix the energy requirements
+//                //consume Rune for energy
+//                //transfer energy to Rubric rune
+//                    //if not enough energy, Rubric can keep the energy, just ask for more
+//            }
+//        }
+//    }
+
     @SubscribeEvent
-    public void bookClickEvent(PlayerInteractEvent event) {
-        String writtenBookName = getWrittenBookName(event.entityPlayer);
-        if (event.action == Action.RIGHT_CLICK_BLOCK && writtenBookName != null) {
-            EntityPlayer poker = event.entityPlayer;
-            WorldXYZ coords = new WorldXYZ(event.entity.getEntityWorld(), event.x, event.y, event.z);
-            
-            if(writtenBookName.equals(instanceName)) {
-                event.setCanceled(true);
-                //          try {
-                unpackStructure(poker, coords);
+    public void bookClickEvent(PlayerInteractEvent.RightClickBlock e) {
+	    String writtenBookName = getWrittenBookName(e.getEntityPlayer());
+
+	    if (!e.getWorld().isRemote && writtenBookName != null) {
+	        EntityPlayer player = e.getEntityPlayer();
+	        WorldXYZ coords = new WorldXYZ(e.getWorld(), e.getPos());
+
+	        if(writtenBookName.equals(instanceName)) {
+//                event.setCanceled(true);
+//                          try {
+//                unpackStructure(poker, coords);
                 //          } catch (NotEnoughRunicEnergyException e) {
                 //              reportOutOfGas(poker);
-                //ensure recall is placed back 
+                //ensure recall is placed back
                 //          }
                 //TODO fix the energy requirements
                 //consume Rune for energy
@@ -119,7 +141,7 @@ public class RubricRune extends PersistentRune {
     private HashMap<Vector3, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
         HashMap<Vector3, SigBlock> fullData = new HashMap<>();
         for(WorldXYZ point : shape){
-            if(point.getBlock() != Blocks.air){
+            if(point.getBlock() != Blocks.AIR){
                 Vector3 offset = new Vector3(location, point);
                 fullData.put(offset, point.getSigBlock());
             }
@@ -140,8 +162,8 @@ public class RubricRune extends PersistentRune {
 	}
 	
 	private String getWrittenBookName(EntityPlayer poker) {
-	    ItemStack toolused = poker.getCurrentEquippedItem();
-        if (toolused != null && toolused.getItem() == Items.written_book) {
+	    ItemStack toolused = poker.getHeldItemMainhand();
+        if (toolused != null && toolused.getItem() == Items.WRITTEN_BOOK) {
             return toolused.getDisplayName();
         }
         return null;

@@ -30,9 +30,9 @@ public class RenderHelper {
             progress += 0.02f;//animation timer
         else
             progress -= 0.04f;
-        double doubleX = player.getX() - 0.5;
-        double doubleY = player.getY() + 0.1;
-        double doubleZ = player.getZ() - 0.5;
+        double doubleX = player.getPosition().getX() - 0.5;
+        double doubleY = player.getPosition().getY() + 0.1;
+        double doubleZ = player.getPosition().getZ() - 0.5;
         GL11.glPushMatrix();
             GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
             GL11.glColor3ub((byte)R,(byte)G,(byte)B);

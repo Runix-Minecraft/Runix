@@ -1,16 +1,16 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-
+import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.server.FMLServerHandler;
+
+import java.util.ArrayList;
 
 
 /**
@@ -43,6 +43,12 @@ public class WorldXYZ extends BlockPos {
         super(x, y, z);
         worldObj = world;
         dimensionID = world.provider.getDimension();
+    }
+
+    public WorldXYZ(World world, BlockPos pos) {
+        super(pos);
+        worldObj = world;
+
     }
 
     public WorldXYZ(World world, int x, int y, int z, int face) {
@@ -187,8 +193,14 @@ public class WorldXYZ extends BlockPos {
      */
     @SuppressWarnings("UnusedReturnValue")
 
-    public boolean setBlockIdAndUpdate(IBlockState block){
+    public boolean setBlockIdAndUpdate(Block block){
         if(block == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
+            return false; //You cannot delete or place bedrock
+        return this.getWorld().setBlockState(this, block.getDefaultState());
+    }
+
+    public boolean setBlockIdAndUpdate(IBlockState block){
+        if(block.getBlock() == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlockState(this, block);
     }
@@ -298,18 +310,12 @@ public class WorldXYZ extends BlockPos {
 
     public boolean isSolid() {
         Material base = getBlock().getMaterial(getBlockState());
-//        getBlock().isTopSolid()
-        return base.isSolid();
+        return base.isSolid(); // possibly canPlaceBlockAt()
     }
 
 
-//    @Override
-//    public int compareTo(Object o) {
-//        return 0;
-//    }
-
     public boolean isCrushable() {
-        return Tiers.isCrushable(getBlock());
+        return TierHelper.isCrushable(getBlock());
     }
 
 }

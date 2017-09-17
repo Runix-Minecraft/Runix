@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.newlinegaming.Runix.helper.TierHelper;
+import com.newlinegaming.Runix.utils.UtilMovement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -13,10 +15,8 @@ import com.newlinegaming.Runix.AbstractTimedRune;
 import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.SigBlock;
-import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
-import com.newlinegaming.Runix.utils.Util_Movement;
 
 public class BuildMasterRune extends AbstractTimedRune {
     private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
@@ -41,8 +41,8 @@ public class BuildMasterRune extends AbstractTimedRune {
             aetherSay(poker, "Builder is turned off.");
         }
         //this code is a demo of rotation patterns, to use it comment out the lines above
-//        HashMap<WorldXYZ, SigBlock> actualBlocks = Util_Movement.scanBlocksInShape(runicFormulae(coords).keySet());
-//        HashMap<WorldXYZ, SigBlock> newShape = Util_Movement.rotateStructureInMemory(actualBlocks, coords, 1);
+//        HashMap<WorldXYZ, SigBlock> actualBlocks = UtilMovement.scanBlocksInShape(runicFormulae(coords).keySet());
+//        HashMap<WorldXYZ, SigBlock> newShape = UtilMovement.rotateStructureInMemory(actualBlocks, coords, 1);
 //        stampBlockPattern(newShape, poker);
     }
 
@@ -66,7 +66,7 @@ public class BuildMasterRune extends AbstractTimedRune {
                 SigBlock sourceBlock = origin.getSigBlock();
                 Block destinationBlock = destination.getBlock();
                 if( !sourceBlock.equals(destinationBlock)) {
-                    if(Tiers.isCrushable(destinationBlock)) {
+                    if(TierHelper.isCrushable(destinationBlock)) {
                         try {
                             setBlockIdAndUpdate(destination, sourceBlock);//no physics?
                         } catch (NotEnoughRunicEnergyException e) {
@@ -83,10 +83,10 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     private HashMap<WorldXYZ,WorldXYZ> findFirstMissingBlock(HashSet<WorldXYZ> structure) {
         WorldXYZ currentLayer = location;
-        HashMap<WorldXYZ, WorldXYZ> buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
+        HashMap<WorldXYZ, WorldXYZ> buildMapping = UtilMovement.displaceShape(structure, location, currentLayer);
         for(int stepCount = 0; stepCount < 150 && partialTemplateMatch(buildMapping); ++stepCount) {
             currentLayer = currentLayer.offset(forwards);
-            buildMapping = Util_Movement.displaceShape(structure, location, currentLayer);
+            buildMapping = UtilMovement.displaceShape(structure, location, currentLayer);
         }
         
         if(anyCrushable(buildMapping.values()))//any space to build?
@@ -114,7 +114,7 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     private boolean anyCrushable(Collection<WorldXYZ> points) {
         for( WorldXYZ point : points) {
-            if(Tiers.isCrushable(point.getBlock()))
+            if(TierHelper.isCrushable(point.getBlock()))
                 return true;
         }
         return false;
@@ -130,7 +130,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         HashSet<WorldXYZ> workingSet = new HashSet<>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<>();
-        if(startPoint.getBlock() == Blocks.air) //this is a no go
+        if(startPoint.getBlock() == Blocks.AIR) //this is a no go
             return workingSet;
         workingSet.add(startPoint);
         nextEdge.add(startPoint);
@@ -147,7 +147,7 @@ public class BuildMasterRune extends AbstractTimedRune {
                 for(WorldXYZ n : neighbors) {
                     Block blockID = n.getBlock();
                     // && blockID != 0 && blockID != 1){  // this is the Fun version!
-                    if( !workingSet.contains(n) && blockID != Blocks.air ) {
+                    if( !workingSet.contains(n) && blockID != Blocks.AIR) {
                         workingSet.add(n);
                         nextEdge.add(n);
                     }
@@ -169,9 +169,9 @@ public class BuildMasterRune extends AbstractTimedRune {
 
     @Override
     protected Block[][][] runicTemplateOriginal() {
-        Block IRON = Blocks.iron_block;
-        Block SBRK = Blocks.stonebrick;
-        Block REDB = Blocks.redstone_block;
+        Block IRON = Blocks.IRON_BLOCK;
+        Block SBRK = Blocks.STONEBRICK;
+        Block REDB = Blocks.REDSTONE_BLOCK;
         return new Block[][][] {{
             {SBRK,REDB, SBRK}, //TODO template from wiki
             {IRON,FUEL ,IRON},

@@ -1,26 +1,27 @@
 package com.newlinegaming.Runix;
 
+import com.google.gson.Gson;
+import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.helper.LogHelper;
+import com.newlinegaming.Runix.utils.UtilMovement;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Save;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.server.FMLServerHandler;
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent.Load;
-import net.minecraftforge.event.world.WorldEvent.Save;
-
-import org.apache.commons.io.FileUtils;
-
-import com.google.gson.Gson;
-import com.newlinegaming.Runix.handlers.RuneHandler;
-import com.newlinegaming.Runix.helper.LogHelper;
-import com.newlinegaming.Runix.utils.Util_Movement;
 
 public abstract class PersistentRune extends AbstractRune {
 
@@ -45,7 +46,7 @@ public abstract class PersistentRune extends AbstractRune {
     public void saveActiveRunes(Save saveEvent) {
         if(getActiveMagic().isEmpty())
             return;
-        String fileName = getJsonFilePath(saveEvent.world);//  ex:TorcherBearerRune.json
+        String fileName = getJsonFilePath(saveEvent.getWorld());//  ex:TorcherBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
             Gson converter = new Gson();
@@ -63,7 +64,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     public void loadRunes(Load loadEvent) {
-        String fileName = getJsonFilePath(loadEvent.world);
+        String fileName = getJsonFilePath(loadEvent.getWorld());
         try {
             ArrayList<PersistentRune> newList = new ArrayList<>();
             List<String> json = FileUtils.readLines(new File(fileName));
@@ -86,22 +87,24 @@ public abstract class PersistentRune extends AbstractRune {
 
     private String getJsonFilePath(World world) {
 
-        String levelName = world.getWorldInfo().getWorldName();
-        String directory;
+//        String levelName = world.getWorldInfo().getWorldName();
+//        String directory;
+        File base = DimensionManager.getCurrentSaveRootDirectory();
 
 
-        try {
-//			Class
-            String subDirectory = ( MinecraftServer.getServer() instanceof DedicatedServer )? "" : "saves/";
-            directory = subDirectory + levelName + "/stored_runes/";
+//        try {
+////			Class
+//            String subDirectory = (world.getSaveHandler() instanceof DedicatedServer )? "" : "saves/";
+//            directory = subDirectory + levelName + "/stored_runes/";
 
 
-        } catch (Throwable e) {
-            directory = "saves/" + levelName + "/stored_runes/";
-        }
+//        } catch (Throwable e) {
+//            directory = "saves/" + levelName + "/stored_runes/";
+//        }
+        File directory = new File(base + "/stored_runes/");
 
         //noinspection ResultOfMethodCallIgnored
-        new File(directory).mkdirs();//ensure the folder exists
+        directory.mkdirs();//ensure the folder exists
         String fileName = directory + shortClassName() + ".json";
         return fileName;
 
@@ -111,6 +114,7 @@ public abstract class PersistentRune extends AbstractRune {
      * There's no way to have a static field in an abstract class so we use a getter instead
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>();
      */
+
     public abstract ArrayList<PersistentRune> getActiveMagic();
 
     /**
@@ -127,7 +131,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     public void execute(WorldXYZ coords, EntityPlayer activator, Vector3 forward) {
-        if(activator.getEntityWorld().isRemote)//runes server side only
+        if(activator.world.isRemote)//runes server side only
             return;
         PersistentRune match = getOrCreateRune(coords, activator);
         if (match != null) {
@@ -191,7 +195,7 @@ public abstract class PersistentRune extends AbstractRune {
      * @param coords center block
      */
     protected void poke(EntityPlayer player, WorldXYZ coords){
-        if(player.getEntityWorld().isRemote)
+        if(player.world.isRemote)
             return;
         if(oneRunePerPerson()){
             consumeRune(coords);
@@ -220,7 +224,7 @@ public abstract class PersistentRune extends AbstractRune {
      */
     @Override
     protected void accept(EntityPlayer player) {
-        aetherSay(player, EnumChatFormatting.GREEN + getRuneName()+"_"+ getActiveMagic().size() + " Accepted.");
+        aetherSay(player, TextFormatting.GREEN + getRuneName()+"_"+ getActiveMagic().size() + " Accepted.");
     }
 
     @Override
@@ -282,12 +286,17 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     protected EntityPlayer getPlayer() {
-    try {
-        for (Object playerObj : MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
-        if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
-            return (EntityPlayer) playerObj;
-        }
-    } catch (NullPointerException ex) {
+
+         try {
+
+
+             if (!location.getWorld().isRemote) {
+                 for (Object playerObj : FMLServerHandler.instance().getServer().getPlayerList().getPlayers()) { //TODO relook.
+                  if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
+                      return (EntityPlayer) playerObj;
+                 }
+             }
+         } catch (NullPointerException ex) {
         //Silent fail
     }
         return null;
@@ -362,7 +371,7 @@ public abstract class PersistentRune extends AbstractRune {
 
     protected void moveStructureAndPlayer(EntityPlayer player, WorldXYZ destination, HashSet<WorldXYZ> structure) {
             Vector3 directionOfScanning = Vector3.facing[destination.face];
-            WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
+            WorldXYZ destinationCenter = UtilMovement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
             if(destinationCenter != null) {
                 teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
             }else {

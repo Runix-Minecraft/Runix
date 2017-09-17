@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.WorldXYZ;
 
-public class Util_SphericalFunctions {
+public class UtilSphericalFunctions {
 
     public static boolean radiusCheck(int x, int y, int z, int rd) {
         return ((x * x) + (y * y) + (z * z) < ((rd + 0.5) * (rd + 0.5)));
