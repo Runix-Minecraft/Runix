@@ -31,16 +31,16 @@ public class TorchBearerRune extends AbstractTimedRune {
 
     @Override
     protected void onUpdateTick(EntityPlayer subject) {
-        if(subject.equals(getPlayer()) && !subject.world.isRemote) {
-            World world = subject.world;//sphere can be optimized to donut
+        if(subject.equals(getPlayer()) && !subject.getEntityWorld().isRemote) {
+            World world = subject.getEntityWorld();//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
             HashSet<WorldXYZ> sphere = UtilSphericalFunctions.getShell(location, 1);
             for(WorldXYZ newPos : sphere) {
                 if(newPos.getBlock().equals(Blocks.AIR) &&
                     newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(newPos.getBlockState(), world, newPos.down()) && (
                         (world.isDaytime() && world.getBlockLightOpacity(newPos) < 4) ||//day time checking == caves
-                        (!world.isDaytime() && world.getLightBrightness(newPos) < 4) ))//adjustable
-                {//TODO look for 1.12 equivalent
+                        (!world.isDaytime() && world.getLight(newPos) < 4) ))//adjustable
+                {
                     try {
                         setBlockIdAndUpdate(newPos, Blocks.TORCH);//set torch
 //                        aetherSay(subject, Integer.toString(world.getBlockLightValue(newPos.getX(), newPos.getY(), newPos.getZ()))+

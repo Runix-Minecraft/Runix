@@ -25,7 +25,7 @@ public class FerrousWheelRune extends PersistentRune {
 
     @Override
     public void execute(WorldXYZ coords, EntityPlayer activator) {
-        if(!activator.world.isRemote){//server only
+        if(!activator.getEntityWorld().isRemote){//server only
             super.execute(coords, activator);
         }
     }
@@ -33,7 +33,7 @@ public class FerrousWheelRune extends PersistentRune {
     
     @Override
     protected void poke(EntityPlayer player, WorldXYZ coords) {
-        if(player.world.isRemote)
+        if(player.getEntityWorld().isRemote)
             return;
         consumeFuelBlock(coords);
         if( !guestList.contains(player.getUniqueID()) )

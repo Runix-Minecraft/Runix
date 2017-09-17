@@ -105,17 +105,16 @@ public class RubricRune extends PersistentRune {
 //    }
 
     @SubscribeEvent
-    public void bookClickEvent(PlayerInteractEvent.RightClickBlock e) {
-	    String writtenBookName = getWrittenBookName(e.getEntityPlayer());
-
-	    if (!e.getWorld().isRemote && writtenBookName != null) {
-	        EntityPlayer player = e.getEntityPlayer();
-	        WorldXYZ coords = new WorldXYZ(e.getWorld(), e.getPos());
-
-	        if(writtenBookName.equals(instanceName)) {
-//                event.setCanceled(true);
-//                          try {
-//                unpackStructure(poker, coords);
+    public void bookClickEvent(PlayerInteractEvent.RightClickBlock event) {
+        String writtenBookName = getWrittenBookName(event.getEntityPlayer());
+        if (writtenBookName != null) {
+            EntityPlayer poker = event.getEntityPlayer();
+            WorldXYZ coords = new WorldXYZ(event.getPos());
+            
+            if(writtenBookName.equals(instanceName)) {
+                event.setCanceled(true);
+                //          try {
+                unpackStructure(poker, coords);
                 //          } catch (NotEnoughRunicEnergyException e) {
                 //              reportOutOfGas(poker);
                 //ensure recall is placed back
@@ -162,9 +161,10 @@ public class RubricRune extends PersistentRune {
 	}
 	
 	private String getWrittenBookName(EntityPlayer poker) {
-	    ItemStack toolused = poker.getHeldItemMainhand();
-        if (toolused != null && toolused.getItem() == Items.WRITTEN_BOOK) {
-            return toolused.getDisplayName();
+	    for( ItemStack toolused : poker.getHeldEquipment()) {
+            if (toolused != null && toolused.getItem() == Items.WRITTEN_BOOK) {
+                return toolused.getDisplayName();
+            }
         }
         return null;
     }

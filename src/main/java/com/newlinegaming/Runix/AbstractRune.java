@@ -121,22 +121,9 @@ public abstract class AbstractRune {
                             break; //break out of the drop loop and proceed on scanning a new location
                         }
                         else if(coords.offset(0, -drop, 0).isSolid()){ //we're going to land on something solid, without dying
-                            //distance should be calculated uses the Nether -> Overworld transform
-                            WorldXYZ dCalc = new WorldXYZ(player);
-                            int x = dCalc.getX();
-                            int z = dCalc.getZ();
-                            if(player.world.provider.isNether()  && !coords.getWorld().provider.isNether()){ //leaving the Nether
-                                x *= 8;
-                                z *= 8;
-                            }else if (!player.world.provider.isNether()  && coords.getWorld().provider.isNether()){// going to the Nether
-                                x /= 8;
-                                z /= 8;
-                            }
-                            //spendEnergy((int)( coords.getDistance(dCalc) * Tiers.movementPerMeterCost));
-    
                             if(!coords.getWorld().equals(player.world))// && !subject.worldObj.isRemote)
                                 player.changeDimension(coords.getWorld().provider.getDimension());
-                            player.setPositionAndUpdate(x + 0.5, coords.getY(), z + 0.5);
+                            player.setPositionAndUpdate(coords.getX() + 0.5, coords.getY(), coords.getZ() + 0.5);
                             return;
                         }//we've found something that's not AIR, but it's not dangerous so just pass through it and keep going
                     }
@@ -179,7 +166,7 @@ public abstract class AbstractRune {
 
     public static void aetherSay(EntityPlayer player, String message) {
 
-        if(player != null && !player.world.isRemote) {
+        if(player != null && !player.getEntityWorld().isRemote) {
             player.sendMessage(new TextComponentString(message));
         }else{
             System.out.println(message);

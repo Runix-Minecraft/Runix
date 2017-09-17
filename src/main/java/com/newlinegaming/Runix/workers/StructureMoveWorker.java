@@ -15,7 +15,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-
 public class StructureMoveWorker implements IBlockWorker {
 
     private LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = null;
