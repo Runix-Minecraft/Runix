@@ -9,4 +9,8 @@ public class LibInfo {
 
     public static final String CLIENT_PROXY = "com.newlinegaming.Runix.proxys.ClientProxy";
     public static final String COMMON_PROXY = "com.newlinegaming.Runix.proxys.CommonProxy";
+
+    public static String modIdPrefix(String name){
+        return MOD_ID + ":" + name;
+    }
 }

@@ -230,22 +230,23 @@ public abstract class AbstractRune {
             Block blockID = target.getBlock();
             SigBlock patternID = shape.get(target);
 //            System.out.println(patternID.blockID + " should be " + blockID);
-            switch(patternID.getBlock().getUnlocalizedName())
+            String patterName = patternID.getBlock().getUnlocalizedName();
+            switch(patterName)
             { // Handle special Template Values
-                case "tile.NONE": 
+                case "tile.runix:NONE":
                     if( blockID == ink )
                         return false; 
                     break;
-                case "tile.TIER":
+                case "tile.runix:TIER":
                     if( blockID != ink ){
                         return false; //inconsistent Tier block
                     }
                     break;
-                case "tile.SIGR": 
+                case "tile.runix:SIGR":
                     if( blockID == ink )
                         return false; //you can't use your ink as part of your signature, it ruins the shape
                     break;
-                case "tile.FUEL":
+                case "tile.runix:FUEL":
                     if( !target.equals(coords) || blockID == Blocks.AIR)//key block must be center block and not AIR
                         return false;
                     break;

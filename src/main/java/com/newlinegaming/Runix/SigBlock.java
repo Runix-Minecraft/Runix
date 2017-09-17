@@ -19,7 +19,7 @@ public class SigBlock {
 
     public SigBlock(Block block){
         this.block = block;
-        this.state = getBlock().getDefaultState();
+        this.state = block.getDefaultState();
     }
 
     public Block getBlock() {
