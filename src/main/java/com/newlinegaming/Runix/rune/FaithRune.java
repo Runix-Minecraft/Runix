@@ -1,19 +1,18 @@
 package com.newlinegaming.Runix.rune;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-
+import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.PersistentRune;
+import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.api.Constants;
+import com.newlinegaming.Runix.block.ModBlock;
+import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.Tiers;
-import com.newlinegaming.Runix.block.ModBlock;
-import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
-import com.newlinegaming.Runix.WorldXYZ;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class FaithRune extends PersistentRune{
 
@@ -32,7 +31,7 @@ public class FaithRune extends PersistentRune{
     }
 
     public Block[][][] runicTemplateOriginal(){
-        Block gold = Blocks.gold_block;
+        Block gold = Blocks.GOLD_BLOCK;
         return new Block[][][] {{
             {NONE,NONE,NONE},
             {NONE,gold,NONE},
@@ -54,7 +53,7 @@ public class FaithRune extends PersistentRune{
                 setBlockIdAndUpdate(coords, ModBlock.fakeGoldBlock); //Gold block is to be a permanent marker
             } catch (NotEnoughRunicEnergyException e) {}
             HashSet<WorldXYZ> tSphere = fullStructure();
-            energy -= tSphere.size() * Tiers.blockMobilizationCost;
+            energy -= tSphere.size() * Constants.blockMobilizationCost;
             aetherSay(poker, "Created a Faith Sphere with a radius of "+ radius + " and " + sphere.size() + " blocks.");
             bounceIsland();
         }
@@ -81,7 +80,7 @@ public class FaithRune extends PersistentRune{
     @Override
     public LinkedHashSet<WorldXYZ> fullStructure() {
         if(sphere == null)
-            sphere = Util_SphericalFunctions.getSphere(location, radius);
+            sphere = UtilSphericalFunctions.getSphere(location, radius);
         return sphere;
     }
     

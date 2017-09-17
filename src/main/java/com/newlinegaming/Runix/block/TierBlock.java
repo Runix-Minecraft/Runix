@@ -8,7 +8,7 @@ public class TierBlock extends Block
 
     public TierBlock()
     {
-        super(Material.air);
+        super(Material.AIR);
         setBlockName("TIER");
     }
 

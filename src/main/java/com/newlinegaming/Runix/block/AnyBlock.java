@@ -9,7 +9,7 @@ public class AnyBlock extends Block
 
     public AnyBlock()
     {
-        super(Material.air);
+        super(Material.AIR);
         setBlockName("ANY");
     }
 

@@ -1,11 +1,12 @@
 package com.newlinegaming.Runix.workers;
 
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class ConductanceWorker implements IBlockWorker {
 
     @Override
-    public void doWork(ServerTickEvent event) {
+    public void doWork(TickEvent.ServerTickEvent event) {
         // TODO Auto-generated method stub
 
     }

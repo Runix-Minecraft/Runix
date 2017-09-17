@@ -19,7 +19,7 @@ public class LightBeamRune extends AbstractRune {
 
     @Override
     public Block[][][] runicTemplateOriginal() {
-        Block GLOW = Blocks.glowstone;
+        Block GLOW = Blocks.GLOWSTONE;
         return new Block[][][] {{
             {TIER, GLOW, TIER},
             {GLOW, TIER, GLOW},
@@ -36,7 +36,7 @@ public class LightBeamRune extends AbstractRune {
     @Override
     public void execute(WorldXYZ coords, EntityPlayer player) {
         Block INK = getTierInkBlock(coords);
-        Block GLOW = Blocks.glowstone;
+        Block GLOW = Blocks.GLOWSTONE;
         Block FAKE = ModBlock.lightBeam;
         Block[][][] outcome = new Block[][][]{{
             {INK, GLOW, INK},

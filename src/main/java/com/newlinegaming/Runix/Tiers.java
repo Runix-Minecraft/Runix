@@ -1,13 +1,13 @@
 package com.newlinegaming.Runix;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.newlinegaming.Runix.api.tier.ITier;
+import com.newlinegaming.Runix.apiimpl.API;
+import com.newlinegaming.Runix.apiimpl.tier.Tier;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
-import com.newlinegaming.Runix.block.ModBlock;
-import com.newlinegaming.Runix.lib.BlockDescription;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Tiers {
     
@@ -16,9 +16,9 @@ public class Tiers {
     
     //Cost category values from the Spreadsheet
     //https://docs.google.com/spreadsheet/ccc?key=0AjI7rA2yIcubdG1XbTkxcTg5ZlJkSU1UU3NjOGhnQ0E&usp=drive_web#gid=0
-    public static final float blockMobilizationCost = 4; // Moving a block doesn't cost energy per move, making
+//    public static final float blockMobilizationCost = 4; // Moving a block doesn't cost energy per move, making
     // a block mobile has a one time up front energy cost i.e. Faith, Phase Blocks, Runecraft is tricky
-    public static final int blockBreakCost = 2;
+//    public static final int blockBreakCost = 2;
     public static final int breakEvenBlockBreakCost = 6; //If you wanted something like Greek Fire to be energy neutral
     //after mining and converting all valuable blocks to energy.
     public static final float movementPerMeterCost = 0.22f;
@@ -26,12 +26,13 @@ public class Tiers {
     private static ArrayList<Block> naturalBlocks;
     private static ArrayList<Block> moveSensitiveBlocks;
     private static ArrayList<Block> crushableBlocks;
-    private static final HashMap<Block, BlockDescription> energyRegistry = new HashMap<>();
+    private static final HashMap<Block, ITier> energyRegistry = new HashMap<>();
     
     @SuppressWarnings("serial")
     public Tiers(){
         /* naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
          */
+
         naturalBlocks = new ArrayList<Block>(){{
             add(Blocks.AIR);
             add(Blocks.WATER);
@@ -126,7 +127,7 @@ public class Tiers {
             add(Blocks.WATER);
             add(Blocks.WOODEN_BUTTON);
         }};
-        
+
         crushableBlocks =  new ArrayList<Block>(){{//torches are debatable, since someone did place it there
             add(Blocks.AIR);
             add(Blocks.DEADBUSH);
@@ -195,6 +196,7 @@ public class Tiers {
         addBlock(Blocks.IRON_BLOCK, 1422);
         addBlock(Blocks.DOUBLE_STONE_SLAB, 2);
         addBlock(Blocks.STONE_SLAB, 1);
+        addBlock(Blocks.STONE_SLAB2, 1);
         addBlock(Blocks.BRICK_BLOCK, 279);
         addBlock(Blocks.TNT, 2220);
         addBlock(Blocks.BOOKSHELF, 336);
@@ -329,71 +331,21 @@ public class Tiers {
         addBlock(Blocks.CARPET, 53);
         addBlock(Blocks.HARDENED_CLAY, 247);
         addBlock(Blocks.COAL_BLOCK, 756);
+
+        energyRegistry.forEach((blk, eng) -> API.INSTANCE().registerTier(blk, eng));
     }
     
-    @SuppressWarnings("WeakerAccess")
-    public void addBlock(Block block, int energy){
-        addBlock(block, energy, 
-                naturalBlocks.contains(block), 
-                crushableBlocks.contains(block), 
+//    @SuppressWarnings("WeakerAccess")
+    private void addBlock(Block block, int energy){
+        addBlock(block, energy, naturalBlocks.contains(block), crushableBlocks.contains(block),
                 moveSensitiveBlocks.contains(block)); //call more detailed method
     }
     
     @SuppressWarnings("WeakerAccess")
-    public void addBlock(Block type, int energy, boolean natural, boolean crushable, boolean sensitive){
-        energyRegistry.put(type, new BlockDescription(type, energy, natural, crushable, sensitive));
-    }
-    
-    public static int getEnergy(Block blockID){
-        if( !energyRegistry.containsKey(blockID)){
-            return 1;
-        }
-        return energyRegistry.get(blockID).energy;
+    private void addBlock(Block type, int energy, boolean natural, boolean crushable, boolean sensitive){
+        energyRegistry.put(type, new Tier(type, energy, natural, crushable, sensitive));
     }
 
-    public static int getTier(Block blockID){
-        int energy = getEnergy(blockID);
-        energy = energy < 1 ? 1 : energy; // log(0) = crash bad
-        return (int) Math.round(Math.log(energy) / Math.log(2));
-    }
-
-    public static int energyToRadiusConversion(int energy, float perBlockCost) {
-        int diameter = 1;
-        while( diameter * diameter * diameter * perBlockCost < energy) //this is over generous intentionally
-            diameter += 2; // +2 so that we always have an odd number and have block centered shapes
-        return diameter/2; //integer math will round down the .5
-    }
-    
-    
-    /**
-     * naturalBlocks is an important list because it lists all blocks that will not conduct runic energy
-     */
-    public static boolean isNatural(Block blockID){
-        if( !energyRegistry.containsKey(blockID)){
-            return false;
-        }
-        return energyRegistry.get(blockID).natural;
-    }
-    
-    /**
-     * This is a list of all the blocks that need special treatment when moving groups of blocks
-     * like FTP or Runecraft.  All independent blocks need to be placed first because all of these
-     * blocks attach to other blocks or (in the case of liquids) need to be held in by solid blocks.
-     * @param blockID
-     */
-    public static boolean isMoveSensitive(Block blockID){
-        if( !energyRegistry.containsKey(blockID)){
-            return false;
-        }
-        return energyRegistry.get(blockID).sensitive;
-    }
-
-    public static boolean isCrushable(Block blockID) {
-        if( !energyRegistry.containsKey(blockID)){
-            return false;
-        }
-        return energyRegistry.get(blockID).crushable;
-    }
 }
 
 

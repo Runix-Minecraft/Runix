@@ -5,17 +5,14 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumActionResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
-
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 
 /**Elevator that ferries player up and down based on open spaces.  Doesn't consume energy.**/
 public class ElevatorRune extends PersistentRune {
@@ -66,13 +63,13 @@ public class ElevatorRune extends PersistentRune {
     @SubscribeEvent
     public void bottomPoked(PlayerInteractEvent event)
     {
-        if (event.action == Action.RIGHT_CLICK_BLOCK)
+        if (event.getCancellationResult() == EnumActionResult.PASS)
         {
-            WorldXYZ punchBlock = new WorldXYZ(event.entity.getEntityWorld(), event.x, event.y, event.z);
+            WorldXYZ punchBlock = new WorldXYZ(event.getWorld(), event.getPos());
             
             if (punchBlock.equals(bottomLocation))
             {
-                poke(event.entityPlayer, punchBlock);
+                poke(event.getEntityPlayer(), punchBlock);
             }
         }
     }
@@ -89,12 +86,12 @@ public class ElevatorRune extends PersistentRune {
 
     @Override
     protected Block[][][] runicTemplateOriginal() {
-        Block air = Blocks.air;
-        Block torc = Blocks.torch;
-        Block iron = Blocks.iron_block;
-        Block ster = Blocks.stone_brick_stairs;
-        Block glas = Blocks.stained_glass;
-        Block step = Blocks.stone_slab;
+        Block air = Blocks.AIR;
+        Block torc = Blocks.TORCH;
+        Block iron = Blocks.IRON_BLOCK;
+        Block ster = Blocks.STONE_BRICK_STAIRS;
+        Block glas = Blocks.STAINED_GLASS;
+        Block step = Blocks.STONE_SLAB; //need a way to handle stone slab2
         return new Block[][][]
                 {
                 {{NONE,NONE,NONE,NONE,NONE}, 

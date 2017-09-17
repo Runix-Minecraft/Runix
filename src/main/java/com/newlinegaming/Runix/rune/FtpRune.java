@@ -30,7 +30,7 @@ public class FtpRune extends TeleporterRune {
     }
 
     public Block[][][] runicTemplateOriginal(){
-        Block GOLD = Blocks.gold_block;
+        Block GOLD = Blocks.GOLD_BLOCK;
         return new Block[][][] {{
                 {NONE,TIER,SIGR,TIER,NONE},
                 {TIER,TIER,GOLD,TIER,TIER},

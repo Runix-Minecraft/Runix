@@ -5,8 +5,7 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
-
-
+//Just give A cutum texture
 @SuppressWarnings("WeakerAccess")
 public class FakeBlock extends Block {
 
