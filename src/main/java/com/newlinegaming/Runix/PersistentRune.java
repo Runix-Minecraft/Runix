@@ -1,29 +1,27 @@
 package com.newlinegaming.Runix;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
-
+import com.google.gson.Gson;
+import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.helper.LogHelper;
+import com.newlinegaming.Runix.utils.UtilMovement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
-
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.server.FMLServerHandler;
 import org.apache.commons.io.FileUtils;
 
-import com.google.gson.Gson;
-import com.newlinegaming.Runix.handlers.RuneHandler;
-import com.newlinegaming.Runix.helper.LogHelper;
-import com.newlinegaming.Runix.utils.UtilMovement;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 public abstract class PersistentRune extends AbstractRune {
 
@@ -288,12 +286,17 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     protected EntityPlayer getPlayer() {
-    try {
-        for (Object playerObj : FMLServerHandler.instance().getServer().getPlayerList().getPlayers()) { //TODO relook
-        if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
-            return (EntityPlayer) playerObj;
-        }
-    } catch (NullPointerException ex) {
+
+         try {
+
+
+             if (!location.getWorld().isRemote) {
+                 for (Object playerObj : FMLServerHandler.instance().getServer().getPlayerList().getPlayers()) { //TODO relook.
+                  if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
+                      return (EntityPlayer) playerObj;
+                 }
+             }
+         } catch (NullPointerException ex) {
         //Silent fail
     }
         return null;
