@@ -17,10 +17,10 @@ import java.util.HashMap;
 
 public class CommonProxy {
 
-    private static ArrayList<Block> naturalBlocks;
-    private static ArrayList<Block> moveSensitiveBlocks;
-    private static ArrayList<Block> crushableBlocks;
-    private static final HashMap<Block, ITier> energyRegistry = new HashMap<>();
+    private ArrayList<Block> naturalBlocks;
+    private ArrayList<Block> moveSensitiveBlocks;
+    private ArrayList<Block> crushableBlocks;
+    private HashMap<Block, ITier> energyRegistry = new HashMap<>();
 
     public CommonProxy() {
 //        Tiers tier = new Tiers();
@@ -43,6 +43,7 @@ public class CommonProxy {
 //        System.out.print(TierHelper.getTierNumber(Blocks.DRAGON_EGG));
     }
 
+    //Move directly into the API class?
     private void registerTiers() {
         naturalBlocks = new ArrayList<Block>(){{
             add(Blocks.AIR);
