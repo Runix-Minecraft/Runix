@@ -138,9 +138,10 @@ public class RubricRune extends PersistentRune {
 	}
 	
 	private String getWrittenBookName(EntityPlayer poker) {
-	    ItemStack toolused = poker.getCurrentEquippedItem();
-        if (toolused != null && toolused.getItem() == Items.written_book) {
-            return toolused.getDisplayName();
+	    for( ItemStack toolused : poker.getHeldEquipment()) {
+            if (toolused != null && toolused.getItem() == Items.WRITTEN_BOOK) {
+                return toolused.getDisplayName();
+            }
         }
         return null;
     }
