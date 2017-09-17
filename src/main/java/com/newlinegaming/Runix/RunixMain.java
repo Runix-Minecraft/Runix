@@ -6,6 +6,7 @@ import com.newlinegaming.Runix.proxys.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import org.apache.logging.log4j.Logger;
 
 
-@Mod(modid = RunixMain.MODID,  name = RunixMain.MODID, version = RunixMain.VERSION, dependencies = "required-after:Forge@[14.22.1.2478,)", useMetadata = true)
+@Mod(modid = RunixMain.MODID,  name = RunixMain.MODID, version = RunixMain.VERSION, useMetadata = true)
 public class RunixMain {
     public static final String MODID = "runix";
     public static final String VERSION = "1.0";
@@ -34,9 +35,6 @@ public class RunixMain {
 
     @SidedProxy(clientSide = "com.newlinegaming.Runix.proxys.ClientProxy", serverSide = "com.newlinegaming.Runix.proxys.CommonProxy")
     public static CommonProxy proxy;
-
-    @Mod.Instance
-    public static RunixMain instance;
 
     public static Logger logger;
 
