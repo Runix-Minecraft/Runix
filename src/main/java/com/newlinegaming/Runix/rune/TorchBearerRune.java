@@ -39,8 +39,8 @@ public class TorchBearerRune extends AbstractTimedRune {
                 if(newPos.getBlock().equals(Blocks.AIR) &&
                     newPos.offset(Vector3.DOWN).getBlock().canPlaceTorchOnTop(newPos.getBlockState(), world, newPos.down()) && (
                         (world.isDaytime() && world.getBlockLightOpacity(newPos) < 4) ||//day time checking == caves
-                        (!world.isDaytime() && world.getSavedLightValue(EnumSkyBlock.Block, newPos.getX(), newPos.getY(), newPos.getZ()) < 4) ))//adjustable
-                {//TODO look for 1.12 equivalent
+                        (!world.isDaytime() && world.getLight(newPos) < 4) ))//adjustable
+                {
                     try {
                         setBlockIdAndUpdate(newPos, Blocks.TORCH);//set torch
 //                        aetherSay(subject, Integer.toString(world.getBlockLightValue(newPos.getX(), newPos.getY(), newPos.getZ()))+

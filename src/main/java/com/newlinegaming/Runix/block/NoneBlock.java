@@ -10,7 +10,7 @@ public class NoneBlock extends Block
     public NoneBlock()
     {
         super(Material.AIR);
-        setBlockName("NONE");
+        setUnlocalizedName("NONE");
     }
     
 }

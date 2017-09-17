@@ -1,12 +1,11 @@
 package com.newlinegaming.Runix.fluids;
-
+/*
 import com.newlinegaming.Runix.RunixMain;
 import com.newlinegaming.Runix.lib.LibInfo;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
@@ -37,3 +36,4 @@ class BlockQixSilver extends BlockFluidClassic {
         FQF = reg.registerIcon(LibInfo.MOD_ID + ":qixsilverflowing");
     }
 }
+*/

@@ -10,8 +10,8 @@ import net.minecraft.world.World;
 import com.newlinegaming.Runix.block.ModBlock;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GreekFireRenderer implements ISimpleBlockRenderingHandler {
 

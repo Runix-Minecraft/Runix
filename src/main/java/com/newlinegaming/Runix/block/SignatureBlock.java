@@ -9,7 +9,7 @@ public class SignatureBlock extends Block
     public SignatureBlock()
     {
         super(Material.AIR);
-        setBlockName("SIGR");
+        setUnlocalizedName("SIGR");
     }
 
 }

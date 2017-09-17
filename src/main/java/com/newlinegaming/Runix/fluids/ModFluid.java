@@ -3,9 +3,10 @@ package com.newlinegaming.Runix.fluids;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class ModFluid {
-
+/*
     private static Fluid QixSilver;
 
     private static Block BlockQixSilver;
@@ -22,6 +23,7 @@ public class ModFluid {
     }
 
     private static void GameReg() {
-        Registry.registerBlock(BlockQixSilver, "runixqixsilver");
+        FluidRegistry.registerFluid(QixSilver); //TODO: this seems redundant with FluidQixSilver.java
     }
+    */
 }

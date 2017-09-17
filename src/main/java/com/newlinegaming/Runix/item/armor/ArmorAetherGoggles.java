@@ -1,5 +1,5 @@
 package com.newlinegaming.Runix.item.armor;
-
+/*
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,8 +15,8 @@ import net.minecraftforge.common.ISpecialArmor;
 import com.newlinegaming.Runix.RunixMain;
 import com.newlinegaming.Runix.lib.RunixAsset;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 class ArmorAetherGoggles extends ItemArmor implements ISpecialArmor {
 
@@ -105,4 +105,4 @@ class ArmorAetherGoggles extends ItemArmor implements ISpecialArmor {
 
     }
 
-}
+}*/

@@ -8,8 +8,8 @@ public class FuelBlock extends Block
 
     public FuelBlock()
     {
-        super(Material.air);
-        setBlockName("FUEL");
+        super(Material.AIR);
+        setUnlocalizedName("FUEL");
     }
 
 }
