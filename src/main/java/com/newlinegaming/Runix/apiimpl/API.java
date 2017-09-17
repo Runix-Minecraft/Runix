@@ -58,6 +58,7 @@ public class API implements IRunixAPI {
      */
     @Override
     public ITier getTier(Block block) {
-        return null;
+        return teirsReg.get(block);
     }
+
 }

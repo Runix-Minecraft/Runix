@@ -81,6 +81,29 @@ public class RubricRune extends PersistentRune {
 	}
 
 
+//    @SubscribeEvent
+//    public void bookClickEvent(PlayerInteractEvent event) {
+//        String writtenBookName = getWrittenBookName(event.entityPlayer);
+//        if (event.action == Action.RIGHT_CLICK_BLOCK && writtenBookName != null) {
+//            EntityPlayer poker = event.entityPlayer;
+//            WorldXYZ coords = new WorldXYZ(event.entity.worldObj, event.x, event.y, event.z);
+//
+//            if(writtenBookName.equals(instanceName)) {
+//                event.setCanceled(true);
+//                //          try {
+//                unpackStructure(poker, coords);
+//                //          } catch (NotEnoughRunicEnergyException e) {
+//                //              reportOutOfGas(poker);
+//                //ensure recall is placed back
+//                //          }
+//                //TODO fix the energy requirements
+//                //consume Rune for energy
+//                //transfer energy to Rubric rune
+//                    //if not enough energy, Rubric can keep the energy, just ask for more
+//            }
+//        }
+//    }
+
     @SubscribeEvent
     public void bookClickEvent(PlayerInteractEvent.RightClickBlock event) {
         String writtenBookName = getWrittenBookName(event.getEntityPlayer());
@@ -94,7 +117,7 @@ public class RubricRune extends PersistentRune {
                 unpackStructure(poker, coords);
                 //          } catch (NotEnoughRunicEnergyException e) {
                 //              reportOutOfGas(poker);
-                //ensure recall is placed back 
+                //ensure recall is placed back
                 //          }
                 //TODO fix the energy requirements
                 //consume Rune for energy

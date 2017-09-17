@@ -1,7 +1,6 @@
 package com.newlinegaming.Runix.fluids;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -14,10 +13,10 @@ public class ModFluid {
     public static void init() {
 
         //Fluids
-        QixSilver = new FluidQixSilver();
+//        QixSilver = new FluidQixSilver();
 
         //Fluid Blocks
-        BlockQixSilver = new BlockQixSilver(QixSilver, Material.LAVA);
+//        BlockQixSilver = new BlockQixSilver(QixSilver, Material.LAVA);
 
         GameReg();
     }

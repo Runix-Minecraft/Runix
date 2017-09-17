@@ -4,19 +4,9 @@ import com.newlinegaming.Runix.apiimpl.API;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.proxys.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.EnumHelper;
-
-//import com.newlinegaming.Runix.block.ModBlock;
-//import com.newlinegaming.Runix.creativetabs.TabRunix;
-//import com.newlinegaming.Runix.fluids.ModFluid;
-//import com.newlinegaming.Runix.handlers.ConfigurationHandler;
-//import com.newlinegaming.Runix.handlers.RuneHandler;
-//import com.newlinegaming.Runix.item.ModItem;
-//import com.newlinegaming.Runix.lib.LibInfo;
-//import com.newlinegaming.Runix.proxys.CommonProxy;
-
-
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -27,16 +17,24 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import org.apache.logging.log4j.Logger;
 
 
-@Mod(modid = RunixMain.MODID,  name = RunixMain.MODID, version = RunixMain.VERSION, dependencies = "required-after:Forge@[14.22.1.2478,)", useMetadata = true)
+@Mod(modid = RunixMain.MODID,  name = RunixMain.MODID, version = RunixMain.VERSION, useMetadata = true)
 public class RunixMain {
     public static final String MODID = "runix";
     public static final String VERSION = "1.0";
 
-    @SidedProxy(clientSide = "com.newlinegaming.Runix.proxys.ClientProxy", serverSide = "com.newlinegaming.Runix.proxys.CommonProxy")
-    public static CommonProxy proxy;
 
     @Mod.Instance
     public static RunixMain instance;
+
+    public final CreativeTabs tabs = new CreativeTabs("runix") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(Items.GOLDEN_AXE);
+        }
+    };
+
+    @SidedProxy(clientSide = "com.newlinegaming.Runix.proxys.ClientProxy", serverSide = "com.newlinegaming.Runix.proxys.CommonProxy")
+    public static CommonProxy proxy;
 
     public static Logger logger;
 
@@ -76,7 +74,7 @@ public class RunixMain {
         ModFluid.init();
         ModItem.init();
     }
-    
+
     @EventHandler
     public void load(FMLInitializationEvent event) {
         proxy.registerRenderInformation();

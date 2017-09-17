@@ -1,26 +1,27 @@
 package com.newlinegaming.Runix;
 
+import com.google.gson.Gson;
+import com.newlinegaming.Runix.handlers.RuneHandler;
+import com.newlinegaming.Runix.helper.LogHelper;
+import com.newlinegaming.Runix.utils.UtilMovement;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent.Load;
+import net.minecraftforge.event.world.WorldEvent.Save;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.server.FMLServerHandler;
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent.Load;
-import net.minecraftforge.event.world.WorldEvent.Save;
-
-import net.minecraftforge.fml.server.FMLServerHandler;
-import org.apache.commons.io.FileUtils;
-
-import com.google.gson.Gson;
-import com.newlinegaming.Runix.handlers.RuneHandler;
-import com.newlinegaming.Runix.helper.LogHelper;
-import com.newlinegaming.Runix.utils.UtilMovement;
 
 public abstract class PersistentRune extends AbstractRune {
 
@@ -86,22 +87,24 @@ public abstract class PersistentRune extends AbstractRune {
 
     private String getJsonFilePath(World world) {
 
-        String levelName = world.getWorldInfo().getWorldName();
-        String directory;
+//        String levelName = world.getWorldInfo().getWorldName();
+//        String directory;
+        File base = DimensionManager.getCurrentSaveRootDirectory();
 
 
-        try {
-//			Class
-            String subDirectory = (FMLServerHandler.instance().getServer() instanceof DedicatedServer )? "" : "saves/";
-            directory = subDirectory + levelName + "/stored_runes/";
+//        try {
+////			Class
+//            String subDirectory = (world.getSaveHandler() instanceof DedicatedServer )? "" : "saves/";
+//            directory = subDirectory + levelName + "/stored_runes/";
 
 
-        } catch (Throwable e) {
-            directory = "saves/" + levelName + "/stored_runes/";
-        }
+//        } catch (Throwable e) {
+//            directory = "saves/" + levelName + "/stored_runes/";
+//        }
+        File directory = new File(base + "/stored_runes/");
 
         //noinspection ResultOfMethodCallIgnored
-        new File(directory).mkdirs();//ensure the folder exists
+        directory.mkdirs();//ensure the folder exists
         String fileName = directory + shortClassName() + ".json";
         return fileName;
 
@@ -111,6 +114,7 @@ public abstract class PersistentRune extends AbstractRune {
      * There's no way to have a static field in an abstract class so we use a getter instead
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>();
      */
+
     public abstract ArrayList<PersistentRune> getActiveMagic();
 
     /**
@@ -282,12 +286,17 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     protected EntityPlayer getPlayer() {
-    try {
-        for (Object playerObj : FMLServerHandler.instance().getServer().getPlayerList().getPlayers()) { //TODO relook
-        if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
-            return (EntityPlayer) playerObj;
-        }
-    } catch (NullPointerException ex) {
+
+         try {
+
+
+             if (!location.getWorld().isRemote) {
+                 for (Object playerObj : FMLServerHandler.instance().getServer().getPlayerList().getPlayers()) { //TODO relook.
+                  if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
+                      return (EntityPlayer) playerObj;
+                 }
+             }
+         } catch (NullPointerException ex) {
         //Silent fail
     }
         return null;

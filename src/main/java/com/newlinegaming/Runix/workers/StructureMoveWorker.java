@@ -7,7 +7,6 @@ import com.newlinegaming.Runix.helper.TierHelper;
 import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.SigBlock;
-import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.handlers.RuneHandler;

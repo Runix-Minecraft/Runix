@@ -1,7 +1,7 @@
 package com.newlinegaming.Runix.item;
 
 import com.newlinegaming.Runix.RunixMain;
-
+import com.newlinegaming.Runix.api.RunixConstants;
 import net.minecraft.item.Item;
 
 /** Class is currently unused and unimplemented, but I'm keeping it because it's a core part
@@ -13,7 +13,7 @@ class ItemTransmutationRod extends Item {
     
     public ItemTransmutationRod() {
         super();
-//        setCreativeTab(RunixMain.TabRunix);
+        setCreativeTab(RunixMain.instance.tabs);
 //        setUnlocalizedName("runix:transmutationrod");
     }
 

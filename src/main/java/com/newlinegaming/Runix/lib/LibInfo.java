@@ -9,4 +9,12 @@ public class LibInfo {
 
     public static final String CLIENT_PROXY = "com.newlinegaming.Runix.proxys.ClientProxy";
     public static final String COMMON_PROXY = "com.newlinegaming.Runix.proxys.CommonProxy";
+
+    /** Note: getUnlocalizedName() will actually prepend "tile." e.g.  "tile.runix:TIER"
+     * @param name
+     * @return
+     */
+    public static String modIdPrefix(String name){
+        return MOD_ID + ":" + name;
+    }
 }
