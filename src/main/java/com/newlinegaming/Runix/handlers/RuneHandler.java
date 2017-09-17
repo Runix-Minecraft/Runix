@@ -6,11 +6,13 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
+import com.newlinegaming.Runix.helper.TierHelper;
 import com.newlinegaming.Runix.lib.LibConfig;
 import com.newlinegaming.Runix.rune.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -89,8 +91,13 @@ public class RuneHandler {
     @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent.RightClickBlock e) {
         Block blk = e.getWorld().getBlockState(e.getPos()).getBlock();
+
         if (!e.getWorld().isRemote) {
+            //TODO remove when done
+            e.getEntityPlayer().sendMessage(new TextComponentString("Energy is " + TierHelper.getEnergy(blk)));
+
             if (blk != Blocks.AIR) {
+
                 possibleRuneActivationEvent(e.getEntityPlayer(), new WorldXYZ(e.getWorld(), e.getPos()));
             }
         }
