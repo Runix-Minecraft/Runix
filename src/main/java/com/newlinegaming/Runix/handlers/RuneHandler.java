@@ -95,7 +95,7 @@ public class RuneHandler {
 
         if (!e.getWorld().isRemote) {
             //TODO remove when done
-            e.getEntityPlayer().sendMessage(new TextComponentString("Energy is " + TierHelper.getEnergy(blk)));
+            //e.getEntityPlayer().sendMessage(new TextComponentString("Energy is " + TierHelper.getEnergy(blk)));
 
             if (blk != Blocks.AIR) {
 

@@ -318,4 +318,7 @@ public class WorldXYZ extends BlockPos {
         return TierHelper.isCrushable(getBlock());
     }
 
+    public boolean blockEquals(Block target) {
+        return Block.isEqualTo(getBlock(), target);
+    }
 }

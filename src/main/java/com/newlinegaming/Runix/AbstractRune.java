@@ -108,8 +108,8 @@ public abstract class AbstractRune {
         Vector3 direction = Vector3.facing[coords.face];
         for(int tries = 0; tries < 100; ++tries) {
             if( (coords.getY() < 255 && coords.getY() > 0) // coords are in bounds
-                    && coords.getWorld().getBlockState(new BlockPos(coords.getX(), coords.getY(), coords.getZ())) == Blocks.AIR
-                    && coords.getWorld().getBlockState(new BlockPos(coords.getX(), coords.getY()+1, coords.getZ())) == Blocks.AIR)//two AIR blocks
+                    && coords.blockEquals(Blocks.AIR)
+                    && coords.offset(Vector3.UP).blockEquals(Blocks.AIR))//two AIR blocks
             {
                 for(int drop = 1; drop < 20 && coords.getY()-drop > 0; ++drop)//less than a 20 meter drop
                 {//begin scanning downward
