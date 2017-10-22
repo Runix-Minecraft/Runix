@@ -105,7 +105,7 @@ public abstract class PersistentRune extends AbstractRune {
 
         //noinspection ResultOfMethodCallIgnored
         directory.mkdirs();//ensure the folder exists
-        String fileName = directory + shortClassName() + ".json";
+        String fileName = directory + "\\" + shortClassName() + ".json";
         return fileName;
 
     }

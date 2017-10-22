@@ -29,7 +29,7 @@ public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent e) {
         API.bind(e.getAsmData());
-//        System.out.println(API.INSTANCE().getTier(Blocks.DRAGON_EGG));
+//        System.out.println(API.INSTANCE().getTierInfo(Blocks.DRAGON_EGG));
 //        System.out.print(TierHelper.getTierNumber(Blocks.DRAGON_EGG));
 
     }
@@ -39,7 +39,7 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent e) {
-//        System.out.println(API.INSTANCE().getTier(Blocks.HAY_BLOCK));
+//        System.out.println(API.INSTANCE().getTierInfo(Blocks.HAY_BLOCK));
 //        System.out.print(TierHelper.getTierNumber(Blocks.DRAGON_EGG));
     }
 }

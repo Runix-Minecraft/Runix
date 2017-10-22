@@ -8,7 +8,7 @@ public class TierHelper {
 
 
 
-    public static ITier getTier(Block block) {
+    public static ITier getTierInfo(Block block) {
         return API.INSTANCE().getTier(block);
     }
 

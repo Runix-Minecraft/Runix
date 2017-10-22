@@ -59,7 +59,7 @@ public class OracleRune extends AbstractRune {
           Block block = coords.getBlock();
           
           aetherSay(player, TextFormatting.RED +block.getLocalizedName());
-          aetherSay(player, "Tier: "  + TierHelper.getTier(block) + ".");
+          aetherSay(player, "Tier: "  + TierHelper.getTierNumber(block) + ".");
           aetherSay(player, "Energy: " + TierHelper.getEnergy(block) + ".");
           aetherSay(player, "Properties: " + (TierHelper.isNatural(block)? "Not Conductive" : "Conductive")
                   + ", " + (TierHelper.isCrushable(block)? "Crushable." : "Not Crushable."));

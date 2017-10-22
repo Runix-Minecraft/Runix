@@ -8,6 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
 import java.util.ArrayList;
@@ -45,10 +48,14 @@ public class WorldXYZ extends BlockPos {
         dimensionID = world.provider.getDimension();
     }
 
+    public WorldXYZ(PlayerInteractEvent e){
+        super(e.getPos());
+        worldObj = e.getWorld();
+    }
+
     public WorldXYZ(World world, BlockPos pos) {
         super(pos);
         worldObj = world;
-
     }
 
     public WorldXYZ(World world, int x, int y, int z, int face) {

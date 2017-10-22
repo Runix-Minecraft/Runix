@@ -64,17 +64,17 @@ public class RuneHandler {
 
 
 //        runeRegistry.add(new PlayerHandler());
-        runeRegistry.add(new WaypointRune());
+        runeRegistry.add(new WaypointRune());//
         runeRegistry.add(new FaithRune());
         runeRegistry.add(new CompassRune());
         runeRegistry.add(new FtpRune());
-        runeRegistry.add(new TeleporterRune());
+        runeRegistry.add(new TeleporterRune());//
         runeRegistry.add(new RunecraftRune());
 //        runeRegistry.add(new RubricRune());
         runeRegistry.add(new TorchBearerRune());
-        runeRegistry.add(new ZeerixChestRune());
-        runeRegistry.add(new FerrousWheelRune());
-        runeRegistry.add(new OracleRune());
+        runeRegistry.add(new ZeerixChestRune());  //bad
+        runeRegistry.add(new FerrousWheelRune());//
+        runeRegistry.add(new OracleRune());//
 //        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new HoarFrostRune());
 //        runeRegistry.add(new DomainRune());
@@ -91,15 +91,13 @@ public class RuneHandler {
 
     @SubscribeEvent
     public void playerInteractEvent(PlayerInteractEvent.RightClickBlock e) {
-        Block blk = e.getWorld().getBlockState(e.getPos()).getBlock();
+        Block blk = new WorldXYZ(e).getBlock();
 
         if (!e.getWorld().isRemote) {
-            //TODO remove when done
             //e.getEntityPlayer().sendMessage(new TextComponentString("Energy is " + TierHelper.getEnergy(blk)));
 
             if (blk != Blocks.AIR) {
-
-                possibleRuneActivationEvent(e.getEntityPlayer(), new WorldXYZ(e.getWorld(), e.getPos()));
+                possibleRuneActivationEvent(e.getEntityPlayer(), new WorldXYZ(e));
             }
         }
     }
