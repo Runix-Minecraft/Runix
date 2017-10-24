@@ -23,7 +23,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
         //updateEveryXTicks(200);
     }
 
-    public ZeerixChestRune(WorldXYZ coords, EntityPlayer player2) {
+    public ZeerixChestRune(@NotNull WorldXYZ coords, EntityPlayer player2) {
         super(coords, player2, "Zeerix Chest");
         updateEveryXTicks(200);
     }

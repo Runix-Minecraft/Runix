@@ -19,7 +19,7 @@ public class WaypointRune extends PersistentRune{
         this.runeName = "Waypoint";
     }
     
-    public WaypointRune(WorldXYZ coords, EntityPlayer player)
+    public WaypointRune(@NotNull WorldXYZ coords, @NotNull EntityPlayer player)
     {
         super(coords, player, "Waypoint");
     }
@@ -38,7 +38,7 @@ public class WaypointRune extends PersistentRune{
     @Override
     /**Waypoints will detect which side of the key block you activate from and use 
      * that to direct the player's teleport.*/
-    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer poker, @NotNull WorldXYZ coords) {
         location.face = coords.face; //update the facing of the waypoint
         aetherSay(poker, "Waypoint is now facing " + Vector3.faceString[location.face]);
     }

@@ -19,13 +19,13 @@ public class FerrousWheelRune extends PersistentRune {
         runeName = "Ferrous Wheel";
     }
 
-    public FerrousWheelRune(WorldXYZ coords, EntityPlayer activator) {
+    public FerrousWheelRune(@NotNull WorldXYZ coords, @NotNull EntityPlayer activator) {
         super(coords, activator, "Ferrous Wheel");
     }
 
 
     @Override
-    public void execute(WorldXYZ coords, EntityPlayer activator) {
+    public void execute(WorldXYZ coords, @NotNull EntityPlayer activator) {
         if(!activator.getEntityWorld().isRemote){//server only
             super.execute(coords, activator);
         }
@@ -33,7 +33,7 @@ public class FerrousWheelRune extends PersistentRune {
 
     
     @Override
-    protected void poke(EntityPlayer player, @NotNull WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer player, @NotNull WorldXYZ coords) {
         if(player.getEntityWorld().isRemote)
             return;
         consumeFuelBlock(coords);

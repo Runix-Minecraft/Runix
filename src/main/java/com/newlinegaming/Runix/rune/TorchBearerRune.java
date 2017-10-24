@@ -25,7 +25,7 @@ public class TorchBearerRune extends AbstractTimedRune {
 //        updateEveryXTicks(10);
     }
 
-    public TorchBearerRune( WorldXYZ coords, EntityPlayer activator ) {
+    public TorchBearerRune(@NotNull WorldXYZ coords, EntityPlayer activator ) {
         super(coords, activator, "Torch Bearer");
         updateEveryXTicks(10);
     }

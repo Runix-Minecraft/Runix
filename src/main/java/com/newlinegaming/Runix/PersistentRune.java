@@ -5,6 +5,7 @@ import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.utils.UtilMovement;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.TextFormatting;
@@ -30,14 +31,14 @@ public abstract class PersistentRune extends AbstractRune {
     private UUID uuid = null;
     public boolean disabled = false;
     @Nullable
-    public WorldXYZ location = null;
+    public WorldXYZ location;
     protected Vector3 forwards = Vector3.UP;
     @Nullable
     protected String instanceName = "";
     protected PersistentRune(){}
 
 
-    protected PersistentRune(WorldXYZ coords, EntityPlayer activator, String runeName) {
+    protected PersistentRune(@NotNull WorldXYZ coords, EntityPlayer activator, String runeName) {
         location = coords;
         setPlayer(activator);
         this.runeName = runeName;
@@ -50,7 +51,7 @@ public abstract class PersistentRune extends AbstractRune {
     public void saveActiveRunes(@NotNull Save saveEvent) {
         if(getActiveMagic().isEmpty())
             return;
-        String fileName = getJsonFilePath(saveEvent.getWorld());//  ex:TorcherBearerRune.json
+        String fileName = getJsonFilePath(saveEvent.getWorld());//  ex:TorchBearerRune.json
         try {
             PrintWriter file = new PrintWriter(fileName);
             Gson converter = new Gson();
@@ -89,6 +90,7 @@ public abstract class PersistentRune extends AbstractRune {
         }
     }
 
+    @SuppressWarnings("unused")
     @NotNull
     private String getJsonFilePath(World world) {
 
@@ -247,7 +249,7 @@ public abstract class PersistentRune extends AbstractRune {
     private PersistentRune getRuneByLocation(WorldXYZ coords) {
         ArrayList<PersistentRune> list = getActiveMagic();
         for(PersistentRune rune : list){
-            if( rune.location.equals(coords) )
+            if(Objects.equals(rune.location, coords))
                 return rune;
         }
         return null;
@@ -281,7 +283,11 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     protected void moveYourLocation(@NotNull WorldXYZ destination) {
-        location = destination.copyWithNewFacing(location.face); //preserve old facing for runes
+        if(location == null){
+            location = destination;
+        }else {
+            location = destination.copyWithNewFacing(location.face); //preserve old facing for runes
+        }
     }
 
     protected void reportOutOfGas(EntityPlayer listener) {
@@ -290,8 +296,8 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
     @SuppressWarnings("unused")
-    public boolean onPlayerLogin(String username) {
-        return false;
+    public void onPlayerLogin(EntityPlayer user) {
+        //TODO override in children for timer activation etc.
     }
 
     @Nullable
@@ -340,7 +346,7 @@ public abstract class PersistentRune extends AbstractRune {
         return scannedStructure;
     }
 
-    @Nullable
+    @NotNull
     public LinkedHashSet<WorldXYZ> fullStructure() {
         if(usesConductance)
             return directConductanceStructure();
@@ -373,18 +379,20 @@ public abstract class PersistentRune extends AbstractRune {
 
     /** Currently just checkRunePattern(location).  This could be expanded to kill the rune if broken. */
     public boolean runeIsIntact() {
-        return checkRunePattern(location) != null;
+        return location != null && checkRunePattern(location) != null;
     }
 
 
     protected void moveStructureAndPlayer(@NotNull EntityPlayer player, @NotNull WorldXYZ destination, @NotNull HashSet<WorldXYZ> structure) {
-            Vector3 directionOfScanning = Vector3.facing[destination.face];
-            WorldXYZ destinationCenter = UtilMovement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
-            if(destinationCenter != null) {
-                teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
-            }else {
-                aetherSay(player, "There are obstacles for over 100m in the direction of the destination waypoint.");
-            }
+        if(location == null)
+            return;
+        Vector3 directionOfScanning = Vector3.facing[destination.face];
+        WorldXYZ destinationCenter = UtilMovement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
+        if(destinationCenter != null) {
+            teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
+        }else {
+            aetherSay(player, "There are obstacles for over 100m in the direction of the destination waypoint.");
+        }
     }
 
 

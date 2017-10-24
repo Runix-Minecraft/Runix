@@ -45,7 +45,7 @@ public class ElevatorRune extends PersistentRune {
      * Teleport the player up or down
      */
     @Override
-    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer poker, @NotNull WorldXYZ coords) {
         if (bottomLocation == null)
         {
             initializeRune(coords);

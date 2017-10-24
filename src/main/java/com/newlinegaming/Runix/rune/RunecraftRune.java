@@ -44,7 +44,7 @@ public class RunecraftRune extends AbstractTimedRune {
      * @param coords Center rune block that the vehicle is checked from 
      * @param player2 Person that the vehicle gloms on to
      */
-    public RunecraftRune(WorldXYZ coords, EntityPlayer player2)
+    public RunecraftRune(@NotNull WorldXYZ coords, @NotNull EntityPlayer player2)
     {
         super(coords, player2, "Runecraft");
         setPlayer(null); //this is because poke() acts as if the Rune was activated a second time when it is first constructed
@@ -161,7 +161,7 @@ public class RunecraftRune extends AbstractTimedRune {
     }
     
     @Override
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer poker, WorldXYZ coords) {
         if( renderer == null ) //initialization on the first time the rune is poked
             initializeRune();
         

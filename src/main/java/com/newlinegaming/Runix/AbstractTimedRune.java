@@ -2,13 +2,14 @@ package com.newlinegaming.Runix;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractTimedRune extends PersistentRune {
 
 //    RuneTimer instance = null;
     
     protected AbstractTimedRune(){}
-    protected AbstractTimedRune(WorldXYZ coords, EntityPlayer player2, String name) {
+    protected AbstractTimedRune(@NotNull WorldXYZ coords, EntityPlayer player2, String name) {
         super(coords, player2, name);
         
     }

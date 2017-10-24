@@ -52,7 +52,7 @@ public class RubricRune extends PersistentRune {
     }
 
 	@Override
-	protected void poke(EntityPlayer poker, WorldXYZ coords){
+	protected void poke(@NotNull EntityPlayer poker, WorldXYZ coords){
 	    if( renderer == null)
 	        initializeRune();
 		renderer.reset();

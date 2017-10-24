@@ -75,18 +75,18 @@ public class RuneHandler {
         runeRegistry.add(new RunecraftRune());
 //        runeRegistry.add(new RubricRune());
         runeRegistry.add(new TorchBearerRune());
-        runeRegistry.add(new ZeerixChestRune());  //bad
+//        runeRegistry.add(new ZeerixChestRune());  //bad
         runeRegistry.add(new FerrousWheelRune());//
         runeRegistry.add(new OracleRune());//
 //        runeRegistry.add(new GreekFireRune());
 //        runeRegistry.add(new HoarFrostRune());
 //        runeRegistry.add(new DomainRune());
 //        runeRegistry.add(new LightBeamRune());
-        runeRegistry.add(new ElevatorRune());
+//        runeRegistry.add(new ElevatorRune());
         runeRegistry.add(new BuildMasterRune());
     }
 
-    @Nullable
+    @NotNull
     public static RuneHandler getInstance(){
         if(instance == null)
             instance = new RuneHandler();
@@ -127,7 +127,7 @@ public class RuneHandler {
         if(event.getEntity() instanceof EntityPlayer){ //fires once each for Client and Server side join event
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
-                    ((PersistentRune)r).onPlayerLogin(((EntityPlayer) event.getEntity()).getDisplayNameString());
+                    ((PersistentRune)r).onPlayerLogin(((EntityPlayer) event.getEntity()));
         }
 
     }

@@ -20,7 +20,7 @@ public class TeleporterRune extends PersistentRune {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public TeleporterRune(WorldXYZ coords, EntityPlayer activator){
+    public TeleporterRune(@NotNull WorldXYZ coords, @NotNull EntityPlayer activator){
         super(coords, activator,"Teleporter");
         energy = 1;
     }
@@ -40,7 +40,7 @@ public class TeleporterRune extends PersistentRune {
      * Teleport the player to the WaypointRune with a matching signature
      */
     @Override
-    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer poker, @NotNull WorldXYZ coords) {
         consumeFuelBlock(coords);
 
         try{

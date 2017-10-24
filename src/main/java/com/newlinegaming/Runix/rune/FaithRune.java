@@ -29,7 +29,7 @@ public class FaithRune extends PersistentRune{
     public FaithRune() {
         runeName = "Faith";
     }
-    public FaithRune(WorldXYZ loc, EntityPlayer creator) {
+    public FaithRune(@NotNull WorldXYZ loc, @NotNull EntityPlayer creator) {
         super(loc, creator, "Faith");
         firstTime = true;
     }
@@ -49,7 +49,7 @@ public class FaithRune extends PersistentRune{
 
 
     @Override
-    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer poker, @NotNull WorldXYZ coords) {
         if(firstTime){// firstTime prevents players from injecting more energy by building a second rune on top of the first
             firstTime = false;
             radius = getTier() * 2 - 1; //Tiers.energyToRadiusConversion(energy);
@@ -84,7 +84,7 @@ public class FaithRune extends PersistentRune{
         }
     }
     
-    @Nullable
+    @NotNull
     @Override
     public LinkedHashSet<WorldXYZ> fullStructure() {
         if(sphere == null)
@@ -94,7 +94,7 @@ public class FaithRune extends PersistentRune{
     
     @Override
     /** This override is necessary to invalidate the buffered sphere variable whenever it is moved**/
-    public void moveYourLocation(WorldXYZ destination) {
+    public void moveYourLocation(@NotNull WorldXYZ destination) {
         sphere = null;
         location = destination.copyWithNewFacing(location.face); //preserve old facing
     }

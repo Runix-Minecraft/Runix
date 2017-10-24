@@ -27,13 +27,13 @@ public class BuildMasterRune extends AbstractTimedRune {
         updateEveryXTicks(40);//two second intervals  //this is called from the JSON as well
     }
 
-    public BuildMasterRune( WorldXYZ coords, EntityPlayer activator ) {
+    public BuildMasterRune(@NotNull  WorldXYZ coords, @NotNull EntityPlayer activator ) {
         super(coords, activator, "Build Master");
         updateEveryXTicks(40);//two second intervals
     }
 
     @Override
-    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer poker, @NotNull WorldXYZ coords) {
         toggleDisabled();
         consumeFuelBlock(coords); //this will re-enable it if there's a new fuel block
         if( !disabled) {

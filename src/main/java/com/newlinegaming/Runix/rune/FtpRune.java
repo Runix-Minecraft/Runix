@@ -24,7 +24,7 @@ public class FtpRune extends TeleporterRune {
         this.runeName = "Faith Transfer Portal";
     }
     
-    public FtpRune(WorldXYZ coords, EntityPlayer activator) {
+    public FtpRune(@NotNull WorldXYZ coords, @NotNull EntityPlayer activator) {
         super(coords, activator);
         this.runeName = "Faith Transfer Portal";
         usesConductance = true;
@@ -43,7 +43,7 @@ public class FtpRune extends TeleporterRune {
     }
 
     @Override
-    protected void poke(EntityPlayer player, @NotNull WorldXYZ coords) {
+    protected void poke(@NotNull EntityPlayer player, @NotNull WorldXYZ coords) {
         consumeFuelBlock(coords);
         location.face = coords.face; //update the facing
         WorldXYZ destination;
