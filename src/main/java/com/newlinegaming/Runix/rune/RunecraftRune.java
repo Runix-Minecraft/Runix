@@ -21,12 +21,16 @@ import com.newlinegaming.Runix.helper.RenderHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 //FIXME: Make Runecraft runes respect TileEntity Inventories
 public class RunecraftRune extends AbstractTimedRune {
     
     private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
+    @NotNull
     private HashSet<WorldXYZ> vehicleBlocks = new HashSet<>();
+    @Nullable
     private transient RenderHelper renderer = null;
     private boolean moveInProgress = false;
     private boolean snaggedOnSomething = false;
@@ -57,6 +61,7 @@ public class RunecraftRune extends AbstractTimedRune {
         MinecraftForge.EVENT_BUS.register(this);        
     }
 
+    @NotNull
     @Override
     public Block[][][] runicTemplateOriginal() {
         Block GOLD = Blocks.GOLD_ORE;
@@ -68,7 +73,8 @@ public class RunecraftRune extends AbstractTimedRune {
         }};
     }
 
-    private WorldXYZ getDestinationByPlayer(EntityPlayer subject) {
+    @Nullable
+    private WorldXYZ getDestinationByPlayer(@NotNull EntityPlayer subject) {
         if(getPlayer() != null && subject.equals(getPlayer())) {
             int dX = (int) (getPlayer().getPosition().getX() - location.getX() - .5);
             int dY = (int) (getPlayer().getPosition().getY() - location.getY() - 1);
@@ -88,7 +94,7 @@ public class RunecraftRune extends AbstractTimedRune {
     }
     
     @Override
-    protected void onUpdateTick(EntityPlayer subject) {
+    protected void onUpdateTick(@NotNull EntityPlayer subject) {
         if(moveInProgress) {
             return;
         }
@@ -136,7 +142,7 @@ public class RunecraftRune extends AbstractTimedRune {
     }
 
     @SubscribeEvent
-    public void playerRightClick(PlayerInteractEvent.LeftClickBlock e) {
+    public void playerRightClick(@NotNull PlayerInteractEvent.LeftClickBlock e) {
         if (getPlayer() != null) {
             if (e.isCanceled()) {
                 WorldXYZ punchBlock = new WorldXYZ(e.getWorld(), e.getPos());
@@ -180,7 +186,8 @@ public class RunecraftRune extends AbstractTimedRune {
      * Removes the coordinates of any air blocks from the shape Set.  This can break contiguous structures
      * and actually return a non-contiguous structure.  For Runecraft, this is desirable. 
      */
-    private HashSet<WorldXYZ> removeAirXYZ(HashSet<WorldXYZ> oldShapeCoords) {
+    @NotNull
+    private HashSet<WorldXYZ> removeAirXYZ(@NotNull HashSet<WorldXYZ> oldShapeCoords) {
         //an iterator is necessary here because of ConcurrentModificationException
         // We specifically want to exclude AIR to avoid confusing collisions
         oldShapeCoords.removeIf(xyz -> xyz.getBlock() == Blocks.AIR);
@@ -197,6 +204,7 @@ public class RunecraftRune extends AbstractTimedRune {
         disabled = getPlayer() == null;
     }
     
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;

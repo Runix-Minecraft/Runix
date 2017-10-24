@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 
 @Mod(modid = RunixMain.MODID,  name = RunixMain.MODID, version = RunixMain.VERSION, useMetadata = true)
@@ -39,7 +40,7 @@ public class RunixMain {
     public static Logger logger;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent e) {
+    public void preInit(@NotNull FMLPreInitializationEvent e) {
         proxy.preInit(e);
     }
 

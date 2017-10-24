@@ -13,13 +13,14 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 public class ZeerixChestRune extends AbstractTimedRune {
     private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
     
     public ZeerixChestRune() {
         runeName = "Zeerix Chest";
-        updateEveryXTicks(200);
+        //updateEveryXTicks(200);
     }
 
     public ZeerixChestRune(WorldXYZ coords, EntityPlayer player2) {
@@ -28,7 +29,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
     }
 
     @Override
-    protected void onUpdateTick(EntityPlayer subject) {
+    protected void onUpdateTick(@NotNull EntityPlayer subject) {
         if(subject.equals(getPlayer()))
         {
             double distance = (new WorldXYZ(getPlayer())).getDistance(location);//distance from player to current chest
@@ -53,6 +54,7 @@ public class ZeerixChestRune extends AbstractTimedRune {
         }
     }
   
+    @NotNull
     @Override
     public Block[][][] runicTemplateOriginal() {
         Block GOLD = Blocks.GOLD_ORE;
@@ -69,11 +71,13 @@ public class ZeerixChestRune extends AbstractTimedRune {
         }};
     }
 
+    @NotNull
     @Override
     public String getRuneName() {
         return "Zeerix Chest";
     }
 
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;

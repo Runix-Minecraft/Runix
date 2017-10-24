@@ -2,6 +2,7 @@ package com.newlinegaming.Runix;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class RuneTimer {
 
@@ -16,7 +17,7 @@ public class RuneTimer {
     }
     
     @SubscribeEvent
-    public void onPlayerTickEvent(PlayerTickEvent event) {
+    public void onPlayerTickEvent(@NotNull PlayerTickEvent event) {
         ++currentTimer;
         if(currentTimer >= maxTimer) {
             currentTimer = 0;

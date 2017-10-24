@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 class RunixAirBlock extends Block {
 
@@ -15,6 +16,7 @@ class RunixAirBlock extends Block {
         return -1;
     }
     
+    @Nullable
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return null;
     }

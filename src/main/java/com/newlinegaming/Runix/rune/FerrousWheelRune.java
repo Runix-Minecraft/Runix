@@ -5,6 +5,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public class FerrousWheelRune extends PersistentRune {
 
     
     @Override
-    protected void poke(EntityPlayer player, WorldXYZ coords) {
+    protected void poke(EntityPlayer player, @NotNull WorldXYZ coords) {
         if(player.getEntityWorld().isRemote)
             return;
         consumeFuelBlock(coords);
@@ -46,7 +47,7 @@ public class FerrousWheelRune extends PersistentRune {
         teleportPlayer(player, next.location);
     }
 
-    private FerrousWheelRune getNextWheel(EntityPlayer player){
+    private FerrousWheelRune getNextWheel(@NotNull EntityPlayer player){
         if(globalWheel.size() < 2)
             return null;
         int start = globalWheel.indexOf(this);
@@ -60,10 +61,12 @@ public class FerrousWheelRune extends PersistentRune {
         return null;
     }
 
+    @NotNull
     public String toString(){
         return hashCode() + ": @" + location.toString() + " guests: " + guestList;
     }
     
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return globalWheel;
@@ -78,6 +81,7 @@ public class FerrousWheelRune extends PersistentRune {
         return false;
     }
     
+    @NotNull
     @Override
     public Block[][][] runicTemplateOriginal() {
         Block IRON = Blocks.IRON_ORE;
@@ -89,6 +93,7 @@ public class FerrousWheelRune extends PersistentRune {
         }};
     }
 
+    @NotNull
     @Override
     public String getRuneName() {
         return "Ferrous Wheel";

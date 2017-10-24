@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 public class WaypointRune extends PersistentRune{
     private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
@@ -23,6 +24,7 @@ public class WaypointRune extends PersistentRune{
         super(coords, player, "Waypoint");
     }
 
+    @NotNull
     @Override
     public Block[][][] runicTemplateOriginal() {
         return new Block[][][]
@@ -36,7 +38,7 @@ public class WaypointRune extends PersistentRune{
     @Override
     /**Waypoints will detect which side of the key block you activate from and use 
      * that to direct the player's teleport.*/
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
         location.face = coords.face; //update the facing of the waypoint
         aetherSay(poker, "Waypoint is now facing " + Vector3.faceString[location.face]);
     }
@@ -45,6 +47,7 @@ public class WaypointRune extends PersistentRune{
         return this.runeName;
     }
 
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;

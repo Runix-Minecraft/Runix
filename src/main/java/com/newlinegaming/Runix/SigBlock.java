@@ -3,6 +3,7 @@ package com.newlinegaming.Runix;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Plain old Data.  getClass() and meta.  Use this to preserve all your block info.
@@ -17,7 +18,7 @@ public class SigBlock {
     private IBlockState state;
     private Block block;
 
-    public SigBlock(Block block){
+    public SigBlock(@NotNull Block block){
         this.block = block;
         this.state = block.getDefaultState();
     }
@@ -39,7 +40,7 @@ public class SigBlock {
         return false;
     }
 
-    public boolean equals(SigBlock other){
+    public boolean equals(@NotNull SigBlock other){
         return block == other.state && state == other.state;
     }
 
@@ -47,6 +48,7 @@ public class SigBlock {
         return block.equals(other);  //can't get meta from block without coordinates
     }
 
+    @NotNull
     public String toString(){
         return "" + block + ":" + state.toString();
     }

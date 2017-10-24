@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 public class TeleporterRune extends PersistentRune {
 
@@ -24,6 +25,7 @@ public class TeleporterRune extends PersistentRune {
         energy = 1;
     }
 
+    @NotNull
     public Block[][][] runicTemplateOriginal(){
         return new Block[][][]
                 {{{NONE,TIER,SIGR,TIER,NONE},
@@ -38,7 +40,7 @@ public class TeleporterRune extends PersistentRune {
      * Teleport the player to the WaypointRune with a matching signature
      */
     @Override
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
         consumeFuelBlock(coords);
 
         try{
@@ -50,6 +52,7 @@ public class TeleporterRune extends PersistentRune {
         }
     }
 
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return energizedTeleporters;

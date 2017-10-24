@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,13 +22,14 @@ public class CommonProxy {
     private ArrayList<Block> naturalBlocks;
     private ArrayList<Block> moveSensitiveBlocks;
     private ArrayList<Block> crushableBlocks;
+    @NotNull
     private HashMap<Block, ITier> energyRegistry = new HashMap<>();
 
     public CommonProxy() {
         Tiers tier = new Tiers();
     }
 
-    public void preInit(FMLPreInitializationEvent e) {
+    public void preInit(@NotNull FMLPreInitializationEvent e) {
         API.bind(e.getAsmData());
 //        System.out.println(API.INSTANCE().getTierInfo(Blocks.DRAGON_EGG));
 //        System.out.print(TierHelper.getTierNumber(Blocks.DRAGON_EGG));

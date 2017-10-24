@@ -7,9 +7,11 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 public class Signature {
     
+    @NotNull
     private final ArrayList<SigBlock> blocks;
     public transient ArrayList<String> metaWhiteList;
     
@@ -22,7 +24,7 @@ public class Signature {
      * @param rune for fetching the runicFormulae()
      * @param coords with facing
      */
-    public Signature(AbstractRune rune, WorldXYZ coords) {
+    public Signature(@NotNull AbstractRune rune, WorldXYZ coords) {
         blocks = new ArrayList<>();
         Block[] metaWhiteList = new Block[]{//this list specifically lacks any block that uses meta for orientation
                 Blocks.CARPET, Blocks.WOOL,
@@ -50,7 +52,7 @@ public class Signature {
         }
     }
     
-    public boolean equals(Signature other){
+    public boolean equals(@NotNull Signature other){
         for(SigBlock b : blocks){//ensure the two signatures have the same number of instances of each block i.e. 3 cobble vs 1 cobble
             if(Collections.frequency(other.blocks, b) != Collections.frequency(blocks, b))
                 return false;

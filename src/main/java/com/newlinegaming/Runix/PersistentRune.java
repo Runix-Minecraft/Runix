@@ -4,18 +4,19 @@ import com.google.gson.Gson;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.utils.UtilMovement;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.server.FMLServerHandler;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,10 +26,13 @@ import java.util.*;
 
 public abstract class PersistentRune extends AbstractRune {
 
+    @Nullable
     private UUID uuid = null;
     public boolean disabled = false;
+    @Nullable
     public WorldXYZ location = null;
     protected Vector3 forwards = Vector3.UP;
+    @Nullable
     protected String instanceName = "";
     protected PersistentRune(){}
 
@@ -43,7 +47,7 @@ public abstract class PersistentRune extends AbstractRune {
     /**
      * Override this method to implement custom rune file saving rules
      */
-    public void saveActiveRunes(Save saveEvent) {
+    public void saveActiveRunes(@NotNull Save saveEvent) {
         if(getActiveMagic().isEmpty())
             return;
         String fileName = getJsonFilePath(saveEvent.getWorld());//  ex:TorcherBearerRune.json
@@ -63,7 +67,7 @@ public abstract class PersistentRune extends AbstractRune {
         }
     }
 
-    public void loadRunes(Load loadEvent) {
+    public void loadRunes(@NotNull Load loadEvent) {
         String fileName = getJsonFilePath(loadEvent.getWorld());
         try {
             ArrayList<PersistentRune> newList = new ArrayList<>();
@@ -85,6 +89,7 @@ public abstract class PersistentRune extends AbstractRune {
         }
     }
 
+    @NotNull
     private String getJsonFilePath(World world) {
 
 //        String levelName = world.getWorldInfo().getWorldName();
@@ -115,6 +120,7 @@ public abstract class PersistentRune extends AbstractRune {
      * public static ArrayList<WaypointRune> activeMagic = new ArrayList<WaypointRune>();
      */
 
+    @NotNull
     public abstract ArrayList<PersistentRune> getActiveMagic();
 
     /**
@@ -126,11 +132,11 @@ public abstract class PersistentRune extends AbstractRune {
      * even if it is only to call super(coords, activator) in order for persistence to work correctly.
      */
     @Override
-    public void execute(WorldXYZ coords, EntityPlayer activator) {
+    public void execute(WorldXYZ coords, @NotNull EntityPlayer activator) {
         execute(coords, activator, Vector3.UP); //Up is the default
     }
 
-    public void execute(WorldXYZ coords, EntityPlayer activator, Vector3 forward) {
+    public void execute(WorldXYZ coords, @NotNull EntityPlayer activator, Vector3 forward) {
         if(activator.getEntityWorld().isRemote)//runes server side only
             return;
         PersistentRune match = getOrCreateRune(coords, activator);
@@ -141,7 +147,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
 
-    private PersistentRune getOrCreateRune(WorldXYZ coords, EntityPlayer activator) {
+    private PersistentRune getOrCreateRune(WorldXYZ coords, @NotNull EntityPlayer activator) {
         PersistentRune match = null;
         if(oneRunePerPerson())
             match = getRuneByPlayer(activator);
@@ -162,6 +168,7 @@ public abstract class PersistentRune extends AbstractRune {
         return match;
     }
 
+    /*@Nullable
     @SuppressWarnings("unused")
     public PersistentRune getRuneByInstanceName(String name) {
         for(PersistentRune rune : getActiveMagic()) {
@@ -169,12 +176,13 @@ public abstract class PersistentRune extends AbstractRune {
                 return rune;
         }
         return null;
-    }
+    }*/
 
     /**
      * Return the rune in getActiveMagic() that matches the given coordinates or null if there is none
      */
-    public PersistentRune getRuneByPlayer(EntityPlayer activator) {
+    @Nullable
+    public PersistentRune getRuneByPlayer(@NotNull EntityPlayer activator) {
         for(PersistentRune rune : getActiveMagic()){
             if( rune.getPlayer() != null){
                 UUID runeID = rune.getPlayer().getUniqueID();
@@ -194,7 +202,7 @@ public abstract class PersistentRune extends AbstractRune {
      * @param player Player that poked the rune
      * @param coords center block
      */
-    protected void poke(EntityPlayer player, WorldXYZ coords){
+    protected void poke(@NotNull EntityPlayer player, WorldXYZ coords){
         if(player.getEntityWorld().isRemote)
             return;
         if(oneRunePerPerson()){
@@ -227,6 +235,7 @@ public abstract class PersistentRune extends AbstractRune {
         aetherSay(player, TextFormatting.GREEN + getRuneName()+"_"+ getActiveMagic().size() + " Accepted.");
     }
 
+    @Nullable
     @Override
     public Signature getSignature() {
         return new Signature(this, location);
@@ -248,7 +257,7 @@ public abstract class PersistentRune extends AbstractRune {
     /*
       Adds re-enabling runes to consumeKeyBlock
      */
-    protected boolean consumeFuelBlock(WorldXYZ coords) {
+    protected boolean consumeFuelBlock(@NotNull WorldXYZ coords) {
         if(super.consumeFuelBlock(coords)){
             disabled = false;
             return true;
@@ -263,7 +272,7 @@ public abstract class PersistentRune extends AbstractRune {
      * sufficient.  However, it's still possible to cleave a rune in half with a Faith sphere.
      */
     @Override
-    public void moveMagic(HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
+    public void moveMagic(@NotNull HashMap<WorldXYZ, WorldXYZ> positionsMoved) {
         for(PersistentRune rune : getActiveMagic()){
             if(positionsMoved.keySet().contains(rune.location) ){//grab the destination keyed by source position
                 rune.moveYourLocation(positionsMoved.get(rune.location));
@@ -271,7 +280,7 @@ public abstract class PersistentRune extends AbstractRune {
         }
     }
 
-    protected void moveYourLocation(WorldXYZ destination) {
+    protected void moveYourLocation(@NotNull WorldXYZ destination) {
         location = destination.copyWithNewFacing(location.face); //preserve old facing for runes
     }
 
@@ -285,24 +294,19 @@ public abstract class PersistentRune extends AbstractRune {
         return false;
     }
 
+    @Nullable
     protected EntityPlayer getPlayer() {
-
-         try {
-
-
-             if (!location.getWorld().isRemote) {
-                 for (Object playerObj : FMLServerHandler.instance().getServer().getPlayerList().getPlayers()) { //TODO relook.
-                  if (((EntityPlayer) playerObj).getUniqueID().equals(uuid))
-                      return (EntityPlayer) playerObj;
-                 }
-             }
-         } catch (NullPointerException ex) {
-        //Silent fail
-    }
-        return null;
+        MinecraftServer server = FMLServerHandler.instance().getServer();
+        if(uuid != null && server != null) {
+            PlayerList playerList = server.getPlayerList();
+            return playerList.getPlayerByUUID(uuid);
+        }
+        else
+            return null;
     }
 
-    public void setPlayer(EntityPlayer playerObj) {
+
+    public void setPlayer(@Nullable EntityPlayer playerObj) {
         if (playerObj == null)
             this.uuid = null;
         else
@@ -317,11 +321,13 @@ public abstract class PersistentRune extends AbstractRune {
         return getTier(); //Spheres are the same in all directions regardless of facing
     }
 
+    @NotNull
     protected LinkedHashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator) {
         return attachedStructureShape(activator, fullStructure());
     }    
     
-    protected LinkedHashSet<WorldXYZ> attachedStructureShape(EntityPlayer activator, LinkedHashSet<WorldXYZ> scannedStructure) {
+    @NotNull
+    protected LinkedHashSet<WorldXYZ> attachedStructureShape(@Nullable EntityPlayer activator, @NotNull LinkedHashSet<WorldXYZ> scannedStructure) {
         if (activator != null) {
             if (scannedStructure.isEmpty()) {
                 aetherSay(activator, "There are too many blocks for the Rune to carry. Increase the Tier blocks or choose a smaller structure.");
@@ -334,6 +340,7 @@ public abstract class PersistentRune extends AbstractRune {
         return scannedStructure;
     }
 
+    @Nullable
     public LinkedHashSet<WorldXYZ> fullStructure() {
         if(usesConductance)
             return directConductanceStructure();
@@ -341,6 +348,7 @@ public abstract class PersistentRune extends AbstractRune {
             return runeBlocks(location);
     }
     
+    @NotNull
     private LinkedHashSet<WorldXYZ> directConductanceStructure() {
         int tier = getTier();
         LinkedHashSet<WorldXYZ> scannedStructure = conductanceStep(location, tier * 2);
@@ -369,7 +377,7 @@ public abstract class PersistentRune extends AbstractRune {
     }
 
 
-    protected void moveStructureAndPlayer(EntityPlayer player, WorldXYZ destination, HashSet<WorldXYZ> structure) {
+    protected void moveStructureAndPlayer(@NotNull EntityPlayer player, @NotNull WorldXYZ destination, @NotNull HashSet<WorldXYZ> structure) {
             Vector3 directionOfScanning = Vector3.facing[destination.face];
             WorldXYZ destinationCenter = UtilMovement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
             if(destinationCenter != null) {

@@ -9,6 +9,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 public class CompassRune extends AbstractRune{
 
@@ -17,6 +18,7 @@ public class CompassRune extends AbstractRune{
         runeName = "Compass";
     }
     
+    @NotNull
     public Block[][][] runicTemplateOriginal(){
         Block air = Blocks.AIR;//This is AIR 0 on purpose
         return new Block [][][]
@@ -42,6 +44,7 @@ public class CompassRune extends AbstractRune{
             accept(player);
     }
 
+    @NotNull
     public String getRuneName()
     {
         return "Compass";

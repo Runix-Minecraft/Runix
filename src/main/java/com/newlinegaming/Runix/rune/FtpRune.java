@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 public class FtpRune extends TeleporterRune {
     
@@ -29,6 +30,7 @@ public class FtpRune extends TeleporterRune {
         usesConductance = true;
     }
 
+    @NotNull
     public Block[][][] runicTemplateOriginal(){
         Block GOLD = Blocks.GOLD_BLOCK;
         return new Block[][][] {{
@@ -41,7 +43,7 @@ public class FtpRune extends TeleporterRune {
     }
 
     @Override
-    protected void poke(EntityPlayer player, WorldXYZ coords) {
+    protected void poke(EntityPlayer player, @NotNull WorldXYZ coords) {
         consumeFuelBlock(coords);
         location.face = coords.face; //update the facing
         WorldXYZ destination;
@@ -58,6 +60,7 @@ public class FtpRune extends TeleporterRune {
         moveStructureAndPlayer(player, destination, structure);
     }
 
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return energizedFTP;
@@ -79,7 +82,7 @@ public class FtpRune extends TeleporterRune {
      * @return minimum displacement distance that could accommodate the structure
      */
     @Override
-    public int boundaryFromCenter(HashSet<WorldXYZ> structure, Vector3 directionOfScanning){
+    public int boundaryFromCenter(@NotNull HashSet<WorldXYZ> structure, Vector3 directionOfScanning){
         int margin = 2;
         //I considered "simplifying" this to the underlying logic, but since there's three degrees of freedom
         //and only 6 outcomes, walking through the logic is just as long and more confusing to read.

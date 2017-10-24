@@ -12,6 +12,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class OracleRune extends AbstractRune {
         runeName = ("Oracle Rune");
     }
 
+    @NotNull
     @Override
     protected Block[][][] runicTemplateOriginal() {
         
@@ -40,7 +42,7 @@ public class OracleRune extends AbstractRune {
     }
 
     @Override
-    public void execute(WorldXYZ coords, EntityPlayer player) {
+    public void execute(@NotNull WorldXYZ coords, @NotNull EntityPlayer player) {
       ItemStack toolUsed = player.getHeldItemMainhand();
       
       if(toolUsed !=null && toolUsed.getItem() == Items.GOLDEN_SWORD ||

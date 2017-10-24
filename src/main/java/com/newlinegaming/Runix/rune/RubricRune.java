@@ -23,13 +23,17 @@ import com.newlinegaming.Runix.helper.RenderHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class RubricRune extends PersistentRune {
 
 	private static final ArrayList<PersistentRune> storedPatterns = new ArrayList<>();
-	private HashMap<Vector3, SigBlock> structure = new HashMap<>();
-	private transient RenderHelper renderer = null;
+	@NotNull
+    private HashMap<Vector3, SigBlock> structure = new HashMap<>();
+	@Nullable
+    private transient RenderHelper renderer = null;
 
     public RubricRune() {
         runeName = "Rubric";
@@ -105,7 +109,7 @@ public class RubricRune extends PersistentRune {
 //    }
 
     @SubscribeEvent
-    public void bookClickEvent(PlayerInteractEvent.RightClickBlock event) {
+    public void bookClickEvent(@NotNull PlayerInteractEvent.RightClickBlock event) {
         String writtenBookName = getWrittenBookName(event.getEntityPlayer());
         if (writtenBookName != null) {
             EntityPlayer poker = event.getEntityPlayer();
@@ -127,7 +131,7 @@ public class RubricRune extends PersistentRune {
         }
     }
 
-    private void unpackStructure(EntityPlayer initiator, WorldXYZ origin){
+    private void unpackStructure(EntityPlayer initiator, @NotNull WorldXYZ origin){
         //convert old coordinets to vector3 based on offset from origin
         // create new worldXYZ by adding this.location to each vector3 
         HashMap<WorldXYZ, SigBlock> NewStructure = structureAbsoluteLocation(origin);
@@ -137,7 +141,8 @@ public class RubricRune extends PersistentRune {
         //catch: need more energy
     }
     
-    private HashMap<Vector3, SigBlock> scanStructure(HashSet<WorldXYZ> shape) {
+    @NotNull
+    private HashMap<Vector3, SigBlock> scanStructure(@NotNull HashSet<WorldXYZ> shape) {
         HashMap<Vector3, SigBlock> fullData = new HashMap<>();
         for(WorldXYZ point : shape){
             if(point.getBlock() != Blocks.AIR){
@@ -148,6 +153,7 @@ public class RubricRune extends PersistentRune {
         return fullData;
     }
 
+    @NotNull
     @Override
 	public Block[][][] runicTemplateOriginal() {
 		return new Block[][][] {{
@@ -160,7 +166,7 @@ public class RubricRune extends PersistentRune {
 		}};
 	}
 	
-	private String getWrittenBookName(EntityPlayer poker) {
+	private String getWrittenBookName(@NotNull EntityPlayer poker) {
 	    for( ItemStack toolused : poker.getHeldEquipment()) {
             if (toolused != null && toolused.getItem() == Items.WRITTEN_BOOK) {
                 return toolused.getDisplayName();
@@ -177,7 +183,8 @@ public class RubricRune extends PersistentRune {
         return super.getTier()*3;
     }
 
-    private Collection<WorldXYZ> extractCoordinates(Collection<BlockRecord> structureRecord) {
+    @NotNull
+    private Collection<WorldXYZ> extractCoordinates(@NotNull Collection<BlockRecord> structureRecord) {
 	    ArrayList<WorldXYZ> blocks = new ArrayList<>();
 	    for( BlockRecord record : structureRecord )
 	        blocks.add(location.offset(record.offset));
@@ -185,7 +192,8 @@ public class RubricRune extends PersistentRune {
     }
    
 
-    private HashMap<WorldXYZ, SigBlock> structureAbsoluteLocation(WorldXYZ origin) {
+    @NotNull
+    private HashMap<WorldXYZ, SigBlock> structureAbsoluteLocation(@NotNull WorldXYZ origin) {
         HashMap<WorldXYZ, SigBlock> NewStructure = new HashMap<>();
         for(Vector3 relative : structure.keySet()){
             NewStructure.put(origin.offset(relative), structure.get(relative));
@@ -194,6 +202,7 @@ public class RubricRune extends PersistentRune {
     }
     
     
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return storedPatterns;

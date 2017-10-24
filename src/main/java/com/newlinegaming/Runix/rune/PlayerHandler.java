@@ -6,6 +6,8 @@ import net.minecraft.block.Block;
 
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * PlayerHandler is a persistent rune because we would like to use the same saving and loading functionality.
@@ -15,11 +17,13 @@ import com.newlinegaming.Runix.WorldXYZ;
 public class PlayerHandler extends PersistentRune {
     private static final ArrayList<PersistentRune> serverPlayers = new ArrayList<>();
 
+    @Nullable
     @Override
     public WorldXYZ checkRunePattern(WorldXYZ coords) {
         return null;
     }
 
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return serverPlayers;
@@ -30,6 +34,7 @@ public class PlayerHandler extends PersistentRune {
         return true;
     }
 
+    @NotNull
     @Override
     protected Block[][][] runicTemplateOriginal() {
         return new Block[][][] {

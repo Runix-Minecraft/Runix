@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix;
 
 import net.minecraft.util.EnumFacing;
+import org.jetbrains.annotations.NotNull;
 
 public class Vector3 {
     public static final Vector3 UP =    new Vector3(0, 1,0);
@@ -54,23 +55,25 @@ public class Vector3 {
     }
     
     /** Returns a difference vector such that reference + vector = destination */
-    public Vector3(WorldXYZ reference, WorldXYZ destination){
+    public Vector3(@NotNull WorldXYZ reference, @NotNull WorldXYZ destination){
         x = destination.getX() - reference.getX();
         y = destination.getY() - reference.getY();
         z = destination.getZ() - reference.getZ();
     }
     
-    public Vector3(EnumFacing face)
+    public Vector3(@NotNull EnumFacing face)
     {
         x = face.getFrontOffsetX();
         y = face.getFrontOffsetY();
         z = face.getFrontOffsetZ();
     }
 
+    @NotNull
     public String toString(){
         return "\"x\":"+x + ", \"y\":" + y + ", \"z\":" + z;
     }
 
+    @NotNull
     public Vector3 multiply(int m) {
         return new Vector3(x*m, y*m, z*m);
     }

@@ -9,6 +9,8 @@ import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,9 +19,11 @@ import java.util.LinkedHashSet;
 public class FaithRune extends PersistentRune{
 
     private static final ArrayList<PersistentRune> activeFaithList = new ArrayList<>();
+    @NotNull
     private Integer radius = 11;
     private boolean firstTime;
     protected boolean useCollisionDetection = true;//option to turn off collision detection through JSON
+    @Nullable
     private transient LinkedHashSet<WorldXYZ> sphere = null;//volatile so that JSON doesn't try to cache this thing
     
     public FaithRune() {
@@ -30,6 +34,7 @@ public class FaithRune extends PersistentRune{
         firstTime = true;
     }
 
+    @NotNull
     public Block[][][] runicTemplateOriginal(){
         Block gold = Blocks.GOLD_BLOCK;
         return new Block[][][] {{
@@ -44,7 +49,7 @@ public class FaithRune extends PersistentRune{
 
 
     @Override
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
         if(firstTime){// firstTime prevents players from injecting more energy by building a second rune on top of the first
             firstTime = false;
             radius = getTier() * 2 - 1; //Tiers.energyToRadiusConversion(energy);
@@ -68,15 +73,18 @@ public class FaithRune extends PersistentRune{
         //assumes fullStructure() has already been called
         int height = Math.min(location.getY() + radius*2+1, 255 - radius-1);// places a ceiling that does not allow islands to go out the top of the map
         if(location.getY() + radius*2 <= height) {
-            HashSet<WorldXYZ> structure = attachedStructureShape(getPlayer(), sphere);
-            WorldXYZ destination = new WorldXYZ(location.getX(), height, location.getZ()); // scan up, starting at target height
-            moveStructureAndPlayer(getPlayer(), destination, structure);//scan UP, 0 buffer room
+            if(getPlayer()!= null){
+                HashSet<WorldXYZ> structure = attachedStructureShape(getPlayer(), sphere);
+                WorldXYZ destination = new WorldXYZ(location.getX(), height, location.getZ()); // scan up, starting at target height
+                moveStructureAndPlayer(getPlayer(), destination, structure);//scan UP, 0 buffer room
+            }
         } else {
             aetherSay(getPlayer(), "Radius: " + radius +
                     ". There's not enough room left to bounce. This island can be moved with an FTP, provided there is enough room under build height at the destination.");
         }
     }
     
+    @Nullable
     @Override
     public LinkedHashSet<WorldXYZ> fullStructure() {
         if(sphere == null)
@@ -91,6 +99,7 @@ public class FaithRune extends PersistentRune{
         location = destination.copyWithNewFacing(location.face); //preserve old facing
     }
     
+    @NotNull
     @Override
     public LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
         LinkedHashSet<WorldXYZ> st = new LinkedHashSet<>();
@@ -103,6 +112,7 @@ public class FaithRune extends PersistentRune{
         return radius;
     }
     
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeFaithList;

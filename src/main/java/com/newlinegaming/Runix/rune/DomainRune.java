@@ -13,6 +13,7 @@ import com.newlinegaming.Runix.BlockRecord;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 public class DomainRune extends AbstractTimedRune {
 
@@ -30,11 +31,12 @@ public class DomainRune extends AbstractTimedRune {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    @NotNull
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeDomains;
     }
 
-    private void phaseBlockAt(WorldXYZ coords) {
+    private void phaseBlockAt(@NotNull WorldXYZ coords) {
         BlockRecord record = new BlockRecord(10, new Vector3(location, coords), coords.getSigBlock());
         phasedBlocks.add(record);   
     }
@@ -44,6 +46,7 @@ public class DomainRune extends AbstractTimedRune {
     return false;
     }
 
+    @NotNull
     @Override
     public Block[][][] runicTemplateOriginal() {
         Block air = Blocks.AIR;

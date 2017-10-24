@@ -13,11 +13,14 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**Elevator that ferries player up and down based on open spaces.  Doesn't consume energy.**/
 public class ElevatorRune extends PersistentRune {
 
     private static final ArrayList<PersistentRune> otherElevators = new ArrayList<>();
+    @Nullable
     private WorldXYZ bottomLocation = null;
     
     public ElevatorRune(){
@@ -33,7 +36,7 @@ public class ElevatorRune extends PersistentRune {
     /**initializeRune() is necessary because of a circular condition in the event registry
      * that does not play well with the GSON object constructor loading from loadRunes()
      */
-    private void initializeRune(WorldXYZ coords) {
+    private void initializeRune(@NotNull WorldXYZ coords) {
         bottomLocation = coords.offset(0, -4, 0);
         MinecraftForge.EVENT_BUS.register(this);        
     }
@@ -42,7 +45,7 @@ public class ElevatorRune extends PersistentRune {
      * Teleport the player up or down
      */
     @Override
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
         if (bottomLocation == null)
         {
             initializeRune(coords);
@@ -61,7 +64,7 @@ public class ElevatorRune extends PersistentRune {
     }
     
     @SubscribeEvent
-    public void bottomPoked(PlayerInteractEvent event)
+    public void bottomPoked(@NotNull PlayerInteractEvent event)
     {
         if (event.getCancellationResult() == EnumActionResult.PASS)
         {
@@ -74,6 +77,7 @@ public class ElevatorRune extends PersistentRune {
         }
     }
 
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return otherElevators;
@@ -84,6 +88,7 @@ public class ElevatorRune extends PersistentRune {
         return false;
     }
 
+    @NotNull
     @Override
     protected Block[][][] runicTemplateOriginal() {
         Block air = Blocks.AIR;

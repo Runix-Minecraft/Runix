@@ -6,6 +6,7 @@ import com.newlinegaming.Runix.WorldXYZ;
 
 import net.minecraft.entity.player.EntityPlayer;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 public class RenderHelper {
@@ -20,10 +21,10 @@ public class RenderHelper {
     public void reset(){
         progress = 0.0f;
     }
-    public boolean highlightBoxes(Collection<WorldXYZ> structureBlocks, boolean reverse, EntityPlayer player){
+    public boolean highlightBoxes(@NotNull Collection<WorldXYZ> structureBlocks, boolean reverse, @NotNull EntityPlayer player){
         return highlightBoxes(structureBlocks, reverse, player,0, 216, 216);
     }
-    public boolean highlightBoxes(Collection<WorldXYZ> structureBlocks, boolean reverse, EntityPlayer player,int R,int G, int B){
+    public boolean highlightBoxes(@NotNull Collection<WorldXYZ> structureBlocks, boolean reverse, @NotNull EntityPlayer player, int R, int G, int B){
         if((!reverse && progress > 1.0) || (reverse && progress < 0.0))
             return false;
         if(!reverse)

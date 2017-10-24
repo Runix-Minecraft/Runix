@@ -19,6 +19,8 @@ import com.newlinegaming.Runix.block.fake.TierBlock;
 import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.utils.UtilMovement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class contains the basic functions that runes will use to execute their functions.  Any reusable code or concepts should go in
@@ -39,7 +41,9 @@ public abstract class AbstractRune {
     //Please note: putting 0 in a blockPattern() requires AIR, not simply Tier 0
     protected static final Block FUEL = new FuelBlock(); //required to be in the middle of the rune
     
+    @Nullable
     public String runeName = null;
+    @Nullable
     private final String runeLocalizedName = null;
 
     protected boolean usesConductance = false;
@@ -49,6 +53,7 @@ public abstract class AbstractRune {
      * Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
      * defined in your class, never use it.  Use runicFormulae() instead.
      */
+    @NotNull
     protected abstract Block[][][] runicTemplateOriginal();
 
     protected abstract boolean isFlatRuneOnly();
@@ -60,7 +65,7 @@ public abstract class AbstractRune {
      * @return WorldXYZ is the coordinates being checked.  Use WorldXYZ.getBlockID().  SigBlock is
      * the runeTemplate for that block, which can be special values like TIER or KEY.
      */
-    HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
+    @NotNull HashMap<WorldXYZ, SigBlock> runicFormulae(WorldXYZ coords){
         if(isFlatRuneOnly())
             coords = coords.copyWithNewFacing(1); //we need a new object so we don't side-effect other runes
         return patternToShape(runicTemplateOriginal(), coords);
@@ -89,7 +94,7 @@ public abstract class AbstractRune {
      * @return Returns false if the operation was blocked by build protection.  Currently always true.
      */
     @SuppressWarnings("SameReturnValue")
-    protected boolean stampBlockPattern(HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
+    protected boolean stampBlockPattern(@NotNull HashMap<WorldXYZ, SigBlock> stamp, EntityPlayer player) {
         for(WorldXYZ target : stamp.keySet())
             target.setBlockId( stamp.get(target) );
         return true;
@@ -103,7 +108,7 @@ public abstract class AbstractRune {
      * @param player being teleported
      * @param coords Target destination
      */
-    protected void teleportPlayer(EntityPlayer player, WorldXYZ coords) {
+    protected void teleportPlayer(@NotNull EntityPlayer player, @NotNull WorldXYZ coords) {
 
         Vector3 direction = Vector3.facing[coords.face];
         for(int tries = 0; tries < 100; ++tries) {
@@ -155,6 +160,7 @@ public abstract class AbstractRune {
     /**
      * returns the unique name of the rune
      */
+    @Nullable
     public String getRuneName() {
 
         if(!runeName.isEmpty()) {
@@ -164,7 +170,7 @@ public abstract class AbstractRune {
         }
     }
 
-    public static void aetherSay(EntityPlayer player, String message) {
+    public static void aetherSay(@Nullable EntityPlayer player, @NotNull String message) {
 
         if(player != null && !player.getEntityWorld().isRemote) {
             player.sendMessage(new TextComponentString(message));
@@ -173,7 +179,7 @@ public abstract class AbstractRune {
         }
     }
 
-    public void aetherSay(World worldObj, String message) {
+    public void aetherSay(@NotNull World worldObj, String message) {
 
         if(!worldObj.isRemote) { //[6915f56] Fixed player messages by just sending them from the server side instead of the ignorant client.
 //            FMLServerHandler.instance().getServer().getP.sendMessage(new TextComponentString(message));
@@ -190,7 +196,8 @@ public abstract class AbstractRune {
      * and T1+ None Corners.  So if there is a recognizable shape, it will be accepted.
      * @return true if there is a valid match
      */
-    public WorldXYZ checkRunePattern(WorldXYZ coords) {
+    @Nullable
+    public WorldXYZ checkRunePattern(@NotNull WorldXYZ coords) {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         if( !isAssymetrical()) {
             if(runeOrientationMatches(coords, shape))
@@ -220,7 +227,7 @@ public abstract class AbstractRune {
         return null;
     }
 
-    private boolean runeOrientationMatches(WorldXYZ coords, HashMap<WorldXYZ, SigBlock> shape) {
+    private boolean runeOrientationMatches(WorldXYZ coords, @NotNull HashMap<WorldXYZ, SigBlock> shape) {
         Block ink = getTierInkBlock(coords);
         if(ink == Blocks.AIR)
             return false; //Tier blocks cannot be AIR
@@ -269,6 +276,7 @@ public abstract class AbstractRune {
         return blockID != null ? TierHelper.getTierNumber(blockID) : 1;
     }
     
+    @Nullable
     protected Block getTierInkBlock(WorldXYZ coords) {
         HashMap<WorldXYZ, SigBlock> shape = runicFormulae(coords);
         for (WorldXYZ target : shape.keySet()) {
@@ -287,7 +295,7 @@ public abstract class AbstractRune {
     }
 
     /**This will return an empty list if the activation would tear a structure in two. */
-    LinkedHashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
+    @NotNull LinkedHashSet<WorldXYZ> conductanceStep(WorldXYZ startPoint, int maxDistance) {
         LinkedHashSet<WorldXYZ> workingSet = new LinkedHashSet<>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<>();
@@ -331,7 +339,8 @@ public abstract class AbstractRune {
      * @param centerPoint
      * @return
      */
-    protected HashMap<WorldXYZ, SigBlock> patternToShape(Block[][][] pattern, WorldXYZ centerPoint){
+    @NotNull
+    protected HashMap<WorldXYZ, SigBlock> patternToShape(@NotNull Block[][][] pattern, @NotNull WorldXYZ centerPoint){
         // World coordinates + relative offset + half the size of the rune (for middle)
         // "-y" the activation and "center" block for 3D runes is the top layer, at the moment
         HashMap<WorldXYZ, SigBlock> shape = new HashMap<>();
@@ -382,7 +391,7 @@ public abstract class AbstractRune {
         System.out.println(getRuneName() + " energy: " + energy);
     }
 
-    protected void setBlockIdAndUpdate(WorldXYZ coords, Block blockID) throws NotEnoughRunicEnergyException {
+    protected void setBlockIdAndUpdate(@NotNull WorldXYZ coords, @NotNull Block blockID) throws NotEnoughRunicEnergyException {
         if( blockID == Blocks.AIR)//this is actually breaking, not paying for air
             spendEnergy(RunixConstants.blockBreakCost);
         else
@@ -390,7 +399,7 @@ public abstract class AbstractRune {
         coords.setBlockIdAndUpdate(blockID.getDefaultState());
     }
 
-    protected void setBlockIdAndUpdate(WorldXYZ destination, SigBlock sourceBlock) throws NotEnoughRunicEnergyException {
+    protected void setBlockIdAndUpdate(@NotNull WorldXYZ destination, @NotNull SigBlock sourceBlock) throws NotEnoughRunicEnergyException {
         if(sourceBlock.getBlock() == Blocks.AIR )//this is actually breaking, not paying for air
             spendEnergy(RunixConstants.blockBreakCost);
         else
@@ -410,7 +419,7 @@ public abstract class AbstractRune {
     }
 
     /**This is a minature convenience version of moveShape(moveMapping) for single blocks */
-    protected void moveBlock(WorldXYZ coords, WorldXYZ newPos) {
+    protected void moveBlock(@NotNull WorldXYZ coords, @NotNull WorldXYZ newPos) {
         newPos.setBlockId(coords.getSigBlock());
         coords.setBlockIdAndUpdate(Blocks.AIR.getDefaultState());
 
@@ -419,7 +428,7 @@ public abstract class AbstractRune {
         RuneHandler.getInstance().moveMagic(moveMapping);
     }
 
-    boolean consumeFuelBlock(WorldXYZ coords) {
+    boolean consumeFuelBlock(@NotNull WorldXYZ coords) {
         if(TierHelper.getTierNumber(coords.getBlock()) > 1){
             energy += TierHelper.getEnergy(coords.getBlock());
             coords.setBlockIdAndUpdate(Blocks.COBBLESTONE.getDefaultState());//we don't want air sitting here
@@ -436,7 +445,8 @@ public abstract class AbstractRune {
      * @param signature
      * @return WorldXYZ or null
      */
-    protected WorldXYZ findWaypointBySignature(Signature signature) throws NoSuchSignatureException {
+    @Nullable
+    protected WorldXYZ findWaypointBySignature(@NotNull Signature signature) throws NoSuchSignatureException {
         //new WaypointRune() is necessary because getActiveMagic() CANNOT be static, so it returns a pointer to a static field...
         ArrayList<PersistentRune> waypointList = (new WaypointRune().getActiveMagic());
         PersistentRune wp = null;
@@ -456,6 +466,7 @@ public abstract class AbstractRune {
     /*
      * Placeholder which returns an empty signature.  Ovverride this to add signatures to your rune.
      */
+    @Nullable
     public Signature getSignature() {
         return new Signature();
     }
@@ -468,6 +479,7 @@ public abstract class AbstractRune {
         return false;
     }
 
+    @NotNull
     protected LinkedHashSet<WorldXYZ> runeBlocks(WorldXYZ coords) {
         return new LinkedHashSet<>(runicFormulae(coords).keySet());
     }

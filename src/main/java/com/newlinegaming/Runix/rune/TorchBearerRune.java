@@ -15,13 +15,14 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.utils.UtilSphericalFunctions;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 /**TorchBearer functionality to place permanent torches appropriately spaced to prevent monster spawn.*/
 public class TorchBearerRune extends AbstractTimedRune {
     private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
     public TorchBearerRune() {
         runeName = "Torch Bearer";
-        updateEveryXTicks(10);
+//        updateEveryXTicks(10);
     }
 
     public TorchBearerRune( WorldXYZ coords, EntityPlayer activator ) {
@@ -30,7 +31,7 @@ public class TorchBearerRune extends AbstractTimedRune {
     }
 
     @Override
-    protected void onUpdateTick(EntityPlayer subject) {
+    protected void onUpdateTick(@NotNull EntityPlayer subject) {
         if(subject.equals(getPlayer()) && !subject.getEntityWorld().isRemote) {
             World world = subject.getEntityWorld();//sphere can be optimized to donut
             location = new WorldXYZ(getPlayer());
@@ -54,6 +55,7 @@ public class TorchBearerRune extends AbstractTimedRune {
         }
     }
 
+    @NotNull
     @Override
     public Block[][][] runicTemplateOriginal() {
         Block TRCH = Blocks.TORCH;
@@ -65,11 +67,13 @@ public class TorchBearerRune extends AbstractTimedRune {
         }}; 
     }
 
+    @NotNull
     @Override
     public String getRuneName() {
         return "Torch Bearer";
     }
 
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;

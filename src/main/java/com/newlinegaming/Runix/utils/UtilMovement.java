@@ -11,10 +11,12 @@ import com.newlinegaming.Runix.workers.StructureMoveWorker;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 public class UtilMovement {
 
-    public static HashMap<WorldXYZ, WorldXYZ> xzRotation(Collection<WorldXYZ> startingShape, WorldXYZ centerPoint, boolean counterClockwise){
+    @NotNull
+    public static HashMap<WorldXYZ, WorldXYZ> xzRotation(@NotNull Collection<WorldXYZ> startingShape, @NotNull WorldXYZ centerPoint, boolean counterClockwise){
         //centerPoint is also the axis of rotation
         HashMap<WorldXYZ, WorldXYZ> rotationMapping = new HashMap<>();
         for( WorldXYZ point : startingShape ){
@@ -28,7 +30,8 @@ public class UtilMovement {
      * Note: when designing moving runes, DO NOT update your PersistentRune.location variable.
      * moveShape() calls moveMagic() which will update everything including yourself.
      */
-    public static HashSet<WorldXYZ> performMove(HashMap<WorldXYZ, WorldXYZ> moveMapping) {
+    @NotNull
+    public static HashSet<WorldXYZ> performMove(@NotNull HashMap<WorldXYZ, WorldXYZ> moveMapping) {
         SigBlock AIR = new SigBlock(Blocks.AIR);
         HashMap<WorldXYZ, SigBlock> newStructure = new HashMap<>();
         HashMap<WorldXYZ, SigBlock> sensitiveBlocks = new HashMap<>();
@@ -62,7 +65,7 @@ public class UtilMovement {
     /**
      * Geometry: figure out if we're on the left or right side of the rune relative to the player
      */
-    public static boolean lookingRightOfCenterBlock(EntityPlayer player, WorldXYZ referencePoint) {
+    public static boolean lookingRightOfCenterBlock(@NotNull EntityPlayer player, @NotNull WorldXYZ referencePoint) {
         float yaw = player.rotationYawHead;//assumption: you're looking at the block you right clicked
         yaw = (yaw > 0.0) ? yaw  : yaw + 360.0F; //Josiah: minecraft yaw wanders into negatives sometimes...
         double opposite = player.getPosition().getZ() - referencePoint.getZ() - .5;
@@ -77,7 +80,8 @@ public class UtilMovement {
                 ((angle - yaw) < -180.0 && (angle - yaw) > -360.0);
     }
 
-    public static LinkedHashMap<WorldXYZ, WorldXYZ> displaceShape(Collection<WorldXYZ> set, WorldXYZ startPoint, WorldXYZ destinationCenter) {
+    @NotNull
+    public static LinkedHashMap<WorldXYZ, WorldXYZ> displaceShape(@NotNull Collection<WorldXYZ> set, @NotNull WorldXYZ startPoint, @NotNull WorldXYZ destinationCenter) {
         LinkedHashMap<WorldXYZ, WorldXYZ> moveMapping = new LinkedHashMap<>();
         Vector3 displacement = new Vector3(startPoint, destinationCenter);
         for(WorldXYZ point : set)
@@ -85,7 +89,7 @@ public class UtilMovement {
         return moveMapping;
     }
 
-    public static boolean shapeCollides(HashMap<WorldXYZ, WorldXYZ> move) {
+    public static boolean shapeCollides(@NotNull HashMap<WorldXYZ, WorldXYZ> move) {
         for(WorldXYZ newPos : move.values()){
             if( !move.containsKey(newPos) && newPos.getBlock() != Blocks.AIR && !TierHelper.isCrushable(newPos.getBlock()))
                 return true;
@@ -99,7 +103,7 @@ public class UtilMovement {
      * @param destination block (with facing) of waypoint
      * @return center of destination teleport or null if the teleport was unsuccessful
      */
-    public static WorldXYZ safelyTeleportStructure(HashSet<WorldXYZ> structure, WorldXYZ startPoint, WorldXYZ destination, int extremitySize) {
+    public static WorldXYZ safelyTeleportStructure(@NotNull HashSet<WorldXYZ> structure, @NotNull WorldXYZ startPoint, @NotNull WorldXYZ destination, int extremitySize) {
         Vector3 scanDirection = Vector3.facing[destination.face];
         Vector3 roomForShip = scanDirection.multiply(extremitySize);
         int collisionTries = 0;
@@ -121,7 +125,8 @@ public class UtilMovement {
     }
 
 
-    public static HashMap<WorldXYZ, SigBlock> rotateStructureInMemory(HashMap<WorldXYZ, SigBlock> shape, WorldXYZ center, int nTurns) {
+    @NotNull
+    public static HashMap<WorldXYZ, SigBlock> rotateStructureInMemory(@NotNull HashMap<WorldXYZ, SigBlock> shape, @NotNull WorldXYZ center, int nTurns) {
         HashMap<WorldXYZ, SigBlock> startShape = new HashMap<>(shape);
         
         for(int turnNumber = 0; turnNumber < nTurns; ++turnNumber) {
@@ -137,7 +142,8 @@ public class UtilMovement {
         return startShape;
     }
 
-    public static HashMap<WorldXYZ, SigBlock> scanBlocksInShape(Set<WorldXYZ> shape) {
+    @NotNull
+    public static HashMap<WorldXYZ, SigBlock> scanBlocksInShape(@NotNull Set<WorldXYZ> shape) {
         HashMap<WorldXYZ, SigBlock> actualBlocks = new HashMap<>();
         for(WorldXYZ point : shape) {
             actualBlocks.put(point, point.getSigBlock());

@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 public class UtilSphericalFunctions {
 
@@ -13,7 +14,8 @@ public class UtilSphericalFunctions {
         return ((x * x) + (y * y) + (z * z) < ((rd + 0.5) * (rd + 0.5)));
     }
     
-    public static LinkedHashSet<WorldXYZ> getSphere (WorldXYZ coords, int radius)
+    @NotNull
+    public static LinkedHashSet<WorldXYZ> getSphere (@NotNull WorldXYZ coords, int radius)
     {
         float r_squared = (float)((radius + 0.5) * (radius + 0.5));
         World world = coords.getWorld();
@@ -35,7 +37,8 @@ public class UtilSphericalFunctions {
         return returnvalues;
     }
 
-    public static HashSet<WorldXYZ> getShell(WorldXYZ center, int radius){
+    @NotNull
+    public static HashSet<WorldXYZ> getShell(@NotNull WorldXYZ center, int radius){
         //Josiah: I wrote this so it's probably got holes...
         HashSet<WorldXYZ> bigSphere = getSphere(center, radius);
         HashSet<WorldXYZ> smallerSphere = getSphere(center, radius-1);

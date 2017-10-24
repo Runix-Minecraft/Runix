@@ -5,6 +5,7 @@ import com.newlinegaming.Runix.api.IRunixAPI;
 import com.newlinegaming.Runix.api.tier.ITier;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -14,14 +15,16 @@ public class API implements IRunixAPI {
 
     private static final IRunixAPI INSTANCE = new API();
 
+    @NotNull
     private HashMap<Block, ITier> teirsReg = new HashMap<>();
 
 
+    @NotNull
     public static IRunixAPI INSTANCE() {
         return INSTANCE;
     }
 
-    public static void bind(ASMDataTable table) {
+    public static void bind(@NotNull ASMDataTable table) {
 
         String annoName = BindRunixAPI.class.getCanonicalName();
 
@@ -39,7 +42,7 @@ public class API implements IRunixAPI {
                     field.set(null, INSTANCE);
                 }
 
-            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+            } catch (@NotNull ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
                 throw  new RuntimeException("Failed to bind: " + ds.getClassName() + ds.getObjectName(), e);
             }
         });

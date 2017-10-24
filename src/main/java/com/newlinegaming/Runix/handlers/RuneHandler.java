@@ -41,6 +41,8 @@ import com.newlinegaming.Runix.rune.TeleporterRune;
 import com.newlinegaming.Runix.rune.TorchBearerRune;
 import com.newlinegaming.Runix.rune.WaypointRune;
 import com.newlinegaming.Runix.rune.ZeerixChestRune;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -56,6 +58,7 @@ import com.newlinegaming.Runix.rune.ZeerixChestRune;
  * is no telling how many runes it could affect.
  */
 public class RuneHandler {
+    @Nullable
     private static RuneHandler instance = null;//Singleton pattern
     public final ArrayList<AbstractRune> runeRegistry = new ArrayList<>();//TODO move to forges registries
     
@@ -83,6 +86,7 @@ public class RuneHandler {
         runeRegistry.add(new BuildMasterRune());
     }
 
+    @Nullable
     public static RuneHandler getInstance(){
         if(instance == null)
             instance = new RuneHandler();
@@ -90,7 +94,7 @@ public class RuneHandler {
     }
 
     @SubscribeEvent
-    public void playerInteractEvent(PlayerInteractEvent.RightClickBlock e) {
+    public void playerInteractEvent(@NotNull PlayerInteractEvent.RightClickBlock e) {
         Block blk = new WorldXYZ(e).getBlock();
 
         if (!e.getWorld().isRemote) {
@@ -103,7 +107,7 @@ public class RuneHandler {
     }
 
     @SubscribeEvent
-    public void saving(Save saveEvent){
+    public void saving(@NotNull Save saveEvent){
         if( saveEvent.getWorld().provider.getDimension() == 0 && !saveEvent.getWorld().isRemote)//Josiah: I figure it's likely there's only one of these
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
@@ -111,7 +115,7 @@ public class RuneHandler {
     }
 
     @SubscribeEvent
-    public void loadServer(Load loadEvent){
+    public void loadServer(@NotNull Load loadEvent){
         if( loadEvent.getWorld().provider.getDimension() == 0 && !loadEvent.getWorld().isRemote)
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
@@ -119,7 +123,7 @@ public class RuneHandler {
     }
 
     @SubscribeEvent
-    public void playerLogin(EntityJoinWorldEvent event){
+    public void playerLogin(@NotNull EntityJoinWorldEvent event){
         if(event.getEntity() instanceof EntityPlayer){ //fires once each for Client and Server side join event
             for(AbstractRune r : runeRegistry)
                 if( r instanceof PersistentRune)
@@ -132,7 +136,7 @@ public class RuneHandler {
      * Detects a rune pattern, and executes it.
      */
     @SuppressWarnings("static-access")
-    private void possibleRuneActivationEvent(EntityPlayer player, WorldXYZ coords) {
+    private void possibleRuneActivationEvent(@NotNull EntityPlayer player, @NotNull WorldXYZ coords) {
         Pair<AbstractRune, Vector3> matchingRuneInfo = checkForAnyRunePattern(coords);
         //TODO: check for Activator Rail in hand and subscribe the rune to minecart events
         if (matchingRuneInfo != null) {
@@ -157,7 +161,7 @@ public class RuneHandler {
      * @param coords location of the right click
      * @return AbstractRune class if there is a match, null otherwise
      */
-    private Pair<AbstractRune, Vector3> checkForAnyRunePattern(WorldXYZ coords) {
+    private Pair<AbstractRune, Vector3> checkForAnyRunePattern(@NotNull WorldXYZ coords) {
         for (AbstractRune aRuneRegistry : runeRegistry) {
             WorldXYZ result = aRuneRegistry.checkRunePattern(new WorldXYZ(coords));
             if (result != null) {
@@ -180,7 +184,8 @@ public class RuneHandler {
      * Runecraft that is touching a Faith block and the whole island will be treated and moved as one structure.
      * param authority
      */
-    public LinkedHashSet<WorldXYZ> chainAttachedStructures(LinkedHashSet<WorldXYZ> structure, AbstractRune originator) {
+    @NotNull
+    public LinkedHashSet<WorldXYZ> chainAttachedStructures(@NotNull LinkedHashSet<WorldXYZ> structure, @NotNull AbstractRune originator) {
         LinkedHashSet<WorldXYZ> activeEdge;
         LinkedHashSet<WorldXYZ> nextEdge = new LinkedHashSet<>(structure);//starts off being a copy of structure
 
@@ -221,7 +226,8 @@ public class RuneHandler {
 
     // TODO   public JSON extractMagic(Collection<WorldXYZ> blocks)
 
-    public ArrayList<PersistentRune> getAllRunesByPlayer(EntityPlayer player){
+    @NotNull
+    public ArrayList<PersistentRune> getAllRunesByPlayer(@NotNull EntityPlayer player){
         ArrayList<PersistentRune> playerRunes = new ArrayList<>();
         for(AbstractRune r : runeRegistry)
             if( r instanceof PersistentRune) {

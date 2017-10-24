@@ -10,6 +10,7 @@ import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.block.ModBlock;
+import org.jetbrains.annotations.NotNull;
 
 public class LightBeamRune extends AbstractRune {
     
@@ -17,6 +18,7 @@ public class LightBeamRune extends AbstractRune {
         runeName = ("Lightbeam");
     }
 
+    @NotNull
     @Override
     public Block[][][] runicTemplateOriginal() {
         Block GLOW = Blocks.GLOWSTONE;
@@ -51,6 +53,7 @@ public class LightBeamRune extends AbstractRune {
 
     }
     
+    @NotNull
     public String getRuneName() {
         return "Lightbeam";
     }

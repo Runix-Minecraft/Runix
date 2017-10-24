@@ -12,6 +12,8 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.server.FMLServerHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 
 public class WorldXYZ extends BlockPos {
 
+    @Nullable
     private transient World worldObj = null;
     private int dimensionID = -500000;
     public int face = 1;
@@ -42,18 +45,18 @@ public class WorldXYZ extends BlockPos {
         this.setWorld(defaultWorld());
     }
 
-    public WorldXYZ(World world, int x, int y, int z) { //this constructor was made to be fast
+    public WorldXYZ(@NotNull World world, int x, int y, int z) { //this constructor was made to be fast
         super(x, y, z);
         worldObj = world;
         dimensionID = world.provider.getDimension();
     }
 
-    public WorldXYZ(PlayerInteractEvent e){
+    public WorldXYZ(@NotNull PlayerInteractEvent e){
         super(e.getPos());
         worldObj = e.getWorld();
     }
 
-    public WorldXYZ(World world, BlockPos pos) {
+    public WorldXYZ(World world, @NotNull BlockPos pos) {
         super(pos);
         worldObj = world;
     }
@@ -64,13 +67,13 @@ public class WorldXYZ extends BlockPos {
         this.face  = face;
     }
 
-    public WorldXYZ(EntityPlayer player) {
+    public WorldXYZ(@NotNull EntityPlayer player) {
 //        super((int)(player.getX()+.5), (int)(player.getY()-1), (int)(player.getZ()+.5));
         super(player);
         setWorld(player.world);
     }
 
-    public WorldXYZ(BlockPos otherGuy) {
+    public WorldXYZ(@NotNull BlockPos otherGuy) {
         super(otherGuy);
         if(otherGuy instanceof WorldXYZ){
             this.setWorld(((WorldXYZ) otherGuy).getWorld());
@@ -80,6 +83,7 @@ public class WorldXYZ extends BlockPos {
             this.setWorld(defaultWorld());
     }
 
+    @Nullable
     public World getWorld() {
         if(worldObj == null && dimensionID != -500000) {
             setWorld(dimensionID);
@@ -107,6 +111,7 @@ public class WorldXYZ extends BlockPos {
     /**
      * Creates a new WorldXYZ based off of a previous one and a relative vector
      */
+    @Nullable
     public WorldXYZ offset(int dX, int dY, int dZ){
         return new WorldXYZ(this.getWorld(), this.getX() + dX, this.getY() + dY, this.getZ() + dZ, face);
     }
@@ -115,24 +120,28 @@ public class WorldXYZ extends BlockPos {
         return new WorldXYZ(this.getWorld(), this.getX() + dX, this.getY() + dY, this.getZ() + dZ, facing);
     }
 
-    public WorldXYZ offset(Vector3 delta){
+    @Nullable
+    public WorldXYZ offset(@NotNull Vector3 delta){
         return new WorldXYZ(this.getWorld(), getX() + delta.x, getY() + delta.y, getZ() + delta.z, face);
     }
     
-    public WorldXYZ offsetWorld(Vector3 delta, World dem) {
+    @NotNull
+    public WorldXYZ offsetWorld(@NotNull Vector3 delta, World dem) {
         return new WorldXYZ(dem, getX() + delta.x, getY() + delta.y, getZ() + delta.z, face);
     }
 
     /**
      * Like offset() but for facing instead.  Returning a new instance avoids side-effecting
      */
+    @NotNull
     public WorldXYZ copyWithNewFacing(int face2) {
         WorldXYZ n = new WorldXYZ(this);
         n.face = face2;
         return n;
     }
 
-    public WorldXYZ rotate(WorldXYZ referencePoint, boolean counterClockwise){
+    @NotNull
+    public WorldXYZ rotate(@NotNull WorldXYZ referencePoint, boolean counterClockwise){
         Vector3 d = new Vector3(referencePoint, this);// determine quadrant relative to reference
         int direction = counterClockwise ? -1 : 1;
         //handle facing rotation:
@@ -176,11 +185,13 @@ public class WorldXYZ extends BlockPos {
         }
     }
 
+    @NotNull
     public SigBlock getSigBlock() {
         return new SigBlock(getBlock());
     }
 
     //Simple wrapper method for getBlockID()
+    @NotNull
     public Block getBlock() {
         return this.getWorld().getBlockState(this).getBlock();
     }
@@ -190,6 +201,7 @@ public class WorldXYZ extends BlockPos {
 //        return getWorld().getBlockMetadata(getX(), getY(), getZ());
 //    }
 
+    @NotNull
     public IBlockState getBlockState() {
         return this.getWorld().getBlockState(this);
     }
@@ -200,20 +212,20 @@ public class WorldXYZ extends BlockPos {
      */
     @SuppressWarnings("UnusedReturnValue")
 
-    public boolean setBlockIdAndUpdate(Block block){
+    public boolean setBlockIdAndUpdate(@NotNull Block block){
         if(block == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlockState(this, block.getDefaultState());
     }
 
-    public boolean setBlockIdAndUpdate(IBlockState block){
+    public boolean setBlockIdAndUpdate(@NotNull IBlockState block){
         if(block.getBlock() == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
         return this.getWorld().setBlockState(this, block);
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public boolean setBlockId(SigBlock sig){
+    public boolean setBlockId(@NotNull SigBlock sig){
         if(sig.equals(Blocks.BEDROCK) || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
 //        return this.getWorld().setBlock(getX(), getY(), getZ(), sig.blockID, sig.meta, 2);
@@ -222,18 +234,20 @@ public class WorldXYZ extends BlockPos {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public boolean setBlock(IBlockState block){
+    public boolean setBlock(@NotNull IBlockState block){
         if(block == Blocks.BEDROCK || getBlock() == Blocks.BEDROCK)
             return false; //You cannot delete or place bedrock
 //        return this.getWorld().setBlock(getX(), getY(), getZ(), blockID, meta, 3);
         return this.getWorld().setBlockState(this, block);
     }
 
+    @NotNull
     public String toString(){//this is designed to match the GSON output
         return "{\"dimensionID\":"+dimensionID+",\"face\":"+face+",\"getX()\":"+getX()+",\"getY()\":"+getY()+",\"getZ()\":"+getZ()+"}";
 //        return "(" + getX() + "," + getY() +  "," + getZ() + ")";
     }
 
+    @NotNull
     public ArrayList<WorldXYZ> getDirectNeighbors() {
         ArrayList<WorldXYZ> neighbors = new ArrayList<>();
         //6 cardinal sides
@@ -246,6 +260,7 @@ public class WorldXYZ extends BlockPos {
         return neighbors;
     }
     
+    @NotNull
     public ArrayList<WorldXYZ> getNeighbors() {
         ArrayList<WorldXYZ> neighbors = new ArrayList<>();
         //6 cardinal sides
@@ -278,7 +293,8 @@ public class WorldXYZ extends BlockPos {
         return neighbors;
     }
 
-    public ArrayList<WorldXYZ> getNeighbors(Vector3 orientation) {
+    @NotNull
+    public ArrayList<WorldXYZ> getNeighbors(@NotNull Vector3 orientation) {
         int x = 0;
         int y = 0;
         int z = 0;
@@ -310,7 +326,7 @@ public class WorldXYZ extends BlockPos {
         return getNeighbors();
     }
     
-    public double getDistance(WorldXYZ other) {
+    public double getDistance(@NotNull WorldXYZ other) {
         double xzDist_2 =  (getX() - other.getX())*(getX() - other.getX()) + (getZ() - other.getZ())*(getZ() - other.getZ());//Math.sqrt(
         return Math.sqrt( xzDist_2 + (getY() - other.getY())*(getY() - other.getY()));
     }

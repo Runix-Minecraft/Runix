@@ -4,10 +4,12 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 @SideOnly(Side.CLIENT)
 public class ModelTransmutationRod extends ModelBase {
     
+    @NotNull
     private final ModelRenderer Rod;
     
     public ModelTransmutationRod() {
@@ -25,7 +27,7 @@ public class ModelTransmutationRod extends ModelBase {
         Rod.render(f);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
+    private void setRotation(@NotNull ModelRenderer model, float x, float y, float z) {
         
         model.rotateAngleX = x;
         model.rotateAngleY = y;

@@ -17,6 +17,7 @@ import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
+import org.jetbrains.annotations.NotNull;
 
 public class BuildMasterRune extends AbstractTimedRune {
     private static final ArrayList<PersistentRune> activeMagic = new ArrayList<>();
@@ -32,7 +33,7 @@ public class BuildMasterRune extends AbstractTimedRune {
     }
 
     @Override
-    protected void poke(EntityPlayer poker, WorldXYZ coords) {
+    protected void poke(EntityPlayer poker, @NotNull WorldXYZ coords) {
         toggleDisabled();
         consumeFuelBlock(coords); //this will re-enable it if there's a new fuel block
         if( !disabled) {
@@ -81,7 +82,8 @@ public class BuildMasterRune extends AbstractTimedRune {
         }
     }
 
-    private HashMap<WorldXYZ,WorldXYZ> findFirstMissingBlock(HashSet<WorldXYZ> structure) {
+    @NotNull
+    private HashMap<WorldXYZ,WorldXYZ> findFirstMissingBlock(@NotNull HashSet<WorldXYZ> structure) {
         WorldXYZ currentLayer = location;
         HashMap<WorldXYZ, WorldXYZ> buildMapping = UtilMovement.displaceShape(structure, location, currentLayer);
         for(int stepCount = 0; stepCount < 150 && partialTemplateMatch(buildMapping); ++stepCount) {
@@ -100,7 +102,7 @@ public class BuildMasterRune extends AbstractTimedRune {
      * @param buildMapping
      * @return
      */
-    private boolean partialTemplateMatch(HashMap<WorldXYZ, WorldXYZ> buildMapping) {
+    private boolean partialTemplateMatch(@NotNull HashMap<WorldXYZ, WorldXYZ> buildMapping) {
         for(WorldXYZ origin : buildMapping.keySet()) {
             WorldXYZ destination = buildMapping.get(origin);
             Block sourceBlock = origin.getBlock();
@@ -112,7 +114,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         return false;
     }
 
-    private boolean anyCrushable(Collection<WorldXYZ> points) {
+    private boolean anyCrushable(@NotNull Collection<WorldXYZ> points) {
         for( WorldXYZ point : points) {
             if(TierHelper.isCrushable(point.getBlock()))
                 return true;
@@ -120,13 +122,15 @@ public class BuildMasterRune extends AbstractTimedRune {
         return false;
     }
 
+    @NotNull
     private HashSet<WorldXYZ> scanTemplate() {
         HashSet<WorldXYZ> points = layerConductance(location.offset(forwards.multiply(2)), 20, forwards);
         return points;
     }
     
     /**This will return an empty list if the activation would tear a structure in two. */
-    private HashSet<WorldXYZ> layerConductance(WorldXYZ startPoint, int maxDistance, Vector3 orientation) {
+    @NotNull
+    private HashSet<WorldXYZ> layerConductance(@NotNull WorldXYZ startPoint, int maxDistance, @NotNull Vector3 orientation) {
         HashSet<WorldXYZ> workingSet = new HashSet<>();
         HashSet<WorldXYZ> activeEdge;
         HashSet<WorldXYZ> nextEdge = new HashSet<>();
@@ -157,6 +161,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         return workingSet;
     }
     
+    @NotNull
     @Override
     public ArrayList<PersistentRune> getActiveMagic() {
         return activeMagic;
@@ -167,6 +172,7 @@ public class BuildMasterRune extends AbstractTimedRune {
         return false;
     }
 
+    @NotNull
     @Override
     protected Block[][][] runicTemplateOriginal() {
         Block IRON = Blocks.IRON_BLOCK;
