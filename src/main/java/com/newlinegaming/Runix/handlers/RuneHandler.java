@@ -21,7 +21,6 @@ import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.rune.BuildMasterRune;
 import com.newlinegaming.Runix.rune.CompassRune;
-import com.newlinegaming.Runix.rune.ElevatorRune;
 import com.newlinegaming.Runix.rune.FaithRune;
 import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
@@ -73,8 +72,6 @@ public class RuneHandler {
         runeRegistry.add(new GreekFireRune());
         runeRegistry.add(new HoarFrostRune());
 //        runeRegistry.add(new DomainRune());
-//        runeRegistry.add(new LightBeamRune());
-        runeRegistry.add(new ElevatorRune());
         runeRegistry.add(new BuildMasterRune());
     }
     
