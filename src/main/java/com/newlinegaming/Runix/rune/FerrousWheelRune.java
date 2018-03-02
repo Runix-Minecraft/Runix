@@ -38,10 +38,9 @@ public class FerrousWheelRune extends PersistentRune {
     protected void poke(EntityPlayer player, WorldXYZ coords) {
         if(player.worldObj.isRemote)
             return;
-        consumeFuelBlock(coords);
         if( !guestList.contains(player.getUniqueID()) )
             guestList.add(player.getUniqueID());
-        FerrousWheelRune next = getNextWheel(player);
+        FerrousWheelRune next = getNextWheel(player, coords.getBlock());
         if(next == null || next == this){
             aetherSay(player, "Create more of these runes to teleport between them.");
             return;
@@ -49,7 +48,7 @@ public class FerrousWheelRune extends PersistentRune {
         teleportPlayer(player, next.location);
     }
 
-    private FerrousWheelRune getNextWheel(EntityPlayer player){
+    private FerrousWheelRune getNextWheel(EntityPlayer player, Block keyBlock){
         if(globalWheel.size() < 2)
             return null;
         int start = globalWheel.indexOf(this);
@@ -57,7 +56,8 @@ public class FerrousWheelRune extends PersistentRune {
             FerrousWheelRune fw = (FerrousWheelRune)globalWheel.get(i);
             if( !fw.location.equals(location) 
                     && fw.guestList.contains(player.getUniqueID())
-                    && fw.runeIsIntact()) 
+                    && fw.runeIsIntact()
+                    && fw.keyBlock().equals(keyBlock))
                 return fw;
         }
         return null;

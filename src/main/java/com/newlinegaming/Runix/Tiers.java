@@ -59,7 +59,6 @@ public class Tiers {
             add(Blocks.sapling);
             add(Blocks.log);
             add(Blocks.log2);
-            add(ModBlock.greekFire);
         }};
 
         moveSensitiveBlocks = new ArrayList<Block>(){{
@@ -127,7 +126,7 @@ public class Tiers {
             add(Blocks.water);
             add(Blocks.wooden_button);
         }};
-        
+
         crushableBlocks =  new ArrayList<Block>(){{//torches are debatable, since someone did place it there
             add(Blocks.air);
             add(Blocks.deadbush);
@@ -138,9 +137,10 @@ public class Tiers {
             add(Blocks.flowing_water);
             add(Blocks.sapling);
             add(Blocks.tallgrass);
+            add(Blocks.double_plant);
             add(Blocks.torch);
             add(Blocks.vine);
-            add(ModBlock.greekFire);
+//            add(ModBlock.greekFire);
             add(Blocks.flowing_lava);
             add(Blocks.lava);
             //TODO anything in the liquid registry

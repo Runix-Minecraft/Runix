@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -298,6 +299,14 @@ public abstract class PersistentRune extends AbstractRune {
             this.uuid = null;
         else
             this.uuid = playerObj.getUniqueID();
+    }
+
+
+    /** Returns Block object for the center block that is clicked to activate the rune
+     *
+     */
+    public Block keyBlock(){
+        return location.getBlock();
     }
 
     public int getTier() {

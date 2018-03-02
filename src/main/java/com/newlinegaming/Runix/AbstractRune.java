@@ -372,7 +372,8 @@ public abstract class AbstractRune {
         }
         return shape;
     }
-    
+
+
     /**
      * Removes the shape and adds its block energy to the rune
      */
