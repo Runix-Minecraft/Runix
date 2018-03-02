@@ -22,7 +22,6 @@ public class ModBlock {
         greekFire = GreekFire.getInstance();
         hoar_frost = new HoarFrost();
 
-        lightBeam = new BlockLightBeam();
         fakeGoldBlock = new FakeBlock(Blocks.gold_block);
         runixAir = new RunixAirBlock();
 
