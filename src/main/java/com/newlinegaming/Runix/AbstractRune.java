@@ -30,6 +30,8 @@ public abstract class AbstractRune {
     //TODO: Get rid of  unnecessary comments all comments that interrupt the code style
 
     public int energy = 0;
+    public Boolean consumedBlocksGrantEnergy = null; //null if nothing gets consumed, false if
+    // consumed blocks are the cost of activation (Permanence)
 
     protected static final Block TIER = new TierBlock(); //Tier
     public static final Block SIGR = new SignatureBlock(); //Signature block
