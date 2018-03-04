@@ -1,18 +1,51 @@
 package com.newlinegaming.Runix.rune.ToolRunes;
 
+import com.newlinegaming.Runix.RunixPlayer;
+import com.newlinegaming.Runix.WorldXYZ;
+import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.utils.ActionType;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import scala.tools.nsc.transform.patmat.Logic;
+
 import java.util.StringTokenizer;
+
+import static com.newlinegaming.Runix.utils.ActionType.TP_RIGHTCLICKAIR;
+import static com.newlinegaming.Runix.utils.ActionType.TP_SWING;
 
 /**
  * Created by Josiah on 6/27/2015.
  */
 public class RecallRune extends ToolRune {
 
-    public RecallRune(int runeID, String name, ActionType[] triggerType, String message) {
-        super(runeID, name, triggerType, message, AIR);
+
+    public RecallRune() {
+        super("Recall",
+                     new ActionType[]{TP_SWING, TP_RIGHTCLICKAIR},
+                "You will be teleported here whenever you swing this item. Touch other creatures to teleport them instead.");
+    }
+
+    @Override
+    protected Block[][][] runicTemplateOriginal() {
+        return new Block[0][][];
+    }
+
+    @Override
+    protected boolean isFlatRuneOnly() {
+        return true;
+    }
+
+    @Override
+    protected void execute(WorldXYZ coords, EntityPlayer player) {
+        try {
+            poke(new RunixPlayer(player), coords, TP_SWING);
+        }catch (NotEnoughRunicEnergyException e){}
     }
 
     public RecallRune(String lore) {
-        super(registeredRunes.get(RECALL));
+        super("Recall",
+                new ActionType[]{TP_SWING, TP_RIGHTCLICKAIR},
+                "You will be teleported here whenever you swing this item. Touch other creatures to teleport them instead.");
         int metaStart = lore.indexOf(":");
         StringTokenizer st = new StringTokenizer(lore.substring(metaStart+1), ",)( ");
         int[] coords = new int[st.countTokens()];
@@ -25,15 +58,15 @@ public class RecallRune extends ToolRune {
     }
 
     @Override
-    public void poke(RunePlayer player, WorldXYZ location, ActionType triggerType) throws NotEnoughRunicEnergyException {
+    public void poke(RunixPlayer player, WorldXYZ location, ActionType triggerType) throws NotEnoughRunicEnergyException {
         if(destination == null){
             Logger.fine("ERROR: Received a Recall with no additional info.");
             return;
         }
-        RunePlayer target = player;
+        RunixPlayer target = player;
         if(triggerType == ActionType.TP_RIGHTCLICKAIR || triggerType == ActionType.TP_RIGHTCLICK){
-            target = ((RunecraftPlayer) player).getTargetLivingEntity(2);//check entity player is looking at player = entity
-            if(target instanceof RunecraftPlayer){ // other players get a choice
+            target = ((RunixPlayer) player).getTargetLivingEntity(2);//check entity player is looking at player = entity
+            if(target instanceof RunixPlayer){ // other players get a choice
                 Logger.fine("Recall Found a player");
                 TeleportationOffer.offer(target, player, destination, this, false);
                 return;
@@ -42,9 +75,6 @@ public class RecallRune extends ToolRune {
         if (target != null && target.getEntity() instanceof Player) { //uniqueInstance from swing
             Teleporters.regularTeleport(target, player, destination, this);//TODO: better permission checking on banish through patron parameter
             Logger.fine(player.getName() + " is trying to teleport " + target.getEntity().getName());
-            // optionally adds potion effect "Weakness" to player for 30 seconds
-            if (Permissions.configOptionOn("recall-weakness"))
-                player.applyPotion(PotionEffectType.WEAKNESS, 30 * 20, 2);
         }
         if(target != null && target.getEntity() instanceof Animals){ //can't teleport hostile mobs
             Teleporters.regularTeleport(target, player, destination, this);//TODO: better permission checking on banish through patron parameter

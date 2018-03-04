@@ -1,4 +1,4 @@
-package com.newlinegaming.Runix;
+package com.newlinegaming.Runix.energy;
 
 
 /**

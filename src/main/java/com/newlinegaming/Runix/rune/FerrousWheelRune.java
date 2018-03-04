@@ -3,10 +3,8 @@ package com.newlinegaming.Runix.rune;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
-import com.newlinegaming.Runix.helper.LogHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;

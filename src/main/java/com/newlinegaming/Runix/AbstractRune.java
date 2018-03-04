@@ -2,6 +2,7 @@ package com.newlinegaming.Runix;
 
 import java.util.*;
 
+import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,11 +41,15 @@ public abstract class AbstractRune {
     protected static final Block FUEL = new FuelBlock(); //required to be in the middle of the rune
     
     public String runeName = null;
+    public String activationMessage = "";
     private final String runeLocalizedName = null;
 
     protected boolean usesConductance = false;
     protected AbstractRune(){}
-
+    protected AbstractRune(String name, String message){
+        runeName = name;
+        activationMessage = message;
+    }
     /**
      * Required implementation to determine what arrangement of blocks maps to your rune.  Once this is
      * defined in your class, never use it.  Use runicFormulae() instead.

@@ -1,10 +1,11 @@
 package com.newlinegaming.Runix;
 
 
+import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.rune.ToolRunes.ToolRune;
 import com.newlinegaming.Runix.utils.ActionType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -261,7 +262,7 @@ public interface RunePlayer {
 
     void setHasEnergy();
 
-    Entity getEntity();
+    EntityPlayer getEntity();
 
     UUID getUniqueId();
 }

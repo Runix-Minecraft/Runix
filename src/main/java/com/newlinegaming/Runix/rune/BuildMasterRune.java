@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.SigBlock;
 import com.newlinegaming.Runix.Tiers;

@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.Tiers;
 import com.newlinegaming.Runix.block.ModBlock;

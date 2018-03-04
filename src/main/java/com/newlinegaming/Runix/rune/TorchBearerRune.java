@@ -10,7 +10,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
 import com.newlinegaming.Runix.Vector3;
