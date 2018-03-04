@@ -1,6 +1,7 @@
 package com.newlinegaming.Runix.rune.ToolRunes;
 
 import com.newlinegaming.Runix.RunixPlayer;
+import com.newlinegaming.Runix.Vector3;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.utils.ActionType;
@@ -12,6 +13,7 @@ import scala.tools.nsc.transform.patmat.Logic;
 
 import java.util.StringTokenizer;
 
+import static com.newlinegaming.Runix.utils.ActionType.TP_RIGHTCLICK;
 import static com.newlinegaming.Runix.utils.ActionType.TP_RIGHTCLICKAIR;
 import static com.newlinegaming.Runix.utils.ActionType.TP_SWING;
 
@@ -20,11 +22,11 @@ import static com.newlinegaming.Runix.utils.ActionType.TP_SWING;
  */
 public class RecallRune extends ToolRune {
 
-    private WorldXYZ destination = new WorldXYZ(0, 64, 0);
+    private WorldXYZ destination = null;
 
     public RecallRune() {
         super("Recall",
-                     new ActionType[]{TP_SWING, TP_RIGHTCLICKAIR},
+                     new ActionType[]{TP_SWING, TP_RIGHTCLICKAIR, TP_RIGHTCLICK},
                 "You will be teleported here whenever you swing this item. Touch other creatures to teleport them instead.");
     }
 
@@ -42,13 +44,6 @@ public class RecallRune extends ToolRune {
     @Override
     protected boolean isFlatRuneOnly() {
         return true;
-    }
-
-    @Override
-    protected void execute(WorldXYZ coords, EntityPlayer player) {
-        try {
-            poke(new RunixPlayer(player), coords, TP_SWING);
-        }catch (NotEnoughRunicEnergyException e){}
     }
 
     /**
@@ -104,4 +99,9 @@ public class RecallRune extends ToolRune {
 //        }
     }
 
+    @Override
+    protected void execute(WorldXYZ coords, EntityPlayer player) {
+        String destination = "(" + coords.posX + ", " + coords.posY + ", " + coords.posZ + ", " + coords.getDimensionNumber() + ")";
+        addToolRune(this, destination, new RunixPlayer(player));
+    }
 }

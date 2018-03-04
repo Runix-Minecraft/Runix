@@ -32,7 +32,6 @@ public class ModBlock {
         GameRegistry.registerBlock(greekFire, "GreekFire");
         GameRegistry.registerBlock(hoar_frost, HoarFrostItem.class, "HoarFrost");
         GameRegistry.registerBlock(runixAir, "Fake Air");
-        GameRegistry.registerBlock(lightBeam, "RunixLightBeam");
         GameRegistry.registerBlock(fakeGoldBlock, "RunixFakeGoldBlock");
         
         

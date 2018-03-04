@@ -30,21 +30,20 @@ public abstract class ToolRune extends AbstractRune {
         consumedBlocksGrantEnergy = true;
     }
 
-    public static boolean doToolRunes(ActionType triggerType, RunixPlayer player, WorldXYZ location,
-                                      boolean runeFound, boolean secondaryActivation) {
-        try {
+    public static boolean doToolRunes(ActionType triggerType, RunixPlayer player, WorldXYZ location) {
+        boolean cancelTriggerEvent = false;
             for (ToolRune rune : getToolRunesFromHeldItem(player)) {
-                if(!secondaryActivation ) { //It's important to disinclude runes that could cause a cascae chain reaction
-                    if (triggerType == TP_CATCHALL || rune.triggers.contains(triggerType)) {
-                        runeFound = triggerType != TP_BROKEN;
+                //It's important to disinclude runes that could cause a cascade chain reaction
+                if (triggerType == TP_CATCHALL || rune.triggers.contains(triggerType)) {
+                    cancelTriggerEvent = triggerType == TP_BROKEN;
+                    try {
                         rune.poke(player, location, triggerType);
+                    } catch (NotEnoughRunicEnergyException e) {
+                        e.printStackTrace();
                     }
                 }
             }
-        } catch (Exception ignored) { //TODO: NotEnoughRunicEnergy
-            aetherSay(player, ignored.getMessage());
-        }
-        return runeFound;
+        return cancelTriggerEvent;
     }
 
     private static Iterable<ToolRune> getToolRunesFromHeldItem(RunixPlayer player) {
@@ -76,13 +75,15 @@ public abstract class ToolRune extends AbstractRune {
     private static Iterable<String> getLore(ItemStack item) {
         NBTTagCompound top = item.getTagCompound();
         ArrayList<String> lores = new ArrayList<>();
-        if (top.hasKey("display", 10)) {
-            NBTTagCompound nbttagcompound = top.getCompoundTag("display");
-            if (nbttagcompound.func_150299_b("Lore") == 9) {
-                NBTTagList nbttaglist1 = nbttagcompound.getTagList("Lore", 8);
-                if (nbttaglist1.tagCount() > 0) {
-                    for (int j = 0; j < nbttaglist1.tagCount(); ++j) {
-                        lores.add(nbttaglist1.getStringTagAt(j));
+        if(top != null){
+            if (top.hasKey("display", 10)) {
+                NBTTagCompound nbttagcompound = top.getCompoundTag("display");
+                if (nbttagcompound.func_150299_b("Lore") == 9) {
+                    NBTTagList nbttaglist1 = nbttagcompound.getTagList("Lore", 8);
+                    if (nbttaglist1.tagCount() > 0) {
+                        for (int j = 0; j < nbttaglist1.tagCount(); ++j) {
+                            lores.add(nbttaglist1.getStringTagAt(j));
+                        }
                     }
                 }
             }

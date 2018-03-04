@@ -148,7 +148,7 @@ public class WorldXYZ extends ChunkCoordinates {
         return referencePoint.offset(d.x, direction * -d.z, direction * d.y, face);
     }
 
-    private int getDimensionNumber(){
+    public int getDimensionNumber(){
         if( getWorld() == null)
             setWorld(defaultWorld());
         return getWorld().provider.dimensionId;

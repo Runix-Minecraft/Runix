@@ -3,8 +3,11 @@ package com.newlinegaming.Runix.handlers;
 
 import java.util.*;
 
+import com.newlinegaming.Runix.*;
 import com.newlinegaming.Runix.lib.LibConfig;
 import com.newlinegaming.Runix.rune.ToolRunes.RecallRune;
+import com.newlinegaming.Runix.rune.ToolRunes.ToolRune;
+import com.newlinegaming.Runix.utils.ActionType;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,10 +18,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 
-import com.newlinegaming.Runix.AbstractRune;
-import com.newlinegaming.Runix.PersistentRune;
-import com.newlinegaming.Runix.Vector3;
-import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.helper.LogHelper;
 import com.newlinegaming.Runix.rune.BuildMasterRune;
 import com.newlinegaming.Runix.rune.CompassRune;
@@ -27,7 +26,6 @@ import com.newlinegaming.Runix.rune.FerrousWheelRune;
 import com.newlinegaming.Runix.rune.FtpRune;
 import com.newlinegaming.Runix.rune.GreekFireRune;
 import com.newlinegaming.Runix.rune.HoarFrostRune;
-import com.newlinegaming.Runix.rune.OracleRune;
 //import com.newlinegaming.Runix.rune.RubricRune;
 import com.newlinegaming.Runix.rune.RunecraftRune;
 import com.newlinegaming.Runix.rune.TeleporterRune;
@@ -67,12 +65,13 @@ public class RuneHandler {
         runeRegistry.add(new TorchBearerRune());
         runeRegistry.add(new ZeerixChestRune());
         runeRegistry.add(new FerrousWheelRune());
-        runeRegistry.add(new OracleRune());
         runeRegistry.add(new GreekFireRune());
         runeRegistry.add(new HoarFrostRune());
 //        runeRegistry.add(new DomainRune());
         runeRegistry.add(new BuildMasterRune());
         runeRegistry.add(new RecallRune());
+//        runeRegistry.add(new OracleRune());
+
     }
     
     public void addRune(AbstractRune rune) {
@@ -143,6 +142,7 @@ public class RuneHandler {
             LogHelper.info(player.getDisplayName() + " Has activated a " + matchingRune.getRuneName() + "" );
             matchingRune.execute(coords, player, matchingRuneInfo.getRight());
         }
+        ToolRune.doToolRunes(ActionType.TP_RIGHTCLICKAIR, new RunixPlayer(player), coords);
     }
 
     /**
