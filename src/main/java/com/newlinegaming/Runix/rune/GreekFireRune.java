@@ -71,12 +71,9 @@ public class GreekFireRune extends AbstractRune {
         accept(player);
         consumeRune(coords);
         coords.setBlockIdAndUpdate(Blocks.lapis_block); // this just got consumed
-        int newLife = Math.max(15 - Tiers.energyToRadiusConversion(energy - Tiers.getEnergy(Blocks.lapis_block),
-                Tiers.blockBreakCost), 0); //radius calculation
-        HashSet<WorldXYZ> shell = Util_SphericalFunctions.getShell(coords, 1);
-        for(WorldXYZ point : shell){
-            point.setBlock(ModBlock.greekFire, newLife);
-        }
+        WorldXYZ starter = coords.offset(Vector3.UP);
+        starter.setBlock(ModBlock.greekFire, 15);
+        GreekFire.addEnergyToFire(starter, energy - Tiers.getEnergy(Blocks.lapis_block));
     }
 
 }

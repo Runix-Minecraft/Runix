@@ -206,6 +206,10 @@ public class GreekFire extends BlockFire {
         if(fuelBlock == null)
             return false;
         int blockEnergy = Tiers.getEnergy(fuelBlock);
+        return addEnergyToFire(coords, blockEnergy);
+    }
+
+    public static boolean addEnergyToFire(WorldXYZ coords, int blockEnergy) {
         if(blockEnergy > 1){
             if(!coords.getWorld().isRemote){
                 int newLife = Math.min(Math.max(
