@@ -4,8 +4,10 @@ import com.newlinegaming.Runix.RunixPlayer;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.utils.ActionType;
+import com.newlinegaming.Runix.utils.Teleporters;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import scala.tools.nsc.transform.patmat.Logic;
 
 import java.util.StringTokenizer;
@@ -18,6 +20,7 @@ import static com.newlinegaming.Runix.utils.ActionType.TP_SWING;
  */
 public class RecallRune extends ToolRune {
 
+    private WorldXYZ destination = new WorldXYZ(0, 64, 0);
 
     public RecallRune() {
         super("Recall",
@@ -27,7 +30,13 @@ public class RecallRune extends ToolRune {
 
     @Override
     protected Block[][][] runicTemplateOriginal() {
-        return new Block[0][][];
+        Block TRCH = Blocks.redstone_torch;
+        Block DUST = Blocks.redstone_wire;
+        return new Block[][][] {{
+                {DUST,DUST,DUST},
+                {DUST,TRCH,DUST},
+                {DUST,DUST,DUST}
+        }};
     }
 
     @Override
@@ -42,10 +51,13 @@ public class RecallRune extends ToolRune {
         }catch (NotEnoughRunicEnergyException e){}
     }
 
-    public RecallRune(String lore) {
-        super("Recall",
-                new ActionType[]{TP_SWING, TP_RIGHTCLICKAIR},
-                "You will be teleported here whenever you swing this item. Touch other creatures to teleport them instead.");
+    /**
+     * Psuedo constructor for ToolRune to use to get new instances based on tooltip text on ItemStack
+     * @param lore
+     * @return
+     */
+    public RecallRune fromLore(String lore) {
+        RecallRune me = new RecallRune();
         int metaStart = lore.indexOf(":");
         StringTokenizer st = new StringTokenizer(lore.substring(metaStart+1), ",)( ");
         int[] coords = new int[st.countTokens()];
@@ -54,40 +66,42 @@ public class RecallRune extends ToolRune {
             coords[i] = Integer.parseInt((String) st.nextElement());
             i++;
         }
-        destination = new WorldXYZ(coords[0], coords[1], coords[2], coords[3]);
+        me.destination = new WorldXYZ(coords[0], coords[1], coords[2], coords[3]);
+        return me;
     }
 
     @Override
     public void poke(RunixPlayer player, WorldXYZ location, ActionType triggerType) throws NotEnoughRunicEnergyException {
         if(destination == null){
-            Logger.fine("ERROR: Received a Recall with no additional info.");
+            //Logger.fine("ERROR: Received a Recall with no additional info.");
             return;
         }
-        RunixPlayer target = player;
-        if(triggerType == ActionType.TP_RIGHTCLICKAIR || triggerType == ActionType.TP_RIGHTCLICK){
-            target = ((RunixPlayer) player).getTargetLivingEntity(2);//check entity player is looking at player = entity
-            if(target instanceof RunixPlayer){ // other players get a choice
-                Logger.fine("Recall Found a player");
-                TeleportationOffer.offer(target, player, destination, this, false);
-                return;
-            }
-        }
-        if (target != null && target.getEntity() instanceof Player) { //uniqueInstance from swing
-            Teleporters.regularTeleport(target, player, destination, this);//TODO: better permission checking on banish through patron parameter
-            Logger.fine(player.getName() + " is trying to teleport " + target.getEntity().getName());
-        }
-        if(target != null && target.getEntity() instanceof Animals){ //can't teleport hostile mobs
-            Teleporters.regularTeleport(target, player, destination, this);//TODO: better permission checking on banish through patron parameter
-            Logger.fine(player.getName() + " is trying to teleport " + target.getEntity().getName());
-            Logger.fine(player.getName() + " successfully teleported " + target.getEntity().getName() + ".");
-            player.sendMessage("Successfully teleported " + target.getEntity().getName() + ".");
-            target.applyPotion(PotionEffectType.REGENERATION, 30*20, 2);
-        }
-        if (target != null && (target.getEntity() instanceof Monster)){
-            Logger.fine(player.getName() + " is trying to teleport " + target.getEntity().getName());
-            Logger.fine(player.getName() + " failed to teleport " + target.getEntity().getName() + ".");
-            player.sendMessage("I'm sorry, we can't let you teleport " + target.getEntity().getName() + ".");
-        }
+        Teleporters.teleportPlayer(player.getPlayer(), destination);
+//        RunixPlayer target = player;
+//        if(triggerType == ActionType.TP_RIGHTCLICKAIR || triggerType == ActionType.TP_RIGHTCLICK){
+//            target = ((RunixPlayer) player).getTargetLivingEntity(2);//check entity player is looking at player = entity
+//            if(target instanceof RunixPlayer){ // other players get a choice
+//                Logger.fine("Recall Found a player");
+//                TeleportationOffer.offer(target, player, destination, this, false);
+//                return;
+//            }
+//        }
+//        if (target != null && target.getEntity() instanceof RunixPlayer) { //uniqueInstance from swing
+//            Teleporters.teleportPlayer(player.getPlayer(), destination);
+//            Logger.fine(player.getName() + " is trying to teleport " + target.getEntity().getName());
+//        }
+//        if(target != null && target.getEntity() instanceof Animals){ //can't teleport hostile mobs
+//            Teleporters.regularTeleport(target, player, destination, this);//TODO: better permission checking on banish through patron parameter
+//            Logger.fine(player.getName() + " is trying to teleport " + target.getEntity().getName());
+//            Logger.fine(player.getName() + " successfully teleported " + target.getEntity().getName() + ".");
+//            player.sendMessage("Successfully teleported " + target.getEntity().getName() + ".");
+//            target.applyPotion(PotionEffectType.REGENERATION, 30*20, 2);
+//        }
+//        if (target != null && (target.getEntity() instanceof Monster)){
+//            Logger.fine(player.getName() + " is trying to teleport " + target.getEntity().getName());
+//            Logger.fine(player.getName() + " failed to teleport " + target.getEntity().getName() + ".");
+//            player.sendMessage("I'm sorry, we can't let you teleport " + target.getEntity().getName() + ".");
+//        }
     }
 
 }

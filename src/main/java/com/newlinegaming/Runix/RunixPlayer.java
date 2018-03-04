@@ -3,22 +3,25 @@ package com.newlinegaming.Runix;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class RunixPlayer {
+public class RunixPlayer { //TODO: extends EntityPlayer
 
     private final EntityPlayer entity;
 
     public RunixPlayer(EntityPlayer obj){
         entity = obj;
     }
-
-    EntityPlayer getEntity(){
-        return entity;
-    }
     /**
      * returns inventory of this player as RuneInventory *
      */
     ItemStack[] getInventory(){
+        return getPlayer().inventory.mainInventory;
+    }
 
-        return getEntity().getInventory().mainInventory;
+    public EntityPlayer getPlayer() {
+        return entity;
+    }
+
+    public boolean isPlayer() {
+        return true;
     }
 }

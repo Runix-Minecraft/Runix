@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import com.newlinegaming.Runix.utils.Teleporters;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -373,7 +374,7 @@ public abstract class PersistentRune extends AbstractRune {
             Vector3 directionOfScanning = Vector3.facing[destination.face];
             WorldXYZ destinationCenter = Util_Movement.safelyTeleportStructure(structure, location, destination, boundaryFromCenter(structure, directionOfScanning));
             if(destinationCenter != null) {
-                teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
+                Teleporters.teleportPlayer(player, destinationCenter.copyWithNewFacing(location.face)); // so that the player always lands in the right spot regardless of signature
             }else {
                 aetherSay(player, "There are obstacles for over 100m in the direction of the destination waypoint.");
             }

@@ -1,18 +1,19 @@
 package com.newlinegaming.Runix.rune.ToolRunes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import com.newlinegaming.Runix.AbstractRune;
 import com.newlinegaming.Runix.RunixPlayer;
 import com.newlinegaming.Runix.WorldXYZ;
 import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.handlers.RuneHandler;
 import com.newlinegaming.Runix.utils.ActionType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import static com.newlinegaming.Runix.utils.ActionType.TP_BROKEN;
 import static com.newlinegaming.Runix.utils.ActionType.TP_CATCHALL;
@@ -21,9 +22,7 @@ import static com.newlinegaming.Runix.utils.ActionType.TP_CATCHALL;
  * Created by Josiah on 6/13/2015.
  */
 public abstract class ToolRune extends AbstractRune {
-    private static final long serialVersionUID = -8433219562224217690L;
     public Set<ActionType> triggers = new HashSet<>();
-//    private long tempestLastUse = 0;
 
     public ToolRune(String name, ActionType[] triggerType, String message) {
         super(name, message);
@@ -31,26 +30,64 @@ public abstract class ToolRune extends AbstractRune {
         consumedBlocksGrantEnergy = true;
     }
 
-    public ToolRune(AbstractRune runeInfo) {
-        throw new NotImplementedException();
-
-    }
-
     public static boolean doToolRunes(ActionType triggerType, RunixPlayer player, WorldXYZ location,
                                       boolean runeFound, boolean secondaryActivation) {
         try {
-            for (ToolRune rune : player.getToolRunesFromHeldItem()) {
+            for (ToolRune rune : getToolRunesFromHeldItem(player)) {
                 if(!secondaryActivation ) { //It's important to disinclude runes that could cause a cascae chain reaction
                     if (triggerType == TP_CATCHALL || rune.triggers.contains(triggerType)) {
                         runeFound = triggerType != TP_BROKEN;
-                        rune.use(player, location, triggerType);
+                        rune.poke(player, location, triggerType);
                     }
                 }
             }
         } catch (Exception ignored) { //TODO: NotEnoughRunicEnergy
-            aetherSay(player.getEntity(), ignored.getMessage());
+            aetherSay(player, ignored.getMessage());
         }
         return runeFound;
+    }
+
+    private static Iterable<ToolRune> getToolRunesFromHeldItem(RunixPlayer player) {
+        ItemStack item = player.getPlayer().getHeldItem();
+        return getRunesFromItem(item);
+    }
+
+    private static ArrayList<ToolRune> getRunesFromItem(ItemStack item) {
+        ArrayList<ToolRune> allRunes = new ArrayList<>();
+        if(item == null)
+            return allRunes;
+
+        for (String lore : getLore(item)) {
+            lore = lore.substring(2).toLowerCase();//first two unicode characters are color styling
+            for (AbstractRune value : RuneHandler.getInstance().runeRegistry) {
+                if (lore.contains(value.runeName.toLowerCase())) { //this iteration is a bit cumbersome http://stackoverflow.com/questions/1383797/java-hashmap-how-to-get-key-from-value
+                    if(value instanceof ToolRune){
+                        allRunes.add(((ToolRune)value).fromLore(lore));
+                        break;
+                    }
+                }
+            }
+        }
+        return allRunes;
+    }
+
+    public abstract ToolRune fromLore(String lore);
+
+    private static Iterable<String> getLore(ItemStack item) {
+        NBTTagCompound top = item.getTagCompound();
+        ArrayList<String> lores = new ArrayList<>();
+        if (top.hasKey("display", 10)) {
+            NBTTagCompound nbttagcompound = top.getCompoundTag("display");
+            if (nbttagcompound.func_150299_b("Lore") == 9) {
+                NBTTagList nbttaglist1 = nbttagcompound.getTagList("Lore", 8);
+                if (nbttaglist1.tagCount() > 0) {
+                    for (int j = 0; j < nbttaglist1.tagCount(); ++j) {
+                        lores.add(nbttaglist1.getStringTagAt(j));
+                    }
+                }
+            }
+        }
+        return lores;
     }
 
     /**
@@ -65,25 +102,23 @@ public abstract class ToolRune extends AbstractRune {
 
     /**
      * Enchants a tool with a tool rune.
-     * @param runeID ID of rune to enchant the tool with.
      * @param additionalInfo Additional info about the enchant
      * @param holder Player who owns the tool that is getting enchanted.
      * @return true if the enchant was successful, false if the player is holding wrong item or item already has this enchant.
      */
-    public static boolean addToolRune(int runeID, String additionalInfo, RunixPlayer holder) {
+    public static boolean addToolRune(ToolRune rune, String additionalInfo, RunixPlayer holder) {
         if(!holder.isPlayer())
             return false;
-        AbstractRune rune = RuneRegistry.registeredRunes.get(runeID);
-        String loreText = additionalInfo.isEmpty() ? rune.name : rune.name + " : " + additionalInfo;
-        ItemStack inHand = holder.getPlayer().getItemInHand();
-        if(inHand.getType() != Material.AIR) {
+        String loreText = additionalInfo.isEmpty() ? rune.runeName : rune.runeName + " : " + additionalInfo;
+        ItemStack inHand = holder.getPlayer().getHeldItem();
+        if(inHand != null) {
             if (engraveToolRuneLore(loreText, rune, inHand) == false) { //active ingredient is here
-                holder.sendMessage(EnumChatFormatting.GREEN + "This tool already has this enchant.");
+                aetherSay(holder, EnumChatFormatting.GREEN + "This tool already has this enchant.");
                 return false;
             }
-            holder.sendMessage(EnumChatFormatting.GREEN + rune.activationMessage);
+            aetherSay(holder, EnumChatFormatting.GREEN + rune.activationMessage);
         } else {
-            holder.sendMessage(EnumChatFormatting.GREEN + "Please use an item. This does not work on your hand.");
+            aetherSay(holder, EnumChatFormatting.GREEN + "Please use an item. This does not work on your hand.");
             return false;
         }
 //        //successful tool rune activation
@@ -95,48 +130,65 @@ public abstract class ToolRune extends AbstractRune {
         return true;
     }
 
-    public static boolean engraveToolRuneLore(String lore, AbstractRune rune, ItemStack item) {
+    public static boolean engraveToolRuneLore(String lore, ToolRune rune, ItemStack item) {
         if(item == null) return true;
-        ItemMeta meta = item.getItemMeta();
         ArrayList<String> prevLore = new ArrayList<>();
-        if (meta.hasLore()) {
-            for (String oldLore : meta.getLore()) {
-                //#2 Fixed the case where Recalls could be stacked on one item.  Use newest instead.
-                if (!oldLore.toLowerCase().contains(rune.name.toLowerCase())) {//or lore.toLowerCase()
-                    prevLore.add(oldLore); //don't add in old duplicates
-                }
+        for (String oldLore : getLore(item)) {
+            //#2 Fixed the case where Recalls could be stacked on one item.  Use newest instead.
+            if (!oldLore.toLowerCase().contains(rune.runeName.toLowerCase())) {
+                prevLore.add(oldLore); //don't add in old duplicates
             }
         }
-        prevLore.add(ChatColor.GOLD + lore);
-        meta.setLore(prevLore);
-        item.setItemMeta(meta);
+        prevLore.add(EnumChatFormatting.GOLD + lore);
+        setLore(item, prevLore);
         return true;
     }
 
-    public static boolean itemHasRune(ItemStack itemStack, int runeID) {
-        if (itemStack == null) {
-            return false;
+    private static void setLore(ItemStack item, ArrayList<String> lore) {
+        item.setTagInfo("Runix", new NBTTagShort((short) 1)); // Random filler to ensure tag exists
+        NBTTagCompound top = item.getTagCompound();
+        NBTTagCompound displayTag = top.getCompoundTag("display");
+
+//        displayTag.getTagList("Lore", 9);
+        NBTTagList newTagList = new NBTTagList();
+        for(String line : lore){
+            newTagList.appendTag(new NBTTagString(line));
         }
-        final ArrayList<AbstractRune> runesFromItem = RunixPlayer.getRunesFromItem(itemStack);
-        for (AbstractRune runeInfo : runesFromItem) {
-            if (runeInfo.runeID == runeID) return true;
-        }
-        return false;
+        displayTag.setTag("Lore", newTagList);
+        top.setTag("display", displayTag);
+//        NBTTagList nbttaglist1 = displayTag.getTagList("Lore", 8);
+//        if (nbttaglist1.tagCount() > 0) {
+//            for (int j = 0; j < nbttaglist1.tagCount(); ++j) {
+//                lores.add(nbttaglist1.getStringTagAt(j));
+//            }
+//        }
+        System.out.println("Wrote" + lore);
     }
 
-    /** This does a generic scan through the whole inventory for Tool Rune Lore.  Useful for items that work
+//    public static boolean itemHasRune(ItemStack itemStack, String runeName) {
+//        if (itemStack == null) {
+//            return false;
+//        }
+//        final ArrayList<ToolRune> runesFromItem = getRunesFromItem(itemStack);
+//        for (AbstractRune runeInfo : runesFromItem) {
+//            if (Objects.equals(runeInfo.runeName, runeName)) return true;
+//        }
+//        return false;
+//    }
+
+    /* * This does a generic scan through the whole inventory for Tool Rune Lore.  Useful for items that work
      * by simply being in your inventory. Example: Inheritance
      * @param player
      * @param runeCode
      * @return true if they have an item somewhere in their inventory with that rune on it
      */
-    public static boolean playerIsCarryingRune(RunixPlayer player, int runeCode) {
-        for(ItemStack item : player.getInventory()) {
-            if(itemHasRune(item, runeCode))
-                return true;
-        }
-        return false;
-    }
+//    public static boolean playerIsCarryingRune(RunixPlayer player, int runeCode) {
+//        for(ItemStack item : player.getInventory()) {
+//            if(itemHasRune(item, runeCode))
+//                return true;
+//        }
+//        return false;
+//    }
 
     public abstract void poke(final RunixPlayer player, WorldXYZ location, ActionType triggerType) throws NotEnoughRunicEnergyException;
 }

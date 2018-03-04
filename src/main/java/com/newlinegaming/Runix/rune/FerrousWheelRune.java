@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.WorldXYZ;
 
+import com.newlinegaming.Runix.utils.Teleporters;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -43,7 +44,7 @@ public class FerrousWheelRune extends PersistentRune {
             aetherSay(player, "Create more of these runes to teleport between them.");
             return;
         }
-        teleportPlayer(player, next.location);
+        Teleporters.teleportPlayer(player, next.location);
     }
 
     private FerrousWheelRune getNextWheel(EntityPlayer player, Block keyBlock){

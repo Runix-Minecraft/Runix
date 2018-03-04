@@ -4,6 +4,7 @@ package com.newlinegaming.Runix.handlers;
 import java.util.*;
 
 import com.newlinegaming.Runix.lib.LibConfig;
+import com.newlinegaming.Runix.rune.ToolRunes.RecallRune;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,8 +56,6 @@ public class RuneHandler {
     
     private RuneHandler() {
         //TODO: Make a wrappper class for adding runes something alone the lines of RuneHandler.addRune(RuneFooRune), or add it to a Runix  
-
-
 //        runeRegistry.add(new PlayerHandler());
         runeRegistry.add(new WaypointRune());
         runeRegistry.add(new FaithRune());
@@ -73,6 +72,7 @@ public class RuneHandler {
         runeRegistry.add(new HoarFrostRune());
 //        runeRegistry.add(new DomainRune());
         runeRegistry.add(new BuildMasterRune());
+        runeRegistry.add(new RecallRune());
     }
     
     public void addRune(AbstractRune rune) {
