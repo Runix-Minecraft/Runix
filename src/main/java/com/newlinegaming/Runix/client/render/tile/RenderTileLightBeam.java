@@ -3,7 +3,6 @@ package com.newlinegaming.Runix.client.render.tile;
 import org.lwjgl.opengl.GL11;
 
 import com.newlinegaming.Runix.lib.LibInfo;
-import com.newlinegaming.Runix.tile.TileLightBeam;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;

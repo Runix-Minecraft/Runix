@@ -3,6 +3,7 @@ package com.newlinegaming.Runix.rune;
 import java.util.ArrayList;
 
 import com.newlinegaming.Runix.NoSuchSignatureException;
+import com.newlinegaming.Runix.utils.Teleporters;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -44,7 +45,7 @@ public class TeleporterRune extends PersistentRune {
         try{
             WorldXYZ destination = findWaypointBySignature(getSignature());
             aetherSay(poker, "Teleporting to " + destination.toString());
-            teleportPlayer(poker, destination);
+            Teleporters.teleportPlayer(poker, destination);
         }catch (NoSuchSignatureException e){
             aetherSay(poker, "There's no waypoint with that signature.");
         }

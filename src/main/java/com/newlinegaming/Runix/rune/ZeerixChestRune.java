@@ -6,10 +6,9 @@ import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
 
 import com.newlinegaming.Runix.AbstractTimedRune;
-import com.newlinegaming.Runix.NotEnoughRunicEnergyException;
+import com.newlinegaming.Runix.energy.NotEnoughRunicEnergyException;
 import com.newlinegaming.Runix.PersistentRune;
 import com.newlinegaming.Runix.utils.Util_SphericalFunctions;
 import com.newlinegaming.Runix.Vector3;
